@@ -1,0 +1,695 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="EN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cascade of Transducers &mdash; Unitex-en 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-en 1.0.1 documentation" href="Unitex-en.html" />
+    <link rel="next" title="Use of external programs" href="13-programs_EN_utf8.html" />
+    <link rel="prev" title="Compound word inflection" href="11-multiflex_EN_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cascade-of-transducers">
+<h1>Cascade of Transducers<a class="headerlink" href="#cascade-of-transducers" title="Permalink to this headline">¶</a></h1>
+<p>This chapter presents the tool <em>CasSys</em> that provides users the
+possibility to create Unitex cascade of transducers and new
+opportunities to work on natural language whith Finite State Graphs. A
+<em>cascade of transducers</em> applies several FSGraphs (also called automata
+or transducers), one after the other, onto a text: each graph modifies
+the text, and changes can be useful for further processings with the
+next graphs. Such a system is typically used for syntactic analysis,
+chunking, information extraction, recognizing named entities etc. To do
+that, CasSys uses a succession of “locate patterns” to which was added
+special options and behaviors.</p>
+<p>The first prototype of the <em>CasSys</em> system was created in 2002 at the LI
+(Computer science Laboratory of Université François Rabelais Tours,
+France) <a href="#id1"><span class="problematic" id="id2">:raw-latex:`\cite{these-nathalie}`</span></a>. This prototype was totally
+dedicated to named entity recognition. Later, CasSys was generalized to
+allow any sort of work needing a cascade: throughout the years, it was
+improved but never really integrated in Unitex, until a recent project
+which resulted in the complete integration of CasSys in Unitex <a class="footnote-reference" href="#id4" id="id3">[1]</a>.</p>
+<p>Unitex grammars are known as Context free grammars and contain the
+notion of transduction derived from the field of finite state automata.
+A grammar with transduction (a transducer) is enabled to produce some
+ouput. CasSys is dedicated to the application of transducers in the form
+of a cascade.</p>
+<p>A cascade can be used for syntactic analysis, chunking, information
+extraction, etc. Transducers are interesting because they allow the
+association of a recognized sequence to informations found in the
+outputs of the graphs. These outputs can:</p>
+<ul class="simple">
+<li>Be merged with the recognized sequence and appear in the resulting
+concordance or modified text.</li>
+<li>Replace the recognized sequence to modify the text.</li>
+</ul>
+<p>These two operations transform the text or add information inside the
+text.</p>
+<p>In this chapter, we will explain how to create/modify cascades of
+transducers and how to apply them. Then, we deals with options and
+behaviors offered by CasSys.</p>
+<div class="section" id="applying-a-cascade-of-transducers-with-cassys">
+<h2>Applying a cascade of transducers with CasSys<a class="headerlink" href="#applying-a-cascade-of-transducers-with-cassys" title="Permalink to this headline">¶</a></h2>
+<p>Applying a cascade of transducers consists in the modelling of
+linguistic phenomena in several transducers listed in a specific order
+to apply on a text: CasSys and its interface into Unitex permits to do
+this. This section explains how to use the interface to create, manage
+(order, add, delete) graphs and apply the cascade.</p>
+<div class="section" id="creating-the-list-of-transducers">
+<h3>Creating the list of transducers<a class="headerlink" href="#creating-the-list-of-transducers" title="Permalink to this headline">¶</a></h3>
+<p>In order to manage the list of transducers, the menu FSGraph proposes
+two submenus: “<em>New cascade</em>” and “<em>Edit cascade...</em>” (Figure
+[fig13-08]). You can choose “<em>new cascade</em>” to create a new list of
+transducers. If you want to modify an existing cascade, you can choose
+“<em>Edit cascade</em>” that open a file explorer to choose the cascade to
+open.</p>
+<p>In the language directory, there is a directory named CasSys where the
+cascade configuration files are stored. Those files are text files with
+the extension <em>.csc</em> (ex: mycascade.csc).</p>
+</div>
+<div class="section" id="editing-the-list-of-transducers">
+<h3>Editing the list of transducers<a class="headerlink" href="#editing-the-list-of-transducers" title="Permalink to this headline">¶</a></h3>
+<p>The CasSys configuration window (Figure [fig13-03]) is divided into
+three parts :</p>
+<ol class="arabic">
+<li><p class="first">a <em>file explorer</em> at the left of the frame permits to select the
+transducers to place in the cascade. The file explorer only displays
+fst2 files (all the graphs you want to place in the list of
+transducers must be compiled in fst2 format).</p>
+<p>To edit the cascade, select the graphs in the file explorer at the
+left and drag and drop them into the right frame of the window.</p>
+</li>
+<li><p class="first">A <em>table</em> at the right displays the cascade: the ordered list of
+transducers and the selected options for each graph. This table is
+obviously empty for a new cascade.</p>
+<p>The different columns of this table (Figure [fig13-09]) show the
+numbering of each graph and permit to choose its behavior:</p>
+<ul class="simple">
+<li><strong>#</strong>: Rank of the graph/transducer in the cascade. The resulting
+file of a graph is numbered with this rank.</li>
+<li><strong>Disabled</strong>: checkbox to disable the current graph. <em>Disabled</em>
+meaning “<em>not applied in the cascade</em>”. The disabled graphs appear
+not numbered, in light grey and striked out.</li>
+<li><strong>Name</strong>: The name of the graph (with extension <em>fst2</em>). If you
+let the mouse over the name of the graph, a tooltip appears with
+the whole path ot the graph. Graphs which source file are not
+found appear in italic red font style.</li>
+<li><strong>Merge</strong>: Whether the transducer should be applied in merge mode
+at the sense of unitex locate pattern.</li>
+<li><strong>Replace</strong>: Whether the transducer should be applied in replace
+mode at the sense of unitex locate pattern.</li>
+<li><strong>Until fix point</strong>: Whether the transducer should be applied once
+or re-applied several times until no change occur in the text i.e.
+until a fix point is reached (See [sub:AppWhiCon]).</li>
+</ul>
+</li>
+<li><p class="first"><em>Several buttons</em> in the middle for different needs:</p>
+<ul class="simple">
+<li><em>“Up/Down/Top/Bottom”</em> buttons are used to modify the order of the
+transducers on the list (it moves the selected transducer in the
+list); <em>“Up”</em> and <em>“Down”</em> to move the selected transducer one
+line up or down, and “<em>Top</em>” and “<em>Bottom</em>” to move the selection
+to the top or to the end of the list.</li>
+<li><em>“Delete”</em> permits to remove a selected transducer from the list
+of transducers.</li>
+<li><em>“Add”</em> adds a transducer (previously selected in the explorer)
+onto the list. It replaces the drag and drop actions described
+above.</li>
+<li><em>“View”</em> opens the selected graph either in the file explorer or
+in the list of transducers of the window. It is very useful to get
+a quick access to any transducer either to take a quick look at
+its content or to modify it.</li>
+<li><em>“Save”</em> and <em>“Save as”</em> permit to save the list of transducers.
+By default, the lists of transducers are stored in the CasSys
+directory of the current language (e.g. English/CasSys).</li>
+<li><em>“Compile”</em> recompile all the graphs of the cascade. Very useful
+to avoid to recompile a graph after changes.</li>
+<li><em>“Disable all”</em> to disable all the graphs of the cascade.</li>
+<li><em>“Enable all”</em> to enable all the graphs of the cascade.</li>
+<li><em>“Close”</em> to close the current window.</li>
+</ul>
+</li>
+</ol>
+<div class="figure" id="id5">
+<a class="reference internal image-reference" href="resources/img/fig13-09.png"><img alt="The table/list of transducers" src="resources/img/fig13-09.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">The table/list of transducers</span></p>
+</div>
+</div>
+<div class="section" id="applying-a-cascade">
+<h3>Applying a cascade<a class="headerlink" href="#applying-a-cascade" title="Permalink to this headline">¶</a></h3>
+<p>To apply a cascade on a text, you can select the menu “<em>Text / Apply
+CasSys cascade...</em>” (Figure [fig13-01]) which will open the CasSys
+window. This submenu “<em>Apply CasSys cascade...</em>” is active only if a
+text has previously been opened.</p>
+<div class="figure" id="id6">
+<a class="reference internal image-reference" href="resources/img/fig13-01.png"><img alt="“*Text*” menu of Unitex and submenu “*Apply CasSys Cascade...*”" src="resources/img/fig13-01.png" style="width: 5.00000cm;" /></a>
+<p class="caption"><span class="caption-text">“<em>Text</em>” menu of Unitex and submenu “<em>Apply CasSys Cascade...</em>”</span></p>
+</div>
+<p>The CasSys window (Figure [fig13-02]) displays the content of the CasSys
+directory of the current language. It allows you to choose the cascade
+file to be applied on the text. When this list is chosen, you can click
+on the “Launch” button to apply the cascade.</p>
+<div class="figure" id="id7">
+<a class="reference internal image-reference" href="resources/img/fig13-02.png"><img alt="CasSys Window to launch a cascade of transducers" src="resources/img/fig13-02.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">CasSys Window to launch a cascade of transducers</span></p>
+</div>
+<p>All morphological-mode dictionaries added in your preferences are
+applied to your graphs. Preferences may be edited from the main Unitex
+frame (<em>info / Preferences / morphological-mode dictionaries</em>).</p>
+</div>
+<div class="section" id="sharing-a-cascade-transducer-list-file">
+<h3>Sharing a cascade transducer list file<a class="headerlink" href="#sharing-a-cascade-transducer-list-file" title="Permalink to this headline">¶</a></h3>
+<p>In order to ease collaborating work within CasSys, a simple
+export/import system for the cascades is provided. This possibility is
+offered in the “<em>Text / Apply CasSys cascade...</em>” menu (Figure
+[fig13-02]).</p>
+<p>To share a cascade list file, the following steps has to be fullfilled :</p>
+<ol class="arabic simple">
+<li><strong>Export :</strong> Select a cascade file and click the export button. (A
+ready to share file is created in the <code class="docutils literal"><span class="pre">/CasSys/Share</span></code> repository)</li>
+<li>Send the file to share to your colleague</li>
+<li><strong>Import :</strong> Select the imported file and click the import button. (A
+ready to use file is created in the <code class="docutils literal"><span class="pre">/CasSys</span></code> repository)</li>
+</ol>
+</div>
+</div>
+<div class="section" id="details-on-the-behavior-of-cassys">
+<h2>Details on the behavior of CasSys<a class="headerlink" href="#details-on-the-behavior-of-cassys" title="Permalink to this headline">¶</a></h2>
+<p>In this section , we present details concerning the functioning of
+CasSys.</p>
+<div class="section" id="type-of-graphs-used">
+<h3>Type of graphs used<a class="headerlink" href="#type-of-graphs-used" title="Permalink to this headline">¶</a></h3>
+<p>CasSys uses the compiled version of the graphs (the <code class="docutils literal"><span class="pre">fst2</span></code> files).
+CasSys can handle the local grammars (section&nbsp;[syntactic-graphs])
+presented in Chapter [chap-advanced-grammars]. The grammars used in the
+cascade must follow the constraints of the grammars used in Unitex. They
+may use subgraphs, morphological filters, the morphological mode, and
+references to information in dictionaries.</p>
+<p>CasSys does not support debug-mode <code class="docutils literal"><span class="pre">fst2</span></code> files
+([section-debug-mode]). When you apply a graph in debug mode through the
+<code class="docutils literal"><span class="pre">Text</span> <span class="pre">&gt;</span> <span class="pre">Locate</span> <span class="pre">Pattern</span></code> menu, the system compiles the graph into a
+special debug-mode format. To obtain a regular <code class="docutils literal"><span class="pre">fst2</span></code> file, compile
+the graph again, either with the <code class="docutils literal"><span class="pre">FSGraph</span></code> menu, or with a command
+line, or by unchecking the debug mode before applying the graph with
+<code class="docutils literal"><span class="pre">Text</span> <span class="pre">&gt;</span> <span class="pre">Locate</span> <span class="pre">Pattern</span></code> menu.</p>
+</div>
+<div class="section" id="repeat-until-fix-point-behaviour">
+<h3><em>Repeat until fix point</em> behaviour<a class="headerlink" href="#repeat-until-fix-point-behaviour" title="Permalink to this headline">¶</a></h3>
+<p>CasSys may apply a transducer on a text while concordances are found.
+This behavior is selected if the checkbox <strong>Until fix point</strong> is checked
+or not for each graph of a cascade. This section presents the behaviour
+of this option. For instance, consider the very simple graph [fig:AB-&gt;A]
+which recognizes <em>AB</em> and replaces it with <em>A</em>.</p>
+<div class="figure" id="id8">
+<a class="reference internal image-reference" href="resources/img/AB_to_A.png"><img alt="Transducer which modifies BA in A" src="resources/img/AB_to_A.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Transducer which modifies BA in A</span></p>
+</div>
+<div class="line-block">
+<div class="line">Consider the text <em>B B B A A A</em>. Applying the graph [fig:AB-&gt;A] onto
+this text with the option <em>Until fix point</em> will have the following
+result :</div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="19%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">initial text</th>
+<th class="head">B</th>
+<th class="head">B</th>
+<th class="head">B</th>
+<th class="head">A</th>
+<th class="head">A</th>
+<th class="head">A</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>iteration 1</td>
+<td>&nbsp;</td>
+<td>B</td>
+<td>B</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+<td>1 match</td>
+</tr>
+<tr class="row-odd"><td>iteration 2</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>B</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+<td>1 match</td>
+</tr>
+<tr class="row-even"><td>iteration 3</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+<td>1 match</td>
+</tr>
+<tr class="row-odd"><td>iteration 4</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+<td>0 match</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line">During the three first iterations, a match is found, so the graph
+re-applied on the resulting text. At the fourth iteration, no match is
+found, the graph is not re-applied.</div>
+</div>
+<p>Be aware of the risk of livelock when applying this option. For example,
+a transducer which recognizes <em>A</em> and replaces it with <em>A</em> would be
+caught in a livelock if applied on the example text.</p>
+</div>
+<div class="section" id="the-unitex-rules-used-for-the-cascade">
+<h3>The Unitex rules used for the cascade<a class="headerlink" href="#the-unitex-rules-used-for-the-cascade" title="Permalink to this headline">¶</a></h3>
+<p>In the cascade, each successive graph is applied following the unitex
+rules:</p>
+<ul class="simple">
+<li><em>Insertion to the left of the matched patterns</em>: in the merge mode,
+the ouput is inserted to the left of the recognized sequence.</li>
+<li><em>Priority of the leftmost match</em>: during the application of a local
+grammar, overlapping occurrences are all indexed. During the
+construction of a concordance, all these overlapping occurrences are
+presented but CasSys modifies the text with each graph of the cascade
+: so it is necessary to choose among these occurrences the one that
+will be taken into account. To do that, the priority is given to the
+leftmost sequence.</li>
+<li><em>Priority of the longest match</em>: in CasSys, during the application of
+a graph, it is the longest sequence that will be kept.</li>
+<li><em>Search limitation to a certain number of occurrences</em>: in CasSys,
+this search is not limited. Such a limitation has no sense in the use
+of CasSys, we always index all occurrences in the text.</li>
+</ul>
+</div>
+<div class="section" id="a-special-way-to-mark-up-patterns-with-cassys">
+<h3>A special way to mark up patterns with CasSys<a class="headerlink" href="#a-special-way-to-mark-up-patterns-with-cassys" title="Permalink to this headline">¶</a></h3>
+<div class="line-block">
+<div class="line">The output of the transducers can be used to insert special
+information into texts, particularly to mark up the recognized
+patterns: it is possible to use all the marks you want such as ( ),
+[], “”, etc. or xml tags such as &lt;xxx&gt; &lt;/xxx&gt;.</div>
+<div class="line">CasSys also offers <em>a special way to mark up patterns</em>, that offers
+some advantages and that we present here.</div>
+</div>
+<p>Unitex splits texts into different sorts of tokens like the sentence
+delimiter S; the stop marker STOP, contiguous sequences of letters,
+lexical tags aujourd’hui,.ADV, etc. The lexical tag is used by CasSys in
+a special way. The lexical tag (between curly brackets) is normally used
+to avoid ambiguities (see section [tokenization] and
+section[section-displaying-sentence-automata]). For example, if the
+token <em>{curly brackets,.N}</em> is in a text, neither “curly” nor “brackets”
+will be recognized but the whole sequence “curly brackets” or the tag
+&lt;N&gt;. A lexical tag can contain complex lexical information. For example,
+the codes <em>N+Pers+Hum:fs</em> tags a token which is a noun, a person, a
+human and feminine singular. In a graph, you can look for a lexical
+token using the lexical codes it contains: for example, you can write
+lexical masks such as <em>&lt;N&gt;</em> to search a noun, <em>&lt;Pers+Hum&gt;</em> for a human
+person or simply <em>&lt;Pers&gt;</em> (lexical masks are explained in section
+[section-special-symbols]).</p>
+<p>In CasSys, we use the lexical tag in a special way. A cascade of
+transducers is interesting to locate the island of certainty first. It
+is necessary for such a system to avoid that previously recognized
+patterns be ambiguous with patterns recognized by the following graphs.
+To do that, you can tag the patterns of your graphs surrounding them by
+<em>{</em> and <em>,.tag1+tag2+tagn}</em> in the outputs of the graph (where <em>tag1,
+tag2, etc.</em> are your own tags).</p>
+<p>To explain this behavior, here is a very simple example. The text on
+which we work is :</p>
+<p><em>bac a b c cc a b b ba ab a b bca a b c abaabc</em>.</p>
+<p>The graph grfAB ([fig13-05]) recognizes the sequence <em>a b</em> in the text
+and tags this sequence with the lexical tag <em>{a b,.AB}</em>. The results are
+merged with the text adding the outputs <em>{</em> and <em>,.AB}</em> around <em>“a b”</em>
+sequences.</p>
+<div class="figure" id="id9">
+<a class="reference internal image-reference" href="resources/img/fig13-05.png"><img alt="The graph grfAB" src="resources/img/fig13-05.png" style="width: 6.00000cm;" /></a>
+<p class="caption"><span class="caption-text">The graph grfAB</span></p>
+</div>
+<p>The resulting text is : <em>bac {a b,.AB} c cc {a b,.AB} b ba ab {a b,.AB}
+bca {a b,.AB} c abaabc</em>.</p>
+<p>Now the pattern <em>a b</em> is tagged <em>AB</em>. A part (a or b alone) of this
+pattern cannot be recognized because of the tagging of <em>a b</em>.</p>
+<p>After that graph, the cascade applies another graph named tagAB
+([fig13-06]). iI has two paths:</p>
+<ul class="simple">
+<li>the first one to recognize the lexical mask <em>&lt;AB&gt;</em> followed by <em>c</em>
+and tags this sequence as <em>ABC</em>.</li>
+<li>the second one to recognize and tag <em>bca</em> preceeded by <em>&lt;AB&gt;</em>. Only
+<em>bca</em> is tagged as <em>BCA</em>.</li>
+</ul>
+<div class="figure" id="id10">
+<a class="reference internal image-reference" href="resources/img/fig13-06.png"><img alt="The graph tagAB" src="resources/img/fig13-06.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">The graph tagAB</span></p>
+</div>
+<p>The resulting text is : <em>bac {{a b,.AB} c,.ABC} cc {a b,.AB} b ba ab {a
+b,.AB} {bca,.BCA} {{a b,.AB} c,.ABC} abaabc</em>.</p>
+<p>The concordance displayed by Unitex should be like in ([fig13-07]). //</p>
+<p>Note that for programming reasons (ambiguities between characters in the
+curly brackets of the lexical tags), we have no option but to place
+backslashes <span class="math">\(\backslash\)</span> before all ambiguous characters for
+Unitex ; that is why these symbols are protected with <span class="math">\(\backslash\)</span>
+in the concordance to avoid problems in Unitex.</p>
+<div class="figure" id="id11">
+<a class="reference internal image-reference" href="resources/img/fig13-07.png"><img alt="The concordance resulting from this cascade" src="resources/img/fig13-07.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">The concordance resulting from this cascade</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="generic-graphs">
+<h2>Generic Graphs<a class="headerlink" href="#generic-graphs" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes, we are able to locate elements because of their context, but
+if these elements appear without context, then they cannot be
+identified. In order to locate such occurences, CasSys proposes to
+utilise generic graphs. These graphs contain empty boxes that are filled
+automatically by the program before being applied to the text. These
+generic graphs work only with the usage of curly brackets, because the
+program consults the token list of the text to be analysed by the future
+graph.</p>
+<div class="section" id="identifying-a-generic-graph">
+<h3>Identifying a Generic Graph<a class="headerlink" href="#identifying-a-generic-graph" title="Permalink to this headline">¶</a></h3>
+<p>CasSys recognises a graph as generic graph if the column <em>Generic</em> is
+checked (figure [fig12-3]).</p>
+<div class="figure" id="id12">
+<a class="reference internal image-reference" href="resources/img/fig12-3.png"><img alt="Generic Graph" src="resources/img/fig12-3.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Generic Graph</span></p>
+</div>
+</div>
+<div class="section" id="structure-of-a-generic-graph">
+<h3>Structure of a Generic Graph<a class="headerlink" href="#structure-of-a-generic-graph" title="Permalink to this headline">¶</a></h3>
+<p>A path in a generic graph must begin with a box containing $G and an
+opening curly bracket as output. It is this box which is updated by
+CasSys. The second box has as output the element to be searched. In the
+figure [fig12-3-01], CasSys places in the box all the entries of
+category <em>x</em> extracted from the token list (tok_by_alph.txt) of the
+text. For example, CasSys extracts <em>A</em> from the line <em>{A,.x}</em> of the
+token list of the text as shown in the figure [fig12-3-01a].
+Additionally, a negative right context (section&nbsp;[section-contexts] is
+added to prevent the element from being annotated twice.</p>
+<div class="figure" id="id13">
+<a class="reference internal image-reference" href="resources/img/fig12-3-01.png"><img alt="Generic Graph" src="resources/img/fig12-3-01.png" style="width: 5.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Generic Graph</span></p>
+</div>
+<div class="figure" id="id14">
+<a class="reference internal image-reference" href="resources/img/fig12-3-01a.png"><img alt="Modified Generic Graph" src="resources/img/fig12-3-01a.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Modified Generic Graph</span></p>
+</div>
+<p>In the case of a token list entry <em>{{A,.y} {B,.z},.x}</em> the graph of the
+figure [fig12-3-01] places in the box <em>A B</em> as displayed in the figure
+[fig12-3-02].</p>
+<div class="figure" id="id15">
+<a class="reference internal image-reference" href="resources/img/fig12-3-02.png"><img alt="Modified Generic Graph" src="resources/img/fig12-3-02.png" style="width: 8.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Modified Generic Graph</span></p>
+</div>
+<p>Some restrictions are possible by putting in the second box a category,
+such as <em>y</em> in the figure [fig12-3-03]; as a result only <em>A</em> is placed
+in the box as in the figure [fig12-3-04].</p>
+<div class="figure" id="id16">
+<a class="reference internal image-reference" href="resources/img/fig12-3-03.png"><img alt="Generic Graph with a restriction" src="resources/img/fig12-3-03.png" style="width: 5.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Generic Graph with a restriction</span></p>
+</div>
+<div class="figure" id="id17">
+<a class="reference internal image-reference" href="resources/img/fig12-3-04.png"><img alt="Modified Generic Graph" src="resources/img/fig12-3-04.png" style="width: 8.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Modified Generic Graph</span></p>
+</div>
+<p>On the other hand, the negation of a category, for example <em>~y</em> in the
+figure [fig12-3-05] will put <em>B</em> in this box (figure [fig12-3-06]).</p>
+<div class="figure" id="id18">
+<a class="reference internal image-reference" href="resources/img/fig12-3-05.png"><img alt="Generic Graph with a negation" src="resources/img/fig12-3-05.png" style="width: 5.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Generic Graph with a negation</span></p>
+</div>
+<div class="figure" id="id19">
+<a class="reference internal image-reference" href="resources/img/fig12-3-06.png"><img alt="Modified Generic Graph" src="resources/img/fig12-3-06.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Modified Generic Graph</span></p>
+</div>
+<p>If the output of the graph needs to be complemented with certain
+information that need not be searched, a third box can be added as in
+the figure [fig12-3-07].</p>
+<div class="figure" id="id20">
+<a class="reference internal image-reference" href="resources/img/fig12-3-07.png"><img alt="Generic Graph with Additional Information" src="resources/img/fig12-3-07.png" style="width: 6.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Generic Graph with Additional Information</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="the-results-of-a-cascade">
+<h2>The results of a cascade<a class="headerlink" href="#the-results-of-a-cascade" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="displaying-the-concordance-of-a-cascade">
+<h3>Displaying the concordance of a cascade<a class="headerlink" href="#displaying-the-concordance-of-a-cascade" title="Permalink to this headline">¶</a></h3>
+<p>The results of a cascade are stored in an index file (<em>concord.ind</em>),
+just as for the <em>“Locate pattern”</em> operation. This index file contains
+all the sequences recognized using the restrictions imposed by the rules
+of unitex.</p>
+<p>In order to display a concordance, you have to access the frame “<em>Text /
+Located sequences...</em>” and click on the “<em>Build concordance</em>” button (as
+described in Chapter [chap-advanced-grammars]). The figure [fig13-04]
+presents a sample of concordance resulting of a cascade recognizing
+named entities.</p>
+<div class="figure" id="id21">
+<a class="reference internal image-reference" href="resources/img/fig13-04.png"><img alt="Concordance of CasSys under Unitex" src="resources/img/fig13-04.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Concordance of CasSys under Unitex</span></p>
+</div>
+</div>
+<div class="section" id="the-different-resulting-files-of-a-cascade">
+<h3>The different resulting files of a cascade<a class="headerlink" href="#the-different-resulting-files-of-a-cascade" title="Permalink to this headline">¶</a></h3>
+<p>CasSys keeps all the text created by each graph of the cascade. This can
+be useful to test, debug or check the different results of the cascade.
+It is possible to correct the errors on the order of the graphs or to
+find the errors in the writing of the graphs. A good idea is to write
+the name of the graph recognizing a pattern in the output of this graph:
+thanks to that, you can see in the final results the name of the graph
+by which a pattern is recognized.</p>
+<p>If you apply a cascade on the text named <code class="docutils literal"><span class="pre">example.txt</span></code>, two
+directories are created: <code class="docutils literal"><span class="pre">example_snt</span></code> and <code class="docutils literal"><span class="pre">example_csc</span></code>. The files
+produced in <code class="docutils literal"><span class="pre">example_csc</span></code> are the results obtained by each graphs.
+These files are named according to the number of the graph which
+produced them. For example, if the third graph of a cascade finds at
+least a pattern, the results of this graph will be stored in the
+directory <code class="docutils literal"><span class="pre">example_3_0_snt</span></code> and the file named <code class="docutils literal"><span class="pre">example_3_0.snt</span></code>
+will contain the modified text.</p>
+</div>
+<div class="section" id="an-xml-like-output-text-for-lexical-tags">
+<h3>An xml-like output text for lexical tags<a class="headerlink" href="#an-xml-like-output-text-for-lexical-tags" title="Permalink to this headline">¶</a></h3>
+<div class="line-block">
+<div class="line">The output is provided in two forms: the direct output of the
+transducers, and an XML-like output with the lexical tags transformed
+into XML. This change is done in order to provide the end user with
+more easily manageable text. From this format, it is possible to use
+one of the numerous tools to process xml and it is easier to apply
+further transducers to get the desired output.</div>
+<div class="line">The direct output of the transducers is in the <code class="docutils literal"><span class="pre">example_csc.raw</span></code>
+file. The xml-ized ouput text is copied in the <code class="docutils literal"><span class="pre">example_csc.txt</span></code>
+file.</div>
+</div>
+<div class="line-block">
+<div class="line">More precisely, lexical tags have the following format :</div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>`` {forme.lemme,code1+code2:flex1:flex2}``</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line">The corresponding xml-like output of CasSys has the following format :</div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&lt;csc&gt;</span></code></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>&nbsp;</td>
+<td><code class="docutils literal"><span class="pre">&lt;form&gt;forme&lt;/form&gt;</span></code></td>
+</tr>
+<tr class="row-odd"><td>&nbsp;</td>
+<td><code class="docutils literal"><span class="pre">&lt;lem&gt;lemme&lt;/lem&gt;</span></code></td>
+</tr>
+<tr class="row-even"><td>&nbsp;</td>
+<td><code class="docutils literal"><span class="pre">&lt;code&gt;code1&lt;/code&gt;</span></code></td>
+</tr>
+<tr class="row-odd"><td>&nbsp;</td>
+<td><code class="docutils literal"><span class="pre">&lt;code&gt;code2&lt;/code&gt;</span></code></td>
+</tr>
+<tr class="row-even"><td>&nbsp;</td>
+<td><code class="docutils literal"><span class="pre">&lt;inflect&gt;flex1&lt;/inflect&gt;</span></code></td>
+</tr>
+<tr class="row-odd"><td>&nbsp;</td>
+<td><code class="docutils literal"><span class="pre">&lt;inflect&gt;flex2&lt;/inflect&gt;</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&lt;/csc&gt;</span></code></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>The DTD of our xml format is:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&lt;?xml</span> <span class="pre">version=1.0</span> <span class="pre">encoding=ISO-8859-1?&gt;</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&lt;!ELEMENT</span> <span class="pre">text</span> <span class="pre">(#PCDATA|csc)*&gt;</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&lt;!ELEMENT</span> <span class="pre">csc</span> <span class="pre">(form,lem?,code*,inflect*)</span> <span class="pre">&gt;</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&lt;!ELEMENT</span> <span class="pre">form</span> <span class="pre">(#PCDATA|csc)*&gt;</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&lt;!ELEMENT</span> <span class="pre">lem</span> <span class="pre">(#PCDATA)&gt;</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&lt;!ELEMENT</span> <span class="pre">code</span> <span class="pre">(#PCDATA)&gt;</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&lt;!ELEMENT</span> <span class="pre">inflect</span> <span class="pre">(#PCDATA)&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[1]</a></td><td>“Feder-Région Centre Entités nommées et nommables” managed by Denis
+Maurel, LI, Tours, France, integration carried out by Nathalie
+Friburger and David Nott</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-en.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Cascade of Transducers</a><ul>
+<li><a class="reference internal" href="#applying-a-cascade-of-transducers-with-cassys">Applying a cascade of transducers with CasSys</a><ul>
+<li><a class="reference internal" href="#creating-the-list-of-transducers">Creating the list of transducers</a></li>
+<li><a class="reference internal" href="#editing-the-list-of-transducers">Editing the list of transducers</a></li>
+<li><a class="reference internal" href="#applying-a-cascade">Applying a cascade</a></li>
+<li><a class="reference internal" href="#sharing-a-cascade-transducer-list-file">Sharing a cascade transducer list file</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#details-on-the-behavior-of-cassys">Details on the behavior of CasSys</a><ul>
+<li><a class="reference internal" href="#type-of-graphs-used">Type of graphs used</a></li>
+<li><a class="reference internal" href="#repeat-until-fix-point-behaviour"><em>Repeat until fix point</em> behaviour</a></li>
+<li><a class="reference internal" href="#the-unitex-rules-used-for-the-cascade">The Unitex rules used for the cascade</a></li>
+<li><a class="reference internal" href="#a-special-way-to-mark-up-patterns-with-cassys">A special way to mark up patterns with CasSys</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#generic-graphs">Generic Graphs</a><ul>
+<li><a class="reference internal" href="#identifying-a-generic-graph">Identifying a Generic Graph</a></li>
+<li><a class="reference internal" href="#structure-of-a-generic-graph">Structure of a Generic Graph</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-results-of-a-cascade">The results of a cascade</a><ul>
+<li><a class="reference internal" href="#displaying-the-concordance-of-a-cascade">Displaying the concordance of a cascade</a></li>
+<li><a class="reference internal" href="#the-different-resulting-files-of-a-cascade">The different resulting files of a cascade</a></li>
+<li><a class="reference internal" href="#an-xml-like-output-text-for-lexical-tags">An xml-like output text for lexical tags</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-en.html">Documentation overview</a><ul>
+      <li>Previous: <a href="11-multiflex_EN_utf8.html" title="previous chapter">Compound word inflection</a></li>
+      <li>Next: <a href="13-programs_EN_utf8.html" title="next chapter">Use of external programs</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/12-cassys_EN_utf8.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/12-cassys_EN_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

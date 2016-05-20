@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="EN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lexicon-grammar &mdash; Unitex-en 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-en 1.0.1 documentation" href="Unitex-en.html" />
+    <link rel="next" title="Text alignment" href="10-alignment_EN_utf8.html" />
+    <link rel="prev" title="Sequence Automaton" href="08-sequence-automaton_EN_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="lexicon-grammar">
+<h1>Lexicon-grammar<a class="headerlink" href="#lexicon-grammar" title="Permalink to this headline">¶</a></h1>
+<p>The tables of lexicon-grammar are a compact way for representing
+syntactical properties of the elements of a language. It is possible to
+automatically construct local grammars from such tables, due to a
+mechanism of parameterized graphs.</p>
+<p>In the first part of the chapter the formalism of tables is presented.
+The second part describes parameterized graphs and a mechanism of
+automatically lexicalizing them with lexicon-grammar tables.</p>
+<div class="section" id="lexicon-grammar-tables">
+<h2>Lexicon-grammar tables<a class="headerlink" href="#lexicon-grammar-tables" title="Permalink to this headline">¶</a></h2>
+<p>Lexicon-grammar is a methodology developed by Maurice Gross and the LADL
+team (<a href="#id1"><span class="problematic" id="id2">:raw-latex:`\cite{L}`</span></a>, <a href="#id3"><span class="problematic" id="id4">:raw-latex:`\cite{BGL}`</span></a>,
+<a href="#id5"><span class="problematic" id="id6">:raw-latex:`\cite{methodes-en-syntaxe}`</span></a>, <a href="#id7"><span class="problematic" id="id8">:raw-latex:`\cite{GL}`</span></a>,
+<a href="#id9"><span class="problematic" id="id10">:raw-latex:`\cite{gross1994}`</span></a>, <a href="#id11"><span class="problematic" id="id12">:raw-latex:`\cite{gross1994b}`</span></a>,
+<a href="#id13"><span class="problematic" id="id14">:raw-latex:`\cite{gross1991}`</span></a>, <a href="#id15"><span class="problematic" id="id16">:raw-latex:`\cite{gross1986}`</span></a>,
+<a href="#id17"><span class="problematic" id="id18">:raw-latex:`\cite{gross1984}`</span></a>, <a href="#id19"><span class="problematic" id="id20">:raw-latex:`\cite{gross1984b}`</span></a>,
+<a href="#id21"><span class="problematic" id="id22">:raw-latex:`\cite{gross1983}`</span></a>, <a href="#id23"><span class="problematic" id="id24">:raw-latex:`\cite{gross1982}`</span></a>,
+<a href="#id25"><span class="problematic" id="id26">:raw-latex:`\cite{gross1978}`</span></a>, <a href="#id27"><span class="problematic" id="id28">:raw-latex:`\cite{leclere2005}`</span></a>,
+<a href="#id29"><span class="problematic" id="id30">:raw-latex:`\cite{salkoff2004}`</span></a>) based on the following principle: every
+verb has an almost unique set of syntactical properties. Due to this
+fact, these properties need to be systematically described, since it is
+impossible to predict the exact behavior of a verb. These descriptions
+are represented by matrices where rows correspond to verbs and columns
+to syntactical properties. The considered properties are formal
+properties such as the number and nature of allowed complements of the
+verb and the different transformations the verb can undergo
+(passivization, nominalisation, extraposition, etc.). The matrices, or
+tables, are mostly binary: a <code class="docutils literal"><span class="pre">+</span></code> sign occurs at the intersection of a
+row and a column of a property if the verb has that property, a <code class="docutils literal"><span class="pre">-</span></code>
+sign if not. More information in <a class="reference external" href="http://infolingu.univ-mlv.fr">http://infolingu.univ-mlv.fr</a>, including
+some lexicon-grammar tables that you can freely download.</p>
+<p>This type of description has also been applied to adjectives
+(<a href="#id31"><span class="problematic" id="id32">:raw-latex:`\cite{these-annie}`</span></a>), predicative nouns
+(<a href="#id33"><span class="problematic" id="id34">:raw-latex:`\cite{les-nominalisations}`</span></a>,
+<a href="#id35"><span class="problematic" id="id36">:raw-latex:`\cite{les-predicats-nominaux}`</span></a>,
+<a href="#id37"><span class="problematic" id="id38">:raw-latex:`\cite{giry1978}`</span></a>, <a href="#id39"><span class="problematic" id="id40">:raw-latex:`\cite{gross1976}`</span></a>,
+<a href="#id41"><span class="problematic" id="id42">:raw-latex:`\cite{ranchhod2001}`</span></a>), adverbs
+(<a href="#id43"><span class="problematic" id="id44">:raw-latex:`\cite{syntaxe-de-ladverbe}`</span></a>,
+<a href="#id45"><span class="problematic" id="id46">:raw-latex:`\cite{grammaire-des-adverbes}`</span></a>), as well as frozen
+expressions, in many languages
+(<a href="#id47"><span class="problematic" id="id48">:raw-latex:`\cite{lexique-grammaire-allemand2}`</span></a>,
+<a href="#id49"><span class="problematic" id="id50">:raw-latex:`\cite{lexique-grammaire-italien2}`</span></a>,
+<a href="#id51"><span class="problematic" id="id52">:raw-latex:`\cite{lexique-grammaire-italien}`</span></a>,
+<a href="#id53"><span class="problematic" id="id54">:raw-latex:`\cite{lexique-grammaire-coreen2}`</span></a>,
+<a href="#id55"><span class="problematic" id="id56">:raw-latex:`\cite{lexique-grammaire-coreen}`</span></a>,
+<a href="#id57"><span class="problematic" id="id58">:raw-latex:`\cite{lexique-grammaire-malgache}`</span></a>,
+<a href="#id59"><span class="problematic" id="id60">:raw-latex:`\cite{lexique-grammaire-espagnol}`</span></a>,
+<a href="#id61"><span class="problematic" id="id62">:raw-latex:`\cite{lexique-grammaire-allemand}`</span></a>,
+<a href="#id63"><span class="problematic" id="id64">:raw-latex:`\cite{lexique-grammaire-hongrois}`</span></a>,
+<a href="#id65"><span class="problematic" id="id66">:raw-latex:`\cite{ranchhod1996}`</span></a>, <a href="#id67"><span class="problematic" id="id68">:raw-latex:`\cite{ranchhod1991}`</span></a>,
+<a href="#id69"><span class="problematic" id="id70">:raw-latex:`\cite{gross1986b}`</span></a>).</p>
+<p>Figure [fig-table-32NM] shows an example of a lexicon-grammar table. The
+table contains verbs that, among other definitional properties, do not
+admit passivization.</p>
+<div class="figure" id="id73">
+<a class="reference internal image-reference" href="resources/img/fig8-1.png"><img alt="Lexicon-grammar Table 32NM[fig-table-32NM]" src="resources/img/fig8-1.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Lexicon-grammar Table 32NM[fig-table-32NM]</span></p>
+</div>
+</div>
+<div class="section" id="conversion-of-a-table-into-graphs">
+<h2>Conversion of a table into graphs<a class="headerlink" href="#conversion-of-a-table-into-graphs" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="principle-of-parameterized-graphs">
+<h3>Principle of parameterized graphs<a class="headerlink" href="#principle-of-parameterized-graphs" title="Permalink to this headline">¶</a></h3>
+<p>The conversion of a table into graphs is carried out by a mechanism
+involving parameterized graphs. The principle is the following: a graph
+that describes the possible constructions is constructed manually. That
+graphs refers to the columns of the table in the form of parameters or
+variables. Afterwards, for each line of the table a copy of this graph
+is constructed where the variables are replaced with the contents of the
+cell at the intersection of line and the column that corresponds to the
+variable. If a cell of the table contains the <code class="docutils literal"><span class="pre">+</span></code> sign, the
+corresponding variable is replaced by <code class="docutils literal"><span class="pre">&lt;E&gt;</span></code>. If the cell contains the
+<code class="docutils literal"><span class="pre">-</span></code> sign, the box containing the corresponding variable is removed,
+interrupting the paths through that box. In all other cases the variable
+is replaced by the contents of the cell.</p>
+</div>
+<div class="section" id="format-of-the-table">
+<h3>Format of the table<a class="headerlink" href="#format-of-the-table" title="Permalink to this headline">¶</a></h3>
+<p>The lexicon-grammar tables are usually encoded with the aid of a
+spreadsheet like OpenOffice.org Calc (<a href="#id71"><span class="problematic" id="id72">:raw-latex:`\cite{OpenOffice}`</span></a>).
+To be usable with Unitex, the tables have to be encoded in Unicode text
+format in accordance with the following convention: the columns need to
+be separated by a tab and the lines by a newline.</p>
+<p>In order to convert a table with OpenOffice.org Calc, save it in text
+format (<code class="docutils literal"><span class="pre">.csv</span></code> extension). You can then parameterize the output format
+with a window as shown on Figure [fig-csv-export]. Choose “Unicode”,
+select tabulation as column separator and do not set any text delimiter.</p>
+<div class="figure" id="id74">
+<a class="reference internal image-reference" href="resources/img/fig8-2.png"><img alt="Saving a table with OpenOffice.org Calc[fig-csv-export]" src="resources/img/fig8-2.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Saving a table with OpenOffice.org Calc[fig-csv-export]</span></p>
+</div>
+<p>During the generation of the graphs, Unitex skips the first line,
+considering that it contains the headings of the columns. It is
+therefore necessary to ensure that the headings of the columns occupy
+exactly one line. If there is no line for the heading, the first line of
+a table will be ignored anyway, and if there are multiple heading lines,
+from the second line on they will be interpreted as lines of the table.</p>
+</div>
+<div class="section" id="parameterized-graphs">
+<h3>Parameterized graphs<a class="headerlink" href="#parameterized-graphs" title="Permalink to this headline">¶</a></h3>
+<p>Parameterized graphs are graphs with variables referring to the columns
+of a lexicon-grammar table. This mechanism is usually used with
+syntactic graphs, but nothing prevents the construction of parameterized
+graphs for inflection, preprocessing, or for normalization.</p>
+<p>Variables that refer to columns are formed with the <code class="docutils literal"><span class="pre">&#64;</span></code> symbol
+followed by the name of the column in capital letters (the columns are
+named starting with <code class="docutils literal"><span class="pre">A</span></code>).</p>
+<p>Example: <code class="docutils literal"><span class="pre">&#64;C</span></code> refers to the third column of the table.</p>
+<p>Whenever a variable takes the value of a <code class="docutils literal"><span class="pre">+</span></code> or <code class="docutils literal"><span class="pre">-</span></code> sign, the <code class="docutils literal"><span class="pre">-</span></code>
+sign corresponds to the removal of a path through that variable. It is
+possible to swap the meaning of these signs by typing an exclamation
+mark in front of the <code class="docutils literal"><span class="pre">&#64;</span></code> symbol. In that case, the path is removed
+when there is a <code class="docutils literal"><span class="pre">+</span></code> sign and kept where there is a <code class="docutils literal"><span class="pre">-</span></code> one. In all
+other cases, the variable is replaced by the content of the table cell.</p>
+<p>The special variable <code class="docutils literal"><span class="pre">&#64;%</span></code> is replaced by the number of the line in the
+table. The fact that its value is different for each line allows for its
+use as a simple characterization of a line. That variable is not
+affected by an exclamation point to the left of it.</p>
+<p>Figure [fig-reference-graph] shows an example of a parameterized graph
+designed to be applied to the lexicon-grammar table 31H presented in
+figure [fig-table-31H].</p>
+<div class="figure" id="id75">
+<a class="reference internal image-reference" href="resources/img/fig8-3.png"><img alt="Example of parameterized graph[fig-reference-graph]" src="resources/img/fig8-3.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Example of parameterized graph[fig-reference-graph]</span></p>
+</div>
+<div class="figure" id="id76">
+<a class="reference internal image-reference" href="resources/img/fig8-4.png"><img alt="Lexicon-grammar table 31H[fig-table-31H]" src="resources/img/fig8-4.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Lexicon-grammar table 31H[fig-table-31H]</span></p>
+</div>
+</div>
+<div class="section" id="automatic-generation-of-graphs">
+<h3>Automatic generation of graphs<a class="headerlink" href="#automatic-generation-of-graphs" title="Permalink to this headline">¶</a></h3>
+<p>In order to be able to generate graphs from a parameterized graph and a
+table, first of all the table must be opened by clicking on “Open...” in
+the “Lexicon-Grammar” menu (see figure [fig-lexicon-grammar-menu]). The
+table must be in Unicode text format.</p>
+<div class="figure" id="id77">
+<a class="reference internal image-reference" href="resources/img/fig8-5.png"><img alt="Menu “Lexicon-Grammar”[fig-lexicon-grammar-menu]" src="resources/img/fig8-5.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Menu “Lexicon-Grammar”[fig-lexicon-grammar-menu]</span></p>
+</div>
+<p>The selected table is then displayed in a window (see figure figure
+[fig-table-display]). If it does not appear on your screen, it may be
+hidden by other Unitex windows.</p>
+<div class="figure" id="id78">
+<a class="reference internal image-reference" href="resources/img/fig8-6.png"><img alt="Displaying a table[fig-table-display]" src="resources/img/fig8-6.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Displaying a table[fig-table-display]</span></p>
+</div>
+<p>To automatically generate graphs from a parameterized graph, click on
+“Compile to GRF...” in the “Lexicon-Grammar” menu. The window in figure
+[fig-configuration-graph-generation] shows this.</p>
+<p>In the “Reference Graph (in GRF format)” frame, indicate the name of the
+parameterized graph to be used. In the “Resulting GRF grammar” frame,
+indicate the name of the main graph that will be generated. This main
+graph is a graph that invokes all the graphs that are going to be
+generated. When launching a search in a text with that graph, all the
+generated graphs are simultaneously applied.</p>
+<p>The “Name of produced subgraphs” frame is used to set the name of each
+graph that will be generated. Enter a name containing <code class="docutils literal"><span class="pre">&#64;%</span></code>, because
+for each line of the table, <code class="docutils literal"><span class="pre">&#64;%</span></code> will be replaced the line number,
+which guarantees that each graph name will be unique. For example, if
+the main graph is called “<code class="docutils literal"><span class="pre">TestGraph.grf</span></code>” and if subgraphs are called
+“<code class="docutils literal"><span class="pre">TestGraph_&#64;%.grf</span></code>”, the graph generated from the 16th line of the
+line will be named “<code class="docutils literal"><span class="pre">TestGraph_0016.grf</span></code>”.</p>
+<p>Figures [fig-archaiser] and [fig-badauder] show two graphs generated by
+applying the parameterized graph of figure [fig-reference-graph] at
+table 31H.</p>
+<p>Figure [fig-main-graph] shows the resulting main graph.</p>
+<div class="figure" id="id79">
+<a class="reference internal image-reference" href="resources/img/fig8-8.png"><img alt="Graph generated for the verb ``archaïser``\ [fig-archaiser]" src="resources/img/fig8-8.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graph generated for the verb <code class="docutils literal"><span class="pre">archaïser</span></code>[fig-archaiser]</span></p>
+</div>
+<div class="figure" id="id80">
+<a class="reference internal image-reference" href="resources/img/fig8-9.png"><img alt="Graph generated for the verb ``badauder``\ [fig-badauder]" src="resources/img/fig8-9.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graph generated for the verb <code class="docutils literal"><span class="pre">badauder</span></code>[fig-badauder]</span></p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-en.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lexicon-grammar</a><ul>
+<li><a class="reference internal" href="#lexicon-grammar-tables">Lexicon-grammar tables</a></li>
+<li><a class="reference internal" href="#conversion-of-a-table-into-graphs">Conversion of a table into graphs</a><ul>
+<li><a class="reference internal" href="#principle-of-parameterized-graphs">Principle of parameterized graphs</a></li>
+<li><a class="reference internal" href="#format-of-the-table">Format of the table</a></li>
+<li><a class="reference internal" href="#parameterized-graphs">Parameterized graphs</a></li>
+<li><a class="reference internal" href="#automatic-generation-of-graphs">Automatic generation of graphs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-en.html">Documentation overview</a><ul>
+      <li>Previous: <a href="08-sequence-automaton_EN_utf8.html" title="previous chapter">Sequence Automaton</a></li>
+      <li>Next: <a href="10-alignment_EN_utf8.html" title="next chapter">Text alignment</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/09-lexicon-grammar_EN_utf8.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/09-lexicon-grammar_EN_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

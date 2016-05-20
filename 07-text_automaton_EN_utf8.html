@@ -1,0 +1,1140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="EN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Text automaton &mdash; Unitex-en 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-en 1.0.1 documentation" href="Unitex-en.html" />
+    <link rel="next" title="Sequence Automaton" href="08-sequence-automaton_EN_utf8.html" />
+    <link rel="prev" title="Local grammars" href="05-grammars_EN_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="text-automaton">
+<h1>Text automaton<a class="headerlink" href="#text-automaton" title="Permalink to this headline">¶</a></h1>
+<p>Natural languages contain much lexical ambiguity. The text automaton is
+an effective and visual way of representing such ambiguity. Each
+sentence of a text is represented by an automaton whose paths represent
+all possible interpretations.</p>
+<p>This chapter presents the concept of text automaton, the details of
+their construction and the operations that can be applied, in particular
+ambiguity removal and linearization. Since version 2.1, it is possible
+to search the text automaton for patterns (see section
+[section-locate-tfst]).</p>
+<div class="section" id="displaying-text-automaton">
+<h2>Displaying text automaton<a class="headerlink" href="#displaying-text-automaton" title="Permalink to this headline">¶</a></h2>
+<p>The text automaton explicit all possible lexical interpretations of the
+words. These different interpretations are the different entries
+presented in the dictionary of the text. Figure&nbsp;[fig-sentence-automaton]
+shows the automaton of the fourth sentence of the text <em>Ivanhoe</em>.</p>
+<div class="figure" id="id13">
+<a class="reference internal image-reference" href="resources/img/fig7-1.png"><img alt="Sentence automaton example[fig-sentence-automaton]" src="resources/img/fig7-1.png" style="width: 15.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Sentence automaton example[fig-sentence-automaton]</span></p>
+</div>
+<p>You can see in Figure&nbsp;[fig-sentence-automaton] that the word <code class="docutils literal"><span class="pre">Here</span></code>
+has three interpretations here (adjective, adverb and noun), <code class="docutils literal"><span class="pre">haunted</span></code>
+two (adjective and verb), etc. All the possible combinations are
+expressed because each interpretation of each word is connected to all
+the interpretations of the following and preceding words.</p>
+<p>In case of an overlap between a compound word and a sequence of simple
+words, the automaton contains a path that is labeled by the compound
+word, parallel to the paths that express the combinations of simple
+words. This is illustrated in Figure&nbsp;[fig-overlap], where the compound
+word <code class="docutils literal"><span class="pre">courts</span> <span class="pre">of</span> <span class="pre">law</span></code> overlaps with a combination of simple words.</p>
+<p>By construction, the text automaton does not contain any loop. One says
+that the text automaton is <em>acyclic</em>.</p>
+<p>NOTE: The term “text automaton” is an abuse of language. In fact, there
+is an automaton for each sentence of the text. Therefore, the
+combination of all these automata corresponds to the automaton of the
+text. This is why we use the term “text automaton” even if this object
+is not manipulated as a global automaton for practical reasons.</p>
+</div>
+<div class="section" id="construction">
+<h2>Construction<a class="headerlink" href="#construction" title="Permalink to this headline">¶</a></h2>
+<p>In order to construct the text automaton, open the text, then click on
+“Construct FST-Text...” in the menu “Text”. One should first split the
+text into sentences and apply dictionaries. If sentence boundary
+detection is not applied, the construction program will arbitrarily
+split the text in sequences of 2000 lexical units instead of
+constructing one automaton per sentence. If no dictionaries are applied,
+the text automaton that you obtain will consist of only one path made up
+of unknown words per sentence.</p>
+<div class="section" id="construction-rules-for-text-automata">
+<h3>Construction rules for text automata<a class="headerlink" href="#construction-rules-for-text-automata" title="Permalink to this headline">¶</a></h3>
+<p>Sentence automata are constructed from text dictionaries. The resulting
+degree of ambiguity is therefore directly linked to the granularity of
+the descriptions of dictionaries. From the sentence automaton in
+figure&nbsp;[fig-ambiguity-of-which], you can conclude that the word
+<code class="docutils literal"><span class="pre">which</span></code> has been coded twice as a determiner in two subcategories of
+the category <code class="docutils literal"><span class="pre">DET</span></code>. This granularity of descriptions will not be of
+any use if you are only interested in the grammatical category of this
+word. It is therefore necessary to adapt the granularity of the
+dictionaries to the intended use.</p>
+<p>For each lexical unit of the sentence, Unitex searches the dictionary of
+the simple words of the text for all possible interpretations.
+Afterwards, all combination of lexical units that have an interpretation
+in the dictionary of the compound words of the text are taken into
+account. All the combinations of these information constitute the
+sentence automaton.</p>
+<p>NOTE: If the text contains lexical labels (<em>e.g.</em>
+<code class="docutils literal"><span class="pre">{out</span> <span class="pre">of</span> <span class="pre">date,.A+z1}</span></code>), these labels are reproduced identically in the
+automaton without trying to decompose them.</p>
+<p>In each box, the first line contains the inflected form found in the
+text, and the second line contains the canonical form if it is
+different. The other information is coded below the box. (cf.
+section&nbsp;[section-displaying-sentence-automata]).</p>
+<p>The spaces that separate the lexical units are not copied into the
+automaton except for the spaces inside compound words.</p>
+<p>The case of lexical units is retained. For example, if the word <code class="docutils literal"><span class="pre">Here</span></code>
+is encountered, the capital letter is preserved (cf.
+figure&nbsp;[fig-sentence-automaton]). This choice allows you to keep this
+information during the transition to the text automaton, which could be
+useful for applications where case is important as for recognition of
+proper names.</p>
+</div>
+<div class="section" id="normalization-of-ambiguous-forms">
+<h3>Normalization of ambiguous forms<a class="headerlink" href="#normalization-of-ambiguous-forms" title="Permalink to this headline">¶</a></h3>
+<p>During the construction of the automaton, it is possible to normalize
+ambiguous forms by applying a normalization grammar. This grammar has to
+be called <code class="docutils literal"><span class="pre">Norm.fst2</span></code> and must be placed in your working directory, in
+the subdirectory <code class="docutils literal"><span class="pre">/Graphs/Normalization</span></code> of the language.
+Normalization grammars for ambiguous forms are described in
+section&nbsp;[section-normalizing-text-automataon].</p>
+<p>If a sequence of the text is recognized by the normalization grammar,
+all the interpretations that are described by the grammar are inserted
+into the text automaton. Figure&nbsp;[fig-example-tfst-normalization-graph]
+shows the part of the grammar used for the ambiguity of the sequence
+<code class="docutils literal"><span class="pre">l'</span></code> in French.</p>
+<p>If this grammar is applied to a French sentence containing the sequence
+<code class="docutils literal"><span class="pre">l'</span></code>, a sentence automaton that is similar to the one in
+figure&nbsp;[fig-tfst-normalization-results] is obtained.</p>
+<p>You can see that the four rules for rewriting the sequence <code class="docutils literal"><span class="pre">l'</span></code> have
+been applied, which has added four labels to the automaton. These labels
+are not concurrent with the two preexisting paths for the sequence
+<code class="docutils literal"><span class="pre">l'</span></code>, because of the “keep best paths” heuristic (see section
+[section-keeping-best-paths]). The normalization at the time of the
+construction of the automaton allows you to add paths to the automaton
+but not to remove ones. Removing paths will be partially done by the
+“keep best paths” heuristic, if enabled. To go further, you will need to
+use the ELAG disambiguation functionality.</p>
+</div>
+<div class="section" id="normalization-of-clitic-pronouns-in-portuguese">
+<h3>Normalization of clitic pronouns in Portuguese<a class="headerlink" href="#normalization-of-clitic-pronouns-in-portuguese" title="Permalink to this headline">¶</a></h3>
+<p>In Portuguese, verbs in the future tense and in the conditional can be
+modified by the insertion of one or two clitic pronouns between the root
+and the suffix of the verb. For example, the sequence <em>dir-me-ão</em> (<em>they
+will tell me</em>), corresponds to the complete verbal form <em>dirão</em>,
+associated with the pronoun <em>me</em>. In order to be able to manipulate this
+underlying form, it is necessary to introduce it into the text automaton
+in parallel to the original form. Thus, the user can search one or the
+other form. The figures&nbsp;[fig-1285-not-normalized]
+and&nbsp;[fig-1285-normalized] show the automaton of a sentence after
+normalization of the clitics.</p>
+<div class="figure" id="id14">
+<a class="reference internal image-reference" href="resources/img/fig7-6.png"><img alt="Text automaton without normalization[fig-1285-not-normalized]" src="resources/img/fig7-6.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Text automaton without normalization[fig-1285-not-normalized]</span></p>
+</div>
+<div class="figure" id="id15">
+<a class="reference internal image-reference" href="resources/img/fig7-7.png"><img alt="Normalized text automaton[fig-1285-normalized]" src="resources/img/fig7-7.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Normalized text automaton[fig-1285-normalized]</span></p>
+</div>
+<p>The <code class="docutils literal"><span class="pre">Reconstrucao</span></code> program allows you to construct a normalization
+grammar for these forms for each text dynamically. The grammar thus
+produced can then be used for normalizing the text automaton. The
+configuration window of the automaton construction suggests an option
+“Build clitic normalization grammar” (cf.
+figure&nbsp;[fig-Txt2Tfst-configuration]). This option automatically starts
+the construction of the normalization grammar, which is then used to
+construct the text automaton, if you have selected the option “Apply the
+Normalization grammar”.</p>
+</div>
+<div class="section" id="keeping-the-best-paths">
+<h3>Keeping the best paths<a class="headerlink" href="#keeping-the-best-paths" title="Permalink to this headline">¶</a></h3>
+<p>An unknown word can perturb the text automaton by overlapping with a
+completely labeled sequence. Thus, in the automaton of
+figure&nbsp;[fig-unknown-word-ambiguity], it can be seen that the adverb</p>
+<p><code class="docutils literal"><span class="pre">aujourd'hui</span></code> overlaps with the unknown word <code class="docutils literal"><span class="pre">aujourd</span></code>, followed by
+an apostrophe and the past participle of the verb <code class="docutils literal"><span class="pre">huir</span></code>.</p>
+<div class="figure" id="id16">
+<a class="reference internal image-reference" href="resources/img/fig7-9.png"><img alt="Automaton of a Thai sentence[fig-thai-sentence-automaton]" src="resources/img/fig7-9.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Automaton of a Thai sentence[fig-thai-sentence-automaton]</span></p>
+</div>
+<p>This phenomenon can also take place in the treatment of certain Asian
+languages like Thai. When words are not delimited, there is no other
+solution than to consider all possible combinations, which causes the
+creation of numerous paths carrying unknown words that are mixed with
+the labeled paths. Figure&nbsp;[fig-thai-sentence-automaton] shows an example
+of such an automaton of a Thai sentence.</p>
+<p>It is possible to suppress parasite paths. You have to select the option
+“Clean Text FST” in the configuration window for the construction of the
+text automaton (cf. figure&nbsp;[fig-Txt2Tfst-configuration]). This option
+indicates to the automaton construction program that it should clean up
+each sentence automaton.</p>
+<p>This cleaning is carried out according to the following principle: if
+several paths are concurrent in the automaton, the program keeps those
+that contain the fewest unlabeled tokens. For instance, the compound
+adverb <code class="docutils literal"><span class="pre">aujourd'hui</span></code> is preferred to the sequence made of <code class="docutils literal"><span class="pre">aujourd</span></code>
+followed by a quote and <code class="docutils literal"><span class="pre">hui</span></code>, because <code class="docutils literal"><span class="pre">aujourd</span></code> and the quote are
+both unlabeled tokens, while the compound adverb path does not contain
+any unknown word. Figure&nbsp;[fig-clean-thai-sentence-automaton] shows the
+automaton of figure&nbsp;[fig-thai-sentence-automaton] after cleaning.</p>
+</div>
+</div>
+<div class="section" id="resolving-lexical-ambiguities-with-elag">
+<h2>Resolving Lexical Ambiguities with ELAG<a class="headerlink" href="#resolving-lexical-ambiguities-with-elag" title="Permalink to this headline">¶</a></h2>
+<p>The ELAG program allows for applying grammars for ambiguity removal to
+the text automaton. This powerful mechanism makes it possible to write
+rules on independently from already existing rules. This chapter briefly
+presents the grammar formalism used by ELAG and describes how the
+program works. For more details, the reader may refer to
+<a href="#id1"><span class="problematic" id="id2">:raw-latex:`\cite{elag-blanc-dister}`</span></a> and <a href="#id3"><span class="problematic" id="id4">:raw-latex:`\cite{ELAG}`</span></a>.</p>
+<div class="section" id="grammars-for-resolving-ambiguities">
+<h3>Grammars For Resolving Ambiguities<a class="headerlink" href="#grammars-for-resolving-ambiguities" title="Permalink to this headline">¶</a></h3>
+<p>The grammars used by ELAG have a special syntax. They consist of two
+parts which we call the <em>if</em> and <em>then</em> parts. The <em>if</em> part of an ELAG
+grammar is divided in two parts which are divided by a box containing
+the <code class="docutils literal"><span class="pre">&lt;!&gt;</span></code> symbol. The <em>then</em> part is divided the same way using the
+<code class="docutils literal"><span class="pre">&lt;=&gt;</span></code> symbol. The meaning of a grammar is the following: In the text
+automaton, if a path of the <em>if</em> part is recognized, then it must also
+be recognized by the <em>then</em> part of the grammar, or it will be withdrawn
+from the text automaton.</p>
+<div class="figure" id="id17">
+<a class="reference internal image-reference" href="resources/img/fig7-12.png"><img alt="ELAG grammar ``elag-tu.grf``\ [fig-elag-tu]" src="resources/img/fig7-12.png" style="width: 13.10000cm;" /></a>
+<p class="caption"><span class="caption-text">ELAG grammar <code class="docutils literal"><span class="pre">elag-tu.grf</span></code>[fig-elag-tu]</span></p>
+</div>
+<p>Figure&nbsp;[fig-elag-tu] shows an example of a grammar. The <em>if</em> part
+recognizes a verb in the 2<span class="math">\(^{nd}\)</span> person singular followed by a
+dash and <code class="docutils literal"><span class="pre">tu</span></code>, either as a pronoun, or as a past participle of the
+verb <code class="docutils literal"><span class="pre">taire</span></code>. The <em>then</em> part imposes that <code class="docutils literal"><span class="pre">tu</span></code> is then regarded as
+a pronoun. Figure&nbsp;[fig-applying-tu-grammar] shows the result of the
+application of this grammar on the sentence “<em>Feras-tu cela
+bientôt:math:`~`?</em>”. One can see in the automaton at the bottom that
+the path corresponding to <code class="docutils literal"><span class="pre">tu</span></code> past participle was eliminated.</p>
+<div class="figure" id="id18">
+<a class="reference internal image-reference" href="resources/img/fig7-14.png"><img alt="Use of the synchronization point[fig-synchronization-point]" src="resources/img/fig7-14.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Use of the synchronization point[fig-synchronization-point]</span></p>
+</div>
+<div class="section" id="synchronization-point">
+<h4>Synchronization point<a class="headerlink" href="#synchronization-point" title="Permalink to this headline">¶</a></h4>
+<p>The <em>if</em> and <em>then</em> parts of an ELAG grammar are divided into two parts
+by <code class="docutils literal"><span class="pre">&lt;!&gt;</span></code> in the <em>if</em> part, and <code class="docutils literal"><span class="pre">&lt;=&gt;</span></code> in the <em>then</em> part. These
+symbols form a <em>synchronization point</em>. This makes it possible to write
+rules in which the <em>if</em> and <em>then</em> constraints are not necessarily
+aligned, as it is the case for example in
+figure&nbsp;[fig-synchronization-point]. This grammar is interpreted in the
+following way: if a dash is found followed by <code class="docutils literal"><span class="pre">il</span></code>, <code class="docutils literal"><span class="pre">elle</span></code> or
+<code class="docutils literal"><span class="pre">on</span></code>, then this dash must be preceded by a verb, possibly followed by
+<code class="docutils literal"><span class="pre">-t</span></code>. So, if one considers the sentence of the figure&nbsp;[fig-est-il]
+beginning with <em>Est-il</em>, one can see that all non-verb interpretations
+of <code class="docutils literal"><span class="pre">Est</span></code> were removed.</p>
+</div>
+</div>
+<div class="section" id="compiling-elag-grammars">
+<h3>Compiling ELAG Grammars<a class="headerlink" href="#compiling-elag-grammars" title="Permalink to this headline">¶</a></h3>
+<p>Before an ELAG grammar can be applied to a text automaton, the grammar
+must be compiled in a <code class="docutils literal"><span class="pre">.rul</span></code> file. This operation is carried out via
+the “Elag Rules” command in the “Text” menu, which opens the windows
+shown in figure&nbsp;[fig-elag-rules].</p>
+<div class="figure" id="id19">
+<a class="reference internal image-reference" href="resources/img/fig7-16.png"><img alt="ELAG grammars compilation frame[fig-elag-rules]" src="resources/img/fig7-16.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">ELAG grammars compilation frame[fig-elag-rules]</span></p>
+</div>
+<p>If the frame on the right already contains grammars which you don’t wish
+to use, you can withdraw them with the “&lt;&lt;” button. Then select your
+grammar(s) in the file explorer located in the left frame, and click on
+the “&gt;&gt;” button to add them to the list in the right frame. Then click
+on the “Compile” button. This will launch the <code class="docutils literal"><span class="pre">ElagComp</span></code> program which
+will compile the selected grammars and create a file named <code class="docutils literal"><span class="pre">elag.rul</span></code>
+by default.</p>
+<p>If you have selected grammars in the right frame, you can search
+patterns whith them by clicking on the “Locate” button. This opens the
+window “Locate Pattern” and automatically enters a graph name ending
+with <code class="docutils literal"><span class="pre">-conc.fst2</span></code>. This graphs corresponds to the <em>if</em> part of the
+grammar. You can thus obtain the occurrences of the text to which the
+grammar will apply.</p>
+<p>NOTE: The <code class="docutils literal"><span class="pre">-conc.fst2</span></code> file used to locate the <em>if</em> part of a grammar
+is automatically generated when ELAG grammars are compiled by means of
+the “Compile” button. It is thus necessary to have your grammar compiled
+before searching using the “Locate” button.</p>
+</div>
+<div class="section" id="resolving-ambiguities">
+<h3>Resolving Ambiguities<a class="headerlink" href="#resolving-ambiguities" title="Permalink to this headline">¶</a></h3>
+<p>Once you have compiled your grammar into an <code class="docutils literal"><span class="pre">elag.rul</span></code> file, you can
+apply it to a text automaton. In the text automaton window, click on the
+“Apply Elag Rule” button. A dialog box will appear which asks for the
+<code class="docutils literal"><span class="pre">.rul</span></code> file to be used (see figure&nbsp;[fig-text-auto1]). The default file
+is <code class="docutils literal"><span class="pre">elag.rul</span></code>. This will launch the <code class="docutils literal"><span class="pre">Elag</span></code> program which will try to
+resolve the ambiguity.</p>
+<div class="figure" id="id20">
+<a class="reference internal image-reference" href="resources/img/fig7-17.png"><img alt="Text automaton frame [fig-text-auto1]" src="resources/img/fig7-17.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Text automaton frame [fig-text-auto1]</span></p>
+</div>
+<p>Once the program has finished you can view the resulting automaton by
+clicking on the “Open Elag Frame” button. As you can see in
+figure&nbsp;[fig-text-auto2], the windows is separated into two parts: The
+original text automaton can be seen on the top, and the result at the
+bottom.</p>
+<div class="figure" id="id21">
+<a class="reference internal image-reference" href="resources/img/fig7-18.png"><img alt="Splitted text automaton frame [fig-text-auto2]" src="resources/img/fig7-18.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Splitted text automaton frame [fig-text-auto2]</span></p>
+</div>
+<p>Don’t be surprised if the automaton shown at the bottom seems more
+complicated. This results from the fact that factorized lexical
+entries <a class="footnote-reference" href="#id9" id="id5">[1]</a> were exploded in order to treat each inflectional
+interpretation separately. To refactorize these entries, click on the
+“Implode” button. Clicking on the “Explode” button shows you an exploded
+view of the text automaton.</p>
+<p>If you click on the “Replace” button, the resulting automaton will
+become the new text automaton. Thus, if you use other grammars, they
+will apply to the already partially disambiguated automaton, which makes
+it possible to accumulate the effects of several grammars.</p>
+</div>
+<div class="section" id="grammar-collections">
+<h3>Grammar collections<a class="headerlink" href="#grammar-collections" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to gather several ELAG grammars into a grammar collection
+in order to compile and apply them in one step. The sets of ELAG
+grammars are described in <code class="docutils literal"><span class="pre">.lst</span></code> files. They are managed through the
+window for compiling ELAG grammars (figure&nbsp;[fig-elag-rules]). The label
+on the top left indicates the name of the current collection, by default
+<code class="docutils literal"><span class="pre">elag.lst</span></code>. The contents of this collection are displayed in the right
+part of the window.</p>
+<p>To modify the name of the collection, click on the “Browse” button. In
+the dialog box that appears, enter the <code class="docutils literal"><span class="pre">.lst</span></code> file name for the
+collection.</p>
+<p>To add a grammar to the collection, select it in the file explorer in
+the left frame, and click on the “&gt;&gt;” button. Once you have selected all
+your grammars, compile them by clicking on the “Compile” button. This
+will create a <code class="docutils literal"><span class="pre">.rul</span></code> file bearing the name indicated at the bottom
+right (the name of the file is obtained by replacing <code class="docutils literal"><span class="pre">.lst</span></code> by
+<code class="docutils literal"><span class="pre">.rul</span></code>).</p>
+<p>You can now apply your grammar collection. As explained above, click on
+the “Apply Elag Rule” button in the text automaton window. When the
+dialog asks for the <code class="docutils literal"><span class="pre">.rul</span></code> file to use, click on the “Browse” button
+and select your collection. The resulting automaton is identical to that
+which would have been obtained by applying each grammar successively.</p>
+</div>
+<div class="section" id="window-for-elag-processing">
+<h3>Window For ELAG Processing<a class="headerlink" href="#window-for-elag-processing" title="Permalink to this headline">¶</a></h3>
+<p>At the time of disambiguation, the <code class="docutils literal"><span class="pre">Elag</span></code> program is launched in a
+processing window which displays the messages printed by the program
+during its execution.</p>
+<p>For example, when the text automaton contains symbols which do not
+correspond to the set of ELAG labels (see the following section), a
+message indicates the nature of the error. In the same way, when a
+sentence is rejected (all possible analyses were eliminated by
+grammars), a message indicates the number of the sentence. That makes it
+possible to locate the source of the problems quickly.</p>
+<div class="section" id="evaluation-of-ambiguity-removal">
+<h4>Evaluation of ambiguity removal<a class="headerlink" href="#evaluation-of-ambiguity-removal" title="Permalink to this headline">¶</a></h4>
+<p>The assessment of the ambiguity rate is not based solely on the average
+number of interpretations per word. In order to get a more
+representative measure, the system also takes into account the various
+combinations of words. While instances of ambiguities are resolved, the
+<code class="docutils literal"><span class="pre">Elag</span></code> program calculates the number of possible analyses in the text
+automaton before and after the modification (which corresponds to the
+number of possible paths through the automaton). On the basis of this
+value, the program computes the average ambiguity by sentence and word.
+It is this last measure which is used to represent the ambiguity rate of
+the text, because it does not vary with the size of the corpus, nor with
+the number of sentences within. The formula applied is:</p>
+<p><em>lexical ambiguity
+rate</em><span class="math">\(=exp^{\frac{log(number-of-paths)}{text-length}}\)</span></p>
+<p>The relationship between the ambiguity rate before and after applying
+the grammars gives a measure of their efficiency. All this information
+is displayed in the ELAG processing window.</p>
+</div>
+</div>
+<div class="section" id="description-of-the-tag-sets">
+<h3>Description of the tag sets<a class="headerlink" href="#description-of-the-tag-sets" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">Elag</span></code> and <code class="docutils literal"><span class="pre">ElagComp</span></code> programs require a formal description of
+the tag set to be used in dictionaries. This description consists
+essentially of an enumeration of all the parts of speech present in the
+dictionaries, with, for each of them, the list of syntactic and
+inflectional codes compatible with it, and a description of their
+possible combinations. This description must be contained in a file
+called <code class="docutils literal"><span class="pre">tagset.def</span></code> and placed in your working directory, in the
+<code class="docutils literal"><span class="pre">Elag</span></code> subdirectory of the language.</p>
+<div class="section" id="tagset-def-file">
+<h4><code class="docutils literal"><span class="pre">tagset.def</span></code> file<a class="headerlink" href="#tagset-def-file" title="Permalink to this headline">¶</a></h4>
+<p>Here is an extract of the <code class="docutils literal"><span class="pre">tagset.def</span></code> file used for French.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">NAME</span> <span class="n">french</span>
+
+<span class="n">POS</span> <span class="n">ADV</span>
+<span class="o">.</span>
+
+<span class="n">POS</span> <span class="n">PRO</span>
+<span class="n">flex</span><span class="p">:</span>
+<span class="n">pers</span>   <span class="o">=</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>
+<span class="n">genre</span>  <span class="o">=</span> <span class="n">m</span> <span class="n">f</span>
+<span class="n">nombre</span> <span class="o">=</span> <span class="n">s</span> <span class="n">p</span>
+<span class="n">discr</span><span class="p">:</span>
+<span class="n">subcat</span> <span class="o">=</span> <span class="n">Pind</span> <span class="n">Pdem</span> <span class="n">PpvIL</span> <span class="n">PpvLUI</span> <span class="n">PpvLE</span> <span class="n">Ton</span> <span class="n">PpvPR</span> <span class="n">PronQ</span> <span class="n">Dnom</span> <span class="n">Pposs1s</span><span class="o">...</span>
+<span class="n">complete</span><span class="p">:</span>
+<span class="n">Pind</span>     <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">Pdem</span>     <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">Pposs1s</span>  <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">Pposs1p</span>  <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">Pposs2s</span>  <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">Pposs2p</span>  <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">Pposs3s</span>  <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">Pposs3p</span>  <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">PpvIL</span>    <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span>
+<span class="n">PpvLE</span>    <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span>
+<span class="n">PpvLUI</span>   <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span>      <span class="c1">#</span>
+<span class="n">Ton</span>      <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span>      <span class="c1"># lui, elle, moi</span>
+<span class="n">PpvPR</span>                                 <span class="c1"># en y</span>
+<span class="n">PronQ</span>                                 <span class="c1"># ou qui que quoi</span>
+<span class="n">Dnom</span>                                  <span class="c1"># rien</span>
+<span class="o">.</span>
+
+<span class="n">POS</span> <span class="n">A</span> <span class="c1">## adjectifs</span>
+<span class="n">flex</span><span class="p">:</span>
+<span class="n">genre</span>  <span class="o">=</span> <span class="n">m</span> <span class="n">f</span>
+<span class="n">nombre</span> <span class="o">=</span> <span class="n">s</span> <span class="n">p</span>
+<span class="n">cat</span><span class="p">:</span>
+<span class="n">gauche</span> <span class="o">=</span> <span class="n">g</span>
+<span class="n">droite</span> <span class="o">=</span> <span class="n">d</span>
+<span class="n">complete</span><span class="p">:</span>
+<span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">_</span>  <span class="c1"># pour {de bonne humeur,.A}, {au bord des larmes,.A} par exemple</span>
+<span class="o">.</span>
+
+
+<span class="n">POS</span> <span class="n">V</span>
+<span class="n">flex</span><span class="p">:</span>
+<span class="n">temps</span>  <span class="o">=</span> <span class="n">C</span> <span class="n">F</span> <span class="n">I</span> <span class="n">J</span> <span class="n">K</span> <span class="n">P</span> <span class="n">S</span> <span class="n">T</span> <span class="n">W</span> <span class="n">Y</span> <span class="n">G</span> <span class="n">X</span>
+<span class="n">pers</span>   <span class="o">=</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>
+<span class="n">genre</span>  <span class="o">=</span> <span class="n">m</span> <span class="n">f</span>
+<span class="n">nombre</span> <span class="o">=</span> <span class="n">s</span> <span class="n">p</span>
+<span class="n">complete</span><span class="p">:</span>
+<span class="n">W</span>
+<span class="n">G</span>
+<span class="n">C</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">F</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">I</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">J</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">P</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">S</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">T</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">X</span> <span class="mi">1</span> <span class="n">s</span>   <span class="c1"># eusse dusse puisse fusse (-je)</span>
+<span class="n">Y</span> <span class="mi">1</span> <span class="n">p</span>
+<span class="n">Y</span> <span class="mi">2</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">K</span> <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="o">.</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">#</span></code> symbol indicates that the remainder of the line is a comment.
+A comment can appear at any place in the file. The file always starts
+with the word <code class="docutils literal"><span class="pre">NAME</span></code>, followed by an identifier (<code class="docutils literal"><span class="pre">french</span></code>, for
+example). This is followed by the <code class="docutils literal"><span class="pre">POS</span></code> sections for each part of
+speech. Each section describes the structure of the lexical tags of the
+lexical entries belonging to the part of speech concerned. Each section
+is composed of 4 parts which are all optional:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">flex</span></code>: this part enumerates the inflectional codes belonging to
+the grammatical category. For example, the codes <code class="docutils literal"><span class="pre">1,2,3</span></code> which
+indicate the person of the entry are relevant for pronouns but not
+for adjectives. Each line describes an inflectional attribute
+(gender, time, etc.) and is made up of the attribute name, followed
+by the <code class="docutils literal"><span class="pre">=</span></code> character and the values which it can take. For example,
+the following line declares an attribute <span class="math">\(pers\)</span> being able to
+taking the values <span class="math">\(1\)</span>, <span class="math">\(2\)</span> or <span class="math">\(3\)</span>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pers</span> <span class="o">=</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">cat</span></code>: this part declares the syntactic and semantic attributes
+which can be assigned to the entries belonging to the part of speech
+concerned. Each line describes an attribute and the values which it
+can take. The codes declared for the same attribute must be
+exclusive. In other words, an entry cannot take more than one value
+for the same attribute.</p>
+<p>On the other hand, all the tags in a given part of speech don’t
+necessarily take values for all the attribute of the part of speech.
+For example, to define the attribute <code class="docutils literal"><span class="pre">niveau_de_langue</span></code> which can
+take the values <code class="docutils literal"><span class="pre">z1</span></code>, <code class="docutils literal"><span class="pre">z2</span></code> and <code class="docutils literal"><span class="pre">z3</span></code>, the following line can be
+written:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">niveau_de_langue</span> <span class="o">=</span> <span class="n">z1</span> <span class="n">z2</span> <span class="n">z3</span>
+</pre></div>
+</div>
+<p>but this attribute is not necessarily present in all words.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">discr</span></code>: this part consists of a declaration of a unique attribute.
+The syntax is the same as in the <code class="docutils literal"><span class="pre">cat</span></code> part and the attribute
+described here must not be repeated there. This part allows for
+dividing the grammatical category in <em>discriminating</em> sub categories
+in which the entries have similar inflectional attributes. For
+pronouns for example, a person feature is assigned to entries that
+are part of the personal pronoun sub category but not to relative
+pronouns. These dependencies are described in the <code class="docutils literal"><span class="pre">complete</span></code> part;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">complete</span></code>: this part describes the inflectional part of the tags
+of the words in the current part of speech. Each line describes a
+valid combination of inflectional codes by their discriminating sub
+category (if such a category was declared). If an attribute name is
+specified in angle brackets (<code class="docutils literal"><span class="pre">&lt;</span></code> and <code class="docutils literal"><span class="pre">&gt;</span></code>), this signifies that
+any value of this attribute may occur. It is possible as well to
+declare that an entry does not take any inflectional feature by means
+of a line containing only the <code class="docutils literal"><span class="pre">_</span></code> character (underscore). So for
+example, if we consider that the following lines extracted from the
+section describing the verbs:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">W</span>
+<span class="n">K</span> <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>They make it possible to declare that verbs in the infinitive
+(indicated by the <code class="docutils literal"><span class="pre">W</span></code> code) do not have other inflectional features
+while the forms in the past participle (<code class="docutils literal"><span class="pre">K</span></code> code) are also assigned
+a gender and a number.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="description-of-the-inflectional-codes">
+<h4>Description of the inflectional codes<a class="headerlink" href="#description-of-the-inflectional-codes" title="Permalink to this headline">¶</a></h4>
+<p>The principal function of the <code class="docutils literal"><span class="pre">discr</span></code> part is to divide a part of
+speech into subcategories having similar inflectional behavior. These
+subcategories are then used to facilitate writing the <code class="docutils literal"><span class="pre">complete</span></code> part.</p>
+<p>For the legibility of the ELAG grammars, it is desirable that the
+elements of the same subcategory all have the same inflectional
+behavior; in this case the <code class="docutils literal"><span class="pre">complete</span></code> part is made up of only one line
+per subcategory. Let us consider for example the following lines from
+the pronoun description:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Pdem</span>  <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">PpvIl</span> <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span>
+<span class="n">PpvPr</span>
+</pre></div>
+</div>
+<p>These lines mean:</p>
+<ul class="simple">
+<li>all the demonstrative pronouns (<code class="docutils literal"><span class="pre">PRO+Pdem&gt;</span></code>) have only a gender and
+a number;</li>
+<li>clitic pronouns in the nominative (<code class="docutils literal"><span class="pre">&lt;PRO+PpvIl&gt;</span></code>) are labelled
+grammatically in person, gender and number;</li>
+<li>the prepositional pronouns (<em>en</em>, <em>y</em>) do not have any inflectional
+feature.</li>
+</ul>
+<p>All combinations of inflectional features and discriminant subcategories
+which appear in the dictionaries must be described in the <code class="docutils literal"><span class="pre">tagset.def</span></code>
+file; otherwise, the information in the corresponding entries will be
+discarded by ELAG.</p>
+<p>If words of the same subcategory differ by their inflectional profile,
+it is necessary to write several lines into the <code class="docutils literal"><span class="pre">complete</span></code> part. The
+disadvantage of this method of description is that it becomes difficult
+to make the distinction between such words in an ELAG grammar.</p>
+<p>If one considers the description given by the previous example of a
+<code class="docutils literal"><span class="pre">tagset.def</span></code> file, certain adjectives of French take a gender and a
+number, whereas others to not have any inflectional feature. This allows
+for coding fixed sequences like <em>de bonne humeur</em> as adjective, on the
+basis of their syntactic behavior.</p>
+<p>Consider a French dictionary with such sequences as invariable
+adjectives without inflectional features. The problem is that if one
+wants to refer exclusively to this type of adjectives in a
+disambiguation grammar, the <code class="docutils literal"><span class="pre">&lt;A&gt;</span></code> symbol is not appropriate, since it
+will recognize all adjectives. To circumvent this difficulty, it is
+possible to deny an inflectional attribute by writing the <code class="docutils literal"><span class="pre">&#64;</span></code>
+character right before one of the possible values for this attribute.
+Thus, the <code class="docutils literal"><span class="pre">&lt;A:&#64;m&#64;p&gt;</span></code> symbol recognizes all the adjectives which have
+neither a gender nor a number. Using this operator, it is possible to
+write grammars like those in figure&nbsp;[fig-NA], which imposes agreement in
+gender and number between a name and an adjective which suits <a class="footnote-reference" href="#id10" id="id6">[2]</a>. This
+grammar will preserve the correct analysis of sentences like: <em>Les
+personnes de bonne humeur m’insupportent</em>.</p>
+<p>Is is however recommended to limit the use of the <code class="docutils literal"><span class="pre">&#64;</span></code> operator,
+because it harms the legibility of the grammars. It is preferable to
+distinguish the labels which accept various inflectional combinations by
+means of discriminating subcategories defined in the <code class="docutils literal"><span class="pre">discr</span></code> part.</p>
+<div class="figure" id="id22">
+<a class="reference internal image-reference" href="resources/img/fig7-19.png"><img alt="ELAG grammar that verifies gender and number agreement[fig-NA]" src="resources/img/fig7-19.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">ELAG grammar that verifies gender and number agreement[fig-NA]</span></p>
+</div>
+</div>
+<div class="section" id="optional-codes">
+<h4>Optional Codes<a class="headerlink" href="#optional-codes" title="Permalink to this headline">¶</a></h4>
+<p>The optional syntactic and semantic codes are declared in the <code class="docutils literal"><span class="pre">cat</span></code>
+part. They can be used in ELAG grammars like other codes. The difference
+is that these codes do not intervene to decide if a label must be
+rejected as an invalid one while loading of the text autmaton.</p>
+<p>In fact optional codes are independent of other codes, such as for
+example the attribute of the language level (<code class="docutils literal"><span class="pre">z1</span></code>, <code class="docutils literal"><span class="pre">z2</span></code> or <code class="docutils literal"><span class="pre">z3</span></code>).
+In the same manner as for inflectional codes, it is possible to deny an
+inflectional attribute by writing the <code class="docutils literal"><span class="pre">!</span></code> character right before the
+name of the attribute. Thus, with our example file, the <code class="docutils literal"><span class="pre">&lt;A!gauche:f&gt;</span></code>
+symbol recognizes all adjectives in the feminine which do not have the
+<code class="docutils literal"><span class="pre">gauche</span></code> code <a class="footnote-reference" href="#id11" id="id7">[3]</a>.</p>
+<p>All codes which are not declared in the <code class="docutils literal"><span class="pre">tagset.def</span></code> file are
+discarded by ELAG. If a dictionary entry contains such a code, ELAG will
+produce a warning and will withdraw the code from the entry.</p>
+<p>Consequently, if two concurrent entries differ in the original text
+automaton only by undeclared codes, these entries will become
+indistinguishable by the programs and will thus be unified into only one
+entry in the resulting automaton.</p>
+<p>Thus, the set of labels described in the file <code class="docutils literal"><span class="pre">tagset.def</span></code> file is
+compatible with the dictionaries distributed with Unitex, by factorizing
+words which differ only by undeclared codes, and this independently of
+the applied grammars.</p>
+<p>For example, in the most complete version of the French dictionary, each
+individual use of a verb is characterized by a reference to the lexicon
+grammar table which contains it. We have considered until now that this
+information is more relevant to syntax than to lexical analysis and we
+thus don’t have integrated them into the description of the tagset. They
+are thus automatically eliminated at the time when the text automaton is
+loaded, which reduces the rate of ambiguity.</p>
+<p>In order to distinguish the effects bound to the tagset from those of
+the ELAG grammars, it is advised to proceed to a preliminary stage of
+normalization of the text automaton before applying disambiguation
+grammars to it. This normalization is carried out by applying to the
+text automaton a grammar not imposing any constraint, like that of
+figure&nbsp;[fig-elag-norm]. Note that this grammar is normally present in
+the Unitex distribution and precompiled in the file <code class="docutils literal"><span class="pre">norm.rul</span></code>.</p>
+<div class="figure" id="id23">
+<a class="reference internal image-reference" href="resources/img/fig7-20.png"><img alt="ELAG grammar without any constraint[fig-elag-norm]" src="resources/img/fig7-20.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">ELAG grammar without any constraint[fig-elag-norm]</span></p>
+</div>
+<p>The result of applying such a grammar is that the original is cleaned of
+all the codes which either are not described in the <code class="docutils literal"><span class="pre">tagset.def</span></code> file,
+or do not conform to this description (because of unknown grammatical
+categories or invalid combinations of inflectional features). By then
+replacing the text automaton by this normalized automaton, one can be
+sure that later modifications of the automaton will only be effects of
+ELAG grammars.</p>
+</div>
+</div>
+<div class="section" id="grammar-optimization">
+<h3>Grammar Optimization<a class="headerlink" href="#grammar-optimization" title="Permalink to this headline">¶</a></h3>
+<p>Compilation of ELAG grammars by the <code class="docutils literal"><span class="pre">ElagComp</span></code> program consists in
+building an automaton whose language is the set of the sequences of
+lexical tags (or lexical analyses of a sentence) which are not accepted
+by the grammars. This task is complex and can take a lot of time. It is
+however possible to appreciably speed it up by observing certain
+principles at the time of writing gramars.</p>
+<div class="section" id="limiting-the-number-of-branches-in-the-then-part">
+<h4>Limiting the number of branches in the <em>then</em> part<a class="headerlink" href="#limiting-the-number-of-branches-in-the-then-part" title="Permalink to this headline">¶</a></h4>
+<p>It is recommended to limit the number of <em>then</em> parts of a grammar to a
+minimum. This can reduce considerably the compile time of a grammar.
+Generally, a grammar having many <em>then</em> parts can be rewritten with one
+or two <em>then</em> parts, without a loss of legibility. It is for example the
+case of the grammar in figure&nbsp;[fig-NA-bad], which imposes a constraint
+between a verb and the pronoun which follows it.</p>
+<div class="figure" id="id24">
+<a class="reference internal image-reference" href="resources/img/fig7-21.png"><img alt="ELAG grammar checking verb-pronoun agreement[fig-NA-bad]" src="resources/img/fig7-21.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">ELAG grammar checking verb-pronoun agreement[fig-NA-bad]</span></p>
+</div>
+<p>As one can see in figure&nbsp;[fig-NA-good], one can write an equivalent
+grammar by factorizing all the <em>then</em> parts into only one. The two
+grammars will have exactly the same effect on the text automaton, but
+the second one will be compiled much more quickly.</p>
+</div>
+<div class="section" id="using-lexical-masks">
+<h4>Using lexical masks<a class="headerlink" href="#using-lexical-masks" title="Permalink to this headline">¶</a></h4>
+<p>It is better to use lemmas only when it is necessary. That is
+particularly true for some grammatical words, when their subcategories
+carry almost as much information as the lemmas themselves. In any case,
+it is recommended to specify its syntactic, semantic and inflectional
+features as much as possible. For example, with the dictionaries
+provided for French, it is preferable to replace lexical masks like
+<code class="docutils literal"><span class="pre">&lt;je.PRO:1s&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;je.PRO+PpvIL:1s&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;je.PRO&gt;</span></code> with the mask
+<code class="docutils literal"><span class="pre">&lt;PRO+PpvI1:1s&gt;</span></code>. Indeed, all these masks are identical insofar as
+they can recognize only the single entry of the dictionary
+<code class="docutils literal"><span class="pre">{je,PRO+PpvIL:1ms:1fs}</span></code>. However, as the program does not deduce this
+information automatically, if all these features are not specified, the
+program will consider nonexisting labels such as <code class="docutils literal"><span class="pre">&lt;je.PRO:3p&gt;</span></code>,</p>
+<p><code class="docutils literal"><span class="pre">&lt;je.PRO+PronQ&gt;</span></code> etc. in vain.</p>
+</div>
+</div>
+</div>
+<div class="section" id="linearizing-text-automaton-with-the-tagger">
+<h2>Linearizing text automaton with the tagger<a class="headerlink" href="#linearizing-text-automaton-with-the-tagger" title="Permalink to this headline">¶</a></h2>
+<p>By default, the text automaton contains many paths of tags because of
+lexical ambiguity. The linearization process consists in selecting a
+single path, a sequence of tags with one tag per token, and remove the
+others. The output of the process is a text automaton with a single path
+(see section [section-linear-text] for converting a linear automaton
+into linear text). The selection of a path depends on its score. The
+path with the best score is chosen and the others are removed. The score
+of a path is calculated using a statistical model trained on an
+annotated corpus. This model uses tagger data files generated by the
+TrainingTagger program (see section [section-TrainingTagger]). For
+instance, you can see on Figure [fig7-linearize2], the original text
+automaton of the French sentence <em>Les insectes nuisibles envahissent la
+maison</em>. The corresponding text automaton after linearization is shown
+on Figure [fig7-linearize3].</p>
+<div class="figure" id="id25">
+<a class="reference internal image-reference" href="resources/img/fig7-linearize3.png"><img alt="Text automaton linearized[fig7-linearize3]" src="resources/img/fig7-linearize3.png" style="width: 16.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Text automaton linearized[fig7-linearize3]</span></p>
+</div>
+<div class="section" id="compatibility-of-the-tagset">
+<h3>Compatibility of the tagset<a class="headerlink" href="#compatibility-of-the-tagset" title="Permalink to this headline">¶</a></h3>
+<p>The tagset of the tagger is identical to that of the training corpus or
+is a variant (see below). However, in order to use the tagger on a text
+automaton, one should pay attention to tagset and morphology. The tagset
+of the model must be identical to that of the text automaton. For
+example, if the statistical model has been computed with the tag <code class="docutils literal"><span class="pre">DET</span></code>
+for the word <code class="docutils literal"><span class="pre">the</span></code>, the corresponding tag in the text automaton must
+be <code class="docutils literal"><span class="pre">DET</span></code>. Unitex provides functionality to modify word forms in the
+text, for example to normalize <code class="docutils literal"><span class="pre">doesn't</span></code> into <code class="docutils literal"><span class="pre">does</span> <span class="pre">not</span></code>. Applying
+replacing or normalization graphs could cause some morphological
+modifications on words. If such processing is applied to the text, it
+must have been applied to the training corpus as well. If these rules
+are not respected, the tagger might not be able to keep the good path
+from the text automaton.</p>
+<p>The TrainingTagger program produces two variants of the tagger. The
+first one prunes transitions on the basis of grammatical, semantic,
+syntactic and inflectional codes (for example, <code class="docutils literal"><span class="pre">the.DET+Ddef:s</span></code> versus
+<code class="docutils literal"><span class="pre">the.DET+Ddef:p</span></code>). The second one prunes transitions on the basis of
+grammatical, semantic and syntactic codes (<code class="docutils literal"><span class="pre">that.DET+Ddem</span></code> versus
+<code class="docutils literal"><span class="pre">that.PRO+Pdem</span></code>). This option makes the training quicker and
+inflectional features are not needed for all applications.</p>
+</div>
+<div class="section" id="use-of-the-tagger">
+<h3>Use of the Tagger<a class="headerlink" href="#use-of-the-tagger" title="Permalink to this headline">¶</a></h3>
+<p>In order to linearize the text automaton, you have to select the option
+“Linearize with the Tagger” in the configuration window for the
+construction of the text automaton (cf. figure [fig7-linearize1]). With
+this option, the program will linearize each sentence automaton. You
+must also select the tagger data file (with “.bin” extension) by
+clicking on the “Set” button. Tagger data file suffixed by “morph” is
+the first variant of the tagger (with inflectional codes) and the one
+suffixed by “cat” is the second variant (without inflectional codes). If
+you want to use the “morph” data, you also need to click on “Normalize
+according to Elag tagset.def” (for more details, see section
+[section-Tagger] about <code class="docutils literal"><span class="pre">Tagger</span></code> program).</p>
+<p>For instance, the text automaton, shown on Figure [fig7-linearize3], is
+the output of linearization of the text automaton shown on Figure
+[fig7-linearize2] with “cat” tagger data. Linearization of the automaton
+with “morph” tagger data is shown on Figure [fig7-linearize4].</p>
+</div>
+<div class="section" id="creation-of-a-new-tagger">
+<h3>Creation of a new tagger<a class="headerlink" href="#creation-of-a-new-tagger" title="Permalink to this headline">¶</a></h3>
+<p>In order to create a new tagger for your language, you need to launch
+the TrainingTagger program on your own annotated corpus. The format of
+the annotated corpus is described in [section-corpus-file]. As we
+discuss in Section [section-linearization-tagset], you need to pay
+attention on tagset and morphology. Before computing a statistical
+model, you have to decide which dictionaries and normalization graphs
+you will use to construct the text automaton. And then, you will have to
+do modifications on the annotated corpus if word forms or tagset do not
+match completely. For example, if the normalization graph transforms the
+word <code class="docutils literal"><span class="pre">jusqu'</span></code> into <code class="docutils literal"><span class="pre">jusque</span></code>, the corresponding word into the
+annotated corpus must be <code class="docutils literal"><span class="pre">jusque</span></code>.</p>
+<p>A French tagger is distributed with Unitex. It has been created with an
+annotated corpus composed of tags without semantic and syntactic codes.</p>
+</div>
+</div>
+<div class="section" id="manipulation-of-text-automata">
+<h2>Manipulation of text automata<a class="headerlink" href="#manipulation-of-text-automata" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="displaying-sentence-automata">
+<h3>Displaying sentence automata<a class="headerlink" href="#displaying-sentence-automata" title="Permalink to this headline">¶</a></h3>
+<p>As we have seen above, the text automaton is in fact the collection of
+the sentence automata of a text. This structure can be represented using
+the format <code class="docutils literal"><span class="pre">.fst2</span></code>, also used for representing the compiled grammars.
+This format does not allow the system to directly display the sentence
+automata. Instead, the system uses the <code class="docutils literal"><span class="pre">Fst2Grf</span></code> program to convert
+the sentence automaton into a graph that can be displayed. This program
+is called automatically when you select a sentence in order to generate
+the corresponding <code class="docutils literal"><span class="pre">.grf</span></code> file.</p>
+<p>The generated <code class="docutils literal"><span class="pre">.grf</span></code> files are not interpreted in the same manner as
+the <code class="docutils literal"><span class="pre">.grf</span></code> files that represent graphs constructed by the user. In
+fact, in a normal graph, the lines of a box are separated by the <code class="docutils literal"><span class="pre">+</span></code>
+symbol. In the graph of a sentence, each box represents either a lexical
+unit without a tag or a dictionary entry enclosed by curly brackets. If
+the box only represents an unlabeled lexical unit, this unit appears
+alone in the box. If the box represents a dictionary entry, the
+inflected form is displayed, followed in another line by the canonical
+form if it is different. The grammatical and inflectional information is
+displayed below the box as a transducer output.</p>
+<p>Figure&nbsp;[fig-first-sentence-Ivanhoe] shows the graph obtained for the
+first sentence of <em>Ivanhoe</em>. The words <code class="docutils literal"><span class="pre">Ivanhoe</span></code>, <code class="docutils literal"><span class="pre">Walter</span></code> and
+<code class="docutils literal"><span class="pre">Scott</span></code> are considered unknown words. The word <code class="docutils literal"><span class="pre">by</span></code> corresponds to
+two entries in the dictionary. The word <code class="docutils literal"><span class="pre">Sir</span></code> corresponds to two
+dictionary entries as well, but since the canonical form of these
+entries is <code class="docutils literal"><span class="pre">sir</span></code>, it is displayed because it differs from the
+inflected form by a lower case letter.</p>
+</div>
+<div class="section" id="modifying-the-text-automaton">
+<h3>Modifying the text automaton<a class="headerlink" href="#modifying-the-text-automaton" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to manually modify sentence automata, except those in the
+ELAG frame (lower frame). You can edit or erase boxes or transitions
+(cf. figure&nbsp;[fig-modified-sentence-automaton]).</p>
+<div class="figure" id="id26">
+<a class="reference internal image-reference" href="resources/img/fig7-24.png"><img alt="Modified sentence automaton[fig-modified-sentence-automaton]" src="resources/img/fig7-24.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Modified sentence automaton[fig-modified-sentence-automaton]</span></p>
+</div>
+<p>When a graph is modified, it is saved to the text file
+<code class="docutils literal"><span class="pre">sentenceN.grf</span></code>, where <span class="math">\(N\)</span> represents the number of the
+sentence, but this operation does not modify the global text automaton.
+Thus, you can discard the manually modified graph and reset the
+automaton of that sentence from the global text automaton by clicking on
+the “Reset Sentence Graph” button.</p>
+<p>When you select a sentence, if a modified graph exists for this
+sentence, Unitex displays it.</p>
+<p>After you edited sentence automata, you can save your manual
+modifications to the global text automaton. In order to do that, click
+on the “Rebuild FST-Text” button. All sentences that have been modified
+are then replaced by their modified versions. The new text automaton is
+then automatically reloaded.</p>
+<p>During the construction of the text automaton
+([construction-text-automaton]), all the modified sentence graphs in the
+text file are erased.</p>
+<div class="section" id="manually-resolving-ambiguities">
+<h4>Manually resolving ambiguities<a class="headerlink" href="#manually-resolving-ambiguities" title="Permalink to this headline">¶</a></h4>
+<p>The text automaton may contain many paths of tags because of lexical
+ambiguity. You can either resolve ambiguities with ELAG Grammars or
+manually select the right paths for one or each graph of the sentence
+automaton. To do so, you can perform a right click on the box you want
+to keep when several boxes with different tags are proposed. The edges
+of the selected box will become more bold and the other boxes will
+appear grayed (see Figure&nbsp;[fig-manually-resolve-ambiguities]).</p>
+<p>You can then click on the “Remove greyed states” button to keep only the
+selected boxes as in Figure&nbsp;[fig-removed-ambiguities].</p>
+</div>
+</div>
+<div class="section" id="display-configuration">
+<h3>Display configuration<a class="headerlink" href="#display-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Sentence automata are subject to the same presentation options as the
+graphs. They use the same colors and fonts as well as the antialiasing
+effect. In order to configure the appearance of the sentence automata,
+you modify the general configuration by clicking on “Preferences...” in
+the “Info” menu. For further details, refer to
+section&nbsp;[section-display-fonts-colors].</p>
+<p>You can also print a sentence automaton by clicking on “Print...” in the
+“FSGraph” menu or by pressing &lt;Ctrl+P&gt;. Make sure that the printer’s
+page orientation is set to landscape mode. To configure this parameter,
+click on “Page Setup” in the “FSGraph” menu.</p>
+</div>
+</div>
+<div class="section" id="converting-the-text-automaton-into-linear-text">
+<h2>Converting the text automaton into linear text<a class="headerlink" href="#converting-the-text-automaton-into-linear-text" title="Permalink to this headline">¶</a></h2>
+<p>If the text automaton does not contain any lexical ambiguity, it is
+possible to build a text file corresponding to the unique path of the
+automaton. Go into the “Text” menu and click on “Convert FST-Text to
+Text...”. You can set the output text file in the window as shown on
+Figure [fig-linearization-configuration].</p>
+<p>If the automaton is not linear, an error message will give you the
+number of the first sentence that contain ambiguity. Otherwise, the
+<code class="docutils literal"><span class="pre">Tfst2Unambig</span></code> program will build the output file according to the
+following rules:</p>
+<ul class="simple">
+<li>the output file contains one line per sentence;</li>
+<li>every line but the last is ended by <code class="docutils literal"><span class="pre">{S}</span></code>;</li>
+<li>for each box, the program writes its content followed by a space.</li>
+</ul>
+<div class="figure" id="id27">
+<a class="reference internal image-reference" href="resources/img/fig7-26.png"><img alt="Example of a linear text automaton[fig-linear-automaton]" src="resources/img/fig7-26.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Example of a linear text automaton[fig-linear-automaton]</span></p>
+</div>
+<p>NOTE: correcting spaces in the output text can only be done manually. If
+the original text is the one of the text automaton shown on Figure
+[fig-linear-automaton], the output text will be:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">2</span> <span class="mi">3</span> <span class="p">{</span><span class="n">cats</span><span class="p">,</span><span class="n">cat</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">Anl</span><span class="p">:</span><span class="n">p</span><span class="p">}</span> <span class="p">{</span><span class="n">are</span><span class="p">,</span><span class="n">be</span><span class="o">.</span><span class="n">V</span><span class="p">:</span><span class="n">P2s</span><span class="p">:</span><span class="n">P1p</span><span class="p">:</span><span class="n">P2p</span><span class="p">:</span><span class="n">P3p</span><span class="p">}</span> <span class="p">{</span><span class="n">white</span><span class="p">,</span><span class="n">white</span><span class="o">.</span><span class="n">A</span><span class="p">}</span> <span class="o">.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="searching-patterns-in-the-text-automaton">
+<h2>Searching patterns in the text automaton<a class="headerlink" href="#searching-patterns-in-the-text-automaton" title="Permalink to this headline">¶</a></h2>
+<p>With the <code class="docutils literal"><span class="pre">LocateTfst</span></code> program, Unitex can perform search operations on
+the text automaton. The main advantages are that you can:</p>
+<ul class="simple">
+<li>benefit from ambiguity removal;</li>
+<li>benefit from the application of normalization grammar (see below);</li>
+<li>work at several morphological levels (multi-word units, simple words,
+morphemes). This is particularly interesting since you can now easily
+manipulate agglutinative languages like Korean (for Korean, see
+section [section-korean]).</li>
+</ul>
+<p>The rules are very similar to the ones that apply to classical searches
+with <code class="docutils literal"><span class="pre">Locate</span></code>. Here are the differences:</p>
+<ul class="simple">
+<li>you cannot capture sequences with variables inside right contexts, as
+it is possible with <code class="docutils literal"><span class="pre">Locate</span></code> (see Figure [fig-context6], page )</li>
+<li>you cannot match things that are not in the text automaton: if the
+text automaton only contains a compound word tag and not its
+concurrent simple word tags, you won’t be able to match simple words.
+For instance, in the sentence automaton shown on Figure
+[fig7-locatetfst1], it is not possible to match <code class="docutils literal"><span class="pre">soixante</span></code> or
+<code class="docutils literal"><span class="pre">huit</span></code>, since there are no such paths.</li>
+<li>matched sequences can differ from sequences that will appear in
+concordances. In fact, the text automaton may contain tags that do
+not correspond to the raw input text, in particular when a
+normalization grammar has been applied. For instance, if you look for
+the pattern <code class="docutils literal"><span class="pre">&lt;le.DET&gt;</span></code> in <em>80jours</em>’s text automaton, you will
+obtain 7703 matches, while <code class="docutils literal"><span class="pre">Locate</span></code> only finds 5763 matches. This
+is because some words have been normalized, like <code class="docutils literal"><span class="pre">au</span></code>
+<span class="math">\(\rightarrow\)</span> <code class="docutils literal"><span class="pre">à</span> <span class="pre">le</span></code> or <code class="docutils literal"><span class="pre">du</span></code> <span class="math">\(\rightarrow\)</span> <code class="docutils literal"><span class="pre">de</span> <span class="pre">le</span></code>.
+So, when you look for <code class="docutils literal"><span class="pre">&lt;le.DET&gt;</span></code>, <code class="docutils literal"><span class="pre">LocateTfst</span></code> matches those tags
+that were added to the text automaton by the normalization grammar,
+and <code class="docutils literal"><span class="pre">Concord</span></code> uses the original sequence in the text to produce the
+concordance file, as shown on Figure [fig7-locatetfst2].</li>
+<li><code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code> does not match tokens as defined in <code class="docutils literal"><span class="pre">tokens.txt</span></code>. It
+matches any tag of the text automaton. Matched tags can be either
+longer than text tokens if they are compound word tags, or even
+shorter, if the text automaton contains morphological analysis like
+<code class="docutils literal"><span class="pre">un</span></code> as shown on Figure [morphoB], page .</li>
+<li>even if you are not in morphological mode, you can define
+dictionary-entry variables (cf. section&nbsp;[dictionary-variables]).
+Then, you can get from such variables the inflected form, lemma and
+codes of lexical entries, their POS code, semantic codes,
+inflectional codes and the value <code class="docutils literal"><span class="pre">zzz</span></code> of the <code class="docutils literal"><span class="pre">yyy</span></code> attribute if
+there is a code of the form <code class="docutils literal"><span class="pre">yyy=zzz</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="table-display">
+<h2>Table display<a class="headerlink" href="#table-display" title="Permalink to this headline">¶</a></h2>
+<p>Sentence automata can be displayed in a table format. To do that, you
+just have to select the “Table” tab in the text automaton frame. You
+will then see a table as shown on Figure [fig7-table1].</p>
+<div class="figure" id="id28">
+<a class="reference internal image-reference" href="resources/img/fig7-table1.png"><img alt="Table display[fig7-table1]" src="resources/img/fig7-table1.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Table display[fig7-table1]</span></p>
+</div>
+<p>This table is not fully equivalent to the sentence automaton, since it
+only displays all possible POS for each simple or multiple word unit. It
+should be considered as an approximate compact view of information
+contained in the automaton. You can also filter grammatical/semantic
+codes to be displayed. Select “All” and you will see all codes. Select
+“Only POS category” and only first codes (supposed to represent the POS
+category) will be displayed. If you select “Use filter” and set a
+regular expression <span class="math">\(X\)</span>, codes that do not contain something
+matched by <span class="math">\(X\)</span> will be discarded. Any POSIX regular expression is
+accepted as filter. Check “Always show POS category”, and as said, the
+POS category will be kept even if not matched by the filter, if any. For
+instance, Figure [fig7-table2] shows a filtering result, obtained with
+the filter <code class="docutils literal"><span class="pre">^[A-Z]</span></code> that matches any code starting with an uppercase
+letter, thus discarding codes like <code class="docutils literal"><span class="pre">z1</span></code>.</p>
+<div class="figure" id="id29">
+<a class="reference internal image-reference" href="resources/img/fig7-table2.png"><img alt="Filtered table display[fig7-table2]" src="resources/img/fig7-table2.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Filtered table display[fig7-table2]</span></p>
+</div>
+<p>The “Export all text as POS list” button can be used to export this
+table display of the whole text automaton as a text file following a
+special format. Currently, it is only an experimental feature that may
+change in the future. Here is an example of output:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">Je</span><span class="o">/</span><span class="n">N</span><span class="p">:</span><span class="n">ms</span><span class="p">:</span><span class="n">mp</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">Je</span><span class="o">/</span><span class="n">PRO</span><span class="o">/</span><span class="n">PpvIL</span><span class="p">:</span><span class="mi">1</span><span class="n">fs</span><span class="p">:</span><span class="mi">1</span><span class="n">ms</span><span class="p">)</span> <span class="p">(</span><span class="n">suis</span><span class="o">/</span><span class="n">V</span><span class="p">:</span><span class="n">P1s</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">suis</span><span class="o">/</span><span class="n">V</span><span class="p">:</span><span class="n">Y2s</span><span class="p">:</span><span class="n">P2s</span><span class="p">:</span><span class="n">P1s</span><span class="p">)</span>
+<span class="n">M</span><span class="o">/</span><span class="n">N</span><span class="p">:</span><span class="n">mp</span><span class="p">:</span><span class="n">ms</span> <span class="o">.</span> <span class="n">Mdiba</span> <span class="p">(</span><span class="n">de</span><span class="o">/</span><span class="n">DET</span><span class="o">/</span><span class="n">Dind</span><span class="p">:</span><span class="n">fp</span><span class="p">:</span><span class="n">mp</span><span class="p">:</span><span class="n">fs</span><span class="p">:</span><span class="n">ms</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">de</span><span class="o">/</span><span class="n">PREP</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">de</span><span class="o">/</span><span class="n">PREP</span><span class="o">/</span><span class="n">z1</span>
+<span class="o">+</span><span class="n">de</span> <span class="n">la</span><span class="o">/</span><span class="n">DET</span><span class="o">/</span><span class="n">Dind</span><span class="o">/</span><span class="n">z1</span><span class="p">:</span><span class="n">fs</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">de</span><span class="o">/</span><span class="n">PREP</span><span class="o">/</span><span class="n">z1</span><span class="o">+</span><span class="n">des</span><span class="o">/</span><span class="n">DET</span><span class="o">/</span><span class="n">Dind</span><span class="o">/</span><span class="n">z1</span><span class="p">:</span><span class="n">mp</span><span class="p">:</span><span class="n">fp</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">de</span><span class="o">/</span><span class="n">PREP</span><span class="o">/</span><span class="n">z1</span>
+<span class="o">+</span><span class="n">du</span><span class="o">/</span><span class="n">DET</span><span class="o">/</span><span class="n">Dind</span><span class="o">/</span><span class="n">z1</span><span class="p">:</span><span class="n">ms</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">de</span> <span class="n">la</span><span class="o">/</span><span class="n">DET</span><span class="o">/</span><span class="n">Dind</span><span class="o">/</span><span class="n">z1</span><span class="p">:</span><span class="n">fs</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">des</span><span class="o">/</span><span class="n">DET</span><span class="o">/</span><span class="n">Dind</span><span class="o">/</span><span class="n">z1</span><span class="p">:</span><span class="n">mp</span><span class="p">:</span><span class="n">fp</span><span class="p">)</span><span class="o">|</span>
+<span class="p">(</span><span class="n">du</span><span class="o">/</span><span class="n">DET</span><span class="o">/</span><span class="n">Dind</span><span class="o">/</span><span class="n">z1</span><span class="p">:</span><span class="n">ms</span><span class="p">)</span> <span class="n">LG</span> <span class="o">-</span> <span class="n">ville</span><span class="o">/</span><span class="n">N</span><span class="p">:</span><span class="n">fs</span> <span class="o">.</span> <span class="p">{</span><span class="n">S</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-special-case-of-korean">
+<h2>The special case of Korean<a class="headerlink" href="#the-special-case-of-korean" title="Permalink to this headline">¶</a></h2>
+<p>Korean is an agglutinative language with a unique writing system: words
+are made of Hangul syllabic characters, but one Hangul character
+corresponds to several Jamo alphabetic characters. For instance, you can
+see on Figure [fig7-korean1] two examples of Hangul characters followed
+by their equivalent Jamo letter sequences.</p>
+<p>Not all morphemes correspond to Hangul characters. For instance, Figure
+[fig7-korean2] shows a given token (shown in green) analyzed as a
+combination of two elements: a verb and a modifier. The point is that
+the modifier is only made of one Jamo letter that combines with the last
+Hangul character of the verb in order to give the last Hangul character
+of the whole word (in green).</p>
+<div class="figure" id="id30">
+<a class="reference internal image-reference" href="resources/img/fig7-korean2.png"><img alt="Decomposition of a Hangul character[fig7-korean2]" src="resources/img/fig7-korean2.png" style="width: 6.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Decomposition of a Hangul character[fig7-korean2]</span></p>
+</div>
+<p>As a consequence, it can be convenient for Korean users to write
+grammars with mixes of Hangul and Jamo characters. Thus, a grammar like
+the one shown on Figure [fig7-korean3] will match sequences like the one
+shown Figure [fig7-korean4].</p>
+<div class="figure" id="id31">
+<a class="reference internal image-reference" href="resources/img/fig7-korean3.png"><img alt="A grammar with two Jamo letters[fig7-korean3]" src="resources/img/fig7-korean3.png" style="width: 5.50000cm;" /></a>
+<p class="caption"><span class="caption-text">A grammar with two Jamo letters[fig7-korean3]</span></p>
+</div>
+<p>In Korean, the text automaton displays untagged tokens on a
+lavender-blue background. <a class="footnote-reference" href="#id12" id="id8">[4]</a></p>
+<p>REMARKS:</p>
+<ol class="arabic simple">
+<li>Jamo letters are not in the Korean alphabet file (<code class="docutils literal"><span class="pre">Alphabet.txt</span></code>).
+DO NOT ADD THEM TO THIS FILE, because it would induce dysfunctions in
+programs.</li>
+<li>This alphabet file contains equivalences between some Chinese
+characters and some Hangul ones. In practice, if a grammar contains a
+Chinese character that has such an equivalent Hangul, it will match
+this Hangul in the text automaton. For instance, the grammar shown on
+Figure [fig7-korean5] will match the sentence of Figure
+[fig7-korean4], because the Korean alphabet file contains an
+equivalence for that character, as shown on Figure [fig7-korean6].</li>
+</ol>
+<div class="figure" id="id32">
+<a class="reference internal image-reference" href="resources/img/fig7-korean5.png"><img alt="A grammar with a Chinese character[fig7-korean5]" src="resources/img/fig7-korean5.png" style="width: 5.00000cm;" /></a>
+<p class="caption"><span class="caption-text">A grammar with a Chinese character[fig7-korean5]</span></p>
+</div>
+<div class="figure" id="id33">
+<a class="reference internal image-reference" href="resources/img/fig7-korean6.png"><img alt="Extract of Korean alphabet file[fig7-korean6]" src="resources/img/fig7-korean6.png" style="width: 3.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Extract of Korean alphabet file[fig7-korean6]</span></p>
+</div>
+<table class="docutils footnote" frame="void" id="id9" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[1]</a></td><td><p class="first">Entries which gather several different inflectional interpretations,
+such as for example:</p>
+<p class="last"><code class="docutils literal"><span class="pre">{se,.PRO+PpvLE:3ms:3fs:3mp:3fp}</span></code>.</p>
+</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id10" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[2]</a></td><td>This grammar is not completely correct, because it eliminates for
+example the correct analysis of the sentence: <em>J’ai reçu des coups de
+fil de ma mère hallucinants.</em></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id11" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7">[3]</a></td><td>This code indicates that the adjective must appear on the left of the
+nound to which it refers to, as is the case for <em>bel</em>.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id12" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id8">[4]</a></td><td>In Korean, versions before 3.1beta rev. 4272 display untagged tokens
+on a green background, as in Fig.&nbsp;[fig7-korean2] and [fig7-korean4].</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-en.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Text automaton</a><ul>
+<li><a class="reference internal" href="#displaying-text-automaton">Displaying text automaton</a></li>
+<li><a class="reference internal" href="#construction">Construction</a><ul>
+<li><a class="reference internal" href="#construction-rules-for-text-automata">Construction rules for text automata</a></li>
+<li><a class="reference internal" href="#normalization-of-ambiguous-forms">Normalization of ambiguous forms</a></li>
+<li><a class="reference internal" href="#normalization-of-clitic-pronouns-in-portuguese">Normalization of clitic pronouns in Portuguese</a></li>
+<li><a class="reference internal" href="#keeping-the-best-paths">Keeping the best paths</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#resolving-lexical-ambiguities-with-elag">Resolving Lexical Ambiguities with ELAG</a><ul>
+<li><a class="reference internal" href="#grammars-for-resolving-ambiguities">Grammars For Resolving Ambiguities</a><ul>
+<li><a class="reference internal" href="#synchronization-point">Synchronization point</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#compiling-elag-grammars">Compiling ELAG Grammars</a></li>
+<li><a class="reference internal" href="#resolving-ambiguities">Resolving Ambiguities</a></li>
+<li><a class="reference internal" href="#grammar-collections">Grammar collections</a></li>
+<li><a class="reference internal" href="#window-for-elag-processing">Window For ELAG Processing</a><ul>
+<li><a class="reference internal" href="#evaluation-of-ambiguity-removal">Evaluation of ambiguity removal</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#description-of-the-tag-sets">Description of the tag sets</a><ul>
+<li><a class="reference internal" href="#tagset-def-file"><code class="docutils literal"><span class="pre">tagset.def</span></code> file</a></li>
+<li><a class="reference internal" href="#description-of-the-inflectional-codes">Description of the inflectional codes</a></li>
+<li><a class="reference internal" href="#optional-codes">Optional Codes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#grammar-optimization">Grammar Optimization</a><ul>
+<li><a class="reference internal" href="#limiting-the-number-of-branches-in-the-then-part">Limiting the number of branches in the <em>then</em> part</a></li>
+<li><a class="reference internal" href="#using-lexical-masks">Using lexical masks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#linearizing-text-automaton-with-the-tagger">Linearizing text automaton with the tagger</a><ul>
+<li><a class="reference internal" href="#compatibility-of-the-tagset">Compatibility of the tagset</a></li>
+<li><a class="reference internal" href="#use-of-the-tagger">Use of the Tagger</a></li>
+<li><a class="reference internal" href="#creation-of-a-new-tagger">Creation of a new tagger</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#manipulation-of-text-automata">Manipulation of text automata</a><ul>
+<li><a class="reference internal" href="#displaying-sentence-automata">Displaying sentence automata</a></li>
+<li><a class="reference internal" href="#modifying-the-text-automaton">Modifying the text automaton</a><ul>
+<li><a class="reference internal" href="#manually-resolving-ambiguities">Manually resolving ambiguities</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#display-configuration">Display configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#converting-the-text-automaton-into-linear-text">Converting the text automaton into linear text</a></li>
+<li><a class="reference internal" href="#searching-patterns-in-the-text-automaton">Searching patterns in the text automaton</a></li>
+<li><a class="reference internal" href="#table-display">Table display</a></li>
+<li><a class="reference internal" href="#the-special-case-of-korean">The special case of Korean</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-en.html">Documentation overview</a><ul>
+      <li>Previous: <a href="05-grammars_EN_utf8.html" title="previous chapter">Local grammars</a></li>
+      <li>Next: <a href="08-sequence-automaton_EN_utf8.html" title="next chapter">Sequence Automaton</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/07-text_automaton_EN_utf8.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/07-text_automaton_EN_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

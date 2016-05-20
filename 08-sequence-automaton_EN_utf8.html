@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="EN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Sequence Automaton &mdash; Unitex-en 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-en 1.0.1 documentation" href="Unitex-en.html" />
+    <link rel="next" title="Lexicon-grammar" href="09-lexicon-grammar_EN_utf8.html" />
+    <link rel="prev" title="Text automaton" href="07-text_automaton_EN_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="sequence-automaton">
+<h1>Sequence Automaton<a class="headerlink" href="#sequence-automaton" title="Permalink to this headline">¶</a></h1>
+<p>The construction of local grammars can be a long process during which
+the linguist repeated many times the same operations. The aim of the
+Seq2Grf program is to produce quickly and automatically local grammars.</p>
+<p>This program can be used in command line mode or by clicking on
+“Construct Sequences Automaton” in the Text Menu. The use of the command
+Seq2Grf is described in section&nbsp;[Seq2Grf].</p>
+<p>For a given document (TEILite or txt format files or SNT when
+preprocessed for this task with STOP tags) this programs builds a single
+automaton that recognizes all the sequences contained in the document.</p>
+<p>Special attention should be paid to the establishment of the list of
+sequences that are recognized by the graph.</p>
+<p>This chapter presents the file formats supported by the Seq2Grf program,
+the construction of the sequence automaton, and the use of wildcards.</p>
+<div class="section" id="sequences-corpus">
+<h2>Sequences Corpus<a class="headerlink" href="#sequences-corpus" title="Permalink to this headline">¶</a></h2>
+<p>We call sequences corpus or qualified corpus a list of sequences of one
+or several words that we want to be recognized by only one local grammar
+graph.</p>
+<p>This sequences corpus is stored in one single file wich must be from one
+of the following formats :</p>
+<ul>
+<li><p class="first">raw text files in which sequences are delimited by end of line</p>
+</li>
+<li><p class="first">SNT files already processed with this menu : sequences will be
+delimited by the STOP tag.</p>
+</li>
+<li><p class="first">TEILite files in which sequences are delimited by the following xml
+tag :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">seg</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;sequence&quot;</span><span class="o">&gt;</span><span class="n">example</span><span class="o">&lt;/</span><span class="n">seg</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Since the corpus contains specific sequences, it must be done by hand.
+This means that you have to either write all the sequences in a raw text
+file and separate them by an end of line (figure&nbsp;[fig8-1CorpusTxt]), or
+insert the specific xml tag in an existing TEILite Document
+(figure&nbsp;[fig8-3CorpusTEI]). The preprocessing of TXT or XML Documents
+will produce a SNT file that is used for the build of the Sequence
+Automaton (figure&nbsp;[fig8-2CorpusSNT]). This File can be used as an input.
+The produced graph will only recognize the sequences that are correctly
+delimited. Production of local grammars is automatic only from a corpus
+of well-defined sequences. If you have such a corpus, then the time
+saved is considerable.</p>
+<p>[h!]0.5 <img alt="SNT[fig8-2CorpusSNT]" src="resources/img/fig8-2tomorrowSNT.png" /></p>
+<p>[h!]0.5 <img alt="SNT[fig8-2CorpusSNT]" src="resources/img/fig8-2tomorrowSNT.png" /></p>
+<p>[h!] <a class="reference internal" href="resources/img/fig8-3tomorrowTEI.png"><img alt="TEILite[fig8-3CorpusTEI]" src="resources/img/fig8-3tomorrowTEI.png" style="width: 14.00000cm;" /></a></p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>In order to create a sequence automaton, click on “Construct Sequence
+Automaton” in the “Text” menu. You will then see the window coming up as
+in figure&nbsp;[fig8-4Menu1].</p>
+<p>This window will allow you to set the parameters to produce a sequence
+automaton. You have to follow these three steps :</p>
+<ul>
+<li><p class="first">choose the sequence corpus : that can be a file which format is one
+of the three described in the previous section. The file format is
+automatically detected according to the file extension.</p>
+</li>
+<li><p class="first">set the specific options : Applying the beautifying algorithm will
+place each box so that the resulting graph is smaller and as easily
+readable as possible. The exact case matching will put litteral
+tokens into braces in the graph so that the graph doesn’t match
+tokens with same letters but with case differences.</p>
+<p>You can set more options to produce a graph that allow approximate
+matching : you can set the number of jokers to be used to produce new
+sequences derived from the sequences of the original corpus, and what
+kind of joker can be used. All the details about the use of jokers is
+detailed in section [approximation]</p>
+</li>
+<li><p class="first">choose the directory where the graph will be saved.</p>
+</li>
+</ul>
+<p>[h!]0.5 <a class="reference internal" href="resources/img/fig8-4Menu2.png"><img alt="Options of the sequence automaton menu[fig8-4Menu2]" src="resources/img/fig8-4Menu2.png" style="width: 8.00000cm;" /></a></p>
+<p>[h!]0.5 <a class="reference internal" href="resources/img/fig8-4Menu2.png"><img alt="Options of the sequence automaton menu[fig8-4Menu2]" src="resources/img/fig8-4Menu2.png" style="width: 8.00000cm;" /></a></p>
+<p>You can see in figures&nbsp;[fig8-5GRFnoBeautify] and&nbsp;[fig8-6GRFBeautify] the
+graphes without wildcards produced without or with beautify.</p>
+<p>[h!]0.5 <a class="reference internal" href="resources/img/fig8-6GRFBeautify.png"><img alt="Automaton with beautify option[fig8-6GRFBeautify]" src="resources/img/fig8-6GRFBeautify.png" style="width: 8.00000cm;" /></a></p>
+<p>[h!]0.5 <a class="reference internal" href="resources/img/fig8-6GRFBeautify.png"><img alt="Automaton with beautify option[fig8-6GRFBeautify]" src="resources/img/fig8-6GRFBeautify.png" style="width: 8.00000cm;" /></a></p>
+</div>
+<div class="section" id="search-by-approximation">
+<h2>Search by approximation<a class="headerlink" href="#search-by-approximation" title="Permalink to this headline">¶</a></h2>
+<p>When you perform a locate operation on a text using a graph produced
+with the Seq2Grf program, you will find in the match occurences only
+sequences present in the original sequence corpus. Some sequences close
+to those of the sequence corpus might appear in the text and be ignored
+because they are not in the sequence corpus. These sequences should be
+included in the sequence automaton. In order to find these sequences,you
+can produce a graph that recognize all the sequences from the sequence
+corpus, plus derived sequences that are the result of the application of
+three kind of wildcards. Each wildcard makes it possible to apply an
+operation to generate new sequences.</p>
+<ul class="simple">
+<li>insertion : for each sequence, add to the automaton all the sequences
+where &lt;TOKEN&gt; was inserted between two words of the original
+sequence.</li>
+<li>replacement : for each sequence, add to the automaton all the
+sequences where i tokens have been replace by &lt;TOKEN&gt;</li>
+<li>deletion : for each sequence, add to the automaton all the sequences
+where a token has been deleted</li>
+</ul>
+<p>Each of these operations can be applied several times to the original
+sequences. Applying this grammar to a text will introduce approximations
+in the search of the sequences in the text.</p>
+<p>When wildcards are used, the produced graphs follow these rules :</p>
+<ul class="simple">
+<li>both original and derived sequences are included in the automaton</li>
+<li>no empty sequence nor sequence made only with wildcards will be added
+to this graph (such sequences could be produced by deletions or
+replacements on short sequences)</li>
+<li>no insertion of a wildcard at the head or tail of a sequence</li>
+<li>every token of a sequence including the first and last can be
+replaced by a wildcard</li>
+</ul>
+<p>The graphs produced using wildcard contain many erroneous sequences and
+must be confronted with corpora by a locate to keep only the relevant
+sequences. These sequences might be used to produce a new graph you
+might want to keep.</p>
+<p>The graph in figure &nbsp;[fig8-7GRF1replace] was produced with replacement
+of 1 token and with the beautify option activated.</p>
+<div class="figure" id="id1">
+<a class="reference internal image-reference" href="resources/img/fig8-7GRF1replace.png"><img alt="Automaton with one replacement allowed[fig8-7GRF1replace]" src="resources/img/fig8-7GRF1replace.png" style="width: 8.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Automaton with one replacement allowed[fig8-7GRF1replace]</span></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-en.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Sequence Automaton</a><ul>
+<li><a class="reference internal" href="#sequences-corpus">Sequences Corpus</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#search-by-approximation">Search by approximation</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-en.html">Documentation overview</a><ul>
+      <li>Previous: <a href="07-text_automaton_EN_utf8.html" title="previous chapter">Text automaton</a></li>
+      <li>Next: <a href="09-lexicon-grammar_EN_utf8.html" title="next chapter">Lexicon-grammar</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/08-sequence-automaton_EN_utf8.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/08-sequence-automaton_EN_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
