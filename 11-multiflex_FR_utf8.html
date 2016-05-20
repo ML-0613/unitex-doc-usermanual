@@ -1,0 +1,1330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Flexion des mots composés &mdash; documentation Unitex-fr 1.0.1</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Unitex-fr 1.0.1" href="Unitex-fr.html" />
+    <link rel="next" title="Cascade de Transducteurs" href="12-cassys_FR_utf8.html" />
+    <link rel="prev" title="Alignement de texte" href="10-alignment_FR_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="flexion-des-mots-composes">
+<h1>Flexion des mots composés<a class="headerlink" href="#flexion-des-mots-composes" title="Lien permanent vers ce titre">¶</a></h1>
+<p>MULTIFLEX est une plate-forme compatible Unicode de flexion automatique
+des <em>mots composés</em> ou <em>multi-mots</em> (en anglais <em>multi-word units</em>
+MWUs). Elle est tout particulièrement conçue pour la création de
+dictionnaires morphologiques de mots composés. Elle met en œuvre un
+formalisme fondé sur l’unification (<a href="#id1"><span class="problematic" id="id2">:raw-latex:`\cite{Savary05}`</span></a>) pour
+la description du comportement flexionnel des mots composés et suppose
+l’existence d’un module de flexion des mots simples.</p>
+<p>Dans ce chapitre, nous présentons la notion de mots composés et nous
+décrivons la manière de les fléchir avec MULTIFLEX.</p>
+<p>Ce chapitre est fondé sur le manuel de MULTIFLEX, écrit par Agata
+Savary, l’auteur de MULTIFLEX.</p>
+<div class="section" id="mots-composes">
+<h2>Mots composés<a class="headerlink" href="#mots-composes" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Les mots composés (ou MWUs) englobent un ensemble d’objets linguistiques
+difficiles à définir et contreversés (cf.
+<a href="#id3"><span class="problematic" id="id4">:raw-latex:`\cite{HabertJacquemin93}`</span></a>, <a href="#id5"><span class="problematic" id="id6">:raw-latex:`\cite{Corbin92}`</span></a>).
+Leurs nombreuses définitions linguistiques ou pragmatiques
+(<a href="#id7"><span class="problematic" id="id8">:raw-latex:`\cite{Benven74}`</span></a>, <a href="#id9"><span class="problematic" id="id10">:raw-latex:`\cite{Downing77}`</span></a>,
+<a href="#id11"><span class="problematic" id="id12">:raw-latex:`\cite{Levi78}`</span></a>, <a href="#id13"><span class="problematic" id="id14">:raw-latex:`\cite{Bauer83}`</span></a>,
+<a href="#id15"><span class="problematic" id="id16">:raw-latex:`\cite{Gross90}`</span></a>, <a href="#id17"><span class="problematic" id="id18">:raw-latex:`\cite{Anscombre90}`</span></a>,
+<a href="#id19"><span class="problematic" id="id20">:raw-latex:`\cite{max-1993}`</span></a>, <a href="#id21"><span class="problematic" id="id22">:raw-latex:`\cite{Gross96}`</span></a>,
+<a href="#id23"><span class="problematic" id="id24">:raw-latex:`\cite{Cadiot92}`</span></a>) reposent sur trois principaux points:</p>
+<ul class="simple">
+<li>ils se composent de deux ou plusieurs mots</li>
+<li>ils montrent un certain degré de non-compositionnalité sur le plan
+morphologique, distributionnel ou sémantique</li>
+<li>ils possèdent un référent constant et unique</li>
+</ul>
+<p>Cependant, les notions de base (un mot, un référent, la
+non-compositionnalité) et les mesures (degré de non-compositionnalité)
+utilisées dans ces définitions sont elles-mêmes controversées.</p>
+<p>De façon pragmatique, nous considérons comme mot composé une séquence
+d’<em>unités graphiques</em> contiguës qui pour des raisons applicatives
+doivent être listées, décrites, (morphologiquement, syntaxiquement,
+sémantiquement, etc.) et traitées en tant qu’une seule et même unité.</p>
+<div class="section" id="description-formelle-du-comportement-flexionnel-des-mots-composes">
+<h3>Description formelle du comportement flexionnel des mots composés<a class="headerlink" href="#description-formelle-du-comportement-flexionnel-des-mots-composes" title="Lien permanent vers ce titre">¶</a></h3>
+<p>L’objectif principal de MULTIFLEX est le mécanisme de flexion des mots
+composés. Ce phénomène a été analysé en ce qui concerne l’anglais, le
+polonais et le français dans <a href="#id25"><span class="problematic" id="id26">:raw-latex:`\cite{these-Savary}`</span></a>.</p>
+<p>Evidemment, un processus fiable de flexion des mots simples est un
+prérequis pour la flexion des mots composés. Cependant, cette condition
+est rarement suffisante. Par exemple, en anglais, les formes plurielles
+de</p>
+<ul class="simple">
+<li><em>battle cry</em></li>
+<li><em>battle royal</em></li>
+<li><em>battle of nerves</em></li>
+</ul>
+<p>il n’est pas seulement nécessaire de savoir comment générer les pluriels
+de <em>battle, royal</em> et <em>cry</em>, mais aussi de savoir quelles formes
+fléchies de ces constituants se combinent entre elles:</p>
+<ul class="simple">
+<li><em>battle cr</em></li>
+<li><em>battle royal</em>, or <em>battle royal</em>,</li>
+<li><em>battle of nerves</em></li>
+</ul>
+<p>mais pas</p>
+<ul class="simple">
+<li><em>battle cr</em></li>
+<li><em>battle royal</em></li>
+<li><em>battle of nerve</em></li>
+</ul>
+<p>Formellement, une description explicite et complète du paradigme
+flexionnel des mots-composés doit répondre aux questions suivantes:</p>
+<ul>
+<li><p class="first">A quelle catégorie grammaticale appartient le mot composé (nom,
+adjectif, etc.) et donc quelles catégories flexionnelles (nombre,
+genre, cas, etc.) sont-elles pertinentes pour lui ?
+<a href="#id27"><span class="problematic" id="id28">:raw-latex:`\cite{PrzepWol03}`</span></a> se prononce pour une définiton fondée
+sur la morphosyntaxe des catégories grammaticales : une catégorie
+grammaticale devrait pleinement déterminer les catégories
+flexionnelles dans lesquelles le mot se fléchit ainsi que celles qui
+sont lexicalement fixées pour le mot. Par exemple, en polonais, un
+nom a un genre et se fléchit en nombre et en cas.</p>
+</li>
+<li><p class="first">Quelles sont les exceptions aux catégories flexionnelles déterminées
+ci-dessus ? Par exemple, en polonais</p>
+<ul>
+<li><div class="first line-block">
+<div class="line"><em>wybory powszechne</em></div>
+<div class="line">(<em>élections générales</em>)</div>
+</div>
+</li>
+</ul>
+<p>est un nom composé qui n’a pas de forme au singulier (cependant son
+nom tête <em>wybory</em> en possède une).</p>
+</li>
+<li><p class="first">Quelles sont les caractéristiques flexionnelles (forme canonique,
+catégorie grammaticale, paradigme flexionnel, etc.) des constituants
+simples du mot composé ? Par exemple, en français, <em>porte</em> est un
+verbe non fléchi dans</p>
+<ul class="simple">
+<li><em>porte-avion</em></li>
+</ul>
+<p>alors que c’est un nom fléchi dans</p>
+<ul class="simple">
+<li><em>porte-fenêtre</em></li>
+</ul>
+<p>qui prend un <em>s</em> au pluriel</p>
+<ul class="simple">
+<li><em>porte-fenêtre</em></li>
+</ul>
+</li>
+<li><p class="first">Comment doit-on combiner les formes fléchies des constituants simples
+pour générer les formes fléchies du composé ? Par exemple, pour
+fléchir <em>battle of nerves</em> et <em>battle cry</em> nous devons fléchir
+respectivement le premier et le dernier constituant.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="approche-lexicale-ou-grammaticale-de-la-description-morphologique">
+<h3>Approche lexicale ou grammaticale de la description morphologique<a class="headerlink" href="#approche-lexicale-ou-grammaticale-de-la-description-morphologique" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Une étude précédente (<a href="#id29"><span class="problematic" id="id30">:raw-latex:`\cite{these-Savary}`</span></a>) a confirmé le
+statut particulier des mots composés les situant à la frontière de la
+morphologie et de la syntaxe. Leur structure compositionnelle suggère
+une productivité qui ne pourrait guère être traitée sans une approche
+grammaticale.</p>
+<p>Toutefois, certaines de leurs propriétés morphologiques, syntaxiques et
+sémantiques excluent leur traitement seulement en termes des propriétés
+de leurs constituants. Par exemple, dans les deux exemples ci-dessous:</p>
+<ul class="simple">
+<li><em>chief justice</em></li>
+<li><em>lord justice</em></li>
+</ul>
+<p>il y a peu d’indices automatiquement accessibles indiquant que le
+dernier est morphologiquement un syntagme nominal anglais standard
+prenant un <em>s</em> à son dernier constituant au pluriel, tandis que le
+pluriel de celui-ci a trois variantes:</p>
+<ul class="simple">
+<li><em>chief justice</em></li>
+<li><em>lord justice, lord justice, lord justice</em></li>
+</ul>
+<p>Ainsi, au moins l’un des exemples ci-dessus doit être considéré comme
+lexicalisé pour que la flexion automatique soit fiable.</p>
+<p>MULTIFLEX met en œuvre un formalisme fondé sur l’unification qui permet
+de décrire la flexion des mots composés <a href="#id31"><span class="problematic" id="id32">:raw-latex:`\cite{Savary05}`</span></a>.
+Ses caractéristiques sont décrites dans la section&nbsp;[section:formalism].
+Ce formalisme nécessite que la description soit <em>pleinement</em>
+lexicalisée: chaque mot composé figurant dans un dictionnaire est muni
+d’un code (ex: <em>NC_NN, NC_NN2</em>, etc.) représentant son paradigme
+flexionnel, par exemple, dans un format de type DELA:</p>
+<div class="math">
+\[\begin{split}\begin{array}[c]{l}
+  $aircraft carrier(carrier.N1:s),\textbf{NC\_NN}$ \\
+  $chief justice(justice.N1:s),\textbf{NC\_NN}$ \\
+  $lord(lord.N1:s) justice(justice.N1:s),\textbf{NC\_NN2}$ \\
+  \dots
+\end{array}\end{split}\]</div>
+<p>Cependant, la grande majorité des mots composés peut être traitée avec
+un petit nombre de codes. Ainsi, la lexicalisation de la description
+consiste principalement à définir les mots composés, qui respectent ou
+ne respectent pas la “grammaire”.</p>
+</div>
+</div>
+<div class="section" id="formalisme-de-flexion-des-mots-composes">
+<h2>Formalisme de flexion des mots composés<a class="headerlink" href="#formalisme-de-flexion-des-mots-composes" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Un formalisme de description de la morphologie des mots composés a été
+décrit par Agata Savary en 1985 <a href="#id33"><span class="problematic" id="id34">:raw-latex:`\cite{Savary05}`</span></a>. Il est
+fondé sur des études sur l’anglais, le polonais et le français, et en
+outre a été testé pour le serbe <a href="#id35"><span class="problematic" id="id36">:raw-latex:`\cite{Krstevetal06}`</span></a> et le
+grec <a href="#id37"><span class="problematic" id="id38">:raw-latex:`\cite{Foufi13}`</span></a>. Il repose sur une représentation
+indépendante de la langue qui doit être complétée par l’ensemble des
+éléments caractéristiques d’une langue donnée. Dans cette section, nous
+donnons une description détaillée de ce formalisme.</p>
+<div class="section" id="caracteristiques-morphologiques-de-la-langue">
+<h3>Caractéristiques morphologiques de la langue<a class="headerlink" href="#caracteristiques-morphologiques-de-la-langue" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Lorsque l’on traite les mots composés d’une langue, il faut définir les
+caractéristiques générales de cette langue. Ces données se trouvent dans
+deux fichiers textes.</p>
+<p>Le fichier <code class="docutils literal"><span class="pre">Morphology.txt</span></code> indique les catégories grammaticales (nom,
+adjectif,…), catégories flexionnelles (nombre, genre, cas,…) et leurs
+valeurs (masculin, féminin, singulier, nominatif,…). Considérons
+l’exemple suivant:</p>
+<div class="math">
+\[\begin{split}\begin{array}[c]{ll}
+$Polish$ \\
+$$&lt;$CATEGORIES$&gt;$$ \\
+$Nb: sing, pl$ \\
+$Case: Nom, Gen, Dat, Acc, Inst, Loc, Voc$ \\
+$Gen: masc\_pers, masc\_anim, masc\_inanim, fem, neu$ \\
+$$&lt;$CLASSES$&gt;$)$ \\
+$noun: (Nb,$&lt;$var$&gt;$),(Case,$&lt;$var$&gt;$),(Gen,$&lt;$fixed$&gt;$)$ \\
+$adj:(Nb,$&lt;$var$&gt;$),(Case,$&lt;$var$&gt;$),(Gen,$&lt;$var$&gt;$)$ \\
+$adv:$
+\end{array}\end{split}\]</div>
+<p>Le fichier ci-dessus indique que pour le polonais, trois catégories
+flexionnelles sont considérées: le nombre (<em>Nb</em>), le cas (<em>Case</em>), et le
+genre (<em>Gen</em>). On donne pour chaque catégorie la liste exhaustive des
+valeurs qu’elle peut prendre (singulier et pluriel pour le nombre,
+etc.). Ensuite, chaque catégorie grammaticale est décrite selon les
+catégories qui varient avec la flexion, et celles qui sont définies. Par
+exemple, un nom se fléchit en nombre et en cas et possède un genre
+défini. Ce type de fichier est nécessaire pour exprimer le fait qu’un
+certain mot se fléchit en nombre, genre ou cas, sans avoir à énumérer
+chaque fois les valeurs flexionnelles (singuler, pluriel, masculin,
+etc.) qu’il accepte.</p>
+<p>De façon similaire, pour le français, le fichier <code class="docutils literal"><span class="pre">Morphology.txt</span></code>
+ressemble à ceci:</p>
+<div class="math">
+\[\begin{split}\begin{array}[c]{l}
+$French$ \\
+$$&lt;$CATEGORIES$&gt;$$ \\
+$Nb: s, p$ \\
+$Gen: m, f$ \\
+$$&lt;$CLASSES$&gt;$$\\
+$noun: (Nb,$&lt;$var$&gt;$),(Gen,$&lt;$var$&gt;$)$ \\
+$adj:(Nb,$&lt;$var$&gt;$),(Gen,$&lt;$var$&gt;$)$ \\
+$adv:$
+\end{array}\end{split}\]</div>
+<p>Toutefois, dans les systèmes de flexion existants, de telles
+descriptions de catégories grammaticales, catégories flexionnelles et
+valeurs ne sont pas toujours présentes. Par exemple, selon les
+conventions DELA (<a href="#id39"><span class="problematic" id="id40">:raw-latex:`\cite{dicos-francais}`</span></a>) les valeurs
+morphologiques des mots simples sont des séquences de caractères
+contigus (e.g. <em>ms</em> pour le masculin singulier) sans mention explicite
+des catégories correspondantes. Afin que le programme soit compatible
+avec de tels systèmes, on utilise une liste (contenue dans le fichier
+appelé <code class="docutils literal"><span class="pre">Equivalences.txt</span></code>) qui décrit quelle caractéristique
+flexionelle correspond à quelle paire catégorie/valeur dans notre
+description. Par exemple, les listes suivantes:</p>
+<div class="math">
+\[\begin{split}\begin{array}[c]{ll}
+Polish                        &amp;French\\
+s: Nb=sing                    &amp;s: Nb=s  \\
+p: Nb=pl                      &amp;p: Nb=p \\
+M: Case=Nom                   &amp;f: Gen=f  \\
+D: Case=Gen                   &amp;m: Gen=m    \\
+C: Case=Dat  &amp;\\
+B: Case=Acc  &amp;\\
+I: Case=Inst  &amp;\\
+L: Case=Loc  &amp;\\
+V: Case=Voc  &amp;\\
+o: Gen=masc\_pers  &amp;\\
+z: Gen=masc\_anim  &amp;\\
+r: Gen=masc\_inanim  &amp;\\
+f: Gen=fem  &amp;\\
+n: Gen=neu &amp;
+\end{array}\end{split}\]</div>
+<p>décrivent les équivalences entre les précédents fichiers
+<code class="docutils literal"><span class="pre">Morphology.txt</span></code> du polonais et du français, respectivement, et les
+caractéristiques représentées par une unique lettre qui peuvent être
+utilisées dans les dictionnaires DELA pour ces langues dans Unitex.</p>
+</div>
+<div class="section" id="decomposition-dun-mot-compose-en-constituants">
+<h3>Décomposition d’un mot composé en constituants<a class="headerlink" href="#decomposition-dun-mot-compose-en-constituants" title="Lien permanent vers ce titre">¶</a></h3>
+<p>La notion de constituant élémentaire est controversée et varie selon les
+langues et les systèmes de TAL. Par exemple, dans Unitex, un alphabet,
+c’est à dire un ensemble de caractères, est d’abord défini pour chaque
+langue. Tout caractère n’appartenant pas à l’alphabet est appelé
+séparateur. Un constituant élémentaire est aussi bien un simple
+séparateur (habituellement un signe de ponctuation, un chiffre, etc.)
+une séquence de caractères contigus appartenant à l’alphabet (ex
+<em>aujourd’hui</em> comporte selon cette définition, 3 constituants). Dans
+d’autres systèmes, un constituant peut contenir un signe de ponctuation
+(e.g. <em>c’est-à-dire</em>), ou une limite entre deux constituants peut se
+produire dans une séquence de caractères alphabétiques
+(<em>widział:math:`mid`bym</em> ’je verrais’ , cf.
+<a href="#id41"><span class="problematic" id="id42">:raw-latex:`\cite{PrzepWol03}`</span></a>).</p>
+<p>Cette variété de définitions possibles d’un constituant a évidemment un
+impact sur la définition d’un mot composé. Cependant, nous souhaitons
+que notre formalisme puisse s’adapter à différents systèmes de flexion
+de “mots simples”. Ainsi, la définition d’un constituant est un
+paramètre de notre système: chaque fois que MULTIFLEX est utilisé avec
+un module externe pour les mots simples, celui-ci doit décider comment
+une séquence de caractères est divisée en constituants.</p>
+<p>Dans notre formalisme, les constituants sont représentés par des
+variables numériques <em>$1, $2, $3</em>, etc. Par exemple avec Unitex, la
+séquence</p>
+<ul class="simple">
+<li><em>Athens ’04</em></li>
+</ul>
+<p>comprend cinq constituants envoyés à MULTIFLEX de cette façon:</p>
+<div class="math">
+\[\begin{split}\begin{array}[c]{l}
+$\$1 = \emph{Athens}$ \\
+$\$2 = $&lt;$space$&gt;$$ \\
+$\$3 = \emph{'}$ \\
+$\$4 = \emph{0}$ \\
+$\$5 = \emph{4}$ \\
+\end{array}\end{split}\]</div>
+<p>Chaque constituant d’un mots composé suceptible d’être fléchi doit être
+morphologiquement identifié. Cette identification doit permettre de
+fournir les informations nécessaires afin que n’importe quelle forme
+fléchie de ce mot puisse être générée à la demande. Par exemple dans:</p>
+<ul class="simple">
+<li><em>mémoire vive</em></li>
+</ul>
+<p>nous devons savoir que <em>vive</em> est le féminin singulier de <em>vif</em>, et
+ainsi être capable de générer le féminin pluriel, <em>vives</em>. Dans
+MULTIFLEX nous supposons que ce module externe de traitement des mots
+simples est responsable de leur identification et de la génération de
+leurs formes fléchies.</p>
+<p>Dans Unitex, la génération des formes fléchies est fortement inspirée du
+système DELA (<a href="#id43"><span class="problematic" id="id44">:raw-latex:`\cite{dicos-francais}`</span></a>). Pour générer une ou
+plusieurs formes fléchies d’un mot, nous devons connaître:</p>
+<ul class="simple">
+<li>sa forme canonique</li>
+<li>son paradigme flexionnel (appelé code flexionnel)</li>
+<li>les caractéristiques flexionnelles des formes à produire</li>
+</ul>
+<p>Ainsi, dans l’interface Unitex/MULTIFLEX la description d’un mot simple
+se fait comme suit :</p>
+<ul class="simple">
+<li><em>vive(vif.A54:fs)</em></li>
+</ul>
+<p>où <em>A54</em> est le code flexionnel <em>vif</em> et <em>fs</em> forment la description
+morphologique de type DELA des caractéristiques présentes dans le
+fichier <code class="docutils literal"><span class="pre">Equivalences.txt</span></code> (cf. section&nbsp;[subsec:langfeat]). En sachant
+que <em>vive</em> est le féminin singulier de <em>vif</em>, on peut demander la
+génération du pluriel sans avoir à préciser explicitement le genre du
+pluriel de la forme souhaitée: puisque nous voulons seulement modifier
+le nombre, le genre reste celui du mot d’origine <em>vive</em>, donc féminin.</p>
+</div>
+<div class="section" id="paradigme-de-flexion-des-mots-composes">
+<h3>Paradigme de flexion des mots composés<a class="headerlink" href="#paradigme-de-flexion-des-mots-composes" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Dans notre formalisme, la description morphologique des mots-composés
+repose sur le système DELA dans la mesure où :</p>
+<ul class="simple">
+<li>chaque mot composé possède un code flexionnel</li>
+<li>un code flexionnel décrit explicitement chaque forme fléchie en
+termes de traitement à effectuer sur sa forme canonique, et de
+caractéristiques à lui associer.</li>
+</ul>
+<p>Dans sa version Unitex, MULTIFLEX utilise des codes flexionnels qui
+renvoient à des graphes Unitex compilés au format<code class="docutils literal"><span class="pre">.fst2</span></code>. Par
+exemple, figure&nbsp;[fig:BattleRoyal] présente le graphe de flexion pour
+<em>battle royal</em>.</p>
+<div class="figure" id="id49">
+<a class="reference internal image-reference" href="resources/img/BattleRoyal.png"><img alt="Graphe de flexion pour *battle royal*\" src="resources/img/BattleRoyal.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion pour <em>battle royal</em></span></p>
+</div>
+<p>Selon les conventions d’Unitex, trois constituants sont présents dans
+<em>battle royal</em>: <em>battle</em> dénommé <em>$1</em>, un espace dénommé <em>$2</em>, et
+<em>royal</em> dénommé <em>$3</em>. Si des variables apparaissent seules dans une
+boîte, le constituant sera le même que dans le lemme du mot composé. Par
+exemple, <span class="math">\(&lt;\)</span>$3<span class="math">\(&gt;\)</span> dans le premier chemin du graphe
+signifie que <em>royal</em> doit être recopié tel quel. Si la variable est
+accompagnée d’assignations de la forme catégories=caractéristiques, le
+constituant sera fléchi dans la forme demandée. Ainsi
+<span class="math">\(&lt;\)</span>$3:Nb=p<span class="math">\(&gt;\)</span> signifie que la forme plurielle de <em>royal</em>
+est souhaitée.</p>
+<p>Pour générer toutes les formes fléchies d’un mot composé, nous devons
+explorer tous les chemins du graphe. Chaque chemin débute à la flèche
+droite la plus à gauche et se termine à la boîte encerclée finale.
+Chaque fois qu’une boîte est atteinte, on réalise l’action qu’elle
+contient (la recopie ou la flexion d’un constituant) et on accumule les
+informations présentes sous la boîte. Le total des sorties des boîtes
+accumulé donne la description morphologique complète de la forme
+fléchie.</p>
+<p>Par exemple, dans le graphe de la figure&nbsp;[fig:BattleRoyal] si nous
+suivons le chemin intermédiaire, extrait à la
+figure&nbsp;[fig:BattleRoyalonepath]:</p>
+<div class="figure" id="id50">
+<a class="reference internal image-reference" href="resources/img/BattleRoyalonepath.png"><img alt="Un chemin du graphe de flexion de *battle royal*\" src="resources/img/BattleRoyalonepath.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Un chemin du graphe de flexion de <em>battle royal</em></span></p>
+</div>
+<p>nous recopions <em>battle</em> (<em>$1</em>) et l’espace (<em>$2</em>), et nous mettons
+<em>royal</em> au pluriel, ce qui produit la forme du pluriel <em>battle royals</em>
+du mot composé. Le graphe de la figure&nbsp;[fig:BattleRoyal] contenant trois
+chemins différents, l’ensemble des formes fléchies générées pour <em>battle
+royal</em> sera:</p>
+<div class="math">
+\[ \begin{align}\begin{aligned}\begin{split}  \begin{array}[l]{l}
+  \emph{battle royal $&lt;$Nb=s$&gt;$} \\
+  \emph{battle royals $&lt;$Nb=p$&gt;$} \\
+  \emph{battles royal $&lt;$Nb=p$&gt;$}
+  \end{array}\end{split}\\Après réécriture de ces formes au format DELACF, on obtient les entrées\end{aligned}\end{align} \]</div>
+<p>suivantes:</p>
+<div class="math">
+\[\begin{split}\begin{array}[l]{l}
+\emph{battle royal,battle royal.N:s} \\
+\emph{battle royals,battle royal.N:p} \\
+\emph{battles royal,battle royal.N:p}
+\end{array}\end{split}\]</div>
+<p>Remarquons que cette description est indépendante de la manière dont les
+formes fléchies des mots simples sont générées parce que nous supposons
+que ce traitement est géré par le module externe de flexion des mots
+simples. Dans la version Unitex de MULTIFLEX, nous générons le pluriel
+de <em>royal</em> du fait que nous connaissons son code flexionnel <em>N1</em> qui
+correspond au graphe de la figure [fig:N1].</p>
+<p>Dans le paradigme flexionnel d’un mot composé, chaque constituant est
+accompagné de la catégorie morphologique qui détermine sa flexion. Les
+catégories inchangées n’ont pas besoin d’être mentionnées. Par exemple,
+dans <em>bateau-mouche</em> les deux noms constituants ont un genre déterminé
+et ne se fléchissent qu’en nombre: <em>bateau-mouche</em>. C’est pourquoi
+(figure&nbsp;[fig:BateauMouche1]) dans le graphe de flexion de ce mot
+composé, les boîtes correspondantes ne contiennent des assignations de
+valeurs que pour le nombre. Remarquons que les deux constituants peuvent
+avoir ou non le même genre, ici <em>bateau</em> est masculin tandis que
+<em>mouche</em> est féminin.</p>
+<div class="section" id="variables-dunification">
+<h4>Variables d’unification<a class="headerlink" href="#variables-dunification" title="Lien permanent vers ce titre">¶</a></h4>
+<p>Une caractéristique importante de notre formalisme est celle des
+<em>variables d’unification</em>. Elles sont représentées par un symbole dollar
+(<em>$</em>) suivi d’un identifiant pouvant contenir n’importe quel nombre de
+caractères, comme <em>$g1</em>, <em>$num_10</em>, <em>$c</em>, etc. La
+figure&nbsp;[fig:BateauMouche2] montre un graphe approximativement
+équivalent <a class="footnote-reference" href="#id48" id="id45">[1]</a> à celui de la figure&nbsp;[fig:BateauMouche1] dans la mesure
+où il permet d’engendrer les mêmes formes fléchies pour le même mot
+composé. Cependant, ici, un chemin unique représente à la fois le
+singulier et le pluriel. Ceci est rendu possible grâce à la variable
+<em>$n</em> qui est instanciée tour à tour par toutes les valeurs du domaine de
+sa catégorie (<em>Nb</em>), ici <em>$n=s</em> puis <em>$n=p</em>. Quand une variable
+d’unification apparait dans une formule du type <em>Nb=$n</em>, avec un seul
+signe égale (=), le système parcourt toutes les valeurs déclarées dans
+les fichiers de configuration pour cette catégorie (cf.
+section&nbsp;[subsec:langfeat]). Pour chaque valeur, il effectue une nouvelle
+instanciation de la variable. L’instanciation est la même pour tous les
+éléments du chemin: si une valeur est attribuée au premier constituant,
+la même valeur doit être attribuée au troisième, ainsi que pour
+l’ensemble du mot composé. De même, si nous attribuons à <em>$n</em> la valeur
+<em>p</em> dans la première boîte, elle garde cette valeur <em>p</em> tout au long du
+chemin.</p>
+<p>Le graphe de flexion de la figure&nbsp;[fig:BateauMouche2] s’applique à la
+plupart des composés français de types <em>Nom Nom</em> et <em>Nom Adjectif</em>
+(<em>bateau-mouche, ange gardien, circuit séquentiel</em>, etc.) qui sont de
+genre masculin&nbsp;: c’est parce que la sortie de la boîte finale contient
+<em>Gen=m</em>. Pour tous les composés des mêmes types, mais de genre féminin,
+comme <em>main courante, moissoneuse-batteuse</em>, etc., un nouveau graphe
+doit être créé, identique à celui de figure&nbsp;[fig:BateauMouche2] jusqu’à
+la sortie finale contenant <em>:math:`&lt;`Gen=f;Nb=$n:math:`&gt;`</em>. Ce n’est
+pas très intuitif puisque <em>circuit séquentiel</em> et <em>main courante</em> se
+fléchissent de la même manière, dans la mesure où dans les deux cas nous
+devons mettre au pluriel le premier et le dernier constituant pour
+obtenir le pluriel du mot composé.</p>
+<p>C’est pourquoi un autre type d’instanciation utilisant l’unification a
+été introduit. Il s’exprime au moyen de <em>==</em> (par opposition au signe
+égale simple <em>=</em> comme pour <em>$n</em> dans la figure&nbsp;[fig:BateauMouche2]).
+Quand une valeur est attribuée à une variable en utilisant ce symbole,
+la variable est instanciée une seule fois&nbsp;: elle hérite de la catégorie
+du constituant, telle qu’elle apparaît dans la forme canonique du mot
+composé. Par exemple, la figure&nbsp;[fig:BateauMouche3] contient un graphe
+décrivant la flexion pour le masculin comme pour le féminin des mots
+composés de type <em>Nom Nom</em> et <em>Nom Adjectif</em>. La première boîte contient
+l’affectation du genre par double signe égale pour la variable <em>$g</em>, ce
+qui signifie que cette variable a pour genre celui du premier
+constituant. Pour <em>bateau-mouche</em> c’est le masculin parce que <em>bateau</em>
+est masculin tandis que pour <em>main courante</em> c’est le féminin.</p>
+<p>Quand une affectation par double symbole égale coexiste avec une
+affectation par simple symbole égale, sur le même chemin et pour la même
+variable, l’affectation par double symbole égale prévaut sur l’autre&nbsp;:
+la variable est instanciée une seule fois. Par exemple, sur la
+figure&nbsp;[fig:BateauMouche3] la sortie finale contient <em>Gen=$g</em>, mais <em>$g</em>
+prend une seule valeur déterminée par le premier constituant.</p>
+<p>Le système d’unification est particulièrement utile pour des langues à
+la flexion riche. Par exemple, en polonais la plupart des noms se
+fléchissent en nombre (2 valeurs) et en cas (7 valeurs), ce qui implique
+au moins 14 formes différentes (si des variantes et des formes
+syncrétiques diffèrent). Ce score est encore plus élevé pour les
+adjectifs qui se fléchissent en nombre, en cas et en genre (de 3 à 9
+valeurs, selon différentes approches). Si aucun mécanisme d’unification
+n’était disponible, ces formes devraient être décrites par des chemins
+séparés dans le graphe. L’unification permet de réduire considérablement
+la taille du graphe (jusqu’à un seul chemin dans la plupart des cas).</p>
+<p>Par exemple, le graphe de la figure&nbsp;[fig:PranieMozgu] permet de fléchir
+les mots composés polonais qui se fléchissent comme <em>pranie mózgu</em>
+(<em>lavage du cerveau</em>) ou <em>powożenie koniem</em> (ang. <em>horse coaching</em>).
+Leur troisième constituant a son cas défini (le plus souvent au génitif
+ou à l’instrumental). Le premier et le troisième constituant se
+fléchissent en nombre indépendamment l’un de l’autre (<em>pranie mózg</em>,
+<em>prani mózgu</em>, <em>prani mózg</em>, etc.). C’est pourquoi chacun d’eux a une
+variable différente pour la flexion en nombre (<em>$n1</em> et <em>$n2</em>). Les
+trois variables <span class="math">\(\$n1\)</span>, <span class="math">\(\$n2\)</span>, et <span class="math">\(\$c\)</span> peuvent être
+instanciées à n’importe quelle valeur de leur domaine respectif
+(<em>{sing,pl}, {sing,pl}</em>, et <em>{Nom,Gen,Dat,Acc,Inst,Loc,Voc}</em>; cf.
+<code class="docutils literal"><span class="pre">Morphology.txt</span></code> fichier à la section&nbsp;[subsec:langfeat]). Le mot
+composé hérite son genre, son nombre et son cas de son premier
+constituant. Ce genre est défini par (<em>Gen==$g</em>) alors que son nombre et
+son cas sont instanciés selon 14 combinaisons possibles. Sans
+unification, le chemin unique de ce graphe aurait du être remplacé par
+28 chemins différents.</p>
+<div class="figure" id="id51">
+<a class="reference internal image-reference" href="resources/img/PranieMozgu.png"><img alt="Graphe de flexion pour *pranie mózgu*\" src="resources/img/PranieMozgu.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion pour <em>pranie mózgu</em></span></p>
+</div>
+</div>
+<div class="section" id="variantes-orthographiques-et-autres-variantes">
+<h4>Variantes orthographiques et autres variantes<a class="headerlink" href="#variantes-orthographiques-et-autres-variantes" title="Lien permanent vers ce titre">¶</a></h4>
+<p>Notre formalisme permet à n’importe quel constituant d’être omis ou
+déplacé au sein de différentes formes fléchies si cela est nécessaire.
+Il permet également l’insertion de constituants supplémentaires qui
+n’apparaissent pas dans la forme de base du mot composé. Cela permet
+d’étendre un paradigme flexionnel à une description de variantes plus
+générale, orthographique ou, partielle, variante syntaxique (voir
+<a href="#id46"><span class="problematic" id="id47">:raw-latex:`\cite{Jacquemin01}`</span></a> pour une étude exhaustive des
+variantes).</p>
+<p>Par exemple en anglais, <em>student union</em> apparaît dans un corpus sous les
+formes <em>student union</em>, et <em>student union</em>, au singulier ou au pluriel
+dans les deux cas. Notre formalisme permet d’ajouter les deux types de
+variantes à la description (cf. figure&nbsp;[fig:StudentUnion]).</p>
+<div class="figure" id="id52">
+<a class="reference internal image-reference" href="resources/img/StudentUnion.png"><img alt="Graphe de flexion pour *student union*\" src="resources/img/StudentUnion.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion pour <em>student union</em></span></p>
+</div>
+<p>figure&nbsp;[fig:BirthDate] montre un exemple dans lequel, en plus de
+l’insertion d’un nouveau constituant, l’ordre des constituants peut être
+inversé. Le chemin du haut permet de générer par exemple <em>birth date</em> et
+<em>birth dates</em> tandis que celui du bas représente les variantes
+syntaxiques des formes précédentes: <em>date of birth</em> et <em>dates of birth</em>.</p>
+<div class="figure" id="id53">
+<a class="reference internal image-reference" href="resources/img/BirthDate.png"><img alt="Graphe de flexion pour *birth date*\" src="resources/img/BirthDate.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion pour <em>birth date</em></span></p>
+</div>
+</div>
+<div class="section" id="interface-avec-le-systeme-de-flexion-des-mots-simples">
+<h4>Interface avec le système de flexion des mots simples<a class="headerlink" href="#interface-avec-le-systeme-de-flexion-des-mots-simples" title="Lien permanent vers ce titre">¶</a></h4>
+<p>MULTIFLEX est une mise en œuvre du formalisme de flexion des mots
+composés précédemment présenté. Il suppose l’existence d’un sytème de
+flexion des mots simples qui satisfasse les contraintes d’interface
+suivantes:</p>
+<ul>
+<li><p class="first">Pour une séquence de caractères donnée, il renvoie sa décomposition
+en constituants insécables (tokens) (cf section&nbsp;[subsec:decomp]). Par
+exemple, dans le cas de la définiton d’un token dans Unitex, la
+séquence <em>Athens ’04</em> est divisée en 5 tokens:</p>
+<div class="math">
+\[\begin{array}[l]{l}
+\emph{``Athens '04'' $\rightarrow$ (``Athens'','' ``,''''',''0'',''4'')}
+\end{array}\]</div>
+<p>Pour une forme fléchie simple donnée, il retourne toutes ses
+caractéristiques flexionnelles. Ces caractéristiques doivent
+permettre la génération à la demande de toute autre forme fléchie de
+même lemme par le même module de flexion. Par exemple, dans le cas
+d’Unitex, la forme <em>porte</em> mène à la reconnaissance de 7 formes (dont
+6 sont factorisées selon leur code flexionnel):</p>
+<div class="math">
+\[ \begin{align}\begin{aligned}  \begin{array}[l]{l}
+  \emph{porte $\rightarrow$ ((porte,porte.N21:s),(porte,porter.V3:P1s:P3s:S1s:S3s:Y2s))}
+  \end{array}\\En cas d’ambiguïté, comme ci-dessus, l’identification correcte doit\end{aligned}\end{align} \]</div>
+<p>être faite, pour le moment, par l’utilisateur lors de l’édition du
+lemme du mot composé à fléchir (par la suite, cette tâche sera
+partiellement automatisée). Par exemple, dans le cas de
+<em>porte-fenêtre</em>, le premier constituant doit être identifié comme un
+nom plûtot que comme un verbe.</p>
+</li>
+<li><p class="first">Pour une identification morphologique donnée et un ensemble de
+valeurs flexionnelles, il renvoie toutes les formes fléchies
+corespondantes. Par exemple, en polonais, si le cas instrumental du
+mot <em>rka</em> doit être produit, trois formes doivent être renvoyées:
+<em>rk</em> (instrumental singulier), <em>rkami</em> et <em>rkoma</em> (deux variantes de
+l’instrumental pluriel).</p>
+<div class="math">
+\[\begin{split}\begin{array}[l]{lll}
+\emph{(r\k{e}ka,$&lt;$Case=Inst$&gt;$)}&amp;  \rightarrow    &amp;
+\emph{((r\k{e}k\k{a},&lt;Nb=sing;Gen=fem;Case=Inst&gt;)}, \\
+                                    &amp;              &amp; \emph{(r\k{e}kami,&lt;Nb=pl;Gen=fem;Case=Inst&gt;)},
+                                    \\
+                                    &amp;              &amp; \emph{(r\k{e}koma,&lt;Nb=pl;Gen=fem;Case=Inst&gt;))}
+\end{array}\end{split}\]</div>
+</li>
+</ul>
+<p>La présence d’une interface entre le système de flexion des mots simples
+et celui des mots composés permet une meilleure modularité et une
+indépendance de l’un vis-à-vis de l’autre. Le sytème de flexion des mots
+composés n’a pas besoin de savoir comment les formes fléchies des mots
+simples sont décrites, analysées et générées. Il a seulement besoin d’un
+ensemble de formes correctement fléchies des constituants des mots
+composés. Réciproquement, le système pour les mots simples ne connait
+rien de la manière dont celui des mots composés combine les formes
+fournies.</p>
+</div>
+</div>
+</div>
+<div class="section" id="integration-a-unitex">
+<h2>Intégration à Unitex<a class="headerlink" href="#integration-a-unitex" title="Lien permanent vers ce titre">¶</a></h2>
+<p>L’un des principes majeurs de conception de MULTIFLEX est d’être aussi
+indépendant que possible du système de flexion des mots simples.
+Cependant, l’existence d’un tel système est inévitable parce qu’un mot
+composé est formé de mots simples que nous devons être en mesure de
+fléchir dans le but de fléchir un mot composé dans son ensemble.</p>
+<p>Dans sa version actuelle, MULTIFLEX repose sur le système de flexion des
+mots simples d’Unitex</p>
+<ul class="simple">
+<li>MULTIFLEX utilise les mêmes codages qu’Unitex, i.e. Unicode 3.0.</li>
+<li>MULTIFLEX utilise l’éditeur de graphe d’Unitex pour représenter la
+flexion des mots composés.</li>
+<li>MULTIFLEX admet des principes de description morphologique similaires
+à ceux du système DELA mis en œuvre dans Unitex. Ainsi, un paradigme
+est un ensemble d’actions à effectuer sur le lemme afin de générer
+ses formes fléchies, et de leurs associer les informations
+flexionnelles correspondantes.</li>
+<li>MULTIFLEX permet d’étendre la flexion des mots simples à celle des
+mots composés en produisant à partir d’un DELAC (DELA électronique
+des mots composés) un DELACF (DELA électronique des formes fléchies
+de mots composés). Le format du DELACF généré est compatible avec
+Unitex tandis que le format du DELAC est nouveau, mais inspiré de
+celui du DELAS (DELA électronique dictionnaire des mots simples).</li>
+</ul>
+<p>Les sections suivantes présentent, pour plusieurs langues, des exemples
+complets de flexion d’un DELAC en DELACF à travers l’interface
+MULTIFLEX/Unitex.</p>
+<div class="section" id="exemple-complet-en-anglais">
+<h3>Exemple complet en anglais<a class="headerlink" href="#exemple-complet-en-anglais" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Supposons que la description des caractéristiques morphologiques de
+l’anglais est définie par le fichier <code class="docutils literal"><span class="pre">Morphology.txt</span></code> suivant:</p>
+<div class="math">
+\[\begin{split}\begin{array}[l]{l}
+$English$ \\
+$&lt;CATEGORIES&gt;$ \\
+$Nb:s,p$ \\
+$&lt;CLASSES&gt;$ \\
+$noun:(Nb,&lt;var&gt;)$ \\
+$adj:$
+\end{array}\end{split}\]</div>
+<p>et que les équivalences entre les caractéristiques ci-dessus et leurs
+codes correspondants dans les dictionnaires DELA sont définis par le
+fichier <code class="docutils literal"><span class="pre">Equivalences.txt</span></code> suivant:</p>
+<div class="math">
+\[\begin{split}\begin{array}[l]{l}
+$English$ \\
+$s : Nb=s$ \\
+$p : Nb=p$ \\
+\end{array}\end{split}\]</div>
+<p>Considérons l’extrait du DELAC anglais suivant:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">angle</span><span class="p">(</span><span class="n">angle</span><span class="o">.</span><span class="n">N1</span><span class="p">:</span><span class="n">s</span><span class="p">)</span> <span class="n">of</span> <span class="n">reflection</span><span class="p">,</span><span class="n">NC_NXXXX</span>
+<span class="n">Adam</span><span class="s1">&#39;s apple(apple.N1:s),NC_XXXXN</span>
+<span class="n">air</span> <span class="n">brake</span><span class="p">(</span><span class="n">brake</span><span class="o">.</span><span class="n">N1</span><span class="p">:</span><span class="n">s</span><span class="p">),</span><span class="n">NC_XXN</span>
+<span class="n">birth</span> <span class="n">date</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">N1</span><span class="p">:</span><span class="n">s</span><span class="p">),</span><span class="n">NC_NN_NofN</span>
+<span class="n">criminal</span> <span class="n">police</span><span class="p">,</span><span class="n">NC_XXXinv</span>
+<span class="n">cross</span><span class="o">-</span><span class="n">roads</span><span class="p">,</span><span class="n">NC_XXNs</span>
+<span class="n">head</span><span class="p">(</span><span class="n">head</span><span class="o">.</span><span class="n">N1</span><span class="p">:</span><span class="n">s</span><span class="p">)</span> <span class="n">of</span> <span class="n">government</span><span class="p">(</span><span class="n">government</span><span class="o">.</span><span class="n">N1</span><span class="p">:</span><span class="n">s</span><span class="p">),</span><span class="n">NC_NofNs</span>
+<span class="n">notary</span><span class="p">(</span><span class="n">notary</span><span class="o">.</span><span class="n">N3</span><span class="p">:</span><span class="n">s</span><span class="p">)</span> <span class="n">public</span><span class="p">(</span><span class="n">public</span><span class="o">.</span><span class="n">N1</span><span class="p">:</span><span class="n">s</span><span class="p">),</span><span class="n">NC_NsNs</span>
+<span class="n">rolling</span> <span class="n">stone</span><span class="p">(</span><span class="n">stone</span><span class="o">.</span><span class="n">N1</span><span class="p">:</span><span class="n">s</span><span class="p">),</span><span class="n">NC_XXN</span>
+<span class="n">student</span><span class="p">(</span><span class="n">student</span><span class="o">.</span><span class="n">N1</span><span class="p">:</span><span class="n">s</span><span class="p">)</span> <span class="n">union</span><span class="p">(</span><span class="n">union</span><span class="o">.</span><span class="n">N1</span><span class="p">:</span><span class="n">s</span><span class="p">),</span><span class="n">NC_Ns</span><span class="s1">&#39;N</span>
+</pre></div>
+</div>
+<p>Les graphes de flexion correspondants <em>N1</em> et <em>N3</em> pour les mots simples
+se trouvent dans les figures&nbsp;[fig:N1’EN] et figures&nbsp;[fig:N3’EN] tandis
+que ceux pour les mots composés s’échelonnent de la
+figure&nbsp;[fig:NC’NXXXX’EN] à la figure&nbsp;[fig:NC’Ns’N’EN].</p>
+<p>Le DELACF résultant de la flexion par MULTIFLEX du DELAC précédent est
+le suivant:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">angle</span> <span class="n">of</span> <span class="n">reflection</span><span class="p">,</span><span class="n">angle</span> <span class="n">of</span> <span class="n">reflection</span><span class="o">.</span><span class="n">NC_NXXXX</span><span class="p">:</span><span class="n">s</span>
+<span class="n">angles</span> <span class="n">of</span> <span class="n">reflection</span><span class="p">,</span><span class="n">angle</span> <span class="n">of</span> <span class="n">reflection</span><span class="o">.</span><span class="n">NC_NXXXX</span><span class="p">:</span><span class="n">p</span>
+<span class="n">Adam</span><span class="s1">&#39;s apple,Adam&#39;</span><span class="n">s</span> <span class="n">apple</span><span class="o">.</span><span class="n">NC_XXXXN</span><span class="p">:</span><span class="n">s</span>
+<span class="n">Adam</span><span class="s1">&#39;s apples,Adam&#39;</span><span class="n">s</span> <span class="n">apple</span><span class="o">.</span><span class="n">NC_XXXXN</span><span class="p">:</span><span class="n">p</span>
+<span class="n">air</span> <span class="n">brake</span><span class="p">,</span><span class="n">air</span> <span class="n">brake</span><span class="o">.</span><span class="n">NC_XXN</span><span class="p">:</span><span class="n">s</span>
+<span class="n">air</span> <span class="n">brakes</span><span class="p">,</span><span class="n">air</span> <span class="n">brake</span><span class="o">.</span><span class="n">NC_XXN</span><span class="p">:</span><span class="n">p</span>
+<span class="n">date</span> <span class="n">of</span> <span class="n">birth</span><span class="p">,</span><span class="n">birth</span> <span class="n">date</span><span class="o">.</span><span class="n">NC_NN_NofN</span><span class="p">:</span><span class="n">s</span>
+<span class="n">dates</span> <span class="n">of</span> <span class="n">birth</span><span class="p">,</span><span class="n">birth</span> <span class="n">date</span><span class="o">.</span><span class="n">NC_NN_NofN</span><span class="p">:</span><span class="n">p</span>
+<span class="n">birth</span> <span class="n">date</span><span class="p">,</span><span class="n">birth</span> <span class="n">date</span><span class="o">.</span><span class="n">NC_NN_NofN</span><span class="p">:</span><span class="n">s</span>
+<span class="n">birth</span> <span class="n">dates</span><span class="p">,</span><span class="n">birth</span> <span class="n">date</span><span class="o">.</span><span class="n">NC_NN_NofN</span><span class="p">:</span><span class="n">p</span>
+<span class="n">criminal</span> <span class="n">police</span><span class="p">,</span><span class="n">criminal</span> <span class="n">police</span><span class="o">.</span><span class="n">NC_XXXinv</span><span class="p">:</span><span class="n">p</span>
+<span class="n">cross</span><span class="o">-</span><span class="n">roads</span><span class="p">,</span><span class="n">cross</span><span class="o">-</span><span class="n">roads</span><span class="o">.</span><span class="n">NC_XXNs</span><span class="p">:</span><span class="n">s</span>
+<span class="n">cross</span><span class="o">-</span><span class="n">roads</span><span class="p">,</span><span class="n">cross</span><span class="o">-</span><span class="n">roads</span><span class="o">.</span><span class="n">NC_XXNs</span><span class="p">:</span><span class="n">p</span>
+<span class="n">heads</span> <span class="n">of</span> <span class="n">government</span><span class="p">,</span><span class="n">head</span> <span class="n">of</span> <span class="n">government</span><span class="o">.</span><span class="n">NC_NofNs</span><span class="p">:</span><span class="n">p</span>
+<span class="n">heads</span> <span class="n">of</span> <span class="n">governments</span><span class="p">,</span><span class="n">head</span> <span class="n">of</span> <span class="n">government</span><span class="o">.</span><span class="n">NC_NofNs</span><span class="p">:</span><span class="n">p</span>
+<span class="n">head</span> <span class="n">of</span> <span class="n">government</span><span class="p">,</span><span class="n">head</span> <span class="n">of</span> <span class="n">government</span><span class="o">.</span><span class="n">NC_NofNs</span><span class="p">:</span><span class="n">s</span>
+<span class="n">notaries</span> <span class="n">public</span><span class="p">,</span><span class="n">notary</span> <span class="n">public</span><span class="o">.</span><span class="n">NC_NsNs</span><span class="p">:</span><span class="n">p</span>
+<span class="n">notary</span> <span class="n">public</span><span class="p">,</span><span class="n">notary</span> <span class="n">public</span><span class="o">.</span><span class="n">NC_NsNs</span><span class="p">:</span><span class="n">s</span>
+<span class="n">notary</span> <span class="n">publics</span><span class="p">,</span><span class="n">notary</span> <span class="n">public</span><span class="o">.</span><span class="n">NC_NsNs</span><span class="p">:</span><span class="n">p</span>
+<span class="n">rolling</span> <span class="n">stone</span><span class="p">,</span><span class="n">rolling</span> <span class="n">stone</span><span class="o">.</span><span class="n">NC_XXN</span><span class="p">:</span><span class="n">s</span>
+<span class="n">rolling</span> <span class="n">stones</span><span class="p">,</span><span class="n">rolling</span> <span class="n">stone</span><span class="o">.</span><span class="n">NC_XXN</span><span class="p">:</span><span class="n">p</span>
+<span class="n">students</span><span class="s1">&#39; union,student union.NC_Ns&#39;</span><span class="n">N</span><span class="p">:</span><span class="n">s</span>
+<span class="n">students</span><span class="s1">&#39; unions,student union.NC_Ns&#39;</span><span class="n">N</span><span class="p">:</span><span class="n">p</span>
+<span class="n">students</span> <span class="n">union</span><span class="p">,</span><span class="n">student</span> <span class="n">union</span><span class="o">.</span><span class="n">NC_Ns</span><span class="s1">&#39;N:s</span>
+<span class="n">students</span> <span class="n">unions</span><span class="p">,</span><span class="n">student</span> <span class="n">union</span><span class="o">.</span><span class="n">NC_Ns</span><span class="s1">&#39;N:p</span>
+<span class="n">student</span> <span class="n">union</span><span class="p">,</span><span class="n">student</span> <span class="n">union</span><span class="o">.</span><span class="n">NC_Ns</span><span class="s1">&#39;N:s</span>
+<span class="n">student</span> <span class="n">unions</span><span class="p">,</span><span class="n">student</span> <span class="n">union</span><span class="o">.</span><span class="n">NC_Ns</span><span class="s1">&#39;N:p</span>
+</pre></div>
+</div>
+<p>[c]0.45 <a class="reference internal" href="resources/img/N3'EN.png"><img alt="Graphe de flexion *N3* de mots simples anglais" src="resources/img/N3'EN.png" style="width: 3.00000cm;" /></a></p>
+<p>[c]0.5 <a class="reference internal" href="resources/img/N3'EN.png"><img alt="Graphe de flexion *N3* de mots simples anglais" src="resources/img/N3'EN.png" style="width: 3.00000cm;" /></a></p>
+<div class="figure" id="id54">
+<a class="reference internal image-reference" href="resources/img/NC'NXXXX'EN.png"><img alt="Graphe de flexion *NC\_NXXXX* de mots composés anglais" src="resources/img/NC'NXXXX'EN.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_NXXXX</em> de mots composés anglais</span></p>
+</div>
+<div class="figure" id="id55">
+<a class="reference internal image-reference" href="resources/img/NC'XXXXN'EN.png"><img alt="Graphe de flexion *NC\_XXXXN* de mots composés anglais" src="resources/img/NC'XXXXN'EN.png" style="width: 9.70000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_XXXXN</em> de mots composés anglais</span></p>
+</div>
+<div class="figure" id="id56">
+<a class="reference internal image-reference" href="resources/img/NC'XXN'EN.png"><img alt="Graphe de flexion *NC\_XXN* de mots composés anglais" src="resources/img/NC'XXN'EN.png" style="width: 7.80000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_XXN</em> de mots composés anglais</span></p>
+</div>
+<div class="figure" id="id57">
+<a class="reference internal image-reference" href="resources/img/NC'NN'NofN'EN.png"><img alt="Graphe de flexion *NC\_NN\_NofN* de mots composés anglais" src="resources/img/NC'NN'NofN'EN.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_NN_NofN</em> de mots composés anglais</span></p>
+</div>
+<div class="figure" id="id58">
+<a class="reference internal image-reference" href="resources/img/NC'XXXinv'EN.png"><img alt="Graphe de flexion *NC\_XXXinv* de mots composés anglais" src="resources/img/NC'XXXinv'EN.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_XXXinv</em> de mots composés anglais</span></p>
+</div>
+<div class="figure" id="id59">
+<a class="reference internal image-reference" href="resources/img/NC'XXNs'EN.png"><img alt="Graphe de flexion *NC\_XXNs* de mots composés anglais" src="resources/img/NC'XXNs'EN.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_XXNs</em> de mots composés anglais</span></p>
+</div>
+<div class="figure" id="id60">
+<a class="reference internal image-reference" href="resources/img/NC'NofNs'EN.png"><img alt="Graphe de flexion *NC\_NofNs* de mots composés anglais" src="resources/img/NC'NofNs'EN.png" style="width: 10.40000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_NofNs</em> de mots composés anglais</span></p>
+</div>
+<div class="figure" id="id61">
+<a class="reference internal image-reference" href="resources/img/NC'NsNs'EN.png"><img alt="Graphe de flexion *NC\_NsNs* de mots composés anglais" src="resources/img/NC'NsNs'EN.png" style="width: 10.40000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_NsNs</em> de mots composés anglais</span></p>
+</div>
+<div class="figure" id="id62">
+<a class="reference internal image-reference" href="resources/img/NC'Ns'N'EN.png"><img alt="Graphe de flexion *NC\_Ns’N* de mots composés anglais" src="resources/img/NC'Ns'N'EN.png" style="width: 9.80000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_Ns’N</em> de mots composés anglais</span></p>
+</div>
+</div>
+<div class="section" id="exemple-complet-en-francais">
+<h3>Exemple complet en français<a class="headerlink" href="#exemple-complet-en-francais" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Supposons que la description des caractéristiques morphologiques du
+français est définie par le fichier <code class="docutils literal"><span class="pre">Morphology.txt</span></code> suivant:</p>
+<div class="math">
+\[\begin{split}\begin{array}[l]{l}
+$French$ \\
+$&lt;CATEGORIES&gt;$ \\
+$Nb : s, p$ \\
+$Gen : m, f$ \\
+$&lt;CLASSES&gt;$ \\
+$noun : (Nb,&lt;var&gt;),(Gen,&lt;var&gt;)$ \\
+$adj:(Nb,&lt;var&gt;),(Gen,&lt;var&gt;)$ \\
+$adv:$
+\end{array}\end{split}\]</div>
+<p>et que les équivalences entre les caractéristiques ci-dessus et leurs
+codes correspondants dans les dictionnaires DELA sont définis par le
+fichier <code class="docutils literal"><span class="pre">Equivalences.txt</span></code> suivant:</p>
+<div class="math">
+\[\begin{split}\begin{array}[l]{l}
+$French$ \\
+$s : Nb=s$ \\
+$p : Nb=p$ \\
+$m : Gen=m$ \\
+$f : Gen=f$
+\end{array}\end{split}\]</div>
+<p>Considérons l’extrait du DELAC français suivant (les codes flexionnels
+des mots simples peuvent être différents de ceux présents dans Unitex):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>avant-garde(garde.N21:fs),NC_XXN
+bateau(bateau.N3:ms)-mouche(mouche.N21:fs),NC_NN
+café(café.N1:ms) au lait,NC_NXXXX
+carte(carte.N21:fs) postale(postal.A8:fs),NC_NN$
+cousin(cousin.N8:ms) germain(germain.A8:ms),NC_NNmf
+franc(franc.A47:ms) maçon(maçon.N41:ms),NC_AN1
+mémoire(mémoire.N21:fs) vive(vif.A48:fs),NC_NN
+microscope(microscope.N1:ms) à effet tunnel,NC_NXXXXXX
+porte-serviette(serviette.N21:fs),NC_VNm
+</pre></div>
+</div>
+<p>Les graphes de flexion correspondants se trouvent de la figure
+&nbsp;[fig:NC’XXN’FR] à la figure &nbsp;[fig:NC’VNm’FR].</p>
+<p>Le DELACF résultant de la flexion par MULTIFLEX du DELAC précédent est
+le suivant:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">avant</span><span class="o">-</span><span class="n">garde</span><span class="p">,</span><span class="n">avant</span><span class="o">-</span><span class="n">garde</span><span class="o">.</span><span class="n">NC_XXN</span><span class="p">:</span><span class="n">fs</span>
+<span class="n">avant</span><span class="o">-</span><span class="n">gardes</span><span class="p">,</span><span class="n">avant</span><span class="o">-</span><span class="n">garde</span><span class="o">.</span><span class="n">NC_XXN</span><span class="p">:</span><span class="n">fp</span>
+<span class="n">bateau</span><span class="o">-</span><span class="n">mouche</span><span class="p">,</span><span class="n">bateau</span><span class="o">-</span><span class="n">mouche</span><span class="o">.</span><span class="n">NC_NN</span><span class="p">:</span><span class="n">ms</span>
+<span class="n">bateaux</span><span class="o">-</span><span class="n">mouches</span><span class="p">,</span><span class="n">bateau</span><span class="o">-</span><span class="n">mouche</span><span class="o">.</span><span class="n">NC_NN</span><span class="p">:</span><span class="n">mp</span>
+<span class="n">café</span> <span class="n">au</span> <span class="n">lait</span><span class="p">,</span><span class="n">café</span> <span class="n">au</span> <span class="n">lait</span><span class="o">.</span><span class="n">NC_NXXXX</span><span class="p">:</span><span class="n">ms</span>
+<span class="n">cafés</span> <span class="n">au</span> <span class="n">lait</span><span class="p">,</span><span class="n">café</span> <span class="n">au</span> <span class="n">lait</span><span class="o">.</span><span class="n">NC_NXXXX</span><span class="p">:</span><span class="n">mp</span>
+<span class="n">carte</span> <span class="n">postale</span><span class="p">,</span><span class="n">carte</span> <span class="n">postale</span><span class="o">.</span><span class="n">NC_NN</span><span class="p">:</span><span class="n">fs</span>
+<span class="n">cartes</span> <span class="n">postales</span><span class="p">,</span><span class="n">carte</span> <span class="n">postale</span><span class="o">.</span><span class="n">NC_NN</span><span class="p">:</span><span class="n">fp</span>
+<span class="n">cousin</span> <span class="n">germain</span><span class="p">,</span><span class="n">cousin</span> <span class="n">germain</span><span class="o">.</span><span class="n">NC_NNmf</span><span class="p">:</span><span class="n">ms</span>
+<span class="n">cousins</span> <span class="n">germains</span><span class="p">,</span><span class="n">cousin</span> <span class="n">germain</span><span class="o">.</span><span class="n">NC_NNmf</span><span class="p">:</span><span class="n">mp</span>
+<span class="n">cousine</span> <span class="n">germaine</span><span class="p">,</span><span class="n">cousin</span> <span class="n">germain</span><span class="o">.</span><span class="n">NC_NNmf</span><span class="p">:</span><span class="n">fs</span>
+<span class="n">cousines</span> <span class="n">germaines</span><span class="p">,</span><span class="n">cousin</span> <span class="n">germain</span><span class="o">.</span><span class="n">NC_NNmf</span><span class="p">:</span><span class="n">fp</span>
+<span class="n">franc</span><span class="o">-</span><span class="n">maçon</span><span class="p">,</span><span class="n">franc</span> <span class="n">maçon</span><span class="o">.</span><span class="n">NC_AN1</span><span class="p">:</span><span class="n">ms</span>
+<span class="n">franc</span><span class="o">-</span><span class="n">maçonne</span><span class="p">,</span><span class="n">franc</span> <span class="n">maçon</span><span class="o">.</span><span class="n">NC_AN1</span><span class="p">:</span><span class="n">fs</span>
+<span class="n">franc</span> <span class="n">maçon</span><span class="p">,</span><span class="n">franc</span> <span class="n">maçon</span><span class="o">.</span><span class="n">NC_AN1</span><span class="p">:</span><span class="n">ms</span>
+<span class="n">franc</span> <span class="n">maçonne</span><span class="p">,</span><span class="n">franc</span> <span class="n">maçon</span><span class="o">.</span><span class="n">NC_AN1</span><span class="p">:</span><span class="n">fs</span>
+<span class="n">francs</span><span class="o">-</span><span class="n">maçons</span><span class="p">,</span><span class="n">franc</span> <span class="n">maçon</span><span class="o">.</span><span class="n">NC_AN1</span><span class="p">:</span><span class="n">mp</span>
+<span class="n">francs</span><span class="o">-</span><span class="n">maçonnes</span><span class="p">,</span><span class="n">franc</span> <span class="n">maçon</span><span class="o">.</span><span class="n">NC_AN1</span><span class="p">:</span><span class="n">fp</span>
+<span class="n">francs</span> <span class="n">maçons</span><span class="p">,</span><span class="n">franc</span> <span class="n">maçon</span><span class="o">.</span><span class="n">NC_AN1</span><span class="p">:</span><span class="n">mp</span>
+<span class="n">francs</span> <span class="n">maçonnes</span><span class="p">,</span><span class="n">franc</span> <span class="n">maçon</span><span class="o">.</span><span class="n">NC_AN1</span><span class="p">:</span><span class="n">fp</span>
+<span class="n">mémoire</span> <span class="n">vive</span><span class="p">,</span><span class="n">mémoire</span> <span class="n">vive</span><span class="o">.</span><span class="n">NC_NN</span><span class="p">:</span><span class="n">fs</span>
+<span class="n">mémoires</span> <span class="n">vives</span><span class="p">,</span><span class="n">mémoire</span> <span class="n">vive</span><span class="o">.</span><span class="n">NC_NN</span><span class="p">:</span><span class="n">fp</span>
+<span class="n">microscope</span> <span class="n">à</span> <span class="n">effet</span> <span class="n">tunnel</span><span class="p">,</span><span class="n">microscope</span> <span class="n">à</span> <span class="n">effet</span> <span class="n">tunnel</span><span class="o">.</span><span class="n">NC_NXXXXXX</span><span class="p">:</span><span class="n">ms</span>
+<span class="n">microscopes</span> <span class="n">à</span> <span class="n">effet</span> <span class="n">tunnel</span><span class="p">,</span><span class="n">microscope</span> <span class="n">à</span> <span class="n">effet</span> <span class="n">tunnel</span><span class="o">.</span><span class="n">NC_NXXXXXX</span><span class="p">:</span><span class="n">mp</span>
+<span class="n">porte</span><span class="o">-</span><span class="n">serviette</span><span class="p">,</span><span class="n">porte</span><span class="o">-</span><span class="n">serviette</span><span class="o">.</span><span class="n">NC_VNm</span><span class="p">:</span><span class="n">ms</span>
+<span class="n">porte</span><span class="o">-</span><span class="n">serviettes</span><span class="p">,</span><span class="n">porte</span><span class="o">-</span><span class="n">serviette</span><span class="o">.</span><span class="n">NC_VNm</span><span class="p">:</span><span class="n">ms</span>
+<span class="n">porte</span><span class="o">-</span><span class="n">serviettes</span><span class="p">,</span><span class="n">porte</span><span class="o">-</span><span class="n">serviette</span><span class="o">.</span><span class="n">NC_VNm</span><span class="p">:</span><span class="n">mp</span>
+</pre></div>
+</div>
+<div class="figure" id="id63">
+<a class="reference internal image-reference" href="resources/img/NC'XXN'FR.png"><img alt="Graphe de flexion *NC\_XXN* de mots composés français" src="resources/img/NC'XXN'FR.png" style="width: 10.20000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_XXN</em> de mots composés français</span></p>
+</div>
+<div class="figure" id="id64">
+<a class="reference internal image-reference" href="resources/img/NC'NN'FR.png"><img alt="Graphe de flexion *NC\_NN* de mots composés français" src="resources/img/NC'NN'FR.png" style="width: 10.80000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_NN</em> de mots composés français</span></p>
+</div>
+<div class="figure" id="id65">
+<a class="reference internal image-reference" href="resources/img/NC'NXXXX'FR.png"><img alt="Graphe de flexion *NC\_NXXXX* de mots composés français" src="resources/img/NC'NXXXX'FR.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_NXXXX</em> de mots composés français</span></p>
+</div>
+<div class="figure" id="id66">
+<a class="reference internal image-reference" href="resources/img/NC'NNmf'FR.png"><img alt="Graphe de flexion *NC\_NNmf* de mots composés français" src="resources/img/NC'NNmf'FR.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_NNmf</em> de mots composés français</span></p>
+</div>
+<div class="figure" id="id67">
+<a class="reference internal image-reference" href="resources/img/NC'AN1'FR.png"><img alt="Graphe de flexion *NC\_AN1* de mots composés français" src="resources/img/NC'AN1'FR.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_AN1</em> de mots composés français</span></p>
+</div>
+<div class="figure" id="id68">
+<a class="reference internal image-reference" href="resources/img/NC'NXXXXXX'FR.png"><img alt="Graphe de flexion *NC\_NXXXXXX* de mots composés français" src="resources/img/NC'NXXXXXX'FR.png" style="width: 12.20000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_NXXXXXX</em> de mots composés français</span></p>
+</div>
+<div class="figure" id="id69">
+<a class="reference internal image-reference" href="resources/img/NC'VNm'FR.png"><img alt="Graphe de flexion *NC\_VNm* de mots composés français" src="resources/img/NC'VNm'FR.png" style="width: 9.20000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_VNm</em> de mots composés français</span></p>
+</div>
+</div>
+<div class="section" id="exemple-en-serbe">
+<h3>Exemple en serbe<a class="headerlink" href="#exemple-en-serbe" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Supposons que la description des caractéristiques morphologiques du
+serbe est définie par le fichier <code class="docutils literal"><span class="pre">Morphology.txt</span></code> suivant:</p>
+<div class="math">
+\[ \begin{align}\begin{aligned}\begin{split}  \begin{array}[l]{l}
+  $Serbian$\\
+  $&lt;CATEGORIES&gt;$\\
+  $Nb:s,p,w$ \\
+  $Case:1,2,3,4,5,6,7$\\
+  $Gen:m,f,n$\\
+  $Anim:v,q,g$\\
+  $Comp:a,b,c$\\
+  $Det:d,k,e$\\
+  $&lt;CLASSES&gt;$\\
+  $noun:(Nb,&lt;var&gt;),(Case,&lt;var&gt;),(Gen,&lt;var&gt;),(Anim,&lt;fixed&gt;)$\\
+  $adj:(Nb,&lt;var&gt;),(Case,&lt;var&gt;),(Gen,&lt;var&gt;),(Anim,&lt;var&gt;),(Comp,&lt;var&gt;),(Det,&lt;var&gt;)$\\
+  $adv:$
+  \end{array}\end{split}\\La particuliarité de ce modèle morphologique n’est pas seulement sa\end{aligned}\end{align} \]</div>
+<p>richesse mais aussi l’existence de <em>no-care</em> features comme <em>Anim=g</em> ou
+<em>Det=e</em>. Ces caractéristiques s’accordent avec les autres
+caractéristiques de la même catégorie. Elles sont utilisées uniquement
+pour certaines sous-classes particulières de noms ou d’adjectifs et sont
+nécessaires pour une meill-eure compacité des paradigmes flexionnels des
+mots simples qui sont déjà très imposants, et le seraient encore plus
+sans elles.</p>
+<p>Supposons que les équivalences entre les caractéristiques ci-dessus et
+leurs codes correspondants dans les dictionnaires DELA soient définis
+par le fichier <code class="docutils literal"><span class="pre">Equivalences.txt</span></code> suivant:</p>
+<div class="math">
+\[\begin{split}\begin{array}[l]{l}
+$Serbian$ \\
+$s:Nb=s$ \\
+$p:Nb=p$ \\
+$w:Nb=w$ \\
+$1:Case=1$ \\
+$2:Case=2$ \\
+$3:Case=3$ \\
+$4:Case=4$ \\
+$5:Case=5$ \\
+$6:Case=6$ \\
+$7:Case=7$ \\
+$m:Gen=m$ \\
+$f:Gen=f$ \\
+$n:Gen=n$ \\
+$v:Anim=v$ \\
+$q:Anim=q$ \\
+$g:Anim=g$ \\
+$a:Comp=a$ \\
+$b:Comp=b$ \\
+$c:Comp=c$ \\
+$d:Det=d$ \\
+$k:Det=k$ \\
+$e:Det=e$
+\end{array}\end{split}\]</div>
+<p>Considérons l’extrait du DELAC serbe suivant (les codes flexionnels des
+mots simples peuvent être différents de ceux présents dans Unitex):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">zxiro</span> <span class="n">racyun</span><span class="p">(</span><span class="n">racyun</span><span class="o">.</span><span class="n">N1</span><span class="p">:</span><span class="n">ms1q</span><span class="p">),</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="p">(</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">N10</span><span class="p">:</span><span class="n">ms1v</span><span class="p">),</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span>
+<span class="n">predsednik</span><span class="p">(</span><span class="n">predsednik</span><span class="o">.</span><span class="n">N10</span><span class="p">:</span><span class="n">ms1v</span><span class="p">)</span> <span class="n">drzxave</span><span class="p">(</span><span class="n">drzxava</span><span class="o">.</span><span class="n">N600</span><span class="p">:</span><span class="n">fs2q</span><span class="p">),</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span>
+<span class="n">Ujedinxene</span><span class="p">(</span><span class="n">Ujedinxen</span><span class="o">.</span><span class="n">A1</span><span class="p">:</span><span class="n">aefp1g</span><span class="p">)</span> <span class="n">nacije</span><span class="p">(</span><span class="n">nacija</span><span class="o">.</span><span class="n">N600</span><span class="p">:</span><span class="n">fp1q</span><span class="p">),</span><span class="n">NC_AXN3</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Org</span>
+<span class="n">Kosovo</span><span class="p">(</span><span class="n">Kosovo</span><span class="o">.</span><span class="n">N308</span><span class="p">:</span><span class="n">ns1q</span><span class="p">)</span> <span class="n">i</span> <span class="n">Metohija</span><span class="p">(</span><span class="n">Metohija</span><span class="o">.</span><span class="n">N623</span><span class="p">:</span><span class="n">fs1q</span><span class="p">),</span><span class="n">NC_N3XN</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Top</span><span class="o">+</span><span class="n">Reg</span>
+<span class="n">istrazxni</span><span class="p">(</span><span class="n">istrazxni</span><span class="o">.</span><span class="n">A2</span><span class="p">:</span><span class="n">adms1g</span><span class="p">)</span> <span class="n">sudija</span><span class="p">(</span><span class="n">sudija</span><span class="o">.</span><span class="n">N679</span><span class="p">:</span><span class="n">ms1v</span><span class="p">),</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span>
+<span class="n">Mirosinka</span><span class="p">(</span><span class="n">Mirosinka</span><span class="o">.</span><span class="n">N1637</span><span class="p">:</span><span class="n">fs1v</span><span class="p">)</span> <span class="n">Dinkicx</span><span class="p">(</span><span class="n">Dinkicx</span><span class="o">.</span><span class="n">N1028</span><span class="p">:</span><span class="n">ms1v</span><span class="p">),</span><span class="n">NC_ImePrezime</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">PersName</span>
+<span class="n">gladan</span><span class="p">(</span><span class="n">gladan</span><span class="o">.</span><span class="n">A18</span><span class="p">:</span><span class="n">akms1g</span><span class="p">)</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">(</span><span class="n">vuk</span><span class="o">.</span><span class="n">N128</span><span class="p">:</span><span class="n">ms1v</span><span class="p">),</span><span class="n">AC_A3XN2</span><span class="o">/</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+</pre></div>
+</div>
+<p>Les graphes de flexion correspondants se trouvent de la
+figure&nbsp;[fig:NC’2XN1’SRB] à la figure&nbsp;[fig:AC’A3XN2’SRB].</p>
+<p>Le DELACF résultant de la flexion par MULTIFLEX du DELAC précédent est
+le suivant:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">zxiro</span><span class="o">-</span><span class="n">racyun</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s1qm</span>
+<span class="n">zxiro</span><span class="o">-</span><span class="n">racyuna</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s2qm</span>
+<span class="n">zxiro</span><span class="o">-</span><span class="n">racyunu</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s3qm</span>
+<span class="n">zxiro</span><span class="o">-</span><span class="n">racyun</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s4qm</span>
+<span class="n">zxiro</span><span class="o">-</span><span class="n">racyune</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s5qm</span>
+<span class="n">zxiro</span><span class="o">-</span><span class="n">racyunom</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s6qm</span>
+<span class="n">zxiro</span><span class="o">-</span><span class="n">racyunu</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s7qm</span>
+<span class="n">zxiro</span><span class="o">-</span><span class="n">racyuni</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p1qm</span>
+<span class="n">zxiro</span><span class="o">-</span><span class="n">racyuna</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p2qm</span>
+<span class="n">zxiro</span><span class="o">-</span><span class="n">racyunima</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p3qm</span>
+<span class="n">zxiro</span><span class="o">-</span><span class="n">racyune</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p4qm</span>
+<span class="n">zxiro</span><span class="o">-</span><span class="n">racyuni</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p5qm</span>
+<span class="n">zxiro</span><span class="o">-</span><span class="n">racyunima</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p6qm</span>
+<span class="n">zxiro</span><span class="o">-</span><span class="n">racyunima</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p7qm</span>
+<span class="n">zxiro</span><span class="o">-</span><span class="n">racyuna</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">w2qm</span>
+<span class="n">zxiro</span><span class="o">-</span><span class="n">racyuna</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">w4qm</span>
+<span class="n">zxiro</span> <span class="n">racyun</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s1qm</span>
+<span class="n">zxiro</span> <span class="n">racyuna</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s2qm</span>
+<span class="n">zxiro</span> <span class="n">racyunu</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s3qm</span>
+<span class="n">zxiro</span> <span class="n">racyun</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s4qm</span>
+<span class="n">zxiro</span> <span class="n">racyune</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s5qm</span>
+<span class="n">zxiro</span> <span class="n">racyunom</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s6qm</span>
+<span class="n">zxiro</span> <span class="n">racyunu</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s7qm</span>
+<span class="n">zxiro</span> <span class="n">racyuni</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p1qm</span>
+<span class="n">zxiro</span> <span class="n">racyuna</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p2qm</span>
+<span class="n">zxiro</span> <span class="n">racyunima</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p3qm</span>
+<span class="n">zxiro</span> <span class="n">racyune</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p4qm</span>
+<span class="n">zxiro</span> <span class="n">racyuni</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p5qm</span>
+<span class="n">zxiro</span> <span class="n">racyunima</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p6qm</span>
+<span class="n">zxiro</span> <span class="n">racyunima</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p7qm</span>
+<span class="n">zxiro</span> <span class="n">racyuna</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">w2qm</span>
+<span class="n">zxiro</span> <span class="n">racyuna</span><span class="p">,</span><span class="n">zxiro</span> <span class="n">racyun</span><span class="o">.</span><span class="n">NC_2XN1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">w4qm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s1vm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevoznika</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s2vm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevozniku</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s3vm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevoznika</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s4vm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevoznicye</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s5vm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevoznikom</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s6vm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevozniku</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s7vm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevoznici</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p1vm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevoznika</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p2vm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevoznicima</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p3vm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevoznike</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p4vm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevoznici</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p5vm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevoznicima</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p6vm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevoznicima</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p7vm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevoznika</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">w2vm</span>
+<span class="n">avio</span><span class="o">-</span><span class="n">prevoznika</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">w4vm</span>
+<span class="n">avioprevoznik</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s1vm</span>
+<span class="n">avioprevoznika</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s2vm</span>
+<span class="n">avioprevozniku</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s3vm</span>
+<span class="n">avioprevoznika</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s4vm</span>
+<span class="n">avioprevoznicye</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s5vm</span>
+<span class="n">avioprevoznikom</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s6vm</span>
+<span class="n">avioprevozniku</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s7vm</span>
+<span class="n">avioprevoznici</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p1vm</span>
+<span class="n">avioprevoznika</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p2vm</span>
+<span class="n">avioprevoznicima</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p3vm</span>
+<span class="n">avioprevoznike</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p4vm</span>
+<span class="n">avioprevoznici</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p5vm</span>
+<span class="n">avioprevoznicima</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p6vm</span>
+<span class="n">avioprevoznicima</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p7vm</span>
+<span class="n">avioprevoznika</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">w2vm</span>
+<span class="n">avioprevoznika</span><span class="p">,</span><span class="n">avio</span><span class="o">-</span><span class="n">prevoznik</span><span class="o">.</span><span class="n">NC_2XN2</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">w4vm</span>
+<span class="n">predsednik</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s1vm</span>
+<span class="n">predsednika</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s2vm</span>
+<span class="n">predsedniku</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s3vm</span>
+<span class="n">predsednika</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s4vm</span>
+<span class="n">predsednicye</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s5vm</span>
+<span class="n">predsednikom</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s6vm</span>
+<span class="n">predsedniku</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">s7vm</span>
+<span class="n">predsednici</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p1vm</span>
+<span class="n">predsednici</span> <span class="n">drzxava</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p1vm</span>
+<span class="n">predsednika</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p2vm</span>
+<span class="n">predsednika</span> <span class="n">drzxava</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p2vm</span>
+<span class="n">predsednicima</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p3vm</span>
+<span class="n">predsednicima</span> <span class="n">drzxava</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p3vm</span>
+<span class="n">predsednike</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p4vm</span>
+<span class="n">predsednike</span> <span class="n">drzxava</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p4vm</span>
+<span class="n">predsednici</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p5vm</span>
+<span class="n">predsednici</span> <span class="n">drzxava</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p5vm</span>
+<span class="n">predsednicima</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p6vm</span>
+<span class="n">predsednicima</span> <span class="n">drzxava</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p6vm</span>
+<span class="n">predsednicima</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p7vm</span>
+<span class="n">predsednicima</span> <span class="n">drzxava</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">p7vm</span>
+<span class="n">predsednika</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">w2vm</span>
+<span class="n">predsednika</span> <span class="n">drzxava</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">w2vm</span>
+<span class="n">predsednika</span> <span class="n">drzxave</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">w4vm</span>
+<span class="n">predsednika</span> <span class="n">drzxava</span><span class="p">,</span><span class="n">predsednik</span> <span class="n">drzxave</span><span class="o">.</span><span class="n">NC_N2X1</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">w4vm</span>
+<span class="n">Ujedinxene</span> <span class="n">nacije</span><span class="p">,</span><span class="n">Ujedinxene</span> <span class="n">nacije</span><span class="o">.</span><span class="n">NC_AXN3</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Org</span><span class="p">:</span><span class="n">fp1q</span>
+<span class="n">Ujedinxenih</span> <span class="n">nacija</span><span class="p">,</span><span class="n">Ujedinxene</span> <span class="n">nacije</span><span class="o">.</span><span class="n">NC_AXN3</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Org</span><span class="p">:</span><span class="n">fp2q</span>
+<span class="n">Ujedinxenima</span> <span class="n">nacijama</span><span class="p">,</span><span class="n">Ujedinxene</span> <span class="n">nacije</span><span class="o">.</span><span class="n">NC_AXN3</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Org</span><span class="p">:</span><span class="n">fp3q</span>
+<span class="n">Ujedinxenim</span> <span class="n">nacijama</span><span class="p">,</span><span class="n">Ujedinxene</span> <span class="n">nacije</span><span class="o">.</span><span class="n">NC_AXN3</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Org</span><span class="p">:</span><span class="n">fp3q</span>
+<span class="n">Ujedinxene</span> <span class="n">nacije</span><span class="p">,</span><span class="n">Ujedinxene</span> <span class="n">nacije</span><span class="o">.</span><span class="n">NC_AXN3</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Org</span><span class="p">:</span><span class="n">fp4q</span>
+<span class="n">Ujedinxene</span> <span class="n">nacije</span><span class="p">,</span><span class="n">Ujedinxene</span> <span class="n">nacije</span><span class="o">.</span><span class="n">NC_AXN3</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Org</span><span class="p">:</span><span class="n">fp5q</span>
+<span class="n">Ujedinxenima</span> <span class="n">nacijama</span><span class="p">,</span><span class="n">Ujedinxene</span> <span class="n">nacije</span><span class="o">.</span><span class="n">NC_AXN3</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Org</span><span class="p">:</span><span class="n">fp6q</span>
+<span class="n">Ujedinxenim</span> <span class="n">nacijama</span><span class="p">,</span><span class="n">Ujedinxene</span> <span class="n">nacije</span><span class="o">.</span><span class="n">NC_AXN3</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Org</span><span class="p">:</span><span class="n">fp6q</span>
+<span class="n">Ujedinxenima</span> <span class="n">nacijama</span><span class="p">,</span><span class="n">Ujedinxene</span> <span class="n">nacije</span><span class="o">.</span><span class="n">NC_AXN3</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Org</span><span class="p">:</span><span class="n">fp7q</span>
+<span class="n">Ujedinxenim</span> <span class="n">nacijama</span><span class="p">,</span><span class="n">Ujedinxene</span> <span class="n">nacije</span><span class="o">.</span><span class="n">NC_AXN3</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Org</span><span class="p">:</span><span class="n">fp7q</span>
+<span class="n">Kosovo</span> <span class="n">i</span> <span class="n">Metohija</span><span class="p">,</span><span class="n">Kosovo</span> <span class="n">i</span> <span class="n">Metohija</span><span class="o">.</span><span class="n">NC_N3XN</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Top</span><span class="o">+</span><span class="n">Reg</span><span class="p">:</span><span class="n">ns1q</span>
+<span class="n">Kosova</span> <span class="n">i</span> <span class="n">Metohije</span><span class="p">,</span><span class="n">Kosovo</span> <span class="n">i</span> <span class="n">Metohija</span><span class="o">.</span><span class="n">NC_N3XN</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Top</span><span class="o">+</span><span class="n">Reg</span><span class="p">:</span><span class="n">ns2q</span>
+<span class="n">Kosovu</span> <span class="n">i</span> <span class="n">Metohiji</span><span class="p">,</span><span class="n">Kosovo</span> <span class="n">i</span> <span class="n">Metohija</span><span class="o">.</span><span class="n">NC_N3XN</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Top</span><span class="o">+</span><span class="n">Reg</span><span class="p">:</span><span class="n">ns3q</span>
+<span class="n">Kosovo</span> <span class="n">i</span> <span class="n">Metohiju</span><span class="p">,</span><span class="n">Kosovo</span> <span class="n">i</span> <span class="n">Metohija</span><span class="o">.</span><span class="n">NC_N3XN</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Top</span><span class="o">+</span><span class="n">Reg</span><span class="p">:</span><span class="n">ns4q</span>
+<span class="n">Kosovo</span> <span class="n">i</span> <span class="n">Metohijo</span><span class="p">,</span><span class="n">Kosovo</span> <span class="n">i</span> <span class="n">Metohija</span><span class="o">.</span><span class="n">NC_N3XN</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Top</span><span class="o">+</span><span class="n">Reg</span><span class="p">:</span><span class="n">ns5q</span>
+<span class="n">Kosovom</span> <span class="n">i</span> <span class="n">Metohijom</span><span class="p">,</span><span class="n">Kosovo</span> <span class="n">i</span> <span class="n">Metohija</span><span class="o">.</span><span class="n">NC_N3XN</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Top</span><span class="o">+</span><span class="n">Reg</span><span class="p">:</span><span class="n">ns6q</span>
+<span class="n">Kosovu</span> <span class="n">i</span> <span class="n">Metohiji</span><span class="p">,</span><span class="n">Kosovo</span> <span class="n">i</span> <span class="n">Metohija</span><span class="o">.</span><span class="n">NC_N3XN</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">NProp</span><span class="o">+</span><span class="n">Top</span><span class="o">+</span><span class="n">Reg</span><span class="p">:</span><span class="n">ns7q</span>
+<span class="n">istrazxne</span> <span class="n">sudije</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">1</span><span class="n">vfp</span>
+<span class="n">istrazxnih</span> <span class="n">sudija</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">2</span><span class="n">vfp</span>
+<span class="n">istrazxnima</span> <span class="n">sudijama</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">3</span><span class="n">vfp</span>
+<span class="n">istrazxnim</span> <span class="n">sudijama</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">3</span><span class="n">vfp</span>
+<span class="n">istrazxne</span> <span class="n">sudije</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">4</span><span class="n">vfp</span>
+<span class="n">istrazxne</span> <span class="n">sudije</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">5</span><span class="n">vfp</span>
+<span class="n">istrazxnima</span> <span class="n">sudijama</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">6</span><span class="n">vfp</span>
+<span class="n">istrazxnim</span> <span class="n">sudijama</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">6</span><span class="n">vfp</span>
+<span class="n">istrazxnima</span> <span class="n">sudijama</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">7</span><span class="n">vfp</span>
+<span class="n">istrazxnim</span> <span class="n">sudijama</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">7</span><span class="n">vfp</span>
+<span class="n">istrazxne</span> <span class="n">sudije</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">2</span><span class="n">vfw</span>
+<span class="n">istrazxne</span> <span class="n">sudije</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">4</span><span class="n">vfw</span>
+<span class="n">istrazxnoga</span> <span class="n">sudiju</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">ms4v</span>
+<span class="n">istrazxnog</span> <span class="n">sudiju</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="n">ms4v</span>
+<span class="n">istrazxni</span> <span class="n">sudija</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">1</span><span class="n">vms</span>
+<span class="n">istrazxnoga</span> <span class="n">sudije</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">2</span><span class="n">vms</span>
+<span class="n">istrazxnog</span> <span class="n">sudije</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">2</span><span class="n">vms</span>
+<span class="n">istrazxnomu</span> <span class="n">sudiji</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">3</span><span class="n">vms</span>
+<span class="n">istrazxnome</span> <span class="n">sudiji</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">3</span><span class="n">vms</span>
+<span class="n">istrazxnom</span> <span class="n">sudiji</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">3</span><span class="n">vms</span>
+<span class="n">istrazxnomu</span> <span class="n">sudiji</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">7</span><span class="n">vms</span>
+<span class="n">istrazxnome</span> <span class="n">sudiji</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">7</span><span class="n">vms</span>
+<span class="n">istrazxnom</span> <span class="n">sudiji</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">7</span><span class="n">vms</span>
+<span class="n">istrazxni</span> <span class="n">sudijo</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">5</span><span class="n">vms</span>
+<span class="n">istrazxni</span> <span class="n">sudija</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">5</span><span class="n">vms</span>
+<span class="n">istrazxnim</span> <span class="n">sudijom</span><span class="p">,</span><span class="n">istrazxni</span> <span class="n">sudija</span><span class="o">.</span><span class="n">NC_AXNF</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="p">:</span><span class="mi">6</span><span class="n">vms</span>
+<span class="n">Dinkicx</span> <span class="n">Mirosinka</span><span class="p">,</span><span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="o">.</span><span class="n">NC_ImePrezime</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">PersName</span><span class="p">:</span><span class="n">s1vf</span>
+<span class="n">Dinkicx</span> <span class="n">Mirosinke</span><span class="p">,</span><span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="o">.</span><span class="n">NC_ImePrezime</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">PersName</span><span class="p">:</span><span class="n">s2vf</span>
+<span class="n">Dinkicx</span> <span class="n">Mirosinki</span><span class="p">,</span><span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="o">.</span><span class="n">NC_ImePrezime</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">PersName</span><span class="p">:</span><span class="n">s3vf</span>
+<span class="n">Dinkicx</span> <span class="n">Mirosinku</span><span class="p">,</span><span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="o">.</span><span class="n">NC_ImePrezime</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">PersName</span><span class="p">:</span><span class="n">s4vf</span>
+<span class="n">Dinkicx</span> <span class="n">Mirosinka</span><span class="p">,</span><span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="o">.</span><span class="n">NC_ImePrezime</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">PersName</span><span class="p">:</span><span class="n">s5vf</span>
+<span class="n">Dinkicx</span> <span class="n">Mirosinkom</span><span class="p">,</span><span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="o">.</span><span class="n">NC_ImePrezime</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">PersName</span><span class="p">:</span><span class="n">s6vf</span>
+<span class="n">Dinkicx</span> <span class="n">Mirosinki</span><span class="p">,</span><span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="o">.</span><span class="n">NC_ImePrezime</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">PersName</span><span class="p">:</span><span class="n">s7vf</span>
+<span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="p">,</span><span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="o">.</span><span class="n">NC_ImePrezime</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">PersName</span><span class="p">:</span><span class="n">s1vf</span>
+<span class="n">Mirosinke</span> <span class="n">Dinkicx</span><span class="p">,</span><span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="o">.</span><span class="n">NC_ImePrezime</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">PersName</span><span class="p">:</span><span class="n">s2vf</span>
+<span class="n">Mirosinki</span> <span class="n">Dinkicx</span><span class="p">,</span><span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="o">.</span><span class="n">NC_ImePrezime</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">PersName</span><span class="p">:</span><span class="n">s3vf</span>
+<span class="n">Mirosinku</span> <span class="n">Dinkicx</span><span class="p">,</span><span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="o">.</span><span class="n">NC_ImePrezime</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">PersName</span><span class="p">:</span><span class="n">s4vf</span>
+<span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="p">,</span><span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="o">.</span><span class="n">NC_ImePrezime</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">PersName</span><span class="p">:</span><span class="n">s5vf</span>
+<span class="n">Mirosinkom</span> <span class="n">Dinkicx</span><span class="p">,</span><span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="o">.</span><span class="n">NC_ImePrezime</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">PersName</span><span class="p">:</span><span class="n">s6vf</span>
+<span class="n">Mirosinki</span> <span class="n">Dinkicx</span><span class="p">,</span><span class="n">Mirosinka</span> <span class="n">Dinkicx</span><span class="o">.</span><span class="n">NC_ImePrezime</span><span class="o">+</span><span class="n">N</span><span class="o">+</span><span class="n">Comp</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">PersName</span><span class="p">:</span><span class="n">s7vf</span>
+<span class="n">gladni</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s1mgda</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s1mgka</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s1fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladno</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s1ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnoga</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s2mgda</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnog</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s2mgda</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s2mgka</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s2fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnoga</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s2ngda</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnog</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s2ngda</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s2ngka</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnome</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s3mgda</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnom</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s3mgda</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnu</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s3mgka</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnoj</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s3fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnome</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s3ngda</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnom</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s3ngda</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnu</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s3ngka</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnu</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s4fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladno</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s4ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladni</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s5mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s5fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladno</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s5ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s6mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnom</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s6fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s6ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnome</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s7mgda</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnom</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s7mgda</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnu</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s7mgka</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnoj</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s7fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnome</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s7ngda</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnom</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s7ngda</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnu</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">s7ngka</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladni</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p1mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladni</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p1mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladni</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p1mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p1fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p1fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p1fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p1ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p1ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p1ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnih</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p2mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnih</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p2mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnih</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p2mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnih</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p2fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnih</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p2fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnih</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p2fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnih</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p2ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnih</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p2ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnih</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p2ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p3ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p4mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p4mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p4mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p4fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p4fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p4fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p4ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p4ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p4ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladni</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p5mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladni</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p5mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladni</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p5mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p5fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p5fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p5fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p5ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p5ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p5ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p6ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnima</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladnim</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">p7ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w2mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w2mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w2mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w2fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w2fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w2fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w2ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w2ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w2ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w4mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w4mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w4mgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w4fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w4fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladne</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w4fgea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuk</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w4ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vuci</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w4ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+<span class="n">gladna</span> <span class="n">kao</span> <span class="n">vukovi</span><span class="p">,</span><span class="n">gladan</span> <span class="n">kao</span> <span class="n">vuk</span><span class="o">.</span><span class="n">AC_A3XN2</span><span class="p">:</span><span class="n">w4ngea</span><span class="o">//</span><span class="n">hungry</span> <span class="k">as</span> <span class="n">a</span> <span class="n">wolf</span>
+</pre></div>
+</div>
+<div class="figure" id="id70">
+<a class="reference internal image-reference" href="resources/img/NC'2XN1'SRB.png"><img alt="Graphe de flexion *NC\_2XN1* de mots composés serbes" src="resources/img/NC'2XN1'SRB.png" style="width: 12.40000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_2XN1</em> de mots composés serbes</span></p>
+</div>
+<div class="figure" id="id71">
+<a class="reference internal image-reference" href="resources/img/NC'2XN2'SRB.png"><img alt="Graphe de flexion *NC\_2XN2* de mots composés serbes" src="resources/img/NC'2XN2'SRB.png" style="width: 12.40000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_2XN2</em> de mots composés serbes</span></p>
+</div>
+<div class="figure" id="id72">
+<a class="reference internal image-reference" href="resources/img/NC'N2X1'SRB.png"><img alt="Graphe de flexion *NC\_N2X1* de mots composés serbes" src="resources/img/NC'N2X1'SRB.png" style="width: 12.20000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_N2X1</em> de mots composés serbes</span></p>
+</div>
+<div class="figure" id="id73">
+<a class="reference internal image-reference" href="resources/img/NC'AXN3'SRB.png"><img alt="Graphe de flexion *NC\_AXN3* de mots composés serbes" src="resources/img/NC'AXN3'SRB.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_AXN3</em> de mots composés serbes</span></p>
+</div>
+<div class="figure" id="id74">
+<a class="reference internal image-reference" href="resources/img/NC'N3XN'SRB.png"><img alt="Graphe de flexion *NC\_N3XN* de mots composés serbes" src="resources/img/NC'N3XN'SRB.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_N3XN</em> de mots composés serbes</span></p>
+</div>
+<div class="figure" id="id75">
+<a class="reference internal image-reference" href="resources/img/NC'AXNF'SRB.png"><img alt="Graphe de flexion *NC\_AXNF* de mots composés serbes" src="resources/img/NC'AXNF'SRB.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_AXNF</em> de mots composés serbes</span></p>
+</div>
+<div class="figure" id="id76">
+<a class="reference internal image-reference" href="resources/img/NC'ImePrezime'SRB.png"><img alt="Graphe de flexion *NC\_ImePrezime* de mots composés serbes" src="resources/img/NC'ImePrezime'SRB.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>NC_ImePrezime</em> de mots composés serbes</span></p>
+</div>
+<div class="figure" id="id77">
+<a class="reference internal image-reference" href="resources/img/AC'A3XN2'SRB.png"><img alt="Graphe de flexion *AC\_A3XN2* de mots composés serbes" src="resources/img/AC'A3XN2'SRB.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe de flexion <em>AC_A3XN2</em> de mots composés serbes</span></p>
+</div>
+<table class="docutils footnote" frame="void" id="id48" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id45">[1]</a></td><td>Même dans le cas où les constituants simples apparaissant dans le
+lemme d’un mot composé sont déjà au pluriel, comme dans <em>cross-road</em>.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-fr.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Flexion des mots composés</a><ul>
+<li><a class="reference internal" href="#mots-composes">Mots composés</a><ul>
+<li><a class="reference internal" href="#description-formelle-du-comportement-flexionnel-des-mots-composes">Description formelle du comportement flexionnel des mots composés</a></li>
+<li><a class="reference internal" href="#approche-lexicale-ou-grammaticale-de-la-description-morphologique">Approche lexicale ou grammaticale de la description morphologique</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#formalisme-de-flexion-des-mots-composes">Formalisme de flexion des mots composés</a><ul>
+<li><a class="reference internal" href="#caracteristiques-morphologiques-de-la-langue">Caractéristiques morphologiques de la langue</a></li>
+<li><a class="reference internal" href="#decomposition-dun-mot-compose-en-constituants">Décomposition d’un mot composé en constituants</a></li>
+<li><a class="reference internal" href="#paradigme-de-flexion-des-mots-composes">Paradigme de flexion des mots composés</a><ul>
+<li><a class="reference internal" href="#variables-dunification">Variables d’unification</a></li>
+<li><a class="reference internal" href="#variantes-orthographiques-et-autres-variantes">Variantes orthographiques et autres variantes</a></li>
+<li><a class="reference internal" href="#interface-avec-le-systeme-de-flexion-des-mots-simples">Interface avec le système de flexion des mots simples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#integration-a-unitex">Intégration à Unitex</a><ul>
+<li><a class="reference internal" href="#exemple-complet-en-anglais">Exemple complet en anglais</a></li>
+<li><a class="reference internal" href="#exemple-complet-en-francais">Exemple complet en français</a></li>
+<li><a class="reference internal" href="#exemple-en-serbe">Exemple en serbe</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-fr.html">Documentation overview</a><ul>
+      <li>Previous: <a href="10-alignment_FR_utf8.html" title="Chapitre précédent">Alignement de texte</a></li>
+      <li>Next: <a href="12-cassys_FR_utf8.html" title="Chapitre suivant">Cascade de Transducteurs</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/11-multiflex_FR_utf8.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, SCTB.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/11-multiflex_FR_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

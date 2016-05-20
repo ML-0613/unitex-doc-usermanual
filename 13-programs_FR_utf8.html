@@ -1,0 +1,2058 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Utilisation des programmes externes &mdash; documentation Unitex-fr 1.0.1</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Unitex-fr 1.0.1" href="Unitex-fr.html" />
+    <link rel="next" title="Formats de fichiers" href="14-formats_FR_utf8.html" />
+    <link rel="prev" title="Cascade de Transducteurs" href="12-cassys_FR_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="utilisation-des-programmes-externes">
+<h1>Utilisation des programmes externes<a class="headerlink" href="#utilisation-des-programmes-externes" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Ce chapitre présente l’utilisation des différents programmes qui
+composent Unitex. Ces programmes, qui se trouvent dans le répertoire
+<code class="docutils literal"><span class="pre">Unitex/App</span></code>, sont appelés automatiquement par l’interface (en fait,
+<code class="docutils literal"><span class="pre">UnitexToolLogger</span></code> est appelé, afin de réduire de manière importante
+la taille du fichier zip). Il est possible de voir les commandes qui ont
+été exécutées en cliquant sur “Info&gt;Console”. Il est aussi possible de
+voir les options des differents programmes dans “Info&gt;Help on commands”
+(voir Figure [fig-help]). Remarquons que tous les programmes Unitex
+possèdent l’option <code class="docutils literal"><span class="pre">-h</span></code>/<code class="docutils literal"><span class="pre">--help</span></code>.</p>
+<div class="figure" id="id44">
+<a class="reference internal image-reference" href="resources/img/fig11-1.png"><img alt="Help on commands[fig-help]" src="resources/img/fig11-1.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Help on commands[fig-help]</span></p>
+</div>
+<p>IMPORTANT: plusieurs programmes utilisent le répertoire du texte
+(<code class="docutils literal"><span class="pre">mon_texte_snt</span></code>). Ce répertoire est créé par l’interface graphique
+après la normalisation du texte. Si vous travaillez en ligne de
+commande, vous devrez créer ce répertoire vous-même après l’exécution du
+programme <code class="docutils literal"><span class="pre">Normalize</span></code>.</p>
+<p>IMPORTANT (2): lorsqu’un paramètre contient des espaces, vous devez
+l’entourer de guillemets pour qu’il ne soit pas considéré comme
+plusieurs paramètres.</p>
+<p>ATTENTION (3): beaucoup de programmes utilisent un fichier
+<code class="docutils literal"><span class="pre">Alphabet.txt</span></code>. Cette information peut être omise pour l’ensemble de
+ces programmes. Dans ce cas, une définition (par défaut) de lettres est
+utilisée (voir <code class="docutils literal"><span class="pre">u_is_letter</span></code> dans le fichier source<code class="docutils literal"><span class="pre">Unicode.cpp</span></code>).</p>
+<div class="section" id="creation-de-fichiers-log">
+<h2>Création de fichiers log<a class="headerlink" href="#creation-de-fichiers-log" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-creating-log-files]</p>
+<div class="figure" id="id45">
+<a class="reference internal image-reference" href="resources/img/fig11-1a.png"><img alt="Configuration de fichiers log[fig-logging-config]" src="resources/img/fig11-1a.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Configuration de fichiers log[fig-logging-config]</span></p>
+</div>
+<p>Vous pouvez créer des fichiers <code class="docutils literal"><span class="pre">log</span></code> des programmes externes exécutés.
+Ces fichiers log peuvent être utiles pour le débogage ou des tests de
+régression. Vous avez juste besoin d’activer cette fonctionnalité dans
+le cadre Préférences. Vous devez simplement choisir un répertoire de
+fichiers log dans lequel tous les fichiers sont stockés, et cocher la
+case “Produce log” En cliquant sur le bouton “Clear all logs” vous
+supprimez tous les fichiers log éventuellement contenus dans ce
+répertoire. Désormais, toute nouvelle exécution du promme produit un
+fichier <code class="docutils literal"><span class="pre">unitex_log_XXX.ulp</span></code> dans le répertoire de fichiers log.
+<code class="docutils literal"><span class="pre">XXX</span></code> représente le numéro de log qui se trouve dans la console (voir
+section suivante).</p>
+</div>
+<div class="section" id="la-console">
+<h2>La console<a class="headerlink" href="#la-console" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-console] Lorsque Unitex lance un programme externe, la ligne de
+commande appelée est mémorisée dans la console. Pour la voir, cliquez
+sur Info “&gt; Console”. Quand une commande n’émet aucun message d’erreur,
+elle est affichée avec une icône verte. Sinon, l’icône est un triangle
+rouge sur lequel vous pouvez cliquer pour voir les messages d’erreur,
+comme indiqué sur la figure [fig-console] . Ceci est utile lorsque un
+message d’erreur se produit si vite que vous ne pouvez pas le lire. Si
+une commande a été enregistrée, son numéro de log apparaît dans la
+deuxième colonne. Notez que vous pouvez exporter toutes les commandes
+affichées dans la console vers le presse-papiers avec Ctrl + C.</p>
+<div class="figure" id="id46">
+<a class="reference internal image-reference" href="resources/img/fig11-2.png"><img alt="Console[fig-console]" src="resources/img/fig11-2.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Console[fig-console]</span></p>
+</div>
+</div>
+<div class="section" id="unitex-jni">
+<h2>Unitex JNI<a class="headerlink" href="#unitex-jni" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-unitex-JNI]</p>
+<p>Vous pouvez utilisez Unitex avec JNI by en incluant les imports suivants
+:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fr.umlv.unitex.jni.UnitexJni</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.io.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">fr.umlv.unitex.</span><span class="o">*</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Ceci vous permet de charger en mémoire les dictionnaires (.bin), les
+grammaires ou graphes dictionnaires (.fst2) et les fichiers alphabet et
+de les garder en mémoire de manière persistante. Vous utilisez alors le
+nom de fichier renvoyé par la foncton loadPersistent*.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">persistentAlphabet</span> <span class="o">=</span> <span class="n">UnitexJni</span><span class="o">.</span><span class="n">loadPersistentAlphabet</span><span class="p">(</span><span class="s2">&quot;/.../unitex/French/Alphabet.txt&quot;</span><span class="p">);</span>
+<span class="n">String</span> <span class="n">persistentFst2</span> <span class="o">=</span> <span class="n">UnitexJni</span><span class="o">.</span><span class="n">loadPersistentFst2</span><span class="p">(</span><span class="s2">&quot;/.../unitex/French/Dela/fogg-r.fst2&quot;</span><span class="p">);</span>
+<span class="n">String</span> <span class="n">persistentDictionary</span> <span class="o">=</span> <span class="n">UnitexJni</span><span class="o">.</span><span class="n">loadPersistentDictionary</span><span class="p">(</span>
+        <span class="s2">&quot;/.../unitex/French/Dela/communesFR+.bin&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="parametres-de-codage-des-fichiers-textes">
+<h2>Paramètres de codage des fichiers textes<a class="headerlink" href="#parametres-de-codage-des-fichiers-textes" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-text-file-encoding-parameters] Unitex utilise Unicode pour les
+fichiers textes [unicode-encoding]. Tous les programmes qui lisent ou
+écrivent des fichiers textes partagent les mêmes paramètres d’encodage.
+Les formats possibles sont utf16le-bom, utf16le-no-bom, utf16be-bom,
+utf16be-no-bom, utf8-bom, utf8-no-bom, qui correspondent à Unicode
+Big-Endian, Little-Endian et UTF-8, avec ou sans “Unicode byte order
+mark” (bom) au début du fichier. Pour le format d’entrée, vous pouvez
+spécifier plusieurs encodages *-bom (avec bom) codage séparées par des
+virgules, mais seulement un encodage *-no-bom (sans bom).</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-k=ENCODING</span></code>/<code class="docutils literal"><span class="pre">--input_encoding=ENCODING</span></code>: format du texte
+source. Peut contenir plusieurs valeurs séparées par des virgules;</li>
+<li><code class="docutils literal"><span class="pre">-q=ENCODING</span></code>/<code class="docutils literal"><span class="pre">--output_encoding=ENCODING</span></code>: format du texte de
+sortie.</li>
+</ul>
+<p>Par défaut, les valeurs sont:
+<code class="docutils literal"><span class="pre">--input_encoding=utf16le-bom,utf16be-bom,utf8-bom</span></code>
+<code class="docutils literal"><span class="pre">--output_encoding=utf16le-bom</span></code>.</p>
+</div>
+<div class="section" id="buildkrmwudic">
+<h2>BuildKrMwuDic<a class="headerlink" href="#buildkrmwudic" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">BuildKrMwuDic</span> <span class="pre">[OPTIONS]</span> <span class="pre">dic</span></code></p>
+<p>Ce programme génère des graphes de flexion pour les mots composés à
+partir d’un tableau <code class="docutils literal"><span class="pre">dic</span></code> qui décrit chaque constituant de chaque mot
+composé <strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">GRF</span></code>/<code class="docutils literal"><span class="pre">--output=GRF</span></code>: fichier <code class="docutils literal"><span class="pre">.grf</span></code> à produire;</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">DIR</span></code>/<code class="docutils literal"><span class="pre">--directory=DIR</span></code>: répertoire de flexion qui contient
+les graphes de flexion nécéssaires pour produire les variantes
+morphologiques des racines;</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: fichier alphabet à utiliser;</li>
+<li><code class="docutils literal"><span class="pre">-b</span> <span class="pre">BIN</span></code>/<code class="docutils literal"><span class="pre">--binary=BIN</span></code>: dictionnaire des mots simples de type
+<code class="docutils literal"><span class="pre">.bin</span></code> à utiliser;</li>
+</ul>
+</div>
+<div class="section" id="cassys">
+<h2>CasSys<a class="headerlink" href="#cassys" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Cassys</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;snt&gt;</span></code></p>
+<p>Ce programme applique une liste ordonnée de grammaires à un texte et
+construit un index des occurrences trouvées. <strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: fichier alphabet de la langue;</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--transducer_dir=X</span></code>: prend un transducteur dans le
+répertoire <code class="docutils literal"><span class="pre">X</span></code> (ainsi ne donnez pas le chemin complet pour chaque
+transducteur; remarquons que <code class="docutils literal"><span class="pre">X</span></code> doit se terminer par un antislash;</li>
+<li><code class="docutils literal"><span class="pre">-w</span> <span class="pre">DIC/--morpho=DIC</span></code>: indique que <code class="docutils literal"><span class="pre">DIC</span></code> est un <code class="docutils literal"><span class="pre">.bin</span></code>
+dictionnaire à utiliser en mode morphologique. Utiliser autant de
+<code class="docutils literal"><span class="pre">-m</span> <span class="pre">XXX</span></code> qu’il y a de <code class="docutils literal"><span class="pre">.bin</span></code>. Vou pouvez égalemnt séparer
+plusieurs <code class="docutils literal"><span class="pre">.bin</span></code> par des deux-points.</li>
+<li><code class="docutils literal"><span class="pre">-l</span> <span class="pre">TRANSDUCERS_LIST</span></code>/<code class="docutils literal"><span class="pre">--transducers_list=TRANSDUCERS_LIST</span></code>:
+fichier contenant la liste des transducteurs avec leur mode
+d’application;</li>
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">transducer.fst2</span></code>/<code class="docutils literal"><span class="pre">--transducer_file=transducer.fst2</span></code>: un
+transducteur à appliquer;</li>
+<li><code class="docutils literal"><span class="pre">-m</span> <span class="pre">output_policy</span></code>/<code class="docutils literal"><span class="pre">--transducer_policy=output_policy</span></code>: le mode
+d’application du transducteur spécifié;</li>
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--text=TXT</span></code>: le fichier texte avec l’extension <code class="docutils literal"><span class="pre">.snt</span></code>
+à modifier;</li>
+<li><code class="docutils literal"><span class="pre">-i</span></code>/<code class="docutils literal"><span class="pre">--in_place</span></code>: sigifie qu’il faut utiliser les mêmes
+répertoires <code class="docutils literal"><span class="pre">csc/snt</span></code> pour chaque transducteur;</li>
+<li><code class="docutils literal"><span class="pre">-d</span></code>/<code class="docutils literal"><span class="pre">--no_create_directory</span></code>: signifie que tous les répertoires
+<code class="docutils literal"><span class="pre">snt/csc</span></code> existent déjà et n’ont pas besoin d’être crées;</li>
+<li><code class="docutils literal"><span class="pre">-g</span> <span class="pre">minus</span></code>/<code class="docutils literal"><span class="pre">--negation_operator=minus</span></code>: utilise <code class="docutils literal"><span class="pre">moins</span></code> comme
+opérateur de négation pour les graphes version Unitex 2.0;</li>
+<li><code class="docutils literal"><span class="pre">-g</span> <span class="pre">tilde</span></code>/<code class="docutils literal"><span class="pre">--negation_operator=tilde</span></code>: utilise <code class="docutils literal"><span class="pre">tilde</span></code> comme
+opérateur de négation (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-h</span></code>/<code class="docutils literal"><span class="pre">--help</span></code>: affiche cette aide</li>
+</ul>
+<p>CasSys applique une liste de grammaires à un texte et sauve les
+séquences reconnues dans un fichier index nommé <code class="docutils literal"><span class="pre">concord.ind</span></code> stocké
+dans le répertoire texte. Le fichier cible doit être un fichier snt avec
+son répertoire <code class="docutils literal"><span class="pre">\_snt/</span></code>. Le fichier contenant la liste des
+transducteurs est un fichier dans lequel chaque ligne contient le nom
+complet du transducteur suivi de son mode d’application.</p>
+<p>A la place d’une liste, vous pouvez spécifier chaque fichier et mode
+d’application par un ensemble de couple d’arguments pour représenter la
+liste <code class="docutils literal"><span class="pre">-s/--transducer\_file</span></code> et <code class="docutils literal"><span class="pre">-m/--transducer\_policy</span></code></p>
+<p>Le mode d’application peut être MERGE ou REPLACE.</p>
+<p>L’option de fichier, l’option alphabet et l’option fichier liste de
+transducteurs sont obligatoires</p>
+<p>Comme le programme Locate, ce programme enregistre les références des
+occurrences dans un fichier <code class="docutils literal"><span class="pre">concord.ind</span></code> stocké dans le répertoire
+<code class="docutils literal"><span class="pre">\_snt\verb</span></code> du texte. Le fichier <code class="docutils literal"><span class="pre">concord.ind</span></code> produit est dans le
+même format que celui décrit chapitre [chap-file-formats] , mais la
+cascade peut être formée de graphes appliqués en mode merge ou replace,
+de ce fait #M ou #R à la première ligne du fichier <code class="docutils literal"><span class="pre">concord.ind</span></code> n’a
+pas de sens dans ce contexte.</p>
+</div>
+<div class="section" id="checkdic">
+<h2>CheckDic<a class="headerlink" href="#checkdic" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">CheckDic</span> <span class="pre">[OPTIONS]</span> <span class="pre">dic</span></code></p>
+<p>Ce programme effectue la vérification du format d’un dictionnaire de
+type DELAS ou DELAF.<code class="docutils literal"><span class="pre">dic</span></code> qui correspond au nom du dictionnaire à
+vérifier</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-f</span></code>/<code class="docutils literal"><span class="pre">--delaf</span></code>: vérifie un dictionnaire de formes fléchies;</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--delas</span></code>: vérifie un dictionnaire de formes canoniques;</li>
+<li><code class="docutils literal"><span class="pre">-r</span></code>/<code class="docutils literal"><span class="pre">--strict</span></code>: vérification stricte de la syntaxe, la
+déspécialisation des points et virgules;</li>
+<li><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--tolerate</span></code>: tolère des points et des virgules non
+déspécialisés (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no_space_warning</span></code>: tolère des espaces dans les codes
+grammaticaux/sémantiques/flexionnels;</li>
+<li><code class="docutils literal"><span class="pre">-p</span></code>/<code class="docutils literal"><span class="pre">--skip_path</span></code>: n’affiche pas le chemin complet du
+dictionnaire (utiles pour la compatibilité de fichiers de log sur
+plusieurs systèmes);</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: indique le fichier alphabet à
+utiliser.</li>
+</ul>
+<p>Le programme teste la syntaxe des lignes du dictionnaire. Il dresse
+également la liste des caractères présents dans les formes fléchies et
+canoniques, la liste des codes grammaticaux et syntaxiques ainsi que la
+liste des codes flexionnels utilisés. Les résultats de la vérification
+sont stockés dans un fichier nommé <code class="docutils literal"><span class="pre">CHECK_DIC.TXT</span></code>.</p>
+<p>Le choix de <code class="docutils literal"><span class="pre">--strict</span></code> permet de détecter l’utilisation de points non
+déspécialisés dans la forme fléchie ou de virgules non déspécialisées
+dans la forme canonique. L’option <code class="docutils literal"><span class="pre">--tolerate</span></code> se comporte comme dans
+les versions Unitex 2.0 et antérieures et ne les détecte pas.</p>
+</div>
+<div class="section" id="compress">
+<h2>Compress<a class="headerlink" href="#compress" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-compress] <code class="docutils literal"><span class="pre">Compress</span> <span class="pre">[OPTIONS]</span> <span class="pre">dictionary</span></code></p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">BIN</span></code>/<code class="docutils literal"><span class="pre">--output=BIN</span></code>: définit le fichier de sortie. Par
+défaut, un fichier <code class="docutils literal"><span class="pre">xxx.dic</span></code> produit un fichier <code class="docutils literal"><span class="pre">xxx.bin</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">-f</span></code>/<code class="docutils literal"><span class="pre">--flip</span></code>: indique que les formes fléchies et canoniques
+doivent être inversées dans le dictionnaire comprimé. Cette option
+est utilisée pour construire un dictionnaire inversé nécessaire au
+programme <code class="docutils literal"><span class="pre">Reconstrucao</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--semitic</span></code>: indique que l’algorithme de compression pour
+langue sémitique doit être utilisé. Cette option utilisée avec des
+langues sémitiques comme l’arabe réduit sensiblement la taille du
+dictionnaire produit;</li>
+<li><code class="docutils literal"><span class="pre">--v1</span></code>: produit un fichier <code class="docutils literal"><span class="pre">.bin</span></code> ancienne manière;</li>
+<li><code class="docutils literal"><span class="pre">--v2</span></code>: produit un fichier <code class="docutils literal"><span class="pre">.bin</span></code> nouvelle manière, mieux
+comprimé et sans limitation de taille de fichier à 16 Mb (par défaut)</li>
+</ul>
+<p>Ce programme prend en paramètre un dictionnaire DELAF et le compresse.</p>
+<p>La compression d’un dictionnaire <code class="docutils literal"><span class="pre">dico.dic</span></code> produit deux fichiers:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">dico.bin</span></code>: fichier binaire contenant l’automate minimal des formes
+fléchies du dictionnaire ;</li>
+<li><code class="docutils literal"><span class="pre">dico.inf</span></code>: fichier texte contenant des formes comprimées
+permettant de reconstruire les lignes du dictionnaire à partir des
+formes fléchies contenues dans l’automate.</li>
+</ul>
+<p>Pour plus de détails sur les formats de ces fichiers, voir chapitre
+[chap-file-formats].</p>
+</div>
+<div class="section" id="concord">
+<h2>Concord<a class="headerlink" href="#concord" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-Concord] <code class="docutils literal"><span class="pre">Concord</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;index&gt;</span></code></p>
+<p>Ce programme prend en paramètre un fichier d’index de concordance
+produit par le programme <code class="docutils literal"><span class="pre">Locate</span></code> et produit une concordance. Il peut
+également produire une version du texte modifiée prenant en compte les
+transductions associées aux occurrences. Voici la description des
+paramètres:</p>
+<p><strong>OPTIONS:</strong></p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-f</span> <span class="pre">FONT</span></code>/<code class="docutils literal"><span class="pre">--font=FONT</span></code>: nom de la police de caractères à
+utiliser si la sortie est fichier HTML;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--fontsize=N</span></code>: taille de la police si la sortie est
+fichier HTML. Les paramètres concernant la police sont ignorés si la
+sortie n’est pas au format HTML;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--only_ambiguous</span></code>: Affiche seulement les occurrences identiques
+avec une sortie ambiguë, dans l’odre du texte.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--only_matches</span></code>: cette option définit un mode sans contexte. En
+outre si elle est utilisée avec <code class="docutils literal"><span class="pre">-t/--text</span></code>, Concord n’entoure pas
+les séquences reconnues de tabulations</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-l</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--left=X</span></code>: nombre de caractères à gauche des occurrences
+(par défaut=0). Dans le mode Thai, ceci correspond au nombre de
+caractères non diacritiques.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-r</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--right=X</span></code>: nombre de caractères (non diacritiques dans
+le mode Thai) à droite des occurrences (par défaut=0). Si
+l’occurrence est plus petite que cette valeur, la ligne de
+concordance est complétée jusqu’à <code class="docutils literal"><span class="pre">right</span></code>. Si l’occurrence est plus
+longue que la valeur définie par <code class="docutils literal"><span class="pre">right</span></code>, elle est néanmoins
+entièrement conservée.</p>
+<p>NOTE: Pour <code class="docutils literal"><span class="pre">--left</span></code> et <code class="docutils literal"><span class="pre">--right</span></code>, vous pouvez ajouter le
+caractère <code class="docutils literal"><span class="pre">s</span></code> pour arrêter au premier symbole de fin de phrase
+<code class="docutils literal"><span class="pre">{S}</span></code>. Par exemple, si vous mettez <code class="docutils literal"><span class="pre">40s</span></code> comme valeur de gauche,
+le contexte gauche sera au plus à 40 caractères, moins si le <code class="docutils literal"><span class="pre">{S}</span></code>
+est trouvé avant.</p>
+</li>
+</ul>
+<p><strong>Options de tri:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">--TO</span></code>: ordre dans lequel les occurrences apparaissent dans le
+texte (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">--LC</span></code>: contexte gauche comme premier tri, occurrence comme second
+tri;</li>
+<li><code class="docutils literal"><span class="pre">--LR</span></code>: contexte gauche, contexte droit;</li>
+<li><code class="docutils literal"><span class="pre">--CL</span></code>: occurrence, contexte gauche;</li>
+<li><code class="docutils literal"><span class="pre">--CR</span></code>: occurrence, contexte droit;</li>
+<li><code class="docutils literal"><span class="pre">--RL</span></code>: contexte droit, contexte gauche;</li>
+<li><code class="docutils literal"><span class="pre">--RC</span></code>: contexte droit, occurrence.</li>
+</ul>
+<p>Pour plus de détails sur ces modes de tri, voir la section
+[section-display-occurrences].</p>
+<p><strong>Options de sortie:</strong></p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-H</span></code>/<code class="docutils literal"><span class="pre">--html</span></code>: produit une concordance au format HTML codée en
+UTF-8; (par défaut);</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--text</span></code>: produit une concordance au format texte Unicode;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-g</span> <span class="pre">SCRIPT</span></code>/<code class="docutils literal"><span class="pre">--glossanet=SCRIPT</span></code>: produit une concordance pour
+GlossaNet au format HTML. Le fichier HTML produit est codé en UTF-8;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-p</span> <span class="pre">SCRIPT</span></code>/<code class="docutils literal"><span class="pre">--script=SCRIPT</span></code>: produit une concordance au format
+HTML où les occurrences sont liens décrits par <code class="docutils literal"><span class="pre">SCRIPT</span></code>. Par
+exemple, si vous utilisez</p>
+<p><code class="docutils literal"><span class="pre">-phttp://www.google.com/search?q=</span></code>, vous obtiendrez une
+concordance au format HTML où les occurrences sont des liens vers des
+requêtes Google;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-i</span></code>/<code class="docutils literal"><span class="pre">--index</span></code>: produit un index de la concordance, qui comporte
+les occurrences (avec les sorties des grammaires, s’il y en a),
+précédées par les positions des occurrences, dans le fichier texte,
+exprimées en caractères;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-u</span></code> <code class="docutils literal"><span class="pre">offsets</span></code>/<code class="docutils literal"><span class="pre">--uima=offsets</span></code>: produit un index de la
+concordance relatif fichier texte original, avant toute opération
+effectuée par Unitex. Offsets est le fichier produit par Tokenize
+avec l’option <code class="docutils literal"><span class="pre">--output_offsets</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-e</span></code>/<code class="docutils literal"><span class="pre">--xml</span></code>: produit un index xml de la concordance;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-w</span></code>/<code class="docutils literal"><span class="pre">--xml-with-header</span></code>: produit un index xml de la concordance
+avec une en-tête xml complète;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--lemmatize</span></code>: produit un fichier de concordance HTML spécial
+utilisé par l’interface de lemmatisation de l’interface graphique
+d’Unitex.</p>
+<p>REMARQUE: les options -e et -w acceptent toutes deux un fichier
+d’offset, comme l’accepte -u</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--PRLG=X,Y</span></code>: produit une concordance pour des corpus PRLG où
+chaque ligne est préfixée par l’information extraite avec l’option
+<code class="docutils literal"><span class="pre">--PRLG</span></code> de Unxmlize. X est le fichier produit par l’option
+<code class="docutils literal"><span class="pre">--PRLG</span></code> de Unxmlize et Y est le fichier produit par l’option
+<code class="docutils literal"><span class="pre">--output_offsets</span></code> de Tokenize. Remarquons que si cette option est
+utilisée en plus avec <code class="docutils literal"><span class="pre">-u</span></code>, l’argument Y remplace l’argument de
+<code class="docutils literal"><span class="pre">-u</span></code>;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-A</span></code>/<code class="docutils literal"><span class="pre">--axis</span></code>: presque pareil que <code class="docutils literal"><span class="pre">--index</span></code>, mais les nombres
+représentent le caractère médian de chaque occurrence. Pour plus
+d’information, consultez <a href="#id1"><span class="problematic" id="id2">:raw-latex:`\cite{axis}`</span></a>;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-x</span></code>/<code class="docutils literal"><span class="pre">--xalign</span></code>: un autre fichier index, utilisé par le module
+d’alignement de texte. Chaque ligne est formée de 3 entiers <span class="math">\(X\)</span>
+<span class="math">\(Y\)</span> <span class="math">\(Z\)</span> suivi du contenu de l’occurrence. <span class="math">\(X\)</span> est
+numéro de la phrase, partant de 1. <span class="math">\(Y\)</span> et <span class="math">\(Z\)</span> sont les
+positions de début et de fin de l’occurrence dans la phrase exprimée
+en caractères;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-m</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--merge=TXT</span></code>: indique au programme qu’il doit produire
+une version modifiée du texte et l’enregistrer dans le fichier
+dénommé <code class="docutils literal"><span class="pre">TXT</span></code> (voir section [section-modifying-text]).</p>
+</li>
+<li><div class="first line-block">
+<div class="line"><code class="docutils literal"><span class="pre">T--export_csv</span></code>: produit un fichier avec le séparateur tabulation
+export.csv dans l’ordre du texte avec le format suivant: A B C D E
+F, où: A=nombre de lignes dans le fichier .csv B=nombre de phrases
+C= référence PRLG, si elle existe D=la forme fléchie présente dans
+le texte E=le lemme, s’il existe F=les codes, s’il y en a</div>
+<div class="line">Pour fonctionner, cette option doit re appelée pour des fichier
+concord.ind, qui ne contiennent pas de token S ni espace</div>
+</div>
+</li>
+</ul>
+<p><strong>Autres options:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">DIR</span></code>/<code class="docutils literal"><span class="pre">--directory=DIR</span></code>: indique au programme qu’il ne doit
+pas travailler avec le même répertoire que <code class="docutils literal"><span class="pre">&lt;index&gt;</span></code> mais avec
+<code class="docutils literal"><span class="pre">DIR</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: fichier alphabet utilisé pour le
+tri;</li>
+<li><code class="docutils literal"><span class="pre">-T</span></code>/<code class="docutils literal"><span class="pre">--thai</span></code>: option à utiliser pour les concordances en Thai.</li>
+</ul>
+<p>Le résultat de l’application de ce programme est un fichier
+<code class="docutils literal"><span class="pre">concord.txt</span></code> si la concordance a été construite en mode texte, un
+fichier <code class="docutils literal"><span class="pre">concord.html</span></code> pour les modes <code class="docutils literal"><span class="pre">--html</span></code>, <code class="docutils literal"><span class="pre">--glossanet</span></code> ou
+<code class="docutils literal"><span class="pre">--script</span></code>, et un fichier texte dont le nom a été défini par
+l’utilisateur si le programme a construit une version modifiée du texte.</p>
+<p>En mode <code class="docutils literal"><span class="pre">--html</span></code>, l’occurrence est codée comme un lien. La référence
+associée à ce lien est de la forme <code class="docutils literal"><span class="pre">&lt;a</span> <span class="pre">href=&quot;X</span> <span class="pre">Y</span> <span class="pre">Z&quot;&gt;</span></code>. <code class="docutils literal"><span class="pre">X</span></code> et <code class="docutils literal"><span class="pre">Y</span></code>
+représentent les positions de début et de fin de l’occurrence en
+caractères dans le fichier <code class="docutils literal"><span class="pre">text_name.snt</span></code>. <code class="docutils literal"><span class="pre">Z</span></code> représente le numéro
+de la phrase dans laquelle apparaît l’occurrence.</p>
+</div>
+<div class="section" id="concordiff">
+<h2>ConcorDiff<a class="headerlink" href="#concordiff" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">ConcorDiff</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;concor1&gt;</span> <span class="pre">&lt;concor2&gt;</span></code></p>
+<p>Ce programme prend deux fichiers de concordance et produit une page HTML
+montrant les différences entre ces deux concordances (voir section
+[section-comparing-concordances], page ). <code class="docutils literal"><span class="pre">&lt;concor1&gt;</span></code> et <code class="docutils literal"><span class="pre">&lt;concor2&gt;</span></code>
+fichiers de concordances (.ind) doivent avoir des noms absolus, car
+Unitex en déduit le texte sur lequel elles ont été calculées;</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--out=X</span></code>: page HTML de sortie;</li>
+<li><code class="docutils literal"><span class="pre">-f</span> <span class="pre">FONT</span></code>/<code class="docutils literal"><span class="pre">--font=FONT</span></code>: police à utiliser dans le page HTML de
+sortie;</li>
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--size=N</span></code>: taille de police à utiliser dans le page HTML
+de sortie;</li>
+<li><code class="docutils literal"><span class="pre">-d/--diff_only</span></code>: ne pas afficher les séquences identiques;</li>
+</ul>
+</div>
+<div class="section" id="convert">
+<h2>Convert<a class="headerlink" href="#convert" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Convert</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;text_1&gt;</span> <span class="pre">[&lt;text_2&gt;</span> <span class="pre">&lt;text_3&gt;</span> <span class="pre">...]</span></code></p>
+<p>Ce programme permet de transcoder des fichiers textes.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--src=X</span></code>: encodage d’entrée;</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--dest=X</span></code>: encodage de sortie (par
+défaut=<code class="docutils literal"><span class="pre">LITTLE-ENDIAN</span></code>);</li>
+</ul>
+<p><strong>Options de translitération (seulement pour l’arabe):</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-F</span></code>/<code class="docutils literal"><span class="pre">--delaf</span></code>: l’entrée est un DELAF et l’on veut seulement
+translitérer les formes fléchies et canoniques;</li>
+<li><code class="docutils literal"><span class="pre">-S</span></code>/<code class="docutils literal"><span class="pre">--delas</span></code>: l’entrée est un DELAS et l’on veut seulement
+translitérer les formes canoniques.</li>
+</ul>
+<p><strong>Options de sortie:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-r</span></code>/<code class="docutils literal"><span class="pre">--replace</span></code>: la conversion écrase les fichiers source (par
+défaut);</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">file</span></code>/<code class="docutils literal"><span class="pre">--output=file</span></code>: nom du fichier de destination
+(seulement un fichier à convertir);</li>
+<li><code class="docutils literal"><span class="pre">--ps=PFX</span></code>: les fichiers sources sont renommés avec le préfixe
+<code class="docutils literal"><span class="pre">PFX</span></code>; (<code class="docutils literal"><span class="pre">toto.txt</span></code> <span class="math">\(\Rightarrow\)</span> <code class="docutils literal"><span class="pre">PFXtoto.txt</span></code>);</li>
+<li><code class="docutils literal"><span class="pre">--pd=PFX</span></code>: les fichiers destinations sont renommés avec le préfixe
+<code class="docutils literal"><span class="pre">PFX</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">--ss=SFX</span></code>: les fichiers sources sont renommés avec le suffixe
+<code class="docutils literal"><span class="pre">SFX</span></code>; (<code class="docutils literal"><span class="pre">toto.txt</span></code> <span class="math">\(\Rightarrow\)</span> <code class="docutils literal"><span class="pre">totoSFX.txt</span></code>);</li>
+<li><code class="docutils literal"><span class="pre">--sd=SFX</span></code>: les fichiers destinations sont renommés avec le suffixe
+<code class="docutils literal"><span class="pre">SFX</span></code>.</li>
+</ul>
+<p><strong>Options HTML:</strong></p>
+<p><code class="docutils literal"><span class="pre">Convert</span></code> offre des options spéciales pour les fichiers HTML. Vous
+pouvez utiliser une combinaison des options suivantes:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">--dnc</span></code> (Decode Normal Chars): des séquences comme <code class="docutils literal"><span class="pre">&amp;eacute;</span></code>
+<code class="docutils literal"><span class="pre">&amp;#120;</span></code> et <code class="docutils literal"><span class="pre">&amp;#xF8;</span></code> sont décodées comme un unique caractère
+unicode, sauf si elles representent un caractère de contrôle HTML;</li>
+<li><code class="docutils literal"><span class="pre">--dcc</span></code> (Decode Control Chars): <code class="docutils literal"><span class="pre">&amp;lt;</span></code> <code class="docutils literal"><span class="pre">&amp;gt;</span></code> <code class="docutils literal"><span class="pre">&amp;amp;</span></code> et
+<code class="docutils literal"><span class="pre">&amp;quot;</span></code> sont décodés comme <code class="docutils literal"><span class="pre">&lt;</span></code> <code class="docutils literal"><span class="pre">&gt;</span></code> <code class="docutils literal"><span class="pre">&amp;</span></code> et les quote (de même
+pour leur représentation décimales et hexadécimales);</li>
+<li><code class="docutils literal"><span class="pre">--eac</span></code> (Encode All Chars): chaque caractère non supporté par
+l’encodage de sortie est représenté par une chaîne comme <code class="docutils literal"><span class="pre">&amp;#457;</span></code></li>
+<li><code class="docutils literal"><span class="pre">--ecc</span></code> (Encode Control Chars): <code class="docutils literal"><span class="pre">&lt;</span></code> <code class="docutils literal"><span class="pre">&gt;</span></code> <code class="docutils literal"><span class="pre">&amp;</span></code> et les quote sont
+encodés par <code class="docutils literal"><span class="pre">&amp;lt;</span></code> <code class="docutils literal"><span class="pre">&amp;gt;</span></code> <code class="docutils literal"><span class="pre">&amp;amp;</span></code> et <code class="docutils literal"><span class="pre">&amp;quot;</span></code></li>
+</ul>
+<p>Par défaut, toutes les options HTML sont désactivées.</p>
+<p><strong>Autres options:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-m</span></code>/<code class="docutils literal"><span class="pre">--main-names</span></code>: imprime la liste des noms principaux des
+encodage;</li>
+<li><code class="docutils literal"><span class="pre">-a</span></code>/<code class="docutils literal"><span class="pre">--aliases</span></code>: imprime la liste des alias d’encodage;</li>
+<li><code class="docutils literal"><span class="pre">-A</span></code>/<code class="docutils literal"><span class="pre">--all-infos</span></code>: imprime toutes les information concernant
+tous les encodages;</li>
+<li><code class="docutils literal"><span class="pre">-i</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--info=X</span></code>: imprime toutes les information concernant
+l’encodage X.</li>
+</ul>
+<p>Les encodages prennent leurs valeurs dans la liste suivante (liste non
+exhaustive, voir ci-dessous):</p>
+<p><code class="docutils literal"><span class="pre">FRENCH</span></code></p>
+<p><code class="docutils literal"><span class="pre">ENGLISH</span></code></p>
+<p><code class="docutils literal"><span class="pre">GREEK</span></code></p>
+<p><code class="docutils literal"><span class="pre">THAI</span></code></p>
+<p><code class="docutils literal"><span class="pre">CZECH</span></code></p>
+<p><code class="docutils literal"><span class="pre">GERMAN</span></code></p>
+<p><code class="docutils literal"><span class="pre">SPANISH</span></code></p>
+<p><code class="docutils literal"><span class="pre">PORTUGUESE</span></code></p>
+<p><code class="docutils literal"><span class="pre">ITALIAN</span></code></p>
+<p><code class="docutils literal"><span class="pre">NORWEGIAN</span></code></p>
+<p><code class="docutils literal"><span class="pre">LATIN</span></code> (default latin code page)</p>
+<p><code class="docutils literal"><span class="pre">windows-1252</span></code>: Microsoft Windows 1252 - Latin I (Western Europe &amp;
+USA)</p>
+<p><code class="docutils literal"><span class="pre">windows-1250</span></code>: Microsoft Windows 1250 - Central Europe</p>
+<p><code class="docutils literal"><span class="pre">windows-1257</span></code>: Microsoft Windows 1257 - Baltic</p>
+<p><code class="docutils literal"><span class="pre">windows-1251</span></code>: Microsoft Windows 1251 - Cyrillic</p>
+<p><code class="docutils literal"><span class="pre">windows-1254</span></code>: Microsoft Windows 1254 - Turkish</p>
+<p><code class="docutils literal"><span class="pre">windows-1258</span></code>: Microsoft Windows 1258 - Viet Nam</p>
+<p><a href="#id3"><span class="problematic" id="id4">``</span></a>iso-8859-1  <a href="#id5"><span class="problematic" id="id6">``</span></a>: ISO 8859-1 - Latin 1 (Europe de l’ouest &amp; USA)</p>
+<p><a href="#id7"><span class="problematic" id="id8">``</span></a>iso-8859-15 <a href="#id9"><span class="problematic" id="id10">``</span></a>: ISO 8859-15 - Latin 9 (Western Europe &amp; USA)</p>
+<p><a href="#id11"><span class="problematic" id="id12">``</span></a>iso-8859-2  <a href="#id13"><span class="problematic" id="id14">``</span></a>: ISO 8859-2 - Latin 2 (Eastern and Central Europe)</p>
+<p><a href="#id15"><span class="problematic" id="id16">``</span></a>iso-8859-3  <a href="#id17"><span class="problematic" id="id18">``</span></a>: ISO 8859-3 - Latin 3 (Southern Europe)</p>
+<p><a href="#id19"><span class="problematic" id="id20">``</span></a>iso-8859-4  <a href="#id21"><span class="problematic" id="id22">``</span></a>: ISO 8859-4 - Latin 4 (Northern Europe)</p>
+<p><a href="#id23"><span class="problematic" id="id24">``</span></a>iso-8859-5  <a href="#id25"><span class="problematic" id="id26">``</span></a>: ISO 8859-5 - Cyrillic</p>
+<p><a href="#id27"><span class="problematic" id="id28">``</span></a>iso-8859-7  <a href="#id29"><span class="problematic" id="id30">``</span></a>: ISO 8859-7 - Greek</p>
+<p><a href="#id31"><span class="problematic" id="id32">``</span></a>iso-8859-9  <a href="#id33"><span class="problematic" id="id34">``</span></a>: ISO 8859-9 - Latin 5 (Turkish)</p>
+<p><a href="#id35"><span class="problematic" id="id36">``</span></a>iso-8859-10 <a href="#id37"><span class="problematic" id="id38">``</span></a>: ISO 8859-10 - Latin 6 (Nordic)</p>
+<p><a href="#id39"><span class="problematic" id="id40">``</span></a>next-step   <a href="#id41"><span class="problematic" id="id42">``</span></a>: NextStep code page</p>
+<p><code class="docutils literal"><span class="pre">LITTLE-ENDIAN</span></code></p>
+<p><code class="docutils literal"><span class="pre">BIG-ENDIAN</span></code></p>
+<p><code class="docutils literal"><span class="pre">UTF8</span></code></p>
+</div>
+<div class="section" id="dico">
+<h2>Dico<a class="headerlink" href="#dico" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Dico</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;dic_1&gt;</span> <span class="pre">[&lt;dic_2&gt;</span> <span class="pre">&lt;dic_3&gt;...]</span></code></p>
+<p>Ce programme applique des dictionnaires à un texte. Le texte doit avoir
+été découpé en unités lexicales par le programme <code class="docutils literal"><span class="pre">Tokenize</span></code>.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--text=TXT</span></code>: nom complet du fichier texte <code class="docutils literal"><span class="pre">.snt</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: le fichier alphabet à utiliser;</li>
+<li><code class="docutils literal"><span class="pre">-m</span> <span class="pre">DICS</span></code>/<code class="docutils literal"><span class="pre">--morpho=DICS</span></code>: ce paramètre optionnel liste les
+dictionnaires du mode morphologique, si la présence de dictionnaires
+<code class="docutils literal"><span class="pre">.fst2</span></code> rend cette information nécessaire. <code class="docutils literal"><span class="pre">DICS</span></code> représente une
+liste de fichiers <code class="docutils literal"><span class="pre">.bin</span></code> (avec leur nom complet) séparés par des
+points-virgules;</li>
+<li><code class="docutils literal"><span class="pre">-K</span></code>/<code class="docutils literal"><span class="pre">--korean</span></code>: indique à <code class="docutils literal"><span class="pre">Dico</span></code> qu’il travaille sur du
+coréen;</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--semitic</span></code>: indique à <code class="docutils literal"><span class="pre">Dico</span></code> qu’il travaille sur une
+langue sémitique (nécessaire si <code class="docutils literal"><span class="pre">Dico</span></code> doit compresser un
+dictionnaire);</li>
+<li><code class="docutils literal"><span class="pre">-u</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--arabic_rules=X</span></code>: désigne le fichier de configuration
+des règles typographiques de l’arabe;.</li>
+<li><code class="docutils literal"><span class="pre">r</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--raw=X</span></code>: indique que <code class="docutils literal"><span class="pre">Dico</span></code> devrait simplement produire
+un fichier de sortie X contenant les mots simples et composés, sans
+exiger un répertoire texte. Si X est omis, les résultats sont
+affichés sur la sortie standard.</li>
+</ul>
+<p><code class="docutils literal"><span class="pre">&lt;dic_i&gt;</span></code> représente le chemin d’accès complet à un dictionnaire. Le
+dictionnaire doit être soit un dictionnaire compressé au format <code class="docutils literal"><span class="pre">.bin</span></code>
+(obtenu avec le programme <code class="docutils literal"><span class="pre">Compress</span></code>) soit un graphe dictionnaire au
+format<code class="docutils literal"><span class="pre">.fst2</span></code> (voir section [section-applying-dictionaries], page ).
+Il est possible de donner des priorités aux dictionnaires. Pour les
+détails voir section [section-dictionary-priorities].</p>
+<p>Le programme <code class="docutils literal"><span class="pre">Dico</span></code> produit les fichiers suivants et les sauve dans le
+répertoire du texte</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">dlf</span></code>: dictionnaire des mots simples du texte;</li>
+<li><code class="docutils literal"><span class="pre">dlc</span></code>: dictionnaire des mots composés du texte;</li>
+<li><code class="docutils literal"><span class="pre">err</span></code>: liste des mots inconnus du texte;</li>
+<li><code class="docutils literal"><span class="pre">tags_err</span></code>: mots simples inconnus qui ne sont pas reconnus par le
+fichier <code class="docutils literal"><span class="pre">tags.ind</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">tags.ind</span></code> : séquences à insérer dans l’automate du texte (see
+section [section-dictionary-graphs], page );</li>
+<li><code class="docutils literal"><span class="pre">stat_dic.n</span></code>: fichier contenant les nombres de mots simples,
+composés et inconnus du texte.</li>
+</ul>
+<p>NOTE: Les fichiers<code class="docutils literal"><span class="pre">dlf</span></code>, <code class="docutils literal"><span class="pre">dlc</span></code>, <code class="docutils literal"><span class="pre">err</span></code> and <code class="docutils literal"><span class="pre">tags_err</span></code> ne sont
+pas triés. Utilisez le programme <code class="docutils literal"><span class="pre">SortTxt</span></code> pour le faire.</p>
+</div>
+<div class="section" id="dumpoffsets">
+<h2>DumpOffsets<a class="headerlink" href="#dumpoffsets" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-DumpOffsets] <strong>Utilisation:</strong> <code class="docutils literal"><span class="pre">DumpOffsets</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;txt&gt;:</span> <span class="pre">fichier</span> <span class="pre">d'offsets</span> <span class="pre">d'origine</span></code></p>
+<p>Ce programme permet d’étudier et d’utiliser les fichiers de
+correspondance d’Offsets, manipulé par certains outils Unitex comme
+Unxmlize, Normalize, Fst2Txt, Tokenize, Concord et GrfTest.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--old=X</span></code>: nom du fichier d’origine</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--new=X</span></code>: nom du fichier d’arrivée</li>
+<li><code class="docutils literal"><span class="pre">-p</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--output=X</span></code>: nom du fichier de sortie</li>
+<li><code class="docutils literal"><span class="pre">-f</span></code>/<code class="docutils literal"><span class="pre">--full</span></code>: ajouter le texte courant</li>
+<li><code class="docutils literal"><span class="pre">-q</span></code>/<code class="docutils literal"><span class="pre">--quiet</span></code>: ne pas afficher de message</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--no_escape_sequence</span></code>: don’t escape text sequence</li>
+<li><code class="docutils literal"><span class="pre">-h</span></code>/<code class="docutils literal"><span class="pre">--help</span></code>: cet aide</li>
+</ul>
+<p>Exemple:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexToolLogger</span> <span class="n">Normalize</span> <span class="o">-</span><span class="n">r</span> <span class="o">.</span>\<span class="n">resource</span>\<span class="n">Norm</span><span class="o">.</span><span class="n">txt</span> <span class="o">.</span>\<span class="n">work</span>\<span class="n">text_file</span><span class="o">.</span><span class="n">txt</span>
+        <span class="o">--</span><span class="n">output_offsets</span> <span class="o">.</span>\<span class="n">work</span>\<span class="n">text_file_offset</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">UnitexToolLogger</span> <span class="n">DumpOffsets</span> <span class="o">-</span><span class="n">o</span> <span class="o">.</span>\<span class="n">work</span>\<span class="n">text_file_offset</span><span class="o">.</span><span class="n">txt</span> <span class="o">-</span><span class="n">n</span> <span class="o">.</span>\<span class="n">work</span>\<span class="n">text_file_offset</span><span class="o">.</span><span class="n">snt</span>
+       <span class="o">-</span><span class="n">p</span> <span class="o">.</span>\<span class="n">work</span>\<span class="n">dump</span>\<span class="n">dump_offsets</span><span class="o">.</span><span class="n">txt</span> <span class="o">.</span>\<span class="n">work</span>\<span class="n">text_file_offset</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p><strong>Autre Utilisation:</strong> <code class="docutils literal"><span class="pre">DumpOffsets</span> <span class="pre">[-m/--merge]</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;txt&gt;:</span> <span class="pre">fichier</span> <span class="pre">d'offsets</span> <span class="pre">d'origine</span></code></p>
+<p>Fusionner deux fichiers d’offsets produits par deux modifications
+successives du texte.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--old=X</span></code>: nom du fichier d’origine</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--output=X</span></code>: nom du fichier d’offset issu de la fusion</li>
+</ul>
+<p><strong>Autre Utilisation:</strong>
+<code class="docutils literal"><span class="pre">DumpOffsets</span> <span class="pre">[-v/--convert_modified_to_common]</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;txt&gt;:</span> <span class="pre">fichier</span> <span class="pre">d'offsets</span> <span class="pre">d'origine</span></code></p>
+<p>Crée un fichier d’offset des chaines identiques dans le fichier original
+et le fichier modifié. Au moins une taille doit être fournie.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--old_size=N</span></code>: taille en caractère de la version
+d’origine du fichier texte</li>
+<li><code class="docutils literal"><span class="pre">-S</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--new_size=N</span></code>: taille en caractère de la version
+d’arrivée du fichier texte</li>
+<li><code class="docutils literal"><span class="pre">-p</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--output=X</span></code>: nom du fichier d’offsets courant</li>
+<li><code class="docutils literal"><span class="pre">-h</span></code>/<code class="docutils literal"><span class="pre">--help</span></code>: cet aide</li>
+</ul>
+<p><strong>Autre Utilisation:</strong>
+<code class="docutils literal"><span class="pre">DumpOffsets</span> <span class="pre">[-M/--convert_modified_to_common]</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;txt&gt;:</span> <span class="pre">fichier</span> <span class="pre">d'offsets</span> <span class="pre">d'origine</span></code></p>
+<p>Crée un fichier d’offsets à partir des offsets des chaines identiques
+dans le fichier original et le fichier modifié. Il faut obligatoirement
+spécifier les deux tailles.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--old_size=N</span></code>: taille en caractère de la version
+d’origine du fichier texte</li>
+<li><code class="docutils literal"><span class="pre">-S</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--new_size=N</span></code>: taille en caractère de la version
+d’arrivée du fichier texte</li>
+<li><code class="docutils literal"><span class="pre">-p</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--output=X</span></code>: nom du fichier d’offsets courant</li>
+<li><code class="docutils literal"><span class="pre">-h</span></code>/<code class="docutils literal"><span class="pre">--help</span></code>: cet aide</li>
+</ul>
+<p><strong>Autre Utilisation:</strong>
+<code class="docutils literal"><span class="pre">DumpOffsets</span> <span class="pre">-o</span> <span class="pre">&lt;list_of_position_file_to_read.txt&gt;</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;list_of_position_file_to_read.txt&gt;</span></code> est un fichier avec seulement un
+nombre par ligne (une position).</p>
+<p>Ceci convertit une liste de positions en utilisant le fichier d’offsets.
+Le fichier créé contient à chaque ligne la nouvelle position suivi d’un
++ si le caractère à cette position est dans le fichier d’arrivée, suivi
+d’un - si le caractère a été supprimé.</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-p</span> <span class="pre">&lt;list_to_create&gt;</span> <span class="pre">-T</span> <span class="pre">&lt;offset_file_to_read&gt;</span></code></li>
+</ul>
+<p>Utiliser <code class="docutils literal"><span class="pre">-t</span></code> à la place de <code class="docutils literal"><span class="pre">-T</span></code> produit la traduction inverse.</p>
+</div>
+<div class="section" id="id43">
+<h2>DumpOffsets<a class="headerlink" href="#id43" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-DumpOffsets]</p>
+<p>Ce programme permet d’étudier et d’utiliser les fichiers de
+correspondance d’Offsets, manipulé par certains outils Unitex comme
+Unxmlize, Normalize, Fst2Txt, Tokenize, Concord et GrfTest.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DumpOffsets</span> <span class="o">--</span><span class="n">merge</span> <span class="o">-</span><span class="n">o</span> <span class="o">&lt;</span><span class="n">fichier_offsets1</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">fichier_offsets2</span><span class="o">&gt;</span>
+  <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">fichier_offset12</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>En entrée, le fichier offsets1 ([subsection-offsets-diff], page ))
+contient la correspondant des offsets entre un fichier en version A et
+un fichier en version B, et offset2 contient la correspondant des
+offsets entre ce fichier en version B et en version C, le fichier
+fichier_offset12 résultant aura la correspondance entre les versions A
+et B.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DumpOffsets</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="o">-</span><span class="n">o</span> <span class="o">&lt;</span><span class="n">fichier_version1</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="n">fichier_Version2</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">fichier_offset</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">fichier_dump</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-f/--full</span></code>: Inclus des informations plus complètes</li>
+</ul>
+<p>En entrée, le fichier fichier_offset contient la correspondant des
+offsets entre le fichier_version1 et le fichier_version2. En sortie,
+le fichier texte &lt;fichier_dump&gt; contiendra la comparaison des séquences
+entre les 2 fichiers et vérifiera leur cohérence. Ce fichier est
+destinée à une lecture manuelle, afin d’étudier le contenu du fichier
+d’offset</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DumpOffsets</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="o">--</span><span class="n">convert_modified_to_common</span>
+  <span class="o">&lt;</span><span class="n">fichier_offset_différence</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">fichier_offset_zone_commune</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N/--old_size=N</span></code>: Contient la taille en caractère de la version
+d’origine du fichiet texte</li>
+<li><code class="docutils literal"><span class="pre">-S</span> <span class="pre">N/--new_size=N</span></code>: Contient la taille en caractère de la version
+d’arrivée du fichiet texte</li>
+</ul>
+<p>Il faut obligatoirement spécifier une des deux tailles. Pour un fichier
+encodé en UTF16BE_BOM, c’est la taille en octets, auquel on retranche 2
+pour les 2 octets de signature BOM et que l’on divise ensuite par 2 car
+chaque caractère unicode prend 2 octets. En UTF8, la correspondance
+n’est pas immédiate.</p>
+<p>Converti un fichier d’offset indiquant les caractères supprimés (tel que
+fournis par les autres outils Unitex) en fichier indiquant les plages de
+caractères identiques ([subsection-offsets-common]).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DumpOffsets</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="o">--</span><span class="n">convert_common_to_modified</span>
+  <span class="o">&lt;</span><span class="n">fichier_offset_zone_commune</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">fichier_offset_différence</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N/--old\_size=N</span></code>: Contient la taille en caractère de la version
+d’origine du fichier texte</li>
+<li><code class="docutils literal"><span class="pre">-S</span> <span class="pre">N/--new\_size=N</span></code>: Contient la taille en caractère de la version
+d’arrivée du fichier texte</li>
+</ul>
+<p>Il faut obligatoirement spécifier les deux tailles.</p>
+<div class="line-block">
+<div class="line">Converti un fichier d’offset indiquant les plages de caractères
+identiques en fichier indiquant les caractères supprimés.</div>
+<div class="line"><strong>OPTIONS:</strong></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-d/--denormalize</span></code>: Denormalize l’output</li>
+</ul>
+<p>Typiquement ce program permet de rétablir les espaces, les espaces
+insecables, les sauts de ligne, les tabulations, etc. effacés par
+Normalize. Il rétablit aussi le texte qui a été supprimé par le
+Preprocessing ou par un graphe. Il conserve les ajouts à condition que
+ceux-ci soient placés entre chevrons.</p>
+<p>Le fichier_dump contient les textes du fichier version 1 et les textes
+entre chevron (&lt;, &gt;) qui étaient ajoutés en fichier version 2.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DumpOffsets</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="o">-</span><span class="n">d</span> <span class="o">-</span><span class="n">o</span> <span class="o">&lt;</span><span class="n">fichier_version1</span><span class="o">&gt;</span>
+<span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="n">fichier_version2</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">fichier_offset</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">fichier_dump</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="elag">
+<h2>Elag<a class="headerlink" href="#elag" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Elag</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;tfst&gt;</span></code></p>
+<p>Ce programme prend un fichier <code class="docutils literal"><span class="pre">.tfst</span></code> automate de texte <code class="docutils literal"><span class="pre">&lt;tfst&gt;</span></code> et
+lui applique des règles de levée d’ambiguïtés.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-l</span> <span class="pre">LANG/--language=LANG</span></code>: Le fichier de configuration ELAG pour la
+langue considérée</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">RULES/--rules=RULES</span></code>: le fichier de règles compilées au format
+<code class="docutils literal"><span class="pre">.rul</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT/--output=OUT</span></code>: l’automate du texte de sortie.</li>
+</ul>
+</div>
+<div class="section" id="elagcomp">
+<h2>ElagComp<a class="headerlink" href="#elagcomp" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">ElagComp</span> <span class="pre">[OPTIONS]</span></code></p>
+<p>Ce programme compile une grammaire ELAG dont le nom est <code class="docutils literal"><span class="pre">GRAMMAR</span></code>, ou
+toutes les grammaires sont spécifiées dans le fichier <code class="docutils literal"><span class="pre">RULES</span></code>. Le
+résultat est stocké dans un fichier <code class="docutils literal"><span class="pre">OUT</span></code> qui pourra être utilisé par
+le programme <code class="docutils literal"><span class="pre">Elag</span></code>.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">RULES</span></code>/<code class="docutils literal"><span class="pre">--rules=RULES</span></code>: fichier listant des grammaires ELAG;</li>
+<li><code class="docutils literal"><span class="pre">-g</span> <span class="pre">GRAMMAR</span></code>/<code class="docutils literal"><span class="pre">--grammar=GRAMMAR</span></code>: une grammaire ELAG donnée;</li>
+<li><code class="docutils literal"><span class="pre">-l</span> <span class="pre">LANG</span></code>/<code class="docutils literal"><span class="pre">--language=LANG</span></code>: le fichier de configuration ELAG
+pour la langue considérée;</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: nom du fichier de sortie. Par défaut, le
+fichier de sortie est identique à <code class="docutils literal"><span class="pre">RULES</span></code>, sauf pour l’extension
+qui est <code class="docutils literal"><span class="pre">.rul</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="evamb">
+<h2>Evamb<a class="headerlink" href="#evamb" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Evamb</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;tfst&gt;</span></code></p>
+<p>Ce programme calcule un taux d’ambiguïté moyen sur tout l’automate du
+texte <code class="docutils literal"><span class="pre">&lt;tfst&gt;</span></code>, ou juste sur la phrase spécifiée par<code class="docutils literal"><span class="pre">N</span></code>. Les
+résultats du calcul sont affichés sur la sortie standard. L’automate du
+texte n’est pas modifié par ce programme.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: nom de fichier optionnel;</li>
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--sentence=N</span></code>: numéro de phrase.</li>
+</ul>
+</div>
+<div class="section" id="extract">
+<h2>Extract<a class="headerlink" href="#extract" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Extract</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;text&gt;</span></code></p>
+<p>Ce programme extrait de ce texte toutes les phrases qui contiennent au
+moins une des occurrences de la concordance. Le paramètre <code class="docutils literal"><span class="pre">&lt;text&gt;</span></code>
+représente le nom complet du fichier texte, sans omettre l’extension
+<code class="docutils literal"><span class="pre">.snt</span></code>.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-y</span></code>/<code class="docutils literal"><span class="pre">--yes</span></code>: extrait toutes les phrases qui contiennent des
+séquences reconnues (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no</span></code>: extrait toutes les phrases qui ne contiennent pas de
+séquence reconnue</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: nom du fichier de sortie;</li>
+<li><code class="docutils literal"><span class="pre">-i</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--index=X</span></code>: le fichier <code class="docutils literal"><span class="pre">.ind</span></code> qui décrit la
+concordance. Par défaut, <code class="docutils literal"><span class="pre">X</span></code> est le fichier <code class="docutils literal"><span class="pre">concord.ind</span></code> situé
+dans le répertoire du texte</li>
+</ul>
+<p>Le résultat est un fichier texte contenant toutes les phrases extraites,
+à raison d’une phrase par ligne.</p>
+</div>
+<div class="section" id="flatten">
+<h2>Flatten<a class="headerlink" href="#flatten" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Flatten</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;fst2&gt;</span></code></p>
+<p>Ce programme prend une grammaire <code class="docutils literal"><span class="pre">.fst2</span></code> en paramètre, et essaye de la
+transformer en un transducteur à états finis.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-f</span></code>/<code class="docutils literal"><span class="pre">--fst</span></code>: la grammaire est “dépliée” à la profondeur maximum
+et tronquée si des appels à des sous-graphes existent. Les appels
+tronqués sont remplacés par des transitions vides. Le résultat est
+une grammaire <code class="docutils literal"><span class="pre">.fst2</span></code> qui contient un unique transducteur à états
+finis;</li>
+<li><code class="docutils literal"><span class="pre">-r</span></code>/<code class="docutils literal"><span class="pre">--rtn</span></code>: les appels aux sous-graphes qui subsistent après
+transformation sont laissés tels quels. Le résultat est un
+transducteur à états finis dans le cas favorable, et une grammaire
+optimisée strictement équivalente à l’originale dans le cas contraire
+(par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--depth=N</span></code>: profondeur maximum à laquelle les appels aux
+graphes devraient être dépliés. La valeur par défaut est 10.</li>
+</ul>
+</div>
+<div class="section" id="fst2check">
+<h2>Fst2Check<a class="headerlink" href="#fst2check" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Fst2Check</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;fst2&gt;</span></code></p>
+<p>Ce programme vérifie si un fichier .fst2 n’a pas d’erreurs Locate.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-y</span></code>/<code class="docutils literal"><span class="pre">--loop_check</span></code>: active la vérification d’erreurs ( détection
+de boucles);</li>
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no_loop_check</span></code>: désactive la vérification d’erreurs (par
+défaut);</li>
+<li><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--tfst_check</span></code>: vérifie si le graphe donné peut être
+considéré comme un automate de phrases ou non;</li>
+<li><code class="docutils literal"><span class="pre">-e</span></code>/<code class="docutils literal"><span class="pre">--no_empty_graph_warning</span></code>: pas d’émission de warning quand
+les graphes reconnaissent le mot vide. Cette option est utilisée par
+<code class="docutils literal"><span class="pre">MultiFlex</span></code> pour ne pas effrayer les utilisateurs par des messages
+d’erreurs inadéquats lorsqu’ils construisent une grammaire de flexion
+qui reconnaît le mot vide</li>
+</ul>
+<p><strong>Options de sortie:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">file</span></code>/<code class="docutils literal"><span class="pre">--output=file</span></code>: fichier de sorties pour les messages
+d’erreurs;</li>
+<li><code class="docutils literal"><span class="pre">-a</span></code>/<code class="docutils literal"><span class="pre">--append</span></code>: ouvre un fichier de message d’erreurs en mode
+append;</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--statistics</span></code>: affiche les statistique du fichier
+<code class="docutils literal"><span class="pre">.fst2</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="fst2list">
+<h2>Fst2List<a class="headerlink" href="#fst2list" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Fst2List</span> <span class="pre">[-o</span> <span class="pre">out][-p</span> <span class="pre">s/f/d][-[a/t]</span> <span class="pre">s/m][-m][-f</span> <span class="pre">s/a][-s[0s]</span> <span class="pre">&quot;Str&quot;]</span></code></p>
+<p>``         [-r[s/l] &#8220;Str&#8221;] [-l line#] [-i subname]*``</p>
+<p>``         [-c SS=0xxxx]* fname``</p>
+<p>Ce programme prend un fichier <code class="docutils literal"><span class="pre">.fst2</span></code> et produit la liste des
+séquences reconnues par cette grammaire. Les paramètres sont les
+suivants :</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">fname</span></code> : nom de la grammaire, avec l’extension <code class="docutils literal"><span class="pre">.fst2</span></code>;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-o</span> <span class="pre">out</span></code> : précise le nom du fichier de sortie. Par défaut, ce
+fichier se nomme <code class="docutils literal"><span class="pre">lst.txt</span></code>;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-S</span></code> : Affiche le résultat sur la sortie standard. Exclusif avec
+<code class="docutils literal"><span class="pre">-o</span></code>;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-[a/t]</span> <span class="pre">s/m</span></code> : précise si l’on tient compte (<code class="docutils literal"><span class="pre">t</span></code>) ou non (<code class="docutils literal"><span class="pre">a</span></code>)
+des éventuelles sorties de la grammaire. <code class="docutils literal"><span class="pre">s</span></code> indique qu’il n’y a
+qu’un seul état initial, tandis que <code class="docutils literal"><span class="pre">m</span></code> indique qu’il y en a
+plusieurs (ce mode est utile en coréen). Par défaut, ce paramètre
+vaut <code class="docutils literal"><span class="pre">-a</span> <span class="pre">s</span></code>;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-l</span> <span class="pre">line#</span></code> : nombre maximum de lignes à écrire dans le fichier de
+sortie;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-i</span> <span class="pre">subname</span></code> : indique que l’on doit arrêter l’exploration
+récursive lorsque l’on rencontre le graphe <code class="docutils literal"><span class="pre">subname</span></code>. Ce paramètre
+peut être utilisé plusieurs fois, afin de spécifier plusieurs graphes
+d’arrêts</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-p</span> <span class="pre">s/f/d</span></code> : <code class="docutils literal"><span class="pre">s</span></code> produit l’affichage des chemins de chaque
+sous-graphe de la grammaire ; <code class="docutils literal"><span class="pre">f</span></code> (par défaut) affiche les chemins
+globaux de la grammaire; <code class="docutils literal"><span class="pre">d</span></code> affiche les chemins en ajoutant des
+indications sur les imbrications d’appels de sous-graphes;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-c</span> <span class="pre">SS=0xXXXX</span></code>: remplace le symbole <code class="docutils literal"><span class="pre">SS</span></code> quand il apparaît entre
+angles par le caractère unicode de code hexadécimal <code class="docutils literal"><span class="pre">0xXXXX</span></code>;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-s</span> <span class="pre">&quot;L[,R]&quot;</span></code> : spécifie les délimiteurs gauche (<code class="docutils literal"><span class="pre">L</span></code>) et droit
+(<code class="docutils literal"><span class="pre">R</span></code>) qui entoureront les items. Par défaut, ces délimiteurs sont
+nuls;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-s0</span> <span class="pre">&quot;Str&quot;</span></code> :si l’on tient compte des sorties de la grammaire, ce
+paramètre spécifie la séquence <code class="docutils literal"><span class="pre">Str</span></code> qui séparera une entrée de sa
+sortie. Par défaut, il n’y a pas de séparateur;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-f</span> <span class="pre">a/s</span></code> : si l’on tient compte des sorties de la grammaire, ce
+paramètre spécifie le format des lignes générées :
+<code class="docutils literal"><span class="pre">in0</span> <span class="pre">in1</span> <span class="pre">out0</span> <span class="pre">out1</span></code> (<code class="docutils literal"><span class="pre">s</span></code>) ou <code class="docutils literal"><span class="pre">in0</span> <span class="pre">out0</span> <span class="pre">in1</span> <span class="pre">out1</span></code> (<code class="docutils literal"><span class="pre">a</span></code>). La
+valeur par défaut est <code class="docutils literal"><span class="pre">s</span></code>;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-ss</span> <span class="pre">&quot;stop&quot;</span></code>: définit “str” comme la marque d’arrêt à
+l’exploitation à <code class="docutils literal"><span class="pre">&quot;&lt;stop&gt;&quot;</span></code>. La valeur par défaut est <code class="docutils literal"><span class="pre">null</span></code>;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-v</span></code> : ce paramètre produit l’affichage de messages d’informations;
+(mode verbose);</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-m</span></code> : mode spécial pour description avec alphabet;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-rx</span> <span class="pre">&quot;L,[R]&quot;</span></code>: ce paramètre spécifie comment les cycles doivent
+être présentés <code class="docutils literal"><span class="pre">L</span></code> et <code class="docutils literal"><span class="pre">R</span></code> désignent des délimiteurs. Si l’on
+considère le graphe de la figure [cycle], voici les résultats que
+l’on obtient si l’on pose <code class="docutils literal"><span class="pre">L</span></code>=“<code class="docutils literal"><span class="pre">[</span></code>” et <code class="docutils literal"><span class="pre">R</span></code>=“<code class="docutils literal"><span class="pre">]*</span></code>”:</p>
+<p><code class="docutils literal"><span class="pre">il</span> <span class="pre">fait</span> <span class="pre">[très</span> <span class="pre">très]*</span></code></p>
+<p><code class="docutils literal"><span class="pre">il</span> <span class="pre">fait</span> <span class="pre">très</span> <span class="pre">beau</span></code></p>
+<div class="figure" id="id47">
+<a class="reference internal image-reference" href="resources/img/fig10-1.png"><img alt="Graphe avec un cycle[cycle]" src="resources/img/fig10-1.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe avec un cycle[cycle]</span></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="fst2txt">
+<h2>Fst2Txt<a class="headerlink" href="#fst2txt" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-Fst2Txt] <code class="docutils literal"><span class="pre">Fst2Txt</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;fst2&gt;</span></code></p>
+<p>Ce programme applique un transducteur à un texte en phase de
+prétraitement, quand le texte n’est pas encore découpé en unités
+lexicales</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--text=TXT</span></code>: le fichier texte à modifier, avec
+l’extension <code class="docutils literal"><span class="pre">.snt</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: le fichier alphabet de la langue du
+texte;</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--start_on_space</span></code>: ce paramètre indique que la recherche va
+commencer à n’importe quelle position dans le texte, même avant un
+espace. Ce paramètre ne devrait être utilisé que pour effectuer des
+recherches morphologiques;</li>
+<li><code class="docutils literal"><span class="pre">-x</span></code>/<code class="docutils literal"><span class="pre">--dont_start_on_space</span></code>: interdit au programme de
+reconnaître des séquences commençant par un espace (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--char_by_char</span></code>: ce paramètre facultatif permet d’appliquer
+le transducteur en mode caractère par caractère. Cette option doit
+être utilisée pour les textes en langues asiatiques comme le Thaï;</li>
+<li><code class="docutils literal"><span class="pre">-w</span></code>/<code class="docutils literal"><span class="pre">--word_by_word</span></code>: fonctionne en mode mot par mot (par
+défaut);</li>
+<li><code class="docutils literal"><span class="pre">--input_offsets=XXX</span></code>: fichier offset à utiliser.</li>
+</ul>
+<p><strong>Options de sorties:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-M</span></code>/<code class="docutils literal"><span class="pre">--merge</span></code>: ajoute les sorties du transducteur aux séquences
+reconnues texte d’entrée (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-R</span></code>/<code class="docutils literal"><span class="pre">--replace</span></code>: remplace les séquences reconnues avec les
+sorties correspondantes du transducteur.</li>
+<li><code class="docutils literal"><span class="pre">--output_offsets=XXX</span></code>: fichier offset à produire</li>
+</ul>
+<p>Ce programme a pour effet de modifier le fichier texte passé en
+paramètre.</p>
+</div>
+<div class="section" id="grf2fst2">
+<h2>Grf2Fst2<a class="headerlink" href="#grf2fst2" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Grf2Fst2</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;grf&gt;</span></code></p>
+<p>Ce programme compile une grammaire en un fichier <code class="docutils literal"><span class="pre">.fst2</span></code> (pour plus de
+détails, voir section [section-graph-compilation]). Le paramètre
+<code class="docutils literal"><span class="pre">&lt;grf&gt;</span></code> désigne le chemin d’accès complet au graphe principal de la
+grammaire, sans omettre l’extension <code class="docutils literal"><span class="pre">.grf</span></code>.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-y</span></code>/<code class="docutils literal"><span class="pre">--loop_check</span></code>: active la vérification d’erreurs ( détection
+de boucles);</li>
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no_loop_check</span></code>: désactive la vérification d’erreurs (par
+défaut);</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: spécifie le fichier d’alphabet à
+utiliser pour faire le découpage en unités lexicales du contenu des
+boîtes de la grammaire.</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--char_by_char</span></code>: le découpage se fait caractère par
+caractère. Si ni <code class="docutils literal"><span class="pre">-c</span></code> ni <code class="docutils literal"><span class="pre">-a</span></code> ne sont utilisés, le découpage
+s’effectue en prenant des suites de lettres Unicode.</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">DIR</span></code>/<code class="docutils literal"><span class="pre">--pkgdir=DIR</span></code>: définit le répertoire de dépôt à
+utiliser pour compiler la grammaire (voir section
+[section-repository], page ).</li>
+<li><code class="docutils literal"><span class="pre">-e</span></code>/<code class="docutils literal"><span class="pre">--no_empty_graph_warning</span></code>: pas d’émission de warning quand
+les graphes reconnaissent le mot vide. Cette option est utilisée par
+<code class="docutils literal"><span class="pre">MultiFlex</span></code> pour ne pas effrayer les utilisateurs par des messages
+d’erreurs inadéquats lorsqu’ils construisent une grammaire de flexion
+qui reconnaît le mot vide.</li>
+<li><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--tfst_check</span></code>: vérifie si le graphe donné peut être
+considéré comme un automate de phrases ou non;</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--silent_grf_name</span></code>: n’affiche pas le nom des graphes
+(nécessaire pour l’utilisation de fichiers log sur plusieurs
+systèmes);</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--named_repositories=XXX</span></code>: déclaration de noms de
+répertoires de dépôt. XXX est formé d’une séquence d’un ou plusieurs
+X=Y, séparés par ‘;’, où X est le nom du répertoire de dépôt désigné
+par le chemin Y. Vous pouvez utiliser cette option à plusieurs
+reprises&nbsp;;</li>
+<li><code class="docutils literal"><span class="pre">--debug</span></code>: compile les graphes en mode debug;</li>
+<li><code class="docutils literal"><span class="pre">-v</span></code>/<code class="docutils literal"><span class="pre">check_variables</span></code>: vérifier la validité de sortie afin
+d’éviter des expressions avec variables malformées.</li>
+</ul>
+<p>Le résultat est un fichier portant le même nom que le graphe passé en
+paramètre, mais avec l’extension <code class="docutils literal"><span class="pre">.fst2</span></code>. Ce fichier est sauvegardé
+dans le même répertoire que <code class="docutils literal"><span class="pre">&lt;grf&gt;</span></code>.</p>
+</div>
+<div class="section" id="grfdiff">
+<h2>GrfDiff<a class="headerlink" href="#grfdiff" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">GrfDiff</span> <span class="pre">&lt;grf1&gt;</span> <span class="pre">&lt;grf2&gt;:</span> <span class="pre">fichier</span> <span class="pre">fichiers</span> <span class="pre">.grf</span></code> à comparer</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">--output</span> <span class="pre">X</span></code>: sauve le résultat éventuel dans X au lieu de
+l’afficher</li>
+</ul>
+<p>Compare les fichier .grf et affiche leurs différence sur la sortie
+standard. Renvoie 0 s’il sont identiques modulo le réordonnancement des
+boîtes et des transitions, 1 si ils sont différents, 2 en cas d’erreur.</p>
+<p>Voici les indications que GrfDiff peut émettre :</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">P</span> <span class="pre">name</span></code>: présentation d’une propriété a changé. name= nom
+propriété name (SIZE, FONT, ...)</li>
+<li><code class="docutils literal"><span class="pre">M</span> <span class="pre">a</span> <span class="pre">b</span></code>: une boîte est déplacée. a=numéro de boîte dans &lt;grf1&gt;,
+b=numéro de boîte dans &lt;grf2&gt;</li>
+<li><code class="docutils literal"><span class="pre">C</span> <span class="pre">a</span> <span class="pre">b</span></code>: le contenu d’une boîte a changé. a=numéro de boîte dans
+&lt;grf1&gt;, b=numéro de boîte dans &lt;grf2&gt;</li>
+<li><code class="docutils literal"><span class="pre">A</span> <span class="pre">x</span></code>: une boîte a été ajoutée. x=numéro de boîte dans &lt;grf2&gt;</li>
+<li><code class="docutils literal"><span class="pre">R</span> <span class="pre">x</span></code>: une boîte a été supprimée. x=numéro de boîte dans &lt;grf1&gt;</li>
+<li><code class="docutils literal"><span class="pre">T</span> <span class="pre">a</span> <span class="pre">b</span> <span class="pre">x</span> <span class="pre">y</span></code>: une transition a été ajoutée. a,b=src et dst numéros
+de boîtes dans &lt;grf1&gt;. x,y=src et dst numéros de boîtes dans &lt;grf2&gt;</li>
+<li><code class="docutils literal"><span class="pre">X</span> <span class="pre">a</span> <span class="pre">b</span> <span class="pre">x</span> <span class="pre">y</span></code>: transition a été supprimée. a,b=src et dst numéros de
+boîtes dans &lt;grf1&gt;. x,y=src et dst numéros de boîtes dans &lt;grf2&gt;</li>
+</ul>
+<p>Remarquons que les modifications concernant les transitions liées aux
+boîtes ajoutées ou supprimées sont rapportées.</p>
+</div>
+<div class="section" id="grfdiff3">
+<h2>GrfDiff3<a class="headerlink" href="#grfdiff3" title="Lien permanent vers ce titre">¶</a></h2>
+<p>GrfDiff3 &lt;mine&gt; &lt;base&gt; &lt;other&gt;</p>
+<p>&lt;mine&gt;: mon fichier .grf &lt;other&gt;: l’autre fichier .grf qui produit un
+conflit &lt;base&gt;: fichier .grf ancêtre commun</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">--output</span></code> <code class="docutils literal"><span class="pre">X</span></code>: enregistre le résultat, le cas échéant, dans X et
+pas sur la sortie</li>
+<li><code class="docutils literal"><span class="pre">--conflicts</span></code> <code class="docutils literal"><span class="pre">X</span></code>: enregistre la description des conflits, le cas
+échéant, dans X</li>
+<li><code class="docutils literal"><span class="pre">--only-cosmetic</span></code>: signale un conflit de tout changement qui n’est
+pas purement cosmétique</li>
+</ul>
+<p>Essaye de regrouper les &lt;mine&gt; et &lt;other&gt;. En cas de succès, le résultat
+est imprimé sur la sortie standard et 0 est renvoyé. En cas de conflits
+non résolus, 1 est renvoyé et rien n’est imprimé. 2 est renvoyé en cas
+d’erreur.</p>
+</div>
+<div class="section" id="implodetfst">
+<h2>ImplodeTfst<a class="headerlink" href="#implodetfst" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">ImplodeTfst</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;tfst&gt;</span></code></p>
+<p>Ce programme implose l’automate du texte spécifié en fusionnant ensemble
+les entrées lexicales qui ne diffèrent que par leurs catactéristiques
+flexionnelles.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: fichier de sortie. Par défaut,
+l’automate du texte est modifiée.</li>
+</ul>
+</div>
+<div class="section" id="locate">
+<h2>Locate<a class="headerlink" href="#locate" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-Locate] <code class="docutils literal"><span class="pre">Locate</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;fst2&gt;</span></code></p>
+<p>Ce programme applique une grammaire à un texte et construit un fichier
+d’index des occurrences trouvées.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--text=TXT</span></code>: chemin complet du fichier texte, sans
+omettre l’extension <code class="docutils literal"><span class="pre">.snt</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: chemin d’accès complet au fichier
+alphabet;</li>
+<li><code class="docutils literal"><span class="pre">-m</span> <span class="pre">DICS</span></code>/<code class="docutils literal"><span class="pre">--morpho=DICS</span></code>: ce paramètre optionnel indique quels
+dictionnaires morphologiques sont utilisés, s’ils sont exigés par des
+dictionnaires <code class="docutils literal"><span class="pre">.fst2</span></code> <code class="docutils literal"><span class="pre">DICS</span></code> représente une liste de fichiers
+<code class="docutils literal"><span class="pre">.bin</span></code> (avec leurs chemins complets) séparés par des
+points-virgules;</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--start_on_space</span></code>: ce paramètre indique que la recherche va
+commencer à n’importe quelle position dans le texte, même avant un
+espace. Ce paramètre ne devrait être utilisé que pour effectuer des
+recherches morphologiques;</li>
+<li><code class="docutils literal"><span class="pre">-x</span></code>/<code class="docutils literal"><span class="pre">--dont_start_on_space</span></code>: interdit au programme de
+reconnaitre des séquences commençant par un espace (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--char_by_char</span></code>: ce paramètre facultatif permet d’appliquer
+le transducteur en mode caractère par caractère. Cette option doit
+être utilisée pour les textes en langues asiatiques comme le Thaï;</li>
+<li><code class="docutils literal"><span class="pre">-w</span></code>/<code class="docutils literal"><span class="pre">--word_by_word</span></code>: fonctionne en mode mot par mot (par
+défaut);</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">DIR</span></code>/<code class="docutils literal"><span class="pre">--sntdir=DIR</span></code>: met les fichiers produits dans le
+répertoire au lieu <code class="docutils literal"><span class="pre">DIR</span></code> au lieu du répertoire texte. Notez que
+<code class="docutils literal"><span class="pre">DIR</span></code> doit se terminer par un séparateur de fichier (<code class="docutils literal"><span class="pre">\</span></code> or
+<code class="docutils literal"><span class="pre">/</span></code>);</li>
+<li><code class="docutils literal"><span class="pre">-K</span></code>/<code class="docutils literal"><span class="pre">--korean</span></code>: indique <code class="docutils literal"><span class="pre">Locate</span></code> qu’il travaille sur du
+coréen;</li>
+<li><code class="docutils literal"><span class="pre">-u</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--arabic_rules=X</span></code>: désigne le fichier de configuration
+des règles typographiques de l’arabe;</li>
+<li><code class="docutils literal"><span class="pre">-g</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--negation_operator=X</span></code>: spécifie l’opérateur de négation
+à utiliser dans les masques lexicaux. Les deux valeurs possibles de
+<code class="docutils literal"><span class="pre">X</span></code> sont <code class="docutils literal"><span class="pre">moins</span></code> et <code class="docutils literal"><span class="pre">tilde</span></code> (par défaut). Utiliser <code class="docutils literal"><span class="pre">moins</span></code>
+offre une compatibilité descendante avec les versions précédentes de
+Unitex.</li>
+</ul>
+<p><strong>Options de limite de recherche:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-l</span></code>/<code class="docutils literal"><span class="pre">--all</span></code>: recherche toutes les séquences reconnues (par
+défaut);</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--number_of_matches=N</span></code>: stoppe après les premiers <code class="docutils literal"><span class="pre">N</span></code>
+matches.</li>
+</ul>
+<p><strong>Options du nombre d’itérations maximum par token:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--stop_token_count=N</span></code>: stoppe après N itérations sur un
+token;</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">N,M</span></code>/<code class="docutils literal"><span class="pre">--stop_token_count=N,M</span></code>: émet un warning après N
+itérations sur un token et s’arrête après itérations M.</li>
+</ul>
+<p><strong>Options du mode de reconnaissance:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-S</span></code>/<code class="docutils literal"><span class="pre">--shortest_matches</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">-L</span></code>/<code class="docutils literal"><span class="pre">--longest_matches</span></code> (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-A</span></code>/<code class="docutils literal"><span class="pre">--all_matches</span></code>.</li>
+</ul>
+<p><strong>Options de sortie:</strong></p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-I</span></code>/<code class="docutils literal"><span class="pre">--ignore</span></code>: ignore les sorties du transducteur (par défaut);</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-M</span></code>/<code class="docutils literal"><span class="pre">--merge</span></code>: ajoute les sorties du transducteur avec les
+séquences reconnues;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-R</span></code>/<code class="docutils literal"><span class="pre">--replace</span></code>: remplace les séquences reconnues par les
+sorties correspondantes du transducteur;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-p</span></code>/<code class="docutils literal"><span class="pre">--protect_dic_chars</span></code>: quand le mode <code class="docutils literal"><span class="pre">-M</span></code> ou <code class="docutils literal"><span class="pre">-R</span></code> est
+utilisé, <code class="docutils literal"><span class="pre">-p</span></code> protège certains caractères de l’entrée avec un
+antislash. Ceci est utile quand <code class="docutils literal"><span class="pre">Locate</span></code> est appelée par <code class="docutils literal"><span class="pre">Dico</span></code>
+afin d’éviter la production de mauvaises lignes comme:</p>
+<p><code class="docutils literal"><span class="pre">3,14,.PI.NUM</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-v</span> <span class="pre">X=Y</span></code>/<code class="docutils literal"><span class="pre">--variable=X=Y</span></code>: définit une variable de sortie nommé
+<code class="docutils literal"><span class="pre">X</span></code> avec un contenu <code class="docutils literal"><span class="pre">Y</span></code>. Remarquons que Y doit être ASCII.</p>
+</li>
+</ul>
+<p><strong>Options de sortie ambiguës:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-b</span></code>/<code class="docutils literal"><span class="pre">--ambiguous_outputs</span></code>: permet la production de plusieurs
+matchs avec la même entrée, mais différentes sorties (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-z</span></code>/<code class="docutils literal"><span class="pre">--no_ambiguous_outputs</span></code>: interdit les sorties ambiguës.
+Dans le cas de sorties ambiguës, l’une sera arbitrairement choisie,
+en fonction de l’état interne du programme.</li>
+</ul>
+<p><strong>Options d’erreur sur les variables</strong></p>
+<p>Ces options n’ont aucun effet si le mode de sortie est réglé avec
+<code class="docutils literal"><span class="pre">--ignore</span></code>; sinon, elles définissent le comportement du programme
+<code class="docutils literal"><span class="pre">Locate</span></code> quand une sortie contient une référence à une variable qui
+n’est pas correctement définie.</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-X</span></code>/<code class="docutils literal"><span class="pre">--exit_on_variable_error</span></code>: arrête le programme;</li>
+<li><code class="docutils literal"><span class="pre">-Y</span></code>/<code class="docutils literal"><span class="pre">--ignore_variable_errors</span></code>: agit comme si la variable avait
+un contenu vide (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-Z</span></code>/<code class="docutils literal"><span class="pre">--backtrack_on_variable_errors</span></code>: arrêter d’explorer le
+chemin courant de la grammaire.</li>
+</ul>
+<p><strong>Injection de variables:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-v</span> <span class="pre">X=Y</span></code>/<code class="docutils literal"><span class="pre">--variable=X=Y</span></code>: définit une variable de sortie nommée
+X avec un contenu Y. Notez que Y doit être ASCII.</li>
+</ul>
+<p>Ce programme enregistre les références des occurrences trouvées dans un
+fichier appelé <code class="docutils literal"><span class="pre">concord.ind</span></code>. Le nombre d’occurrences, le nombre
+d’unités appartenant à ces occurrences, ainsi que le pourcentage
+d’unités reconnues dans le texte sont enregistrées dans un fichier
+appelé <code class="docutils literal"><span class="pre">concord.n</span></code>. Ces deux fichiers sont stockés dans le répertoire
+du texte.</p>
+</div>
+<div class="section" id="locatetfst">
+<h2>LocateTfst<a class="headerlink" href="#locatetfst" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-LocateTfst] <code class="docutils literal"><span class="pre">LocateTfst</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;fst2&gt;</span></code></p>
+<p>Ce programme applique une grammaire à l’automate du texte, et sauve
+l’indes des séquences reconnues dans un fichier <code class="docutils literal"><span class="pre">concord.ind</span></code>, comme
+le fait <code class="docutils literal"><span class="pre">Locate</span></code>.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TFST</span></code>/<code class="docutils literal"><span class="pre">--text=TFST</span></code>: chemin complet du fichier texte, sans
+omettre l’extension;</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: chemin d’accès complet au fichier
+alphabet;</li>
+<li><code class="docutils literal"><span class="pre">-K</span></code>/<code class="docutils literal"><span class="pre">--korean</span></code>: indique à <code class="docutils literal"><span class="pre">LocateTfst</span></code> qu’il travaille sur du
+coréen;</li>
+<li><code class="docutils literal"><span class="pre">-g</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--negation_operator=X</span></code>: spécifie l’opérateur de négation
+à utiliser dans les masques lexicaux. Les deux valeurs possibles de
+<code class="docutils literal"><span class="pre">X</span></code> sont <code class="docutils literal"><span class="pre">moins</span></code> et <code class="docutils literal"><span class="pre">tilde</span></code> (par défaut). Utiliser <code class="docutils literal"><span class="pre">moins</span></code>
+offre une compatibilité descendante avec les versions précédentes de
+Unitex.</li>
+</ul>
+<p><strong>Options de limite de recherche:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-l</span></code>/<code class="docutils literal"><span class="pre">--all</span></code>: recherche toutes les séquences reconnues (par
+défaut);</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--number_of_matches=N</span></code>: stoppe après les premiers <code class="docutils literal"><span class="pre">N</span></code>
+matches.</li>
+</ul>
+<p><strong>Options du mode de reconnaissance:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-S</span></code>/<code class="docutils literal"><span class="pre">--shortest_matches</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">-L</span></code>/<code class="docutils literal"><span class="pre">--longest_matches</span></code> (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-A</span></code>/<code class="docutils literal"><span class="pre">--all_matches</span></code>.</li>
+</ul>
+<p><strong>Options de sortie:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-I</span></code>/<code class="docutils literal"><span class="pre">--ignore</span></code>: ignore les sorties du transducteur (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-M</span></code>/<code class="docutils literal"><span class="pre">--merge</span></code>: ajoute les sorties du transducteur avec les
+séquences reconnues;</li>
+<li><code class="docutils literal"><span class="pre">-R</span></code>/<code class="docutils literal"><span class="pre">--replace</span></code>: remplace les séquences reconnues par les
+sorties correspondantes du transducteur;</li>
+</ul>
+<p><strong>Options de sortie ambiguës:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-b</span></code>/<code class="docutils literal"><span class="pre">--ambiguous_outputs</span></code>: permet la production de plusieurs
+matchs avec la même entrée, mais différentes sorties (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-z</span></code>/<code class="docutils literal"><span class="pre">--no_ambiguous_outputs</span></code>: interdit les sorties ambiguës.
+Dans le cas de sorties ambiguës, l’une sera arbitrairement choisie,
+en fonction de l’état interne du programme.</li>
+</ul>
+<p><strong>Options d’erreur sur les variables</strong></p>
+<p>Ces options n’ont aucun effet si le mode de sortie est réglé avec
+<code class="docutils literal"><span class="pre">--ignore</span></code>; sinon, elles définissent le comportement du programme
+<code class="docutils literal"><span class="pre">Locate</span></code> quand une sortie une référence à une variable qui n’est pas
+correctement définie.</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-X</span></code>/<code class="docutils literal"><span class="pre">--exit_on_variable_error</span></code>: arrête le programme;</li>
+<li><code class="docutils literal"><span class="pre">-Y</span></code>/<code class="docutils literal"><span class="pre">--ignore_variable_errors</span></code>: agit comme si la variable avait
+un contenu vide (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-Z</span></code>/<code class="docutils literal"><span class="pre">--backtrack_on_variable_errors</span></code>:arrêter d’explorer le
+chemin courant de la grammaire.</li>
+</ul>
+<p><strong>Injection de variables</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-v</span> <span class="pre">X=Y</span></code>/<code class="docutils literal"><span class="pre">--variable=X=Y</span></code>: définit une variable de sortie nommée
+<code class="docutils literal"><span class="pre">X</span></code> avec un contenu <code class="docutils literal"><span class="pre">Y</span></code>. Notez que Y doit être ASCII.</li>
+</ul>
+<p><strong>Option d’étiquetage</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">--tagging</span></code>: indique que la concordance doit être tagguée, et
+contenir les informations supplémentaires sur les états de début et
+de fin de chaque match.</li>
+</ul>
+<p>Ce programme enregistre les références des occurrences trouvées dans un
+fichier appelé <code class="docutils literal"><span class="pre">concord.ind</span></code>. Le nombre d’occurrences, et le nombre de
+sorties produites sont enregistrées dans un fichier appelé
+<code class="docutils literal"><span class="pre">concord_tfst.n</span></code>. Ces deux fichiers sont stockés dans le répertoire du
+texte.</p>
+</div>
+<div class="section" id="multiflex">
+<h2>MultiFlex<a class="headerlink" href="#multiflex" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">MultiFlex</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;dela&gt;</span></code></p>
+<p>Ce programme effectue la flexion automatique d’un dictionnaire DELA
+contenant des formes canoniques [section-DELAS-format]) de mots simples
+ou composés (see chapter [chap-multiflex]).</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">DELAF</span></code>/<code class="docutils literal"><span class="pre">--output=DELAF</span></code>: fichier DELAF de sortie;</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: fichier alphabet;</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">DIR</span></code>/<code class="docutils literal"><span class="pre">--directory=DIR</span></code>: le répertoire contenant les fichiers
+<code class="docutils literal"><span class="pre">Morphology</span></code> et <code class="docutils literal"><span class="pre">Equivalences</span></code> et des graphes de flexion pour
+mots simples ou composés;</li>
+<li><code class="docutils literal"><span class="pre">-K</span></code>/<code class="docutils literal"><span class="pre">--korean</span></code>: indique à <code class="docutils literal"><span class="pre">MultiFlex</span></code> qu’il travaille sur du
+coréen;</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--only-simple-words</span></code>: le programme tiendra compte des mots
+composés comme des erreurs;</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--only-compound-words</span></code>: le programme tiendra compte des
+mots simples comme des erreurs;</li>
+<li><code class="docutils literal"><span class="pre">-p</span> <span class="pre">DIR</span></code>/<code class="docutils literal"><span class="pre">--pkgdir=DIR</span></code>: indique le répertoire des graphes.</li>
+<li><code class="docutils literal"><span class="pre">-rXXX</span></code>/<code class="docutils literal"><span class="pre">--named_repositories=XXX</span></code>: déclaration des dépôts
+nommés. XXX est formée d’une séquence ou plus X=Y , séparés par ; où
+X est le nom de dépôt désigné par le chemin Y. Vous pouvez utiliser
+cette option à plusieurs reprises;</li>
+</ul>
+<p>Remarquons que les transducteurs de flexion <code class="docutils literal"><span class="pre">.fst2</span></code> sont
+automatiquement construits à partir des fichiers <code class="docutils literal"><span class="pre">.grf</span></code> correspondants
+en cas d’absence ou de fichiers <code class="docutils literal"><span class="pre">.grf</span></code> plus anciens.</p>
+</div>
+<div class="section" id="normalize">
+<h2>Normalize<a class="headerlink" href="#normalize" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-Normalize] <code class="docutils literal"><span class="pre">Normalize</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;text&gt;</span></code></p>
+<p>Ce programme effectue une normalisation des séparateurs de texte. Les
+séparateurs sont l’espace, la tabulation, et le saut de ligne. Chaque
+séquence de séparateurs qui contient au moins un saut de ligne est
+remplacé par un saut de ligne unique. Toutes les autres séquences de
+séparateurs sont remplacées par un seul espace.</p>
+<p>Ce programme vérifie également la syntaxe des étiquettes lexicales
+présentes dans le texte. Toute séquence entre accolades doit être soit
+le délimiteur de phrase <code class="docutils literal"><span class="pre">{S}</span></code>, le marqueur <code class="docutils literal"><span class="pre">{STOP}</span></code>, soit une ligne
+de DELAF valide (<code class="docutils literal"><span class="pre">{aujourd'hui,.ADV}</span></code>).</p>
+<p>Le paramètre <code class="docutils literal"><span class="pre">&lt;text&gt;</span></code> doit représenter le chemin d’accès complet au
+fichier du texte. Le programme produit une version modifiée du texte qui
+est sauvé dans un fichier portant l’extension <code class="docutils literal"><span class="pre">.snt</span></code>.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no_carriage_return</span></code>: chaque séquence de séparateurs sera
+transformée en un espace unique;</li>
+<li><code class="docutils literal"><span class="pre">--input_offsets=XXX</span></code>: fichier offset à utiliser.</li>
+<li><code class="docutils literal"><span class="pre">--output_offsets=XXX</span></code>: fichier offset à produire</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--replacement_rules=XXX</span></code>: indique la règle de
+normalisation à utiliser. Voir section [section-normalization-file]
+Pour plus de détails sur le format de ce fichier. Par défaut, le
+programme ne remplace que <code class="docutils literal"><span class="pre">{</span></code> and <code class="docutils literal"><span class="pre">}</span></code> par <code class="docutils literal"><span class="pre">[</span></code> et <code class="docutils literal"><span class="pre">]</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">--no_separator_normalization</span></code>: n’applique que des règles de
+remplacement spécifiées par -r</li>
+</ul>
+<p>ATTENTION: si vous spécifiez un fichier de règles de normalisation, ces
+règles seront appliquées avant toute autre chose. Donc, il faut être
+très prudent si vous manipulez les séparateurs dans ces règles.</p>
+</div>
+<div class="section" id="polylex">
+<h2>PolyLex<a class="headerlink" href="#polylex" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">PolyLex</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;list&gt;</span></code></p>
+<p>Ce programme prend en paramètre un fichier de mots inconnus <code class="docutils literal"><span class="pre">&lt;list&gt;</span></code>
+et essaye d’analyser chacun d’eux comme un mot composé obtenu par
+soudure de mots simples. Les mots qui ont au moins une analyse sont
+retirés du fichier de mots inconnus et les lignes de dictionnaire
+correspondant aux analyses sont ajoutées au fichier <code class="docutils literal"><span class="pre">OUT</span></code>.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: le fichier alphabet à utiliser;</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">BIN</span></code>/<code class="docutils literal"><span class="pre">--dictionary=BIN</span></code>: le dictionnaire .bin à utiliser;</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: désigne le fichier dans lequel les
+lignes de dictionnaire produites doivent être enregistrées, si ce
+fichier existe déjà, les lignes sont ajoutées à la fin du fichier;</li>
+<li><code class="docutils literal"><span class="pre">-i</span> <span class="pre">INFO</span></code>/<code class="docutils literal"><span class="pre">--info=INFO</span></code>: désigne un fichier texte dans lequel les
+informations relatives à l’analyse a été réalisée.</li>
+</ul>
+<p><strong>Options de langue:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-D</span></code>/<code class="docutils literal"><span class="pre">--dutch</span></code></li>
+<li><code class="docutils literal"><span class="pre">-G</span></code>/<code class="docutils literal"><span class="pre">--german</span></code></li>
+<li><code class="docutils literal"><span class="pre">-N</span></code>/<code class="docutils literal"><span class="pre">--norwegian</span></code></li>
+<li><code class="docutils literal"><span class="pre">-R</span></code>/<code class="docutils literal"><span class="pre">--russian</span></code></li>
+</ul>
+<p>NOTE: pour les mots hollandais ou norvégiens, le programme tente de lire
+un fichier texte contenant une liste de mots interdits. Ce fichier est
+supposé s’appeler <code class="docutils literal"><span class="pre">ForbiddenWords.txt</span></code> (voir section
+[section-forbidden-words]) et être stocké dans le même répertoire que
+<code class="docutils literal"><span class="pre">BIN</span></code>.</p>
+</div>
+<div class="section" id="rebuildtfst">
+<h2>RebuildTfst<a class="headerlink" href="#rebuildtfst" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">RebuildTfst</span> <span class="pre">&lt;tfst&gt;</span></code></p>
+<p>Ce programme reconstruit l’automate du texte <code class="docutils literal"><span class="pre">&lt;tfst&gt;</span></code> en tenant compte
+des modifications manuelles. Si le programme trouve un fichier
+<code class="docutils literal"><span class="pre">sentenceN.grf</span></code> dans le même répertoire que <code class="docutils literal"><span class="pre">&lt;tfst&gt;</span></code>, il remplace
+l’automate de la phrase <code class="docutils literal"><span class="pre">N</span></code> par celle représentée par
+<code class="docutils literal"><span class="pre">sentenceN.grf</span></code>. L’automate du texte donné entrée est modifié.</p>
+</div>
+<div class="section" id="reconstrucao">
+<h2>Reconstrucao<a class="headerlink" href="#reconstrucao" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Reconstrucao</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;index&gt;</span></code></p>
+<p>Le programme génère une grammaire de normalisation destinée à être
+appliquée avant la construction d’un automate pour un texte en langue
+portugaise. Le fichier <code class="docutils literal"><span class="pre">&lt;index&gt;</span></code> représente une concordance qui doit
+être produite en mode MERGE to the considered text a grammar that
+extracts all forms to be normalized. Cette grammaire est nommée
+<code class="docutils literal"><span class="pre">V-Pro-Suf</span></code>, et est stockée dans le répertoire
+<code class="docutils literal"><span class="pre">/Portuguese/Graphs/Normalization</span></code>.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: le fichier alphabet à utiliser;</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">ROOT</span></code>/<code class="docutils literal"><span class="pre">--root=ROOT</span></code>: le dictionnaire inversé <code class="docutils literal"><span class="pre">.bin</span></code> à
+utiliser pour retrouver les formes au futur et au conditionnel à
+partir des formes canoniques. Il a été obtenu en compressant le
+dictionnaire des verbes au futur et au conditionnel avec le paramètre
+<code class="docutils literal"><span class="pre">--flip</span></code> (voir section [section-compress]);</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">BIN</span></code>/<code class="docutils literal"><span class="pre">--dictionary=BIN</span></code>: le dictionnaire <code class="docutils literal"><span class="pre">.bin</span></code> à utiliser;</li>
+<li><code class="docutils literal"><span class="pre">-p</span> <span class="pre">PRO</span></code>/<code class="docutils literal"><span class="pre">--pronoun_rules=PRO</span></code>: la grammaire <code class="docutils literal"><span class="pre">.fst2</span></code> de
+réécriture des pronoms;</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">PRO</span></code>/<code class="docutils literal"><span class="pre">--nasal_pronoun_rules=PRO</span></code>: la grammaire <code class="docutils literal"><span class="pre">.fst2</span></code> de
+réécriture des pronoms nasaux;</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: le nom du graphe <code class="docutils literal"><span class="pre">.grf</span></code> à générer</li>
+</ul>
+</div>
+<div class="section" id="reg2grf">
+<h2>Reg2Grf<a class="headerlink" href="#reg2grf" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Reg2Grf</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p>Ce programme construit un fichier <code class="docutils literal"><span class="pre">.grf</span></code> correspondant à l’expression
+rationnelle contenue dans le fichier <code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code>. Le paramètre <code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code>
+doit représenter le chemin d’accès complet au fichier contenant
+l’expression rationnelle. Ce fichier doit être un fichier texte Unicode.
+Le programme prend en compte tous les caractères jusqu’au premier retour
+à ligne. Le fichier résultat se nomme <code class="docutils literal"><span class="pre">regexp.grf</span></code> et est sauvegardé
+dans le même répertoire que <code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code>.</p>
+</div>
+<div class="section" id="seq2grf">
+<h2>Seq2Grf<a class="headerlink" href="#seq2grf" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[Seq2Grf] <code class="docutils literal"><span class="pre">Seq2Grf</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;snt&gt;</span></code></p>
+<p>ce programme construit un fichier <code class="docutils literal"><span class="pre">.grf</span></code> qui correspond aux séquences
+contenues dans le fichier <code class="docutils literal"><span class="pre">&lt;snt&gt;</span></code>.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: le fichier alphabet à utiliser;</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--output=XXX</span></code>: le fichier graphe de sortie;</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--only-stop</span></code>: ne considérer que les séquences séparées par
+<code class="docutils literal"><span class="pre">{STOP}</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">-b</span></code>/<code class="docutils literal"><span class="pre">--beautify</span></code>: appliquer au graphe l’algorithme beautify;</li>
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no_beautify</span></code>: ne pas appliquer au graphe l’algorithme
+beautify; (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">--case-sensitive</span></code>: respect de la casse (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">--case-insensitive</span></code>: non respect de la casse;</li>
+<li><code class="docutils literal"><span class="pre">-w</span> <span class="pre">x</span></code>: nombre de jokers;</li>
+<li><code class="docutils literal"><span class="pre">-i</span> <span class="pre">x</span></code>: nombre d’insertions;</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">x</span></code>: nombre de remplacement;</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">x</span></code>: nombre de délitions;</li>
+</ul>
+<p>Construire l’automate des séquences : un unique automate qui reconnaît
+toutes les séquences du SNT. Les séquences doivent être délimitées par
+l’étiquette <code class="docutils literal"><span class="pre">{STOP}</span></code>;. Le fichier <code class="docutils literal"><span class="pre">.grf</span></code> produit est stocké dans le
+répertoire Graphs de l’utilisateur. Les autres fichiers, nommés
+<code class="docutils literal"><span class="pre">text.tfst</span></code>, <code class="docutils literal"><span class="pre">text.tind</span></code> se trouvent dans le répertoire text.</p>
+</div>
+<div class="section" id="sorttxt">
+<h2>SortTxt<a class="headerlink" href="#sorttxt" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">SortTxt</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p>Ce programme effectue un tri lexicographique des lignes du fichier
+<code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code>. <code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code> doit représenter le chemin d’accès complet au
+fichier à trier.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no_duplicates</span></code>: supprime les doublons (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-d</span></code>/<code class="docutils literal"><span class="pre">--duplicates</span></code>: conserve les doublons;</li>
+<li><code class="docutils literal"><span class="pre">-r</span></code>/<code class="docutils literal"><span class="pre">--reverse</span></code>: trie en ordre décroissant;</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--sort_order=XXX</span></code>: trie en utilisant l’ordre
+alphabétique défini par le fichier <code class="docutils literal"><span class="pre">XXX</span></code>. Si ce paramètre est
+abscent, le tri est effectué selon l’ordre des caractères Unicode;</li>
+<li><code class="docutils literal"><span class="pre">-l</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--line_info=XXX</span></code>: sauvegarde le nombre de lignes du
+fichier résultat dans le fichier <code class="docutils literal"><span class="pre">XXX</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--thai</span></code>: option à utiliser pour trier un texte Thai.</li>
+<li><code class="docutils literal"><span class="pre">-f</span></code>/<code class="docutils literal"><span class="pre">--factorize_inflectional_codes</span></code>: transforme les deux
+entrées XXX,YYY.ZZZ:A et XXX,YYY.ZZZ:B en l’entrée unique
+XXX,YYY.ZZZ:A:B</li>
+</ul>
+<p>L’opération de tri modifie le fichier texte. Par défaut, le tri est
+effectué dans l’ordre des caractères en Unicode, en supprimant les
+doublons.</p>
+</div>
+<div class="section" id="stats">
+<h2>Stats<a class="headerlink" href="#stats" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Stats</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;ind&gt;</span></code></p>
+<p>Ce programme calcule des statistiques à partir du fichier d’index de
+concordances <code class="docutils literal"><span class="pre">&lt;ind&gt;</span></code>.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-m</span> <span class="pre">MODE</span></code>/<code class="docutils literal"><span class="pre">--mode=MODE</span></code>: spécifie la sortie à produire:<ul>
+<li><code class="docutils literal"><span class="pre">0</span></code> = séquence reconnue avec contexte gauche et droit + nombre
+d’occurrences;</li>
+<li><code class="docutils literal"><span class="pre">1</span></code> = cooccurrences + nombre d’occurrences;</li>
+<li><code class="docutils literal"><span class="pre">2</span></code> = cooccurrences + nombre d’occurrences + z-score.</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: fichier alphabet à utiliser;</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: fichier de sortie;</li>
+<li><code class="docutils literal"><span class="pre">-l</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--left=N</span></code>: longueur du contexte gauche en tokens;</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--right=N</span></code>: longueur du contexte droit en tokens;</li>
+<li><code class="docutils literal"><span class="pre">-c</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--case=N</span></code>: traitement de la casse: <code class="docutils literal"><span class="pre">0</span></code> = non respect de
+la casse, <code class="docutils literal"><span class="pre">1</span></code> = respect de la casse (par défaut).</li>
+</ul>
+</div>
+<div class="section" id="table2grf">
+<h2>Table2Grf<a class="headerlink" href="#table2grf" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Table2Grf</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;table&gt;</span></code></p>
+<p>Ce programme génère automatiquemient des graphes à partir de la table de
+lexique- grammaire <code class="docutils literal"><span class="pre">&lt;table&gt;</span></code> et d’un graphe patron</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">GRF</span></code>/<code class="docutils literal"><span class="pre">--reference_graph=GRF</span></code>: nom du graphe patron;</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: nom du graphe résultant principal;</li>
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--subgraph_pattern=XXX</span></code>: si ce paramètre optionnel est
+spécifié, tous les sous-graphes produits seront nommés en fonction de
+ce motif. Afin d’avoir des noms non ambigus, nous vous recommandons
+d’inclure <code class="docutils literal"><span class="pre">&#64;%</span></code> dans le paramètre (rappelons que <code class="docutils literal"><span class="pre">&#64;%</span></code> sera
+remplacé par le numéro de ligne de l’entrée dans la table). Par
+exemple, si vous définissez le paramètre par le motif
+’<code class="docutils literal"><span class="pre">subgraph-&#64;%.grf</span></code>’, les noms de sous-graphe seront de la forme
+’<code class="docutils literal"><span class="pre">subgraph-0013.grf</span></code>’. Par défaut, les noms de sous-graphe
+ressemblent à ’<code class="docutils literal"><span class="pre">result_0013.grf</span></code>’, où ’<code class="docutils literal"><span class="pre">result.grf</span></code>’ est
+le graphe résultant principal.</li>
+</ul>
+</div>
+<div class="section" id="tagger">
+<h2>Tagger<a class="headerlink" href="#tagger" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Tagger</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;tfst&gt;</span></code> [section-Tagger]</p>
+<p>L’entrée de ce programme est l’automate du texte spécifié dans
+<code class="docutils literal"><span class="pre">.tfst</span></code>. Le programme applique l’algorithme de Viterbi et produit un
+automate linéaire. L’automate est élagué de façon probabiliste selon un
+modèle de Markov caché de second ordre. Si fichier tagger indiqué
+contient des tuples de type “cat” , le tagger élague les transitions sur
+la base des codes grammaticaux, syntaxiques et sémantiques (par exemple,
+<code class="docutils literal"><span class="pre">that.DET+Ddem</span></code> versus <code class="docutils literal"><span class="pre">that.PRO+Pdem</span></code>). Par contre si le fichier
+contient des tuples de type “morph”, le tagger élague les transitions
+sur la base des codes grammaticaux, syntaxiques, sémantiques et
+flexionnels (<code class="docutils literal"><span class="pre">the.DET+Ddef:s</span></code> versus <code class="docutils literal"><span class="pre">the.DET+Ddef:p</span></code>). Dans le cas
+où, l’automate doit être développé avant d’applique le processus
+d’étiquetage un fichier tagset doit re indiqué avec l’option <code class="docutils literal"><span class="pre">-t</span></code>
+ci-dessous.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: fichier alphabet.</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: automate du texte en sortie.</li>
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TAGSET</span></code>/<code class="docutils literal"><span class="pre">--tagset=TAGSET</span></code>: nom du fichier tagset.</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">DATA</span></code>/<code class="docutils literal"><span class="pre">--data=DATA</span></code>: un fichier de donné tagger .bin qui
+contient le nombre d’occurences d’ unigramme, de bigrammes et de
+trigrammes afin de calculer des probabilités. ce fichier est fournit
+avec le programme <code class="docutils literal"><span class="pre">TrainingTagger</span></code> (voir section
+[section-training-dict]).</li>
+</ul>
+</div>
+<div class="section" id="tagsetnormtfst">
+<h2>TagsetNormTfst<a class="headerlink" href="#tagsetnormtfst" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">TagsetNormTfst</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;tfst&gt;</span></code></p>
+<p>Ce programme normalise l’automate de texte <code class="docutils literal"><span class="pre">.tfst</span></code> selon un fichier de
+jeu d’étiquettes, en supprimmant les codes dictionnaire non déclarés et
+les entrées lexicales incohérentes. Les caractéristiques flexionnelles
+ne pas sont factorisées afin que <code class="docutils literal"><span class="pre">{rouge,.A:fs:ms}</span></code> soit divisé en
+deux étiquettes <code class="docutils literal"><span class="pre">{rouge,.A:fs}</span></code> et <code class="docutils literal"><span class="pre">{rouge,.A:ms}</span></code>.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: automate de texte résultant. Par défaut,
+l’automate du texte donné en entrée est modifié;</li>
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TAGSET</span></code>/<code class="docutils literal"><span class="pre">--tagset=TAGSET</span></code>: nom du fichier de description du
+jeu d’étiquettes</li>
+</ul>
+</div>
+<div class="section" id="tei2txt">
+<h2>TEI2Txt<a class="headerlink" href="#tei2txt" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">TEI2Txt</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;xml&gt;</span></code></p>
+<p>Produit un fichier de texte brut à partir du fichier TEI <code class="docutils literal"><span class="pre">&lt;xml&gt;</span></code>.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--output=TXT</span></code>: nom du fichier de texte de sortie. Par
+défaut, le fichier de sortie porte le même nom que celui d’entrée,
+remplaçant <code class="docutils literal"><span class="pre">.xml</span></code> by <code class="docutils literal"><span class="pre">.txt</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="tfst2grf">
+<h2>Tfst2Grf<a class="headerlink" href="#tfst2grf" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Tfst2Grf</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;tfst&gt;</span></code></p>
+<p>Ce programme extrait un automate de phrase en format <code class="docutils literal"><span class="pre">.grf</span></code> format à
+partir d’un automate du texte donné.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--sentence=N</span></code>: le nombre de phrases à extraire;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-o</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--output=XXX</span></code>: motif utilisé pour nommer le fichier de
+sortie <code class="docutils literal"><span class="pre">XXX.grf</span></code>, <code class="docutils literal"><span class="pre">XXX.txt</span></code> et <code class="docutils literal"><span class="pre">XXX.tok</span></code>
+(defaut=``cursentence``);</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-f</span> <span class="pre">FONT</span></code>/<code class="docutils literal"><span class="pre">--font=FONT</span></code>: définit la police à utiliser en sortie
+<code class="docutils literal"><span class="pre">.grf</span></code></p>
+<p>(default=``Times new Roman``);</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-z</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--fontsize=N</span></code>: définit la taille de police (defaut=10).</p>
+</li>
+</ul>
+<p>Le programme produit les fichiers suivants et les enregistre dans le
+répertoire du texte:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">cursentence.grf</span></code>: graphe représentant l’automate de la phrase;</li>
+<li><code class="docutils literal"><span class="pre">cursentence.txt</span></code>: fichier texte contenant la phrase;</li>
+<li><code class="docutils literal"><span class="pre">cursentence.tok</span></code>: fichier texte contenant le nombre de token qui
+compose la phrase;</li>
+</ul>
+</div>
+<div class="section" id="tfst2unambig">
+<h2>Tfst2Unambig<a class="headerlink" href="#tfst2unambig" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Tfst2Unambig</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;tfst&gt;</span></code></p>
+<p>Ce programme prend un automate de texte <code class="docutils literal"><span class="pre">.tfst</span></code> et produit le fichier
+texte équivalent si celui-ci est linéaire (i.e. sans ambiguïté). Voir
+section [section-linear-text], page .</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--out=TXT</span></code>: fichier de sortie.</li>
+</ul>
+</div>
+<div class="section" id="tokenize">
+<h2>Tokenize<a class="headerlink" href="#tokenize" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-Tokenize] <code class="docutils literal"><span class="pre">Tokenize</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p>Ce programme découpe le texte en unités lexicales. <code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code> le chemin
+d’accès complet au fichier texte, sans omettre l’extension <code class="docutils literal"><span class="pre">.snt</span></code>
+extension.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: alphabet file;</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--char_by_char</span></code>: indique que le programme est appliqué
+caractère par caractère à l’exception du délimiteur de phrase
+<code class="docutils literal"><span class="pre">{S}</span></code>, du marqueur <code class="docutils literal"><span class="pre">{STOP}</span></code> et d’étiquettes lexicales comme
+<code class="docutils literal"><span class="pre">{today,.ADV}</span></code> qui sont considérées comme des unités simples;</li>
+<li><code class="docutils literal"><span class="pre">-w</span></code>/<code class="docutils literal"><span class="pre">--word_by_word</span></code>: Avec cette option, le programme considère
+qu’une unité est soit une séquence de lettres (ces lettres sont
+définies dans le fichier <code class="docutils literal"><span class="pre">alphabet</span></code>), ou un caractère qui n’est pas
+une lettre, ou le délimiteur de phrase <code class="docutils literal"><span class="pre">{S}</span></code>, ou une étiquette
+lexicale comme <code class="docutils literal"><span class="pre">{aujourd'hui,.ADV}</span></code>. C’est le mode par défaut.</li>
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TOKENS</span></code>/<code class="docutils literal"><span class="pre">--tokens=TOKENS</span></code>: désigne un fichier a
+<code class="docutils literal"><span class="pre">tokens.txt</span></code> à charger et à modifier, au lieu d’en créer un nouveau
+à partir de zéro.</li>
+</ul>
+<p><strong>Options d’offsets:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">input_offsets</span></code>: fichier offsets d’entrée;</li>
+<li><code class="docutils literal"><span class="pre">output_offsets</span></code>: fichier offsets à produire;</li>
+</ul>
+<p>Le programme code chaque unité par un entier. La liste des unités est
+sauvegardée dans un fichier texte nommé <code class="docutils literal"><span class="pre">tokens.txt</span></code>. La suite des
+codes représentant les unités permet alors de coder le texte. Cette
+suite est sauvegardée dans un fichier binaire nommé <code class="docutils literal"><span class="pre">text.cod</span></code>. Le
+programme produit également les fichiers suivants :</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">tok_by_freq.txt</span></code>: fichier texte contenant la liste des unités
+triées par ordre de fréquence ;</li>
+<li><code class="docutils literal"><span class="pre">tok_by_alph.txt</span></code>: fichier texte contenant la liste des unités
+triées par ordre alphabétique ;</li>
+<li><code class="docutils literal"><span class="pre">stats.n</span></code>: fichier texte contenant des informations sur le nombre
+de séparateurs de phrases, le nombre d’unités, le nombre de mots
+simples et le nombre de chiffres ;</li>
+<li><code class="docutils literal"><span class="pre">enter.pos</span></code>: fichier binaire contenant la liste des positions des
+retours à la ligne dans le texte. La représentation codée du texte ne
+contient pas de retours à la ligne, mais des espaces. Comme un retour
+à la ligne compte pour 2 caractères et l’espace pour un seul, il faut
+savoir où se trouvent les retours à la ligne dans le texte si l’on
+veut synchroniser les positions des occurrences calculées par le
+programme <code class="docutils literal"><span class="pre">Locate</span></code> avec le fichier texte. Le fichier <code class="docutils literal"><span class="pre">enter.pos</span></code>
+est utilisé à cette fin par le programme <code class="docutils literal"><span class="pre">Concord</span></code> C’est grâce à
+cela que lorsque l’on clique sur une occurrence dans une concordance,
+celle-ci est correctement sélectionnée dans le texte.</li>
+</ul>
+<p>Tous les fichiers produits sont sauvegardés dans le répertoire du texte.</p>
+</div>
+<div class="section" id="trainingtagger">
+<h2>TrainingTagger<a class="headerlink" href="#trainingtagger" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">TrainingTagger</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code> [section-TrainingTagger]</p>
+<p>Ce programme génère automatiquement deux fichiers de données Tagger à
+partir d’un corpus étiqueté. Ils sont utilisés par le programme
+<code class="docutils literal"><span class="pre">Tagger</span></code> afin de calculer les probabilités et linéariser l’automate
+texte. Le fichier corpus étiqueté doit suivre le format décrit à la
+section [section-corpus-file]. Ces fichiers contiennent des tuples
+(unigrammes, bigrammes et trigrammes), formées par des balises et des
+mots. Dans le premier fichier de données, les étiquettes sont de type
+“cat” (i.e. des codes grammaticaux, syntaxiques et sémantiques). Dans le
+second fichier de données, les étiquettes sont de type “morph” (i.e. des
+codes grammaticaux, syntaxiques, sémantiques et flexionnels).</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a/--all</span></code>: indique que le programme doit produire tous les
+fichiers de données (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-c/--cat</span></code>: indique que le programme ne doit produire que les
+fichiers de données avec “cat”;</li>
+<li><code class="docutils literal"><span class="pre">-m/--morph</span></code>: indique que le programme ne doit produire que les
+fichiers de données avec “morph”;</li>
+<li><code class="docutils literal"><span class="pre">-n/--no_binaries</span></code>: indique que le programme ne doit pas compresser
+les fichiers de données en fichiers <code class="docutils literal"><span class="pre">.bin</span></code>, seulement dans ce cas
+les fichiers de données <code class="docutils literal"><span class="pre">.dic</span></code> sont genérés;</li>
+<li><code class="docutils literal"><span class="pre">-b/--binaries</span></code>: indique que le programme doit compresser les
+fichiers de données en fichiers <code class="docutils literal"><span class="pre">.bin</span></code> files (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">XXX/--output=XXX</span></code>: motif utilisé pour nommer les fichiers de
+sortie du taggueur <code class="docutils literal"><span class="pre">XXX_data_cat.bin</span></code>; et <code class="docutils literal"><span class="pre">XXX_data_morph.bin</span></code>
+(par défaut: nom de fichier sans extension corpus de textes);</li>
+<li><code class="docutils literal"><span class="pre">-s/--semitic</span></code>: indique que l’algoritme de compression sémitique
+doit être utilisé;</li>
+</ul>
+</div>
+<div class="section" id="txt2tfst">
+<h2>Txt2Tfst<a class="headerlink" href="#txt2tfst" title="Lien permanent vers ce titre">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Txt2Tfst</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code> Ce programme construit l’automate du texte.
+Le paramètre <code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code> doit représenter le chemin d’accès complet au
+fichier texte, sans omettre l’extension <code class="docutils literal"><span class="pre">.snt</span></code></p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: fichier alphabet;</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--clean</span></code>: indique que la règle de conservation des
+meilleurs chemins (voir section [section-keeping-best-paths]) doit
+être utilisée ;</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--normalization_grammar=XXX</span></code>: nom de la grammaire de
+normalisation qui doit être appliquée à l’automate de texte;</li>
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TAGSET</span></code>/<code class="docutils literal"><span class="pre">--tagset=TAGSET</span></code>: fichier de jeu d’étiquete Elag
+pour la normalisation des entrées du dictionnaire;</li>
+<li><code class="docutils literal"><span class="pre">-K</span></code>/<code class="docutils literal"><span class="pre">--korean</span></code>: indique à <code class="docutils literal"><span class="pre">Txt2Tfst</span></code> qu’il traite du coréen.</li>
+</ul>
+<p>Si le texte a été découpé en phrases, le programme construit un automate
+pour chaque phrase. Si ce n’est pas le cas, le programme découpe
+arbitrairement le texte en séquences de 2000 unités lexicales et
+construit un automate pour chacune de ces séquences.</p>
+<p>Le résultat est un fichier nommé <code class="docutils literal"><span class="pre">text.tfst</span></code> qui est sauvegardé dans
+le répertoire du texte. Un autre fichier <code class="docutils literal"><span class="pre">text.tind</span></code> est aussi
+produit.</p>
+<p>NOTE: Ce programme essaye également d’utiliser le fichier <code class="docutils literal"><span class="pre">tags.ind</span></code>
+s’il existe (voir section [section-tags-ind]).</p>
+</div>
+<div class="section" id="uncompress">
+<h2>Uncompress<a class="headerlink" href="#uncompress" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-Uncompress] <code class="docutils literal"><span class="pre">Uncompress</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;bin&gt;</span></code></p>
+<p>Ce programme décompresse un dictionnaire <code class="docutils literal"><span class="pre">.bin</span></code> en un fichier texte
+<code class="docutils literal"><span class="pre">.dic</span></code>.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: nom du fichier de sortie optionnel (par
+défaut: <code class="docutils literal"><span class="pre">file.bin</span></code> &gt; <code class="docutils literal"><span class="pre">file.dic</span></code>).</li>
+</ul>
+</div>
+<div class="section" id="untokenize">
+<h2>Untokenize<a class="headerlink" href="#untokenize" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-Untokenize] <code class="docutils literal"><span class="pre">Untokenize</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p>Untokenize et reconstruit le texte orgininal. La liste des token est
+stockée dans le fichier <code class="docutils literal"><span class="pre">tokens.txt</span></code> et le texte codé dans
+<code class="docutils literal"><span class="pre">text.cod</span></code>. Le fichier <code class="docutils literal"><span class="pre">enter.pos</span></code> contient la position en tokens de
+tous les retours à la ligne Ces fichiers se trouvent dans le répertoire
+XXX_snt où XXX est sans son extension &lt;txt&gt;.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--sntdir=X</span></code>: utilise le répertoire X au lieu du
+répertoire texte; remarquez que X doit se terminer par un antislash</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--number_token=N</span></code>: ajoute le numéro de token chaque N
+token;</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--range=N</span></code>: émet seulement les tokens du numéro N à la
+fin;</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">N,M</span></code>/<code class="docutils literal"><span class="pre">--range=N,M</span></code>: émet seulement les tokens du numéro N à
+M.</li>
+</ul>
+</div>
+<div class="section" id="unitextool">
+<h2>UnitexTool<a class="headerlink" href="#unitextool" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-UnitexTool] <code class="docutils literal"><span class="pre">UnitexTool</span> <span class="pre">&lt;utilities&gt;</span></code></p>
+<p>Ce programme est un programme qui vous permet d’exécuter tous les
+programmes externes d’Unitex Avec lui, vous pouvez enchaîner les
+commandes afin qu’elles soit exécutées dans un même processus, afin
+d’accélérer le traitement. Cela se fait en invoquant des commandes
+imbriquées entre parenthèses comme ceci:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexTool</span> <span class="p">{</span> <span class="n">SelectOutput</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="p">}</span>
+                <span class="p">{</span> <span class="n">cmd</span> <span class="c1">#1+args }</span>
+                <span class="p">{</span> <span class="n">cmd</span> <span class="c1">#2+args }</span>
+                <span class="n">etc</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Par exemple, si vous souhaitez faire un locate et construire la
+concordance, vous pouvez utiliser la commande suivante:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexTool</span> <span class="p">{</span> <span class="n">Locate</span> <span class="s2">&quot;-tD:\My Unitex\English\Corpus\ivanhoe.snt&quot;</span>
+<span class="s2">&quot;D:\My Unitex\English</span><span class="se">\r</span><span class="s2">egexp.fst2&quot;</span>
+<span class="s2">&quot;-aD:\My Unitex\English\Alphabet.txt&quot;</span> <span class="o">-</span><span class="n">L</span> <span class="o">-</span><span class="n">I</span> <span class="o">-</span><span class="n">n200</span>
+<span class="s2">&quot;--morpho=D:\Unitex2.0\English\Dela\dela-en-public.bin&quot;</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">Y</span> <span class="p">}</span>
+<span class="p">{</span> <span class="n">Concord</span> <span class="s2">&quot;D:\My Unitex\English\Corpus\ivanhoe_snt\concord.ind&quot;</span>
+<span class="s2">&quot;-fCourier new&quot;</span> <span class="o">-</span><span class="n">s12</span> <span class="o">-</span><span class="n">l40</span> <span class="o">-</span><span class="n">r55</span> <span class="o">--</span><span class="n">CL</span> <span class="o">--</span><span class="n">html</span>
+<span class="s2">&quot;-aD:\My Unitex\English\Alphabet_sort.txt&quot;</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>OPTIONS</strong>:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">[on/off]</span></code>/<code class="docutils literal"><span class="pre">--output=[on/off]</span></code>: activer (on) ou désactiver
+(off) la sortie standard</li>
+<li><code class="docutils literal"><span class="pre">-e</span> <span class="pre">[on/off]</span></code>/<code class="docutils literal"><span class="pre">--error=[on/off]</span></code>: activer (on) ou désactiver
+(off) la sortie erreur standard</li>
+</ul>
+<p>Par exemple:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexTool</span> <span class="p">{</span> <span class="n">SelectOutput</span> <span class="o">-</span><span class="n">o</span> <span class="n">off</span> <span class="o">-</span><span class="n">e</span> <span class="n">off</span> <span class="p">}</span> <span class="p">{</span> <span class="n">Normalize</span>
+<span class="n">Unitex</span>\<span class="n">English</span>\<span class="n">Corpus</span>\<span class="n">ivanhoe</span><span class="o">.</span><span class="n">txt</span> <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="unitextoollogger">
+<h2>UnitexToolLogger<a class="headerlink" href="#unitextoollogger" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-UnitexToolLogger] <code class="docutils literal"><span class="pre">UnitexToolLogger</span> <span class="pre">&lt;utilities&gt;</span></code></p>
+<p>Ce programme est un surensemble de UnitexTool. Il permet d’exécuter à
+nouveau un fichier de log .ulp. Il peut également enregistrer une
+session d’UnitexTool en cours d’exécution et créer un fichier de log
+.ulp. Si UnitexToolLogger est utilisé comme UnitexTool (avec uniquement
+les paramètres contenant des lignes de commande pour des programmes
+Unitex externes), et qu’un fichier contenant un chemin et nommé
+unitex_logging_parameters_count.txt est présent dans le répertoire
+courant, alors un fichier de log .ulp pour la session en cours sera
+créé. Le fichier .ulp est un fichier zip comprimé (compatible avec
+unzip), qui peut être utile pour le débogage.</p>
+<p><code class="docutils literal"><span class="pre">UnitexToolLogger</span> <span class="pre">RunLog</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;ulp&gt;</span></code></p>
+<p><strong>OPTIONS after RunLog:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-m</span></code>/<code class="docutils literal"><span class="pre">--quiet</span></code>: n’émet pas de messages lors de l’exécution;</li>
+<li><code class="docutils literal"><span class="pre">-v</span></code>/<code class="docutils literal"><span class="pre">--verbose</span></code>: émet des messages lors de l’exécution;</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">DIR</span></code>/<code class="docutils literal"><span class="pre">--rundir=DIR</span></code>: chemin où le fichier log est exécuté;</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">newfile.ulp</span></code>/<code class="docutils literal"><span class="pre">--result=newfile.ulp</span></code>: nom du fichier ulp
+résultat créé;</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--clean</span></code>: supprime le fichier de travail après l’exécution;</li>
+<li><code class="docutils literal"><span class="pre">-k</span></code>/<code class="docutils literal"><span class="pre">--keep</span></code>: conserve le fichier de travail après l’exécution;</li>
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">file.txt</span></code>/<code class="docutils literal"><span class="pre">--summary=file.txt</span></code>: fichier ** avec comparaison
+de log</li>
+<li><code class="docutils literal"><span class="pre">-e</span> <span class="pre">file.txt</span></code>/<code class="docutils literal"><span class="pre">--summary-error=file.txt</span></code>: fichier de synthèse
+avec comparaison des erreurs;</li>
+<li><code class="docutils literal"><span class="pre">-b</span></code>/<code class="docutils literal"><span class="pre">--no-benchmark</span></code>: ne pas enregistrer le temps d’exécution
+dans les fichiers log;</li>
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--cleanlog</span></code>: supprime le résultat ulp après exécution;</li>
+<li><code class="docutils literal"><span class="pre">-l</span></code>/<code class="docutils literal"><span class="pre">--keeplog</span></code>: garde le résultat ulp après exécution;</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">NameTool</span></code>/<code class="docutils literal"><span class="pre">--tool=NameTool</span></code>: lance seulement les log pour
+<code class="docutils literal"><span class="pre">NameTool</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">-i</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--increment=N</span></code>: incrémenter le nom de fichier &lt;ulp&gt; de 0
+à N;</li>
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--thread=N</span></code>: créer N thread;</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--random=N</span></code>: choisir N fois un fichier log aléatoire dans
+la liste (dans chaque thread);</li>
+<li><code class="docutils literal"><span class="pre">-f</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--break-after=N</span></code>: l’utilisateur annule après N exécutions
+(avec seulement un seul thread);</li>
+<li><code class="docutils literal"><span class="pre">-u</span> <span class="pre">PATH</span></code>/<code class="docutils literal"><span class="pre">--unfound-location=PATH</span></code>: prend le dictionnaire et le
+FST2 à partir de PATH s’il est absent du fichier log;</li>
+</ul>
+<p>Une autre utilisation UnitexToolLogger est d’utiliser l’option
+MzRepairUlp pour réparer un fichier ulp abîmé (souvent, un log de
+crash):</p>
+<p><code class="docutils literal"><span class="pre">UnitexToolLogger</span> <span class="pre">MzRepairUlp</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;ulpfile&gt;</span></code></p>
+<p><strong>OPTIONS après MzRepairUlp:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--temp=X</span></code>: utilise X comme nom de fichier temporaire
+(&lt;ulpfile&gt;.build par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--output=X</span></code>: utilise X comme nom de fichier .ulp
+(&lt;ulpfile&gt;.repair par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-m</span></code>/<code class="docutils literal"><span class="pre">--quiet</span></code>: n’émet pas de message lors de l’exécution;;</li>
+<li><code class="docutils literal"><span class="pre">-v</span></code>/<code class="docutils literal"><span class="pre">--verbose</span></code>: émet un message lors de l’exécution;</li>
+</ul>
+<p>Une autre utilisation de UnitexToolLogger est d’utiliser l’option
+CreateLog option (avec des accolades) pour créer un fichier log
+d’exécutions de programme Unitex, comme:</p>
+<p><code class="docutils literal"><span class="pre">UnitexToolLogger</span> <span class="pre">{</span> <span class="pre">CreateLog</span> <span class="pre">[OPTIONS]</span> <span class="pre">}</span> <span class="pre">cmd</span> <span class="pre">args</span></code></p>
+<p><code class="docutils literal"><span class="pre">UnitexToolLogger</span> <span class="pre">{</span> <span class="pre">CreateLog</span> <span class="pre">[OPTIONS]</span> <span class="pre">}</span> <span class="pre">{</span> <span class="pre">cmd</span> <span class="pre">#1+args</span> <span class="pre">}</span> <span class="pre">{</span> <span class="pre">cmd</span> <span class="pre">#2+args</span> <span class="pre">}</span> <span class="pre">etc.</span></code></p>
+<p>Par exemple,</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexToolLogger</span> <span class="p">{</span> <span class="n">CreateLog</span> <span class="o">--</span><span class="n">log_file</span><span class="o">=</span><span class="n">my_run_normalize</span><span class="o">.</span><span class="n">ulp</span> <span class="p">}</span>
+             <span class="n">Normalize</span> <span class="s2">&quot;C:\My Unitex\French\Corpus\80jours.txt&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexToolLogger</span> <span class="p">{</span> <span class="n">CreateLog</span> <span class="o">--</span><span class="n">directory</span><span class="o">=</span><span class="n">c</span><span class="p">:</span>\<span class="n">logs</span> <span class="p">}</span>
+                  <span class="p">{</span> <span class="n">Compress</span> <span class="n">c</span><span class="p">:</span>\<span class="n">dela</span>\<span class="n">mydela</span><span class="o">.</span><span class="n">dic</span> <span class="p">}</span>
+                  <span class="p">{</span> <span class="n">CheckDic</span> <span class="o">--</span><span class="n">delaf</span> <span class="n">c</span><span class="p">:</span>\<span class="n">dela</span>\<span class="n">mydela</span><span class="o">.</span><span class="n">inf</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>OPTIONS après CreateLog:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-g</span></code>/<code class="docutils literal"><span class="pre">--no_create_log</span></code>: ne pas créer de fichier log. Incompatible
+avec toutes les autres options;</li>
+<li><code class="docutils literal"><span class="pre">-p</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--param_file=XXX</span></code>: charge un fichier de paramètres
+comme unitex_logging_parameters.txt. Incompatible avec toutes les
+autres options;</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">XXX/--directory=XXX</span></code>: Emplacement du répertoire où le fichier
+log est créé;</li>
+<li><code class="docutils literal"><span class="pre">-l</span> <span class="pre">XXX/--log_file=XXX</span></code>: nom du fichier log à créer;</li>
+<li><code class="docutils literal"><span class="pre">-i</span></code>/<code class="docutils literal"><span class="pre">--store_input_file</span></code>: enregistre le fichier d’entrée dans
+log (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no_store_input_file</span></code>: n’enregistre pas le fichier
+d’entrée dans log (empêche de relancer le fichier log);</li>
+<li><code class="docutils literal"><span class="pre">-o</span></code>/<code class="docutils literal"><span class="pre">--store_output_file</span></code>: enregistre le fichier de sortie dans
+log;</li>
+<li><code class="docutils literal"><span class="pre">-u</span></code>/<code class="docutils literal"><span class="pre">--no_store_output_file</span></code>: n’enregistre pas le fichier de
+sortie dans log (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--store_list_input_file</span></code>: enregistre la liste de fichiers
+d’entrée dans log (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--no_store_list_input_file</span></code>: n’enregistre pas la liste de
+fichiers d’entrée dans log;</li>
+<li><code class="docutils literal"><span class="pre">-r</span></code>/<code class="docutils literal"><span class="pre">--store_list_output_file</span></code>: enregistre la liste de fichiers
+de sortie dans log (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-f</span></code>/<code class="docutils literal"><span class="pre">--no_store_list_output_file</span></code>: n’enregistre pas la liste de
+fichiers de sortie dans log.</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexToolLogger</span> <span class="p">{</span> <span class="n">SelectOutput</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="p">}</span>
+                <span class="p">{</span> <span class="n">cmd</span> <span class="c1">#1+args }</span>
+                <span class="p">{</span> <span class="n">cmd</span> <span class="c1">#2+args }</span>
+                <span class="n">etc</span><span class="o">.</span>
+</pre></div>
+</div>
+<p><strong>OPTIONS après SelectOutput :</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">[on/off]</span></code>/<code class="docutils literal"><span class="pre">--output=[on/off]</span></code>: activer (on) ou désactiver
+(off) la sortie standard</li>
+<li><code class="docutils literal"><span class="pre">-e</span> <span class="pre">[on/off]</span></code>/<code class="docutils literal"><span class="pre">--error=[on/off]</span></code>: activer (on) ou désactiver
+(off) la sortie erreur standard</li>
+</ul>
+<p>Par exemple:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexToolLogger</span> <span class="p">{</span> <span class="n">SelectOutput</span> <span class="o">-</span><span class="n">o</span> <span class="n">off</span> <span class="o">-</span><span class="n">e</span> <span class="n">off</span> <span class="p">}</span> <span class="p">{</span> <span class="n">Normalize</span>
+<span class="n">Unitex</span>\<span class="n">English</span>\<span class="n">Corpus</span>\<span class="n">ivanhoe</span><span class="o">.</span><span class="n">txt</span> <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="unxmlize">
+<h2>Unxmlize<a class="headerlink" href="#unxmlize" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-Unxmlize]</p>
+<p>Ce programme supprime tous les tags xml d’un fichier .xml ou .html donné
+pour produire un fichier texte traitable par Unitex.
+<code class="docutils literal"><span class="pre">Unxmlize</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;file&gt;</span></code></p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--output=TXT</span></code>: fichier de sortie. Par défaut, foo.xml
+=&gt; foo.txt</li>
+<li><code class="docutils literal"><span class="pre">--output_offsets=XXX</span></code>: spécifie le fichier offset à produire</li>
+<li><code class="docutils literal"><span class="pre">--PRLG=XXX</span></code>: extrait dans le fichier XXX des informations
+utilisées dans le projet PRLG du grec ancien (exige
+<code class="docutils literal"><span class="pre">--output_offsets</span></code>)</li>
+<li><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--html</span></code>: considère le fichier comme un fichier html (ne
+tient pas compte de l’extension)</li>
+<li><code class="docutils literal"><span class="pre">-x</span></code>/<code class="docutils literal"><span class="pre">--xml</span></code>: considère le fichier comme un fichier xml (ne tient
+pas compte de l’extension)</li>
+<li><code class="docutils literal"><span class="pre">-l</span></code>/<code class="docutils literal"><span class="pre">--tolerate</span></code>: essayez tolérer des malformations de balisage</li>
+<li><code class="docutils literal"><span class="pre">--comments=IGNORE</span></code>: chaque commentaire est supprimé (par défaut)</li>
+<li><code class="docutils literal"><span class="pre">--comments=SPACE</span></code>: chaque commentaire est remplacé par un simple
+espace</li>
+<li><code class="docutils literal"><span class="pre">--scripts=IGNORE</span></code>: chaque script block is removed</li>
+<li><code class="docutils literal"><span class="pre">--scripts=SPACE</span></code>: chaque commentaire est remplacé par un simple
+espace (par défaut pour .html)</li>
+</ul>
+<p>Note: par défaut, balises de script sont traitées comme des balises
+normales (par défaut pour .xml).</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">--normal_tags=IGNORE</span></code>: chaque tag différent est supprimé (par
+défaut pour .xml)</li>
+<li><code class="docutils literal"><span class="pre">--normal_tags=SPACE</span></code>: chaque tag différent est remplacé est
+remplacé par un unique espace (par défaut pour .html)</li>
+</ul>
+</div>
+<div class="section" id="xmlizer">
+<h2>XMLizer<a class="headerlink" href="#xmlizer" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-XMLizer] <code class="docutils literal"><span class="pre">XMLizer</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p>Ce programme prend un fichier texte brut <code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code> et produit le fichier
+équivalent au format TEI ou XML. La différence entre TEI et XML est que
+les fichier TEI contiennent une en-tête de type TEI.</p>
+<p><strong>OPTIONS:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-x</span></code>/<code class="docutils literal"><span class="pre">--xml</span></code>: produit un fichier a XML;</li>
+<li><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--tei</span></code>: produit un fichier TEI (par défaut);</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--normalization=XXX</span></code>: désigne le fichier de règles de
+normalisation à utiliser (voir section [section-normalization-file]);</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: nom optionnel du de fichier de sortie
+(par défaut: <code class="docutils literal"><span class="pre">file.txt</span></code> &gt; <code class="docutils literal"><span class="pre">file.xml</span></code>);</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: fichier alphabet;</li>
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">SEG</span></code>/<code class="docutils literal"><span class="pre">--segmentation_grammar=SEG</span></code>: grammaire de délimitation
+de phrase à utiliser. Cette grammaire devrait ressembler à la
+grammaire <code class="docutils literal"><span class="pre">Sentence.grf</span></code> utilisée lors du prétraitement d’un
+corpus, mais elle peut comporter l’étiquette spéciale <code class="docutils literal"><span class="pre">{P}</span></code> pour
+indiquuer les limites de paragraphe.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-fr.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Utilisation des programmes externes</a><ul>
+<li><a class="reference internal" href="#creation-de-fichiers-log">Création de fichiers log</a></li>
+<li><a class="reference internal" href="#la-console">La console</a></li>
+<li><a class="reference internal" href="#unitex-jni">Unitex JNI</a></li>
+<li><a class="reference internal" href="#parametres-de-codage-des-fichiers-textes">Paramètres de codage des fichiers textes</a></li>
+<li><a class="reference internal" href="#buildkrmwudic">BuildKrMwuDic</a></li>
+<li><a class="reference internal" href="#cassys">CasSys</a></li>
+<li><a class="reference internal" href="#checkdic">CheckDic</a></li>
+<li><a class="reference internal" href="#compress">Compress</a></li>
+<li><a class="reference internal" href="#concord">Concord</a></li>
+<li><a class="reference internal" href="#concordiff">ConcorDiff</a></li>
+<li><a class="reference internal" href="#convert">Convert</a></li>
+<li><a class="reference internal" href="#dico">Dico</a></li>
+<li><a class="reference internal" href="#dumpoffsets">DumpOffsets</a></li>
+<li><a class="reference internal" href="#id43">DumpOffsets</a></li>
+<li><a class="reference internal" href="#elag">Elag</a></li>
+<li><a class="reference internal" href="#elagcomp">ElagComp</a></li>
+<li><a class="reference internal" href="#evamb">Evamb</a></li>
+<li><a class="reference internal" href="#extract">Extract</a></li>
+<li><a class="reference internal" href="#flatten">Flatten</a></li>
+<li><a class="reference internal" href="#fst2check">Fst2Check</a></li>
+<li><a class="reference internal" href="#fst2list">Fst2List</a></li>
+<li><a class="reference internal" href="#fst2txt">Fst2Txt</a></li>
+<li><a class="reference internal" href="#grf2fst2">Grf2Fst2</a></li>
+<li><a class="reference internal" href="#grfdiff">GrfDiff</a></li>
+<li><a class="reference internal" href="#grfdiff3">GrfDiff3</a></li>
+<li><a class="reference internal" href="#implodetfst">ImplodeTfst</a></li>
+<li><a class="reference internal" href="#locate">Locate</a></li>
+<li><a class="reference internal" href="#locatetfst">LocateTfst</a></li>
+<li><a class="reference internal" href="#multiflex">MultiFlex</a></li>
+<li><a class="reference internal" href="#normalize">Normalize</a></li>
+<li><a class="reference internal" href="#polylex">PolyLex</a></li>
+<li><a class="reference internal" href="#rebuildtfst">RebuildTfst</a></li>
+<li><a class="reference internal" href="#reconstrucao">Reconstrucao</a></li>
+<li><a class="reference internal" href="#reg2grf">Reg2Grf</a></li>
+<li><a class="reference internal" href="#seq2grf">Seq2Grf</a></li>
+<li><a class="reference internal" href="#sorttxt">SortTxt</a></li>
+<li><a class="reference internal" href="#stats">Stats</a></li>
+<li><a class="reference internal" href="#table2grf">Table2Grf</a></li>
+<li><a class="reference internal" href="#tagger">Tagger</a></li>
+<li><a class="reference internal" href="#tagsetnormtfst">TagsetNormTfst</a></li>
+<li><a class="reference internal" href="#tei2txt">TEI2Txt</a></li>
+<li><a class="reference internal" href="#tfst2grf">Tfst2Grf</a></li>
+<li><a class="reference internal" href="#tfst2unambig">Tfst2Unambig</a></li>
+<li><a class="reference internal" href="#tokenize">Tokenize</a></li>
+<li><a class="reference internal" href="#trainingtagger">TrainingTagger</a></li>
+<li><a class="reference internal" href="#txt2tfst">Txt2Tfst</a></li>
+<li><a class="reference internal" href="#uncompress">Uncompress</a></li>
+<li><a class="reference internal" href="#untokenize">Untokenize</a></li>
+<li><a class="reference internal" href="#unitextool">UnitexTool</a></li>
+<li><a class="reference internal" href="#unitextoollogger">UnitexToolLogger</a></li>
+<li><a class="reference internal" href="#unxmlize">Unxmlize</a></li>
+<li><a class="reference internal" href="#xmlizer">XMLizer</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-fr.html">Documentation overview</a><ul>
+      <li>Previous: <a href="12-cassys_FR_utf8.html" title="Chapitre précédent">Cascade de Transducteurs</a></li>
+      <li>Next: <a href="14-formats_FR_utf8.html" title="Chapitre suivant">Formats de fichiers</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/13-programs_FR_utf8.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, SCTB.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/13-programs_FR_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

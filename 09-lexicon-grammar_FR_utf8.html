@@ -1,0 +1,297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lexique-grammaire &mdash; documentation Unitex-fr 1.0.1</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Unitex-fr 1.0.1" href="Unitex-fr.html" />
+    <link rel="next" title="Alignement de texte" href="10-alignment_FR_utf8.html" />
+    <link rel="prev" title="Automate de Séquences" href="08-sequence-automaton_FR_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="lexique-grammaire">
+<h1>Lexique-grammaire<a class="headerlink" href="#lexique-grammaire" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Les tables de lexique-grammaire sont un moyen compact de représenter les
+propriétés syntaxiques des éléments d’une langue. Il est possible de
+construire automatiquement des grammaires locales à partir de ces
+tables, grâce à un mécanisme de graphes paramétrés.</p>
+<p>La première partie de ce chapitre présente le formalisme de ces tables.
+La seconde partie décrit les graphes paramétrés et le mécanisme de
+génération automatique de graphes à partir d’une table de
+lexique-grammaire.</p>
+<div class="section" id="les-tables-de-lexique-grammaire">
+<h2>Les tables de lexique-grammaire<a class="headerlink" href="#les-tables-de-lexique-grammaire" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Le lexique-grammaire est une méthodologie qui a été développée par
+Maurice Gross et son équipe du LADL (<a href="#id1"><span class="problematic" id="id2">:raw-latex:`\cite{L}`</span></a>,
+<a href="#id3"><span class="problematic" id="id4">:raw-latex:`\cite{BGL}`</span></a>, <a href="#id5"><span class="problematic" id="id6">:raw-latex:`\cite{methodes-en-syntaxe}`</span></a>,
+<a href="#id7"><span class="problematic" id="id8">:raw-latex:`\cite{GL}`</span></a>, <a href="#id9"><span class="problematic" id="id10">:raw-latex:`\cite{gross1994}`</span></a>,
+<a href="#id11"><span class="problematic" id="id12">:raw-latex:`\cite{gross1994b}`</span></a>, <a href="#id13"><span class="problematic" id="id14">:raw-latex:`\cite{gross1991}`</span></a>,
+<a href="#id15"><span class="problematic" id="id16">:raw-latex:`\cite{gross1986}`</span></a>, <a href="#id17"><span class="problematic" id="id18">:raw-latex:`\cite{gross1984}`</span></a>,
+<a href="#id19"><span class="problematic" id="id20">:raw-latex:`\cite{gross1984b}`</span></a>, <a href="#id21"><span class="problematic" id="id22">:raw-latex:`\cite{gross1983}`</span></a>,
+<a href="#id23"><span class="problematic" id="id24">:raw-latex:`\cite{gross1982}`</span></a>, <a href="#id25"><span class="problematic" id="id26">:raw-latex:`\cite{gross1978}`</span></a>,
+<a href="#id27"><span class="problematic" id="id28">:raw-latex:`\cite{leclere2005}`</span></a>, <a href="#id29"><span class="problematic" id="id30">:raw-latex:`\cite{salkoff2004}`</span></a>) sur le
+principe suivant : chaque verbe a des propriétés syntaxiques quasiment
+uniques. De ce fait, ces propriétés doivent être systématiquement
+décrites, car il est impossible de prévoir le comportement précis d’un
+verbe. Ces descriptions systématiques sont représentées au moyen de
+matrices où les lignes correspondent aux verbes, et les colonnes aux
+propriétés syntaxiques. Les propriétés considérées sont des propriétés
+formelles telles que le nombre et la nature des compléments admis par le
+verbe et les différentes transformations que ce verbe peut subir
+(passivation, nominalisation, extraposition, etc.). Les matrices, plus
+souvent appelées tables, sont binaires : un signe <code class="docutils literal"><span class="pre">+</span></code> apparaît à
+l’intersection d’une ligne et d’une colonne d’une propriété si le verbe
+vérifie la propriété, un signe <code class="docutils literal"><span class="pre">-</span></code> sinon. Pour plus d’information
+consulter <a class="reference external" href="http://infolingu.univ-mlv.fr">http://infolingu.univ-mlv.fr</a>, où des tables du
+lexique-grammaire sont librement téléchargeables.</p>
+<p>Ce type de description a aussi été utilisé pour les adjectifs
+(<a href="#id31"><span class="problematic" id="id32">:raw-latex:`\cite{these-annie}`</span></a>), les noms prédicatifs
+(<a href="#id33"><span class="problematic" id="id34">:raw-latex:`\cite{les-nominalisations}`</span></a>,
+<a href="#id35"><span class="problematic" id="id36">:raw-latex:`\cite{les-predicats-nominaux}`</span></a>,
+<a href="#id37"><span class="problematic" id="id38">:raw-latex:`\cite{giry1978}`</span></a>, <a href="#id39"><span class="problematic" id="id40">:raw-latex:`\cite{gross1976}`</span></a>,
+<a href="#id41"><span class="problematic" id="id42">:raw-latex:`\cite{ranchhod2001}`</span></a>), adverbes
+(<a href="#id43"><span class="problematic" id="id44">:raw-latex:`\cite{syntaxe-de-ladverbe}`</span></a>,
+<a href="#id45"><span class="problematic" id="id46">:raw-latex:`\cite{grammaire-des-adverbes}`</span></a>), ou les expressions figées,
+dans de nombreuses langues
+(<a href="#id47"><span class="problematic" id="id48">:raw-latex:`\cite{lexique-grammaire-allemand2}`</span></a>,
+<a href="#id49"><span class="problematic" id="id50">:raw-latex:`\cite{lexique-grammaire-italien2}`</span></a>,
+<a href="#id51"><span class="problematic" id="id52">:raw-latex:`\cite{lexique-grammaire-italien}`</span></a>,
+<a href="#id53"><span class="problematic" id="id54">:raw-latex:`\cite{lexique-grammaire-coreen2}`</span></a>,
+<a href="#id55"><span class="problematic" id="id56">:raw-latex:`\cite{lexique-grammaire-coreen}`</span></a>,
+<a href="#id57"><span class="problematic" id="id58">:raw-latex:`\cite{lexique-grammaire-malgache}`</span></a>,
+<a href="#id59"><span class="problematic" id="id60">:raw-latex:`\cite{lexique-grammaire-espagnol}`</span></a>,
+<a href="#id61"><span class="problematic" id="id62">:raw-latex:`\cite{lexique-grammaire-allemand}`</span></a>,
+<a href="#id63"><span class="problematic" id="id64">:raw-latex:`\cite{lexique-grammaire-hongrois}`</span></a>,
+<a href="#id65"><span class="problematic" id="id66">:raw-latex:`\cite{ranchhod1996}`</span></a>, <a href="#id67"><span class="problematic" id="id68">:raw-latex:`\cite{ranchhod1991}`</span></a>,
+<a href="#id69"><span class="problematic" id="id70">:raw-latex:`\cite{gross1986b}`</span></a>).</p>
+<p>La figure&nbsp;[fig-table-32NM] montre un exemple de table de
+lexique-grammaire. Cette table concerne les verbes admettant un
+complément numérique.</p>
+<div class="figure" id="id73">
+<a class="reference internal image-reference" href="resources/img/fig8-1.png"><img alt="Table de lexique-grammaire 32NM[fig-table-32NM]" src="resources/img/fig8-1.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Table de lexique-grammaire 32NM[fig-table-32NM]</span></p>
+</div>
+</div>
+<div class="section" id="conversion-dune-table-en-graphes">
+<h2>Conversion d’une table en graphes<a class="headerlink" href="#conversion-dune-table-en-graphes" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="principe-des-graphes-parametres">
+<h3>Principe des graphes paramétrés<a class="headerlink" href="#principe-des-graphes-parametres" title="Lien permanent vers ce titre">¶</a></h3>
+<p>La conversion d’une table en graphes s’effectue au moyen du mécanisme
+des graphes paramétrés. Le principe est le suivant : on construit un
+graphe qui décrit des constructions possibles. Ce graphe fait référence
+aux colonnes de la table grâce à des variables. On génère ensuite, pour
+chaque ligne de la table, une copie de ce graphe dans laquelle les
+variables sont remplacées en fonction du contenu des cellules situées à
+l’intersection des colonnes correspondantes et de la ligne traitée. Si
+une cellule de la table contient le signe <code class="docutils literal"><span class="pre">+</span></code> la variable
+correspondante est remplacée par <code class="docutils literal"><span class="pre">&lt;E&gt;</span></code>. Si la cellule contient le
+signe <code class="docutils literal"><span class="pre">-</span></code>,la boîte contenant la variable correspondante est supprimée,
+ce qui détruit du même coup les chemins passant par cette boîte. Dans
+tous les autres cas, la variable est remplacée par le contenu de la
+cellule.</p>
+</div>
+<div class="section" id="format-de-la-table">
+<h3>Format de la table<a class="headerlink" href="#format-de-la-table" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les tables de lexique-grammaire sont généralement codées à l’aide d’un
+tableur comme OpenOffice.org Calc (<a href="#id71"><span class="problematic" id="id72">:raw-latex:`\cite{OpenOffice}`</span></a>). Pour
+pouvoir être utilisées par Unitex, les tables doivent être codées en
+texte Unicode selon la convention suivante : les colonnes doivent être
+séparées par des tabulations et les lignes par des retours à la ligne.</p>
+<p>Pour convertir une table avec OpenOffice.org Calc, sauvegardez-la au
+format texte (extension <code class="docutils literal"><span class="pre">.csv</span></code>). Le programme vous propose ensuite de
+paramétrer la sauvegarde au moyen d’une fenêtre comme celle de la
+figure&nbsp;[fig-csv-export]. Choisissez le codage “Unicode”, sélectionnez la
+tabulation comme séparateur de colonnes, et ne précisez pas de
+délimiteur de texte.</p>
+<p>Lors de la génération des graphes, Unitex saute la première ligne,
+considérée comme donnant les en-têtes des colonnes. Vous devez donc vous
+assurer que les en-têtes des colonnes occupent exactement une ligne.
+S’il n’y a pas de ligne d’en-tête, la première ligne de la table sera
+ignorée, et s’il y a plusieurs lignes d’en-tête, elles seront
+interprétées à partir de la deuxième comme des lignes de la table.</p>
+</div>
+<div class="section" id="les-graphes-parametres">
+<h3>Les graphes paramétrés<a class="headerlink" href="#les-graphes-parametres" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les graphes paramétrés sont des graphes dans lesquels apparaissent des
+variables fai- sant référence aux colonnes d’une table de
+lexique-grammaire. On utilise généralement ce mécanisme avec des graphes
+syntaxiques, mais rien n’empêcherait de construire des graphes
+paramétrés de flexion, de prétraitement ou de normalisation.</p>
+<p>Les variables qui font référence aux colonnes sont formées du caractère
+<code class="docutils literal"><span class="pre">&#64;</span></code> suivi d’un nom de colonne en lettres majuscules (les colonnes sont
+numérotées en partant de <code class="docutils literal"><span class="pre">A</span></code>).</p>
+<p>Exemple: <code class="docutils literal"><span class="pre">&#64;C</span></code> fait référence à la troisième colonne de la table.</p>
+<p>Lorsqu’une variable doit être remplacée par un <code class="docutils literal"><span class="pre">+</span></code> ou un <code class="docutils literal"><span class="pre">-</span></code>, le
+signe <code class="docutils literal"><span class="pre">-</span></code> correspond à la suppression du chemin passant par cette
+variable. Il est possible d’effectuer l’opération contraire en faisant
+précéder le caractère <code class="docutils literal"><span class="pre">&#64;</span></code> d’un point d’exclamation. Dans ce cas, c’est
+lorsque la variable renvoie à un signe <code class="docutils literal"><span class="pre">+</span></code> que le chemin est supprimé.
+Si la variable ne renvoie ni à un signe <code class="docutils literal"><span class="pre">+</span></code> ni à un signe <code class="docutils literal"><span class="pre">-</span></code>, elle
+est remplacée par le contenu de la cellule.</p>
+<p>Il existe également une variable spéciale <code class="docutils literal"><span class="pre">&#64;%</span></code> qui est remplacée par
+le numéro de la ligne dans la table. Le fait que sa valeur soit
+différente pour chaque ligne permet de l’utiliser pour caractériser
+facilement une ligne. Cette variable n’est pas affectée par la présence
+d’un point d’exclamation à sa gauche.</p>
+<p>La figure&nbsp;[fig-reference-graph] montre un exemple de graphe paramétré
+conçu pour être appliqué à la table de lexique-grammaire table 31H
+présentée sur la figure&nbsp;[fig-table-31H].</p>
+<div class="figure" id="id74">
+<a class="reference internal image-reference" href="resources/img/fig8-3.png"><img alt="Exemple de graphe paramétré[fig-reference-graph]" src="resources/img/fig8-3.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple de graphe paramétré[fig-reference-graph]</span></p>
+</div>
+<div class="figure" id="id75">
+<a class="reference internal image-reference" href="resources/img/fig8-4.png"><img alt="Table de lexique-grammaire 31H[fig-table-31H]" src="resources/img/fig8-4.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Table de lexique-grammaire 31H[fig-table-31H]</span></p>
+</div>
+</div>
+<div class="section" id="generation-automatique-de-graphes">
+<h3>Génération automatique de graphes<a class="headerlink" href="#generation-automatique-de-graphes" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Pour pouvoir générer des graphes à partir d’un graphe paramétré et d’une
+table, il faut tout d’abord ouvrir la table en cliquant sur “Open...”
+dans le menu “Lexicon-Grammar” (voir figure&nbsp;[fig-lexicon-grammar-menu]).
+La table doit avoir été préalablement convertie en texte Unicode.</p>
+<div class="figure" id="id76">
+<a class="reference internal image-reference" href="resources/img/fig8-5.png"><img alt="Menu “Lexicon-Grammar”[fig-lexicon-grammar-menu]" src="resources/img/fig8-5.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Menu “Lexicon-Grammar”[fig-lexicon-grammar-menu]</span></p>
+</div>
+<p>La table sélectionnée est alors affichée dans une fenêtre (voir
+figure&nbsp;[fig-table-display]). Si elle n’apparaît pas sur l’écran, elle
+peut être occultée par d’autres fenêtres Unitex.</p>
+<div class="figure" id="id77">
+<a class="reference internal image-reference" href="resources/img/fig8-6.png"><img alt="Displaying a table[fig-table-display]" src="resources/img/fig8-6.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Displaying a table[fig-table-display]</span></p>
+</div>
+<p>Pour générer automatiquement des graphes à partir d’un graphe paramétré,
+cliquez sur “Compile to GRF...” dans le menu “Lexicon-Grammar”. La
+fenêtre de la figure [fig-configuration-graph-generation] apparaît
+alors.</p>
+<p>Dans le cadre “Reference Graph (in GRF format)”, indiquez le nom du
+graphe paramétré à utiliser. Dans le cadre “Resulting GRF grammar”,
+indiquez le nom du graphe principal qui sera généré. Ce graphe principal
+est un graphe faisant appel à tous les graphes qui auront été générés.
+En lançant une recherche dans un texte avec ce graphe, vous appliquerez
+ainsi simultanément tous les graphes générés.</p>
+<p>Le cadre “Name of produced subgraphs” permet de préciser le nom des
+graphes qui seront générés. Afin d’être certain que tous les graphes
+auront des noms distincts, il est conseillé d’utiliser la variable
+<code class="docutils literal"><span class="pre">&#64;%</span></code>, cette variable sera remplacée pour chaque entrée par le numéro
+de celle-ci, garantissant ainsi que tous les graphes auront un nom
+différent. Par exemple, si l’on remplit ce cadre avec le nom
+“<code class="docutils literal"><span class="pre">TestGraph.grf</span></code>” et si les sous-graphes sont nommés
+“<code class="docutils literal"><span class="pre">TestGraph_&#64;%.grf</span></code>”, le sous-graphe généré à partir de la 16 ligne
+sera nommé “<code class="docutils literal"><span class="pre">TestGraph_0016.grf</span></code>”.</p>
+<p>Les figures [fig-archaiser] et [fig-badauder] montrent deux graphes
+générés en appliquant le graphe paramétré de la
+figure&nbsp;[fig-reference-graph] à la table 31H.</p>
+<p>La figure&nbsp;[fig-main-graph] montre le graphe principal obtenu.</p>
+<div class="figure" id="id78">
+<a class="reference internal image-reference" href="resources/img/fig8-8.png"><img alt="Graphe généré pour le verbe ``archaïser``\ [fig-archaiser]" src="resources/img/fig8-8.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe généré pour le verbe <code class="docutils literal"><span class="pre">archaïser</span></code>[fig-archaiser]</span></p>
+</div>
+<div class="figure" id="id79">
+<a class="reference internal image-reference" href="resources/img/fig8-9.png"><img alt="Graphe généré pour le verbe ``badauder``\ [fig-badauder]" src="resources/img/fig8-9.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe généré pour le verbe <code class="docutils literal"><span class="pre">badauder</span></code>[fig-badauder]</span></p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-fr.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Lexique-grammaire</a><ul>
+<li><a class="reference internal" href="#les-tables-de-lexique-grammaire">Les tables de lexique-grammaire</a></li>
+<li><a class="reference internal" href="#conversion-dune-table-en-graphes">Conversion d’une table en graphes</a><ul>
+<li><a class="reference internal" href="#principe-des-graphes-parametres">Principe des graphes paramétrés</a></li>
+<li><a class="reference internal" href="#format-de-la-table">Format de la table</a></li>
+<li><a class="reference internal" href="#les-graphes-parametres">Les graphes paramétrés</a></li>
+<li><a class="reference internal" href="#generation-automatique-de-graphes">Génération automatique de graphes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-fr.html">Documentation overview</a><ul>
+      <li>Previous: <a href="08-sequence-automaton_FR_utf8.html" title="Chapitre précédent">Automate de Séquences</a></li>
+      <li>Next: <a href="10-alignment_FR_utf8.html" title="Chapitre suivant">Alignement de texte</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/09-lexicon-grammar_FR_utf8.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, SCTB.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/09-lexicon-grammar_FR_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

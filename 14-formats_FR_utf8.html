@@ -1,0 +1,1870 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Formats de fichiers &mdash; documentation Unitex-fr 1.0.1</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Unitex-fr 1.0.1" href="Unitex-fr.html" />
+    <link rel="prev" title="Utilisation des programmes externes" href="13-programs_FR_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="formats-de-fichiers">
+<h1>Formats de fichiers<a class="headerlink" href="#formats-de-fichiers" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Ce chapitre présente les formats des différents fichiers lus ou générés
+par Unitex. Les formats des dictionnaires DELAS et DELAF sont déjà
+présentés aux sections [section-DELAF-format] et [section-DELAS-format].</p>
+<p>NOTE: dans ce chapitre, le symbole ¶ représentera le retour à la ligne.
+Sauf indication contraire, tous les fichiers texte décrits dans ce
+chapitre sont codés en Unicode Little-Endian.</p>
+<div class="section" id="codage-unicode">
+<h2>Codage Unicode<a class="headerlink" href="#codage-unicode" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Par défaut, les fichiers textes manipulés par Unitex doivent être en
+Unicode Little-Endian. Unitex accepte aussi des fichiers Unicode
+Big-Endian ou UTF-8. Ce codage permet de représenter 65536 caractères en
+les codant chacun sur 2 octets. En Little-Endian, les octets sont dans
+l’ordre poids faible, poids fort. Quand cet ordre est inversé, on parle
+de codage Big-Endian. Un fichier texte codé en Little-Endian, Big-Endian
+or UTF-8 commence par le caractère spécial (Unicode Byte Order Mark -
+BOM) de valeur hexadécimale <code class="docutils literal"><span class="pre">FF</span></code><code class="docutils literal"><span class="pre">FE</span></code> (Little-Endian),
+<code class="docutils literal"><span class="pre">FE</span></code><code class="docutils literal"><span class="pre">FF</span></code> (Big-Endian) ou <code class="docutils literal"><span class="pre">EF</span></code><code class="docutils literal"><span class="pre">BB</span></code><code class="docutils literal"><span class="pre">BF</span></code> (UTF-8). Parce que
+UTF-8 n’a pas d’ordre d’octet, l’ajout d’un BOM UTF-8 est optionnel;
+pour UTF-16 c’est obligatoire. Les symboles de saut de ligne doivent
+être codés par les deux caractères <code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">00</span></code> et <code class="docutils literal"><span class="pre">0A</span></code><code class="docutils literal"><span class="pre">00</span></code>
+(Little-Endian), <code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0D</span></code> et <code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0A</span></code> (Big-Endian), ou
+<code class="docutils literal"><span class="pre">0D</span></code> and <code class="docutils literal"><span class="pre">0A</span></code> (UTF-8).</p>
+<p>Considérons le texte suivant:</p>
+<p><code class="docutils literal"><span class="pre">Unitex¶</span></code></p>
+<p><code class="docutils literal"><span class="pre">\beta-version¶</span></code></p>
+<p>Voici la représentation en Unicode Little-Endian de ce texte:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="18%" />
+<col width="18%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">BOM header</th>
+<th class="head">U</th>
+<th class="head">n</th>
+<th class="head">i</th>
+<th class="head">t</th>
+<th class="head">e</th>
+<th class="head">x</th>
+<th class="head">¶</th>
+<th class="head"><span class="math">\(\beta\)</span></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">FF</span></code><code class="docutils literal"><span class="pre">FE</span></code></td>
+<td><code class="docutils literal"><span class="pre">55</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">6E</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">69</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">74</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">65</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">78</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0A</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">B2</span></code><code class="docutils literal"><span class="pre">03</span></code></td>
+</tr>
+<tr class="row-odd"><td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>v</td>
+<td>e</td>
+<td>r</td>
+<td>s</td>
+<td>i</td>
+<td>o</td>
+<td>n</td>
+<td>¶</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">2D</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">76</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">65</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">72</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">73</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">69</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">6F</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">6E</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0A</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Table: Représentation hexadécimale d’un texte Unicode Little-Endian</p>
+<p>Voici sa représentation en Unicode Big-Endian:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="18%" />
+<col width="18%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">BOM header</th>
+<th class="head">U</th>
+<th class="head">n</th>
+<th class="head">i</th>
+<th class="head">t</th>
+<th class="head">e</th>
+<th class="head">x</th>
+<th class="head">¶</th>
+<th class="head"><span class="math">\(\beta\)</span></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">FE</span></code><code class="docutils literal"><span class="pre">FF</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">55</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">6E</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">69</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">74</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">65</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">78</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0A</span></code></td>
+<td><code class="docutils literal"><span class="pre">03</span></code><code class="docutils literal"><span class="pre">B2</span></code></td>
+</tr>
+<tr class="row-odd"><td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>v</td>
+<td>e</td>
+<td>r</td>
+<td>s</td>
+<td>i</td>
+<td>o</td>
+<td>n</td>
+<td>¶</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">2D</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">76</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">65</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">72</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">73</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">69</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">6F</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">6E</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0A</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Table: Représentation hexadécimale d’un texte Unicode Big-Endian</p>
+<p>Voici sa représentation Unicode en UTF-8:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="15%" />
+<col width="15%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">BOM header</th>
+<th class="head">U</th>
+<th class="head">n</th>
+<th class="head">i</th>
+<th class="head">t</th>
+<th class="head">e</th>
+<th class="head">x</th>
+<th class="head">¶</th>
+<th class="head"><span class="math">\(\beta\)</span></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">EF</span></code><code class="docutils literal"><span class="pre">BB</span></code><code class="docutils literal"><span class="pre">BF</span></code></td>
+<td><code class="docutils literal"><span class="pre">55</span></code></td>
+<td><code class="docutils literal"><span class="pre">6E</span></code></td>
+<td><code class="docutils literal"><span class="pre">69</span></code></td>
+<td><code class="docutils literal"><span class="pre">74</span></code></td>
+<td><code class="docutils literal"><span class="pre">65</span></code></td>
+<td><code class="docutils literal"><span class="pre">78</span></code></td>
+<td><code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">0A</span></code></td>
+<td><code class="docutils literal"><span class="pre">CE</span></code><code class="docutils literal"><span class="pre">B2</span></code></td>
+</tr>
+<tr class="row-odd"><td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>v</td>
+<td>e</td>
+<td>r</td>
+<td>s</td>
+<td>i</td>
+<td>o</td>
+<td>n</td>
+<td>¶</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">2D</span></code></td>
+<td><code class="docutils literal"><span class="pre">76</span></code></td>
+<td><code class="docutils literal"><span class="pre">65</span></code></td>
+<td><code class="docutils literal"><span class="pre">72</span></code></td>
+<td><code class="docutils literal"><span class="pre">73</span></code></td>
+<td><code class="docutils literal"><span class="pre">69</span></code></td>
+<td><code class="docutils literal"><span class="pre">6F</span></code></td>
+<td><code class="docutils literal"><span class="pre">6E</span></code></td>
+<td><code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">0A</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Table: Représentation hexadécimale d’un texte Unicode UTF-8</p>
+<p>En Unicode Little-Endian, les octets de poids fort et de poids faible
+ont été inversés, ce qui explique que le caractère d’en-tête soit codé
+par <code class="docutils literal"><span class="pre">FF</span></code><code class="docutils literal"><span class="pre">FE</span></code> au lieu de <code class="docutils literal"><span class="pre">FE</span></code><code class="docutils literal"><span class="pre">FF</span></code>, idem pour <code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0D</span></code>
+et <code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0A</span></code> qui sont devenus respectivement <code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">00</span></code> and
+<code class="docutils literal"><span class="pre">0A</span></code><code class="docutils literal"><span class="pre">00</span></code>.</p>
+</div>
+<div class="section" id="fichiers-dalphabet">
+<h2>Fichiers d’alphabet<a class="headerlink" href="#fichiers-dalphabet" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Il y a deux sortes de fichiers d’alphabet : un fichier qui définit les
+caractères d’une langue et un fichier indiquant des préférences pour le
+tri. Le premier est désigné sous le terme <em>alphabet</em>, et le second sous
+celui <em>alphabet de tri</em>.</p>
+<div class="section" id="alphabet">
+<h3>Alphabet<a class="headerlink" href="#alphabet" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le fichier d’alphabet est un fichier texte décrivant tous les caractères
+d’une langue, ainsi que les correspondances entre lettres minuscules et
+majuscules. Ce fichier doit s’appeler <code class="docutils literal"><span class="pre">Alphabet.txt</span></code> et doit se
+trouver dans la racine du répertoire de la langue concernée. Sa présence
+est obligatoire pour qu’Unitex puisse fonctionner.</p>
+<p>Exemple&nbsp;: le fichier d’alphabet de l’anglais doit se trouver dans le
+répertoire <code class="docutils literal"><span class="pre">.../English/</span></code></p>
+<p>Chaque ligne du fichier alphabet doit avoir l’une des 3 formes
+suivantes, suivie par un retour à la ligne :</p>
+<ul class="simple">
+<li><a class="reference internal" href="resources/img/thai_letter.png"><img alt="image" src="resources/img/thai_letter.png" style="height: 0.30000cm;" /></a> : un dièse suivi de 2 caractères <span class="math">\(X\)</span> and <span class="math">\(Y\)</span>
+indique que tous les caractères compris entre les caractères
+<span class="math">\(X\)</span> et <span class="math">\(Y\)</span> sont des lettres. Tous ces caractères sont
+considérés comme étant à la fois minuscules et majuscules. Ce mode
+est utile pour définir les alphabets des langues asiatiques comme le
+coréen, le chinois ou le japonais où il n’y a pas de distinction de
+casse et où le nombre de caractères rendrait très fastidieuse une
+énumération complète;</li>
+<li><code class="docutils literal"><span class="pre">Aa</span></code> : 2 caractères <span class="math">\(X\)</span> et <span class="math">\(Y\)</span> indiquent que <span class="math">\(X\)</span>
+et <span class="math">\(Y\)</span> sont des lettres et que <span class="math">\(X\)</span> est l’équivalent en
+majuscule de la lettre <span class="math">\(Y\)</span>.</li>
+<li><a class="reference internal" href="resources/img/thai_letter.png"><img alt="image" src="resources/img/thai_letter.png" style="height: 0.30000cm;" /></a>: un unique caractère <span class="math">\(X\)</span> définit <span class="math">\(X\)</span> comme une
+lettre à la fois minuscule et majuscule. Ce mode est utile pour
+définir un caractère asiatique de manière ponctuelle.</li>
+</ul>
+<p>Pour certaines langues comme le français, il arrive qu’à une lettre
+minuscule correspondent plusieurs majuscules. For example, <code class="docutils literal"><span class="pre">é</span></code>, qui
+peut avoir comme majuscule soit <code class="docutils literal"><span class="pre">E</span></code> ou <code class="docutils literal"><span class="pre">É</span></code>. Pour exprimer cela, il
+suffit d’utiliser plusieurs lignes. L’inverse est également vrai : à une
+majuscule peuvent correspondre plusieurs minuscules. Ainsi, <code class="docutils literal"><span class="pre">E</span></code> peut
+être la majuscule de <code class="docutils literal"><span class="pre">e</span></code>, <code class="docutils literal"><span class="pre">é</span></code>, <code class="docutils literal"><span class="pre">è</span></code>, <code class="docutils literal"><span class="pre">ë</span></code> ou <code class="docutils literal"><span class="pre">ê</span></code>. Voici
+l’extrait du fichier alphabet du français qui définit les différentes
+lettres</p>
+<p><code class="docutils literal"><span class="pre">e</span></code>:</p>
+<p><code class="docutils literal"><span class="pre">Ee</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Eé</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Éé</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Eè</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Èè</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Eë</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Ëë</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Eê</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Êê</span></code>¶</p>
+</div>
+<div class="section" id="alphabet-de-tri">
+<h3>Alphabet de tri<a class="headerlink" href="#alphabet-de-tri" title="Lien permanent vers ce titre">¶</a></h3>
+<p>L’alphabet de tri est un fichier texte qui définit les priorités des
+lettres d’une langue lors du tri à l’aide du programme <code class="docutils literal"><span class="pre">SortTxt</span></code>.
+Chaque ligne de ce fichier définit un groupe de lettres. Si un groupe de
+lettres <span class="math">\(A\)</span> est défini avant un groupe de lettres <span class="math">\(B\)</span>,
+n’importe quelle lettre de <span class="math">\(A\)</span> sera inférieure à n’importe quelle
+lettre de <span class="math">\(B\)</span>.</p>
+<p>Les lettres d’un même groupe ne sont distinguées que si nécessaire. Par
+exemple, si l’on a défini le groupe de lettre <code class="docutils literal"><span class="pre">eéèëê</span></code> le mot <code class="docutils literal"><span class="pre">ébahi</span></code>
+sera considéré comme plus petit que <code class="docutils literal"><span class="pre">estuaire</span></code>, lui-même plus petit
+que <code class="docutils literal"><span class="pre">été</span></code>. Comme les lettres qui suivent <code class="docutils literal"><span class="pre">e</span></code> et <code class="docutils literal"><span class="pre">é</span></code> permettaient
+de classer les mots, on n’a pas cherché à comparer les lettres <code class="docutils literal"><span class="pre">e</span></code> et
+<code class="docutils literal"><span class="pre">é</span></code> car elles sont du même groupe. En revanche, si l’on compare les
+mots <code class="docutils literal"><span class="pre">chantés</span></code> et <code class="docutils literal"><span class="pre">chantes</span></code>, <code class="docutils literal"><span class="pre">chantes</span></code> sera considéré comme plus
+petit. En effet, il faut comparer les lettres <code class="docutils literal"><span class="pre">e</span></code> et <code class="docutils literal"><span class="pre">é</span></code> pour
+distinguer ces mots. Comme la lettre <code class="docutils literal"><span class="pre">e</span></code> apparaît en premier dans le
+groupe <code class="docutils literal"><span class="pre">eéèëê</span></code>, elle est considérée comme inférieure à <code class="docutils literal"><span class="pre">é</span></code>. Le mot
+<code class="docutils literal"><span class="pre">chantes</span></code> sera donc considéré comme plus petit que le mot <code class="docutils literal"><span class="pre">chantés</span></code>.</p>
+<p>Le fichier d’alphabet de tri permet de définir des équivalences de
+caractères. On peut donc ignorer les différences de casse et d’accent.
+Par exemple, si l’on veut ordonner les lettres <code class="docutils literal"><span class="pre">b</span></code>, <code class="docutils literal"><span class="pre">c</span></code>, et <code class="docutils literal"><span class="pre">d</span></code>
+sans tenir compte de la casse ni de la cédille, on peut écrire les
+lignes suivantes :</p>
+<p><code class="docutils literal"><span class="pre">Bb</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">CcÇç</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Dd</span></code>¶</p>
+<p>Ce fichier est facultatif. Lorsqu’aucun alphabet de tri n’est spécifié
+au programme <code class="docutils literal"><span class="pre">SortTxt</span></code> celui-ci effectue un tri dans l’ordre
+d’apparition des caractères dans le codage Unicode.</p>
+</div>
+</div>
+<div class="section" id="graphes">
+<h2>Graphes<a class="headerlink" href="#graphes" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Cette section présente les deux formats de graphes : le format graphique
+<code class="docutils literal"><span class="pre">.grf</span></code> et le format compilé <code class="docutils literal"><span class="pre">.fst2</span></code>.</p>
+<div class="section" id="format-grf">
+<h3>Format .grf<a class="headerlink" href="#format-grf" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Un fichier <code class="docutils literal"><span class="pre">.grf</span></code> est un fichier texte contenant des informations de
+présentation en plus des informations représentant les contenus des
+boîtes et les transitions du graphe. Un fichier <code class="docutils literal"><span class="pre">.grf</span></code> commence par
+les lignes suivantes:</p>
+<p><code class="docutils literal"><span class="pre">#Unigraph</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">SIZE</span> <span class="pre">1313</span> <span class="pre">950</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">FONT</span> <span class="pre">Times</span> <span class="pre">New</span> <span class="pre">Roman:</span>&nbsp; <span class="pre">12</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">OFONT</span> <span class="pre">Times</span> <span class="pre">New</span> <span class="pre">Roman:B</span> <span class="pre">12</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">BCOLOR</span> <span class="pre">16777215</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">FCOLOR</span> <span class="pre">0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">ACOLOR</span> <span class="pre">12632256</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">SCOLOR</span> <span class="pre">16711680</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">CCOLOR</span> <span class="pre">255</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DBOXES</span> <span class="pre">y</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DFRAME</span> <span class="pre">y</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DDATE</span> <span class="pre">y</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DFILE</span> <span class="pre">y</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DDIR</span> <span class="pre">y</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DRIG</span> <span class="pre">n</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DRST</span> <span class="pre">n</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">FITS</span> <span class="pre">100</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PORIENT</span> <span class="pre">L</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">#</span></code>¶</p>
+<p>La première ligne <code class="docutils literal"><span class="pre">#Unigraph</span></code> est une ligne de commentaire. Les lignes
+suivantes définissent les valeurs des paramètres de présentation du
+graphe :</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">SIZE</span> <span class="pre">x</span> <span class="pre">y</span></code> : définit la largeur <code class="docutils literal"><span class="pre">x</span></code> et la hauteur <code class="docutils literal"><span class="pre">y</span></code> du graphe
+en pixels;</li>
+<li><code class="docutils literal"><span class="pre">FONT</span> <span class="pre">name:xyz</span></code> : définit la police utilisée pour afficher le
+contenu des boîtes. <code class="docutils literal"><span class="pre">name</span></code> représente le nom de la police. <code class="docutils literal"><span class="pre">x</span></code>
+indique si la police doit être en gras ou non. Si <code class="docutils literal"><span class="pre">x</span></code> vaut <code class="docutils literal"><span class="pre">B</span></code>,
+cela indique que la police doit être en gras. Pour une police
+normale, <code class="docutils literal"><span class="pre">x</span></code> doit être un espace. De la même manière, <code class="docutils literal"><span class="pre">y</span></code> vaut
+<code class="docutils literal"><span class="pre">I</span></code> si la police doit être en italique, un espace sinon. <code class="docutils literal"><span class="pre">z</span></code>
+représente la taille de la police;</li>
+<li><code class="docutils literal"><span class="pre">OFONT</span> <span class="pre">name:xyz</span></code> : définit la police utilisée pour afficher les
+transductions. Les paramètres <code class="docutils literal"><span class="pre">name</span></code>, <code class="docutils literal"><span class="pre">x</span></code>, <code class="docutils literal"><span class="pre">y</span></code>, et <code class="docutils literal"><span class="pre">z</span></code> sont
+définis de la même manière que pour <code class="docutils literal"><span class="pre">FONT</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">BCOLOR</span> <span class="pre">x</span></code> : définit la couleur de l’arrière-plan du graphe. <code class="docutils literal"><span class="pre">x</span></code>
+représente la couleur au format RGB;</li>
+<li><code class="docutils literal"><span class="pre">FCOLOR</span> <span class="pre">x</span></code> : définit la couleur de dessin du graphe. <code class="docutils literal"><span class="pre">x</span></code>
+représente la couleur au format RGB;</li>
+<li><code class="docutils literal"><span class="pre">ACOLOR</span> <span class="pre">x</span></code> : définit la couleur utilisée pour dessiner les lignes
+des boîtes qui correspondent à des appels à des sous-graphes. <code class="docutils literal"><span class="pre">x</span></code>
+représente la couleur au format RGB;</li>
+<li><code class="docutils literal"><span class="pre">SCOLOR</span> <span class="pre">x</span></code> : définit la couleur utilisée pour écrire le contenu des
+boîtes de commentaires (i.e. les boîtes qui ne sont reliées à aucune
+autre). <code class="docutils literal"><span class="pre">x</span></code> représente la couleur au format RGB;</li>
+<li><code class="docutils literal"><span class="pre">CCOLOR</span> <span class="pre">x</span></code> : définit la couleur utilisée pour dessiner les boîtes
+sélectionnées. <code class="docutils literal"><span class="pre">x</span></code> représente la couleur au format RGB;</li>
+<li><code class="docutils literal"><span class="pre">DBOXES</span> <span class="pre">x</span></code> : cette ligne est ignorée par Unitex. Elle est conservée
+par souci de compatibilité avec les graphes Intex ;</li>
+<li><code class="docutils literal"><span class="pre">DFRAME</span> <span class="pre">x</span></code> : dessine ou non un cadre autour du graphe selon que
+<code class="docutils literal"><span class="pre">x</span></code> vaut <code class="docutils literal"><span class="pre">y</span></code>, ou <code class="docutils literal"><span class="pre">n</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">DDATE</span> <span class="pre">x</span></code> : affiche ou non la date en bas du graphe selon que <code class="docutils literal"><span class="pre">x</span></code>
+vaut <code class="docutils literal"><span class="pre">y</span></code>, ou <code class="docutils literal"><span class="pre">n</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">DFILE</span> <span class="pre">x</span></code> : affiche ou non le nom du fichier en bas du graphe selon
+que <code class="docutils literal"><span class="pre">x</span></code> vaut <code class="docutils literal"><span class="pre">y</span></code>, ou <code class="docutils literal"><span class="pre">n</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">DDIR</span> <span class="pre">x</span></code> : affiche ou non le chemin complet d’accès au fichier en
+bas du graphe selon que <code class="docutils literal"><span class="pre">x</span></code> vaut <code class="docutils literal"><span class="pre">y</span></code>, ou <code class="docutils literal"><span class="pre">n</span></code>; Cette option
+n’est prise en compte que si le paramètre <code class="docutils literal"><span class="pre">DFILE</span></code> a la valeur
+<code class="docutils literal"><span class="pre">y</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">DRIG</span> <span class="pre">x</span></code> : dessine le graphe de droite à gauche ou de gauche à
+droite selon que <code class="docutils literal"><span class="pre">x</span></code> vaut <code class="docutils literal"><span class="pre">y</span></code>, ou <code class="docutils literal"><span class="pre">n</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">DRST</span> <span class="pre">x</span></code> : cette ligne est ignorée par Unitex. Elle est conservée
+par souci de compatibilité avec les graphes Intex ;</li>
+<li><code class="docutils literal"><span class="pre">FITS</span> <span class="pre">x</span></code> : cette ligne est ignorée par Unitex. Elle est conservée
+par souci de compatibilité avec les graphes Intex ;</li>
+<li><code class="docutils literal"><span class="pre">PORIENT</span> <span class="pre">x</span></code> : cette ligne est ignorée par Unitex. Elle est
+conservée par souci de compatibilité avec les graphes Intex ;</li>
+<li><code class="docutils literal"><span class="pre">#</span></code> : cette ligne est ignorée par Unitex. Elle sert à indiquer la
+fin des informations d’en-tête.</li>
+</ul>
+<p>Les lignes suivantes donnent le contenu et la position des boîtes du
+graphe. Les lignes suivantes correspondent à un graphe reconnaissant un
+chiffre :</p>
+<p><code class="docutils literal"><span class="pre">3</span></code>¶</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a>&#8220;&lt;E&gt;&#8221; 84 248 1 2 <a href="#id3"><span class="problematic" id="id4">``</span></a>¶</p>
+<p><a href="#id5"><span class="problematic" id="id6">``</span></a>&#8220;&#8221; 272 248 0 <a href="#id7"><span class="problematic" id="id8">``</span></a>¶</p>
+<p><a href="#id9"><span class="problematic" id="id10">``</span></a>s&#8221;1+2+3+4+5+6+7+8+9+0&#8221; 172 248 1 1 <a href="#id11"><span class="problematic" id="id12">``</span></a>¶</p>
+<p>La première ligne indique le nombre de boîtes du graphe, immédiatement
+suivi d’un retour à la ligne. Ce nombre ne doit jamais être inférieur à
+2, car un graphe est toujours sensé posséder un état initial et un état
+final.</p>
+<p>Les lignes suivantes définissent les boîtes du graphe. Les boîtes sont
+numérotées à partir de <span class="math">\(0\)</span>. Par convention, l’état <span class="math">\(0\)</span> est
+l’état initial et l’état <span class="math">\(1\)</span> est l’état final. Le contenu de
+l’état final doit toujours être vide.</p>
+<p>Chaque boîte du graphe est définie par une ligne qui doit avoir le
+format suivant :</p>
+<p><em>contenu X Y N transitions ¶</em></p>
+<p><em>contenu</em> est une chaîne de caractères entourée de guillemets qui
+représente le contenu de la boîte. Cette chaîne peut éventuellement être
+précédée d’un <code class="docutils literal"><span class="pre">s</span></code> dans le cas d’un graphe Intex importé ; ce caractère
+est alors ignoré par Unitex. Le contenu de la chaîne est le texte qui a
+été entré dans le contrôle de texte de l’éditeur de graphes. Le tableau
+[table10-2] donne le codage des deux séquences spéciales qui ne sont pas
+codées telles quelles dans les fichiers <code class="docutils literal"><span class="pre">.grf</span></code>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Séquence dans l’éditeur de graphe</th>
+<th class="head">Séquence dans le fichier <code class="docutils literal"><span class="pre">.grf</span></code></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;</span></code></td>
+<td><code class="docutils literal"><span class="pre">\&quot;</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">\&quot;</span></code></td>
+<td><code class="docutils literal"><span class="pre">\\\&quot;</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Table: Codage des séquences spéciales[table10-2]</p>
+<p>NOTE: les caractères compris entre <code class="docutils literal"><span class="pre">&lt;</span></code> et <code class="docutils literal"><span class="pre">&gt;</span></code> ou entre <code class="docutils literal"><span class="pre">{</span></code> et
+<code class="docutils literal"><span class="pre">}</span></code> ne sont pas interprétés. Ainsi, le caractère <code class="docutils literal"><span class="pre">+</span></code> contenu dans la
+chaîne <code class="docutils literal"><span class="pre">&quot;le</span> <span class="pre">&lt;A+Conc&gt;&quot;</span></code> n’est pas interprété comme un séparateur de
+lignes, car le motif <code class="docutils literal"><span class="pre">&lt;A+Conc&gt;</span></code> est interprété en priorité.</p>
+<p><em>X</em> and <em>Y</em> représentent les coordonnées de la boîte en pixels. La
+figure [fig-box-coordinates] montre comment ces coordonnées sont
+interprétées par Unitex.</p>
+<div class="figure" id="id87">
+<a class="reference internal image-reference" href="resources/img/repere.pdf"><img alt="Interprétation des coordonnées des boîtes[fig-box-coordinates]" src="resources/img/repere.pdf" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Interprétation des coordonnées des boîtes[fig-box-coordinates]</span></p>
+</div>
+<p><em>N</em> représente le nombre de transitions qui sortent de la boîte. Ce
+nombre doit toujours valoir <span class="math">\(0\)</span> pour l’état final.</p>
+<p>Les transitions sont définies par les numéros des boîtes vers lesquelles
+elles pointent.</p>
+<p>Chaque ligne de définition de boîte doit se terminer par un espace suivi
+d’un retour à la ligne.</p>
+</div>
+<div class="section" id="format-fst2">
+<h3>Format .fst2<a class="headerlink" href="#format-fst2" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Un fichier <code class="docutils literal"><span class="pre">.fst2</span></code> est un fichier texte qui décrit un ensemble de
+graphes. Voici un exemple de fichier <code class="docutils literal"><span class="pre">.fst2</span></code> file:</p>
+<p><code class="docutils literal"><span class="pre">0000000002</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-1</span> <span class="pre">NP</span></code>¶</p>
+<p><a href="#id13"><span class="problematic" id="id14">``</span></a>: 1 1 <a href="#id15"><span class="problematic" id="id16">``</span></a>¶</p>
+<p><a href="#id17"><span class="problematic" id="id18">``</span></a>: 2 2 -2 2 <a href="#id19"><span class="problematic" id="id20">``</span></a>¶</p>
+<p><a href="#id21"><span class="problematic" id="id22">``</span></a>: 3 3 <a href="#id23"><span class="problematic" id="id24">``</span></a>¶</p>
+<p><a href="#id25"><span class="problematic" id="id26">``</span></a>t <a href="#id27"><span class="problematic" id="id28">``</span></a>¶</p>
+<p><a href="#id29"><span class="problematic" id="id30">``</span></a>f <a href="#id31"><span class="problematic" id="id32">``</span></a>¶</p>
+<p><code class="docutils literal"><span class="pre">-2</span> <span class="pre">Adj</span></code>¶</p>
+<p><a href="#id33"><span class="problematic" id="id34">``</span></a>: 6 1 5 1 4 1 <a href="#id35"><span class="problematic" id="id36">``</span></a>¶</p>
+<p><a href="#id37"><span class="problematic" id="id38">``</span></a>t <a href="#id39"><span class="problematic" id="id40">``</span></a>¶</p>
+<p><a href="#id41"><span class="problematic" id="id42">``</span></a>f <a href="#id43"><span class="problematic" id="id44">``</span></a>¶</p>
+<p><code class="docutils literal"><span class="pre">%&lt;E&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">%the/DET</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">%&lt;A&gt;/ADJ</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">%&lt;N&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">%nice</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;pretty</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">%small</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">f</span></code>¶</p>
+<p>La première ligne représente le nombre de graphes codés dans le fichier.
+Le début de chaque graphe est identifié par une ligne indiquant le
+numéro et le nom du graphe ( (<code class="docutils literal"><span class="pre">-1</span> <span class="pre">NP</span></code> et <code class="docutils literal"><span class="pre">-2</span> <span class="pre">Adj</span></code> dans le fichier
+ci-dessus).</p>
+<p>Les lignes suivantes décrivent les états du graphe. Si l’état est
+terminal, la ligne débute par le caractère <code class="docutils literal"><span class="pre">t</span></code> et par le caractère
+<code class="docutils literal"><span class="pre">:</span></code> sinon. Pour chaque état, la liste des transitions est une suite
+éventuellement vide de couples d’entiers :</p>
+<ul class="simple">
+<li>le premier entier indique le numéro d’étiquette ou de sous-graphe
+correspondant à la transition. Les étiquettes sont numérotées à
+partir de 0. Les sous-graphes sont représentés par des entiers
+négatifs, ce qui explique que les numéros précédant les noms des
+graphes soient négatifs ;</li>
+<li>le deuxième entier représente le numéro de l’état d’arrivée de la
+transition. Dans chaque graphe, les états sont numérotés à partir de
+0. Par convention, l’état 0 d’un graphe est son état initial.</li>
+</ul>
+<p>Chaque ligne de définition d’état doit se terminer par un espace. La fin
+de chaque graphe est marquée par une ligne contenant un <code class="docutils literal"><span class="pre">f</span></code> suivi d’un
+espace et d’un retour à la ligne.</p>
+<p>Les étiquettes sont définies après le dernier graphe. Si la ligne débute
+par le caractère <code class="docutils literal"><span class="pre">&#64;</span></code>,cela signifie que le contenu de l’étiquette doit
+être recherché sans variante de casse. Cette information n’est utile que
+lorsque l’étiquette est un mot. Si la ligne débute par le caractère
+<code class="docutils literal"><span class="pre">%</span></code>, les variantes de casse sont autorisées. Si une étiquette porte
+une transduction, les séquences d’entrée et de sortie sont séparées par
+le caractère <code class="docutils literal"><span class="pre">/</span></code> (exemple : <code class="docutils literal"><span class="pre">the/DET</span></code>). Par convention, la première
+étiquette doit toujours être le mot vide (<code class="docutils literal"><span class="pre">&lt;E&gt;</span></code>), et ce, même si cette
+étiquette n’est utilisée dans aucune transition.</p>
+<p>La fin du fichier est indiquée par une ligne contenant le caractère f
+suivi d’un retour à la ligne.</p>
+</div>
+</div>
+<div class="section" id="textes">
+<h2>Textes<a class="headerlink" href="#textes" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Cette section présente les différents fichiers utilisés pour représenter
+des textes.</p>
+<div class="section" id="fichiers-txt">
+<h3>Fichiers .txt<a class="headerlink" href="#fichiers-txt" title="Lien permanent vers ce titre">¶</a></h3>
+<p>[section-texts] Les fichiers <code class="docutils literal"><span class="pre">.txt</span></code> doivent être des fichiers texte
+codés en Unicode Little-Endian. Ces fichiers ne doivent pas contenir
+d’accolade ouvrante ou fermante, à moins qu’elles soient utilisées pour
+écrire un séparateur de phrase (<code class="docutils literal"><span class="pre">{S}</span></code>) ou une étiquette lexicale
+valide (<code class="docutils literal"><span class="pre">{aujourd'hui,.ADV}</span></code>). Les retours à la ligne doivent être
+codés par les deux caractères spéciaux de valeurs hexadécimales <code class="docutils literal"><span class="pre">000D</span></code>
+and <code class="docutils literal"><span class="pre">000A</span></code>.</p>
+</div>
+<div class="section" id="fichiers-snt">
+<h3>Fichiers .snt<a class="headerlink" href="#fichiers-snt" title="Lien permanent vers ce titre">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">.snt</span></code> sont des fichiers <code class="docutils literal"><span class="pre">.txt</span></code> qui ont été prétraités par Unitex.
+Ces fichiers ne doivent pas contenir de tabulation. Ils ne doivent pas
+non plus contenir plusieurs espaces ou retours à la ligne consécutifs.
+Les seules accolades autorisées dans des fichiers <code class="docutils literal"><span class="pre">.snt</span></code> sont celles
+du séparateur de phrases <code class="docutils literal"><span class="pre">{S}</span></code> et celles des étiquettes lexicales
+(<code class="docutils literal"><span class="pre">{aujourd'hui,.ADV}</span></code>).</p>
+</div>
+<div class="section" id="fichier-text-cod">
+<h3>Fichier text.cod<a class="headerlink" href="#fichier-text-cod" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le fichier <code class="docutils literal"><span class="pre">text.cod</span></code> est un fichier binaire contenant une suite
+d’entiers représentant le texte. Chaque entier <code class="docutils literal"><span class="pre">i</span></code> renvoie au token
+d’indice <code class="docutils literal"><span class="pre">i</span></code> dans le fichier <code class="docutils literal"><span class="pre">tokens.txt</span></code> Ces entiers sont codés sur
+4 octets.</p>
+<p>NOTE : les tokens sont numérotés à partir de 0.</p>
+</div>
+<div class="section" id="fichier-tokens-txt">
+<h3>Fichier tokens.txt<a class="headerlink" href="#fichier-tokens-txt" title="Lien permanent vers ce titre">¶</a></h3>
+<p>[fichier-tokens-txt] Le fichier <code class="docutils literal"><span class="pre">tokens.txt</span></code> est un fichier texte
+contenant la liste de toutes les unités lexicales du texte. La première
+ligne de ce fichier indique le nombre d’unités contenues dans le
+fichier. Les unités sont séparées par des retours à la ligne. Quand une
+séquence est trouvée dans le texte avec des variantes de casse, chaque
+variante est codée par une unitée distincte.</p>
+<p>NOTE : les retours à la ligne éventuellement présents dans le fichier
+<code class="docutils literal"><span class="pre">.snt</span></code> sont codés comme des espaces. Il n’y a donc jamais d’unité
+codant le retour à la ligne.</p>
+</div>
+<div class="section" id="fichier-tok-by-alph-txt-et-tok-by-freq-txt">
+<h3>Fichier tok_by_alph.txt et tok_by_freq.txt<a class="headerlink" href="#fichier-tok-by-alph-txt-et-tok-by-freq-txt" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Ces deux fichiers sont des fichiers texte qui contiennent la liste des
+unités lexicales triée par ordre alphabétique ou par ordre de fréquence.</p>
+<p>Dans le fichier <code class="docutils literal"><span class="pre">tok_by_alph.txt</span></code>, chaque ligne est composée d’une
+unité, suivie par le caractère tabulation et le nombre d’occurrences de
+cette unité dans le texte.</p>
+<p>Les lignes du fichier <code class="docutils literal"><span class="pre">tok_by_freq.txt</span></code> sont formées sur le même
+principe, mais le nombre d’occurrences apparaît avant le caractère
+tabulation et l’unité.</p>
+</div>
+<div class="section" id="fichier-enter-pos">
+<h3>Fichier enter.pos<a class="headerlink" href="#fichier-enter-pos" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Ce fichier est un fichier binaire contenant la liste des positions des
+retours à la ligne dans le fichier <code class="docutils literal"><span class="pre">.snt</span></code>. Chaque position est
+l’indice dans le fichier text.cod d’un retour à la ligne ayant été
+remplacé par un espace. Ces positions sont des entiers codés sur 4
+octets.</p>
+</div>
+</div>
+<div class="section" id="automate-du-texte">
+<h2>Automate du texte<a class="headerlink" href="#automate-du-texte" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="fichier-text-tfst">
+<h3>Fichier text.tfst<a class="headerlink" href="#fichier-text-tfst" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le fichier <code class="docutils literal"><span class="pre">text.tfst</span></code> représente l’automate du texte. C’est un
+fichier texte qui commence par une ligne comportant dix chiffres qui
+indiquent le nombre de phrases contenues dans l’automate. Ensuite, pour
+chaque phrase, on dispose de l’en-tête suivante:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">$XXX</span></code>¶: <code class="docutils literal"><span class="pre">XXX</span></code> = numéro de la phrase;</li>
+<li><code class="docutils literal"><span class="pre">foo</span> <span class="pre">foo</span> <span class="pre">foo...</span></code>¶: texte de la phrase;</li>
+<li><code class="docutils literal"><span class="pre">a/b</span> <span class="pre">c/d</span> <span class="pre">e/f</span> <span class="pre">g/h...</span></code>¶: pour chaque token de la phrase, il y a une
+paire <code class="docutils literal"><span class="pre">x/y</span></code>: <code class="docutils literal"><span class="pre">x</span></code> est l’index du token dans le fichier
+<code class="docutils literal"><span class="pre">tokens.txt</span></code>, <code class="docutils literal"><span class="pre">y</span></code> est sa longueur en caractères;</li>
+<li><code class="docutils literal"><span class="pre">X_Y</span></code>¶: <code class="docutils literal"><span class="pre">X</span></code> est l’offset du premier token de la phrase, en
+tokens depuis le début du texte; <code class="docutils literal"><span class="pre">Y</span></code> est identique mais l’offset
+représente le nombre de caractères.</li>
+</ul>
+<p>Ensuite, tous les états de l’automate sont codés, un par ligne. Si
+l’état est final, la ligne commence par <code class="docutils literal"><span class="pre">t</span></code>. Sinon, elle commence par
+<code class="docutils literal"><span class="pre">:</span></code>. Toutes les transitions sont écrites sous la forme de paires
+<code class="docutils literal"><span class="pre">x</span> <span class="pre">y</span></code>, <code class="docutils literal"><span class="pre">x</span></code> étant le nombre de tag, <code class="docutils literal"><span class="pre">y</span></code> étant le nombre d’états de
+destination. Remarquons que contrairement au format <code class="docutils literal"><span class="pre">.fst2</span></code>, les
+lignes doivent finir par un espace. La dernière ligne de la liste
+d’états contient <code class="docutils literal"><span class="pre">f</span></code>.</p>
+<p>Enfin, tous les les tags sont codés. Par convention, le premier tag est
+toujours épsilon: <code class="docutils literal"><span class="pre">&#64;&lt;E&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p>D’autres étiquettes doivent être soit des unités lexicales ou des
+entrées au format DELAF entre accolades. Elles sont codées comme suit:</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;</span></code><em>content</em>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;</span></code><em>a</em><code class="docutils literal"><span class="pre">.</span></code><em>b</em><code class="docutils literal"><span class="pre">.</span></code><em>c</em><code class="docutils literal"><span class="pre">-</span></code> <em>x</em><code class="docutils literal"><span class="pre">.</span></code><em>y</em><code class="docutils literal"><span class="pre">.</span></code><em>z</em>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><em>contenu</em> est le contenu du tag. Les informations <em>a.b.c-x.y.z</em>
+décrivent la zone du texte couverte par le tag:</p>
+<ul class="simple">
+<li><em>a</em>: offset de début en tokens depuis le début de la phrase;</li>
+<li><em>b</em>: offset de début en caractères depuis le début du premier; token
+du tag;</li>
+<li><em>c</em>: offset de début en lettres logiques depuis le premier caractère
+du tag. Ces informations sont utiles pour le coréen, parce qu’un tag
+représent une séquence de caractères Jamo qui apparaissent à
+l’intérieur d’un Hangul. L’offset en caractères n’est donc pas assez
+précis;</li>
+<li><em>x</em>: offset de fin en tokens depuis le début de la phrase;</li>
+<li><em>y</em>: offset de fin en caractères depuis le début du dernier token du
+tag;</li>
+<li><em>z</em>: de fin en lettres logiques depuis le dernier caractère du the
+tag. Dans des automates de phrase coréen, des formes de surface vides
+peuvent correspondre à des mots vides du texte. Dans ces cas, <em>z</em> a
+la valeur <span class="math">\(-1\)</span>.</li>
+</ul>
+<p>La définition de tag se termine par une ligne qui contient <code class="docutils literal"><span class="pre">f</span></code>.</p>
+<p>Exemple : Voici le fichier correspondant au texte <em>He is drinking orange
+juice.</em></p>
+<p><code class="docutils literal"><span class="pre">0000000001</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">$1</span></code>¶</p>
+<p><a href="#id45"><span class="problematic" id="id46">``</span></a>He is drinking orange juice. <a href="#id47"><span class="problematic" id="id48">``</span></a>¶</p>
+<p><code class="docutils literal"><span class="pre">0/2</span> <span class="pre">1/1</span> <span class="pre">2/2</span> <span class="pre">1/1</span> <span class="pre">3/8</span> <span class="pre">1/1</span> <span class="pre">4/6</span> <span class="pre">1/1</span> <span class="pre">5/5</span> <span class="pre">6/1</span> <span class="pre">1/1</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">0_0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">:</span> <span class="pre">2</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">1</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">:</span> <span class="pre">4</span> <span class="pre">2</span> <span class="pre">3</span> <span class="pre">2</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">:</span> <span class="pre">7</span> <span class="pre">3</span> <span class="pre">6</span> <span class="pre">3</span> <span class="pre">5</span> <span class="pre">3</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">:</span> <span class="pre">10</span> <span class="pre">5</span> <span class="pre">9</span> <span class="pre">4</span> <span class="pre">8</span> <span class="pre">4</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">:</span> <span class="pre">12</span> <span class="pre">5</span> <span class="pre">11</span> <span class="pre">5</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">:</span> <span class="pre">13</span> <span class="pre">6</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">t</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">f</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;&lt;E&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{He,he.N:s:p}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;0.0.0-0.1.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{He,he.PRO+Nomin:3ms}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;0.0.0-0.1.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{is,be.V:P3s}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;2.0.0-2.1.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{is,i.N:p}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;2.0.0-2.1.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{drinking,drinking.A}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;4.0.0-4.7.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{drinking,drinking.N:s}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;4.0.0-4.7.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{drinking,drink.V:G}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;4.0.0-4.7.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{orange,orange.A}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;6.0.0-6.5.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{orange,orange.N:s}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;6.0.0-6.5.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{orange</span> <span class="pre">juice,orange</span> <span class="pre">juice.N+XN+z1:s}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;6.0.0-8.4.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{juice,juice.N+Conc:s}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;8.0.0-8.4.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{juice,juice.V:W:P1s:P2s:P1p:P2p:P3p}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;8.0.0-8.4.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;9.0.0-9.0.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">f</span></code>¶</p>
+</div>
+<div class="section" id="fichier-text-tind">
+<h3>Fichier text.tind<a class="headerlink" href="#fichier-text-tind" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le fichier <code class="docutils literal"><span class="pre">text.tind</span></code> utilisé pour sauter à l’octet d’offset correct
+dans le fichier <code class="docutils literal"><span class="pre">text.tfst</span></code> quand on veut charger une phrase donnée.
+C’est un fichier binaire qui contient <span class="math">\(4
+\times N\)</span> octets,où <span class="math">\(N\)</span> est le nombre de phrases. Il donne
+l’offset de départ de chaque phrase sous la forme d’une suite de 4
+octets en little-endian.</p>
+</div>
+<div class="section" id="fichier-cursentence-grf">
+<h3>Fichier cursentence.grf<a class="headerlink" href="#fichier-cursentence-grf" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le fichier <code class="docutils literal"><span class="pre">cursentence.grf</span></code> est généré par Unitex lors de l’affichage
+d’un automate de phrase. Le programme <code class="docutils literal"><span class="pre">Fst2Grf</span></code> construit un fichier
+<code class="docutils literal"><span class="pre">.grf</span></code> représentant l’automate d’une phrase à partir du fichier
+<code class="docutils literal"><span class="pre">text.fst2</span></code>.</p>
+<p>NOTE: les sorties des boîtes sont utilisées pour coder les offsets, tels
+que définis dans <code class="docutils literal"><span class="pre">.tfst</span></code>. Les offsets sont séparés par des espaces.
+Voici, par exemple, quelques lignes qui representent la première phrase
+d’<em>Ivanhoe</em>:</p>
+<p><a href="#id49"><span class="problematic" id="id50">``</span></a>&#8220;Ivanhoe/0 0 0 0 6 0&#8221; 100 200 2 3 4 <a href="#id51"><span class="problematic" id="id52">``</span></a>¶</p>
+<p><a href="#id53"><span class="problematic" id="id54">``</span></a>&#8220;{by,by.PART}/2 0 0 2 1 0&#8221; 220 150 2 5 6 <a href="#id55"><span class="problematic" id="id56">``</span></a>¶</p>
+<p><a href="#id57"><span class="problematic" id="id58">``</span></a>&#8220;{by,by.PREP}/2 0 0 2 1 0&#8221; 220 50 2 5 6 <a href="#id59"><span class="problematic" id="id60">``</span></a>¶</p>
+<p><code class="docutils literal"><span class="pre">&quot;{Sir,sir.N+Hum:s}/4</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">4</span> <span class="pre">2</span> <span class="pre">0&quot;</span> <span class="pre">310</span> <span class="pre">200</span> <span class="pre">1</span> <span class="pre">7</span></code>¶</p>
+</div>
+<div class="section" id="fichier-sentencen-grf">
+<h3>Fichier sentenceN.grf<a class="headerlink" href="#fichier-sentencen-grf" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Lorsque l’utilisateur modifie l’automate d’une phrase, cet automate est
+sauvegardé sous le nom <code class="docutils literal"><span class="pre">sentenceN.grf</span></code>, où <code class="docutils literal"><span class="pre">N</span></code> représente le numéro
+de la phrase.</p>
+<p>un tel graphe contient des offsets dans les sorties des boîtes du graphe
+(voir note section [section-cursentence_grf]).</p>
+</div>
+<div class="section" id="fichier-cursentence-txt">
+<h3>Fichier cursentence.txt<a class="headerlink" href="#fichier-cursentence-txt" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Lors de l’extraction de l’automate phrase, le texte de la phrase est
+enregistré dans le fichier appelé <code class="docutils literal"><span class="pre">cursentence.txt</span></code>. Ce fichier est
+utilisé par Unitex pour afficher le texte de la phrase sous l’automate.
+Ce fichier contient le texte de la phrase, suivie d’un saut de ligne.</p>
+</div>
+<div class="section" id="the-cursentence-tok-file">
+<h3>The cursentence.tok file<a class="headerlink" href="#the-cursentence-tok-file" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Lors de l’extraction de l’automate phrase, les numéros de tokens qui
+composent la phrase sont enregistrés dans un fichier nommé
+<code class="docutils literal"><span class="pre">cursentence.tok</span></code>. Ce fichier contient une ligne par token, chaque
+ligne étant composée de 2 entiers <code class="docutils literal"><span class="pre">x</span> <span class="pre">y</span></code>: <code class="docutils literal"><span class="pre">x</span></code> est le numéro de token,
+<code class="docutils literal"><span class="pre">y</span></code> est sa longueur en caractères.</p>
+<p>Voici le contenu de ce fichier pour la première phrase d’<em>Ivanhoe</em>:</p>
+<p><code class="docutils literal"><span class="pre">0</span> <span class="pre">7</span></code>¶``         <a href="#id61"><span class="problematic" id="id62">``</span></a><em>Ivanhoe</em></p>
+<p><code class="docutils literal"><span class="pre">1</span> <span class="pre">1</span></code>¶``         <code class="docutils literal"><span class="pre">\</span> <span class="pre">``‘&nbsp;</span></code></p>
+<p><code class="docutils literal"><span class="pre">2</span> <span class="pre">2</span></code>¶``         <a href="#id63"><span class="problematic" id="id64">``</span></a><em>by</em></p>
+<p><code class="docutils literal"><span class="pre">1</span> <span class="pre">1</span></code>¶``         <code class="docutils literal"><span class="pre">\</span> <span class="pre">``‘&nbsp;</span></code></p>
+<p><code class="docutils literal"><span class="pre">3</span> <span class="pre">3</span></code>¶``         <a href="#id65"><span class="problematic" id="id66">``</span></a><em>Sir</em></p>
+<p><code class="docutils literal"><span class="pre">1</span> <span class="pre">1</span></code>¶``         <code class="docutils literal"><span class="pre">\</span> <span class="pre">``‘&nbsp;</span></code></p>
+<p><code class="docutils literal"><span class="pre">4</span> <span class="pre">6</span></code>¶``         <a href="#id67"><span class="problematic" id="id68">``</span></a><em>Walter</em></p>
+<p><code class="docutils literal"><span class="pre">1</span> <span class="pre">1</span></code>¶``         <code class="docutils literal"><span class="pre">\</span> <span class="pre">``‘&nbsp;</span></code></p>
+<p><code class="docutils literal"><span class="pre">5</span> <span class="pre">5</span></code>¶``         <a href="#id69"><span class="problematic" id="id70">``</span></a><em>Scott</em></p>
+<p><code class="docutils literal"><span class="pre">1</span> <span class="pre">1</span></code>¶``         <code class="docutils literal"><span class="pre">\</span> <span class="pre">``‘&nbsp;</span></code></p>
+</div>
+<div class="section" id="fichiers-tfst-tags-by-freq-txt-et-tfst-tags-by-alph-txt">
+<h3>Fichiers tfst_tags_by_freq.txt et tfst_tags_by_alph.txt<a class="headerlink" href="#fichiers-tfst-tags-by-freq-txt-et-tfst-tags-by-alph-txt" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Ces fichiers contiennent tous les tags qui apparaissent dans l’automate
+du texte classés par fréquence et par ordre alphabétique.</p>
+</div>
+</div>
+<div class="section" id="concordances">
+<h2>Concordances<a class="headerlink" href="#concordances" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="fichier-concord-ind">
+<h3>Fichier concord.ind<a class="headerlink" href="#fichier-concord-ind" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le fichier <code class="docutils literal"><span class="pre">concord.ind</span></code> est l’index des occurrences trouvées par les
+programmes <code class="docutils literal"><span class="pre">Locate</span></code> ou <code class="docutils literal"><span class="pre">LocateTfst</span></code> lors de l’application d’une
+grammaire. C’est un fichier texte qui contient les positions de début et
+de fin de chaque occurrence, éventuellement accompagnées d’une chaîne de
+caractères si la concordance a été obtenue en prenant en compte les
+éventuelles transductions de la grammaire. Voici un exemple de fichier :</p>
+<p><code class="docutils literal"><span class="pre">#M</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">59.0.0</span> <span class="pre">63.3.0</span> <span class="pre">the[ADJ=</span> <span class="pre">greater]</span> <span class="pre">part</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">67.0.0</span> <span class="pre">71.4.0</span> <span class="pre">the</span> <span class="pre">beautiful</span> <span class="pre">hills</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">87.0.0</span> <span class="pre">91.3.0</span> <span class="pre">the</span> <span class="pre">pleasant</span> <span class="pre">town</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">123.0.0</span> <span class="pre">127.4.0</span> <span class="pre">the</span> <span class="pre">noble</span> <span class="pre">seats</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">157.0.0</span> <span class="pre">161.5.0</span> <span class="pre">the</span> <span class="pre">fabulous</span> <span class="pre">Dragon</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">189.0.0</span> <span class="pre">193.3.0</span> <span class="pre">the</span> <span class="pre">Civil</span> <span class="pre">Wars</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">455.0.0</span> <span class="pre">459.11.0</span> <span class="pre">the</span> <span class="pre">feeble</span> <span class="pre">interference</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">463.0.0</span> <span class="pre">467.6.0</span> <span class="pre">the</span> <span class="pre">English</span> <span class="pre">Council</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">566.0.0</span> <span class="pre">570.10.0</span> <span class="pre">the</span> <span class="pre">national</span> <span class="pre">convulsions</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">590.0.0</span> <span class="pre">594.5.0</span> <span class="pre">the</span> <span class="pre">inferior</span> <span class="pre">gentry</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">626.0.0</span> <span class="pre">630.11.0</span> <span class="pre">the</span> <span class="pre">English</span> <span class="pre">constitution</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">696.0.0</span> <span class="pre">700.4.0</span> <span class="pre">the</span> <span class="pre">petty</span> <span class="pre">kings</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">813.0.0</span> <span class="pre">817.5.0</span> <span class="pre">the</span> <span class="pre">certain</span> <span class="pre">hazard</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">896.0.0</span> <span class="pre">900.5.0</span> <span class="pre">the</span> <span class="pre">great</span> <span class="pre">Barons</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">938.0.0</span> <span class="pre">942.3.0</span> <span class="pre">the</span> <span class="pre">very</span> <span class="pre">edge</span></code>¶</p>
+<p>La première ligne indique dans quel mode de transduction la concordance
+a été calculée. Les trois valeurs possibles sont :</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">#I</span></code> : les transductions ont été ignorées;</li>
+<li><code class="docutils literal"><span class="pre">#M</span></code> : les transductions ont été insérées dans les séquences
+reconnues (mode MERGE);</li>
+<li><code class="docutils literal"><span class="pre">#R</span></code> : les transductions ont remplacé les séquences reconnues (mode
+REPLACE).</li>
+</ul>
+<p>Chaque occurrence est décrite par une ligne. Les lignes commencent par
+les positions de début et de fin de l’occurrence. Ces positions
+correspondent aux offsets définis dans le fichier tag <code class="docutils literal"><span class="pre">.tfst</span></code> (voir
+[section-tfst-format]).</p>
+<p>Si le fichier comporte la ligne d’en-tête <code class="docutils literal"><span class="pre">#I</span></code>, la position de fin de
+chaque occurrence est immédiatement suivie d’un retour à la ligne. Dans
+le cas contraire, elle est suivie d’un espace et d’une chaîne de
+caractères. En mode REPLACE, cette chaîne correspond à la transduction
+produite pour la séquence reconnue. En mode MERGE, elle représente la
+séquence reconnue dans laquelle ont été insérées les transductions. En
+mode MERGE ou REPLACE, c’est cette chaîne qui est affichée dans la
+concordance. Si les transductions ont été ignorées, le contenu de
+l’occurrence est extrait du fichier texte.</p>
+</div>
+<div class="section" id="fichier-concord-txt">
+<h3>Fichier concord.txt<a class="headerlink" href="#fichier-concord-txt" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le fichier <code class="docutils literal"><span class="pre">concord.txt</span></code> est un fichier texte représentant une
+concordance. Chaque occurrence est codée par une ligne composée de 3
+chaînes de caractères séparées par le caractère de tabulation et qui
+représentent le contexte gauche, l’occurrence (éventuellement modifiée
+par des transductions) et le contexte droit.</p>
+</div>
+<div class="section" id="fichier-concord-html">
+<h3>Fichier concord.html<a class="headerlink" href="#fichier-concord-html" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le fichier <code class="docutils literal"><span class="pre">concord.html</span></code> est un fichier <code class="docutils literal"><span class="pre">HTML</span></code> qui représente une
+concordance. Ce fichier est codé en UTF-8.</p>
+<p>Le titre de la page est le nombre d’occurrences qu’elle décrit. Les
+lignes de la concordance sont codées par des lignes où les occurrences
+sont considérées comme des liens hypertextes. La référence associée à
+chacun de ces liens est de la forme&nbsp;:</p>
+<p><code class="docutils literal"><span class="pre">&lt;a</span> <span class="pre">href=&quot;X</span> <span class="pre">Y</span> <span class="pre">Z&quot;&gt;</span></code></p>
+<p><code class="docutils literal"><span class="pre">X</span></code> et <code class="docutils literal"><span class="pre">Y</span></code> représentent les positions de début et de fin de
+l’occurrence en caractères dans le fichier <code class="docutils literal"><span class="pre">name_of_text.snt</span></code>. <code class="docutils literal"><span class="pre">Z</span></code>
+représente le numéro de la phrase dans laquelle apparaît cette
+occurrence.</p>
+<p>Tous les espaces sont codés comme des espaces insécables (<code class="docutils literal"><span class="pre">&amp;nbsp;</span></code> in
+HTML), ce qui permet de conserver l’alignement des occurrences, même si
+l’une d’elles, se trouvant en début de fichier, a un contexte gauche
+complété avec des espaces.</p>
+<p>NOTE : dans le cas d’une concordance construite avec le paramètre
+glossanet, le fichier HTML obtenu a la même structure, sauf en ce qui
+concerne les liens. Dans ces concordances, les occurrences sont des
+liens réels renvoyant vers le serveur web de l’application GlossaNet.
+Pour plus d’information sur GlossaNet, consulter les liens sur le site
+web d’Unitex.(<a class="reference external" href="http://www-igm.univ-mlv.fr/">http://www-igm.univ-mlv.fr/</a>&nbsp;unitex).</p>
+<p>Voici un exemple de fichier:</p>
+<p><code class="docutils literal"><span class="pre">&lt;html</span> <span class="pre">lang=en&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;head&gt;</span></code>¶</p>
+<p><a href="#id71"><span class="problematic" id="id72">``</span></a><a href="#id73"><span class="problematic" id="id74">``</span></a>¶</p>
+<p>``   &lt;meta http-equiv=&#8221;Content-Type&#8221; content=&#8221;text/html;``</p>
+<p>``         charset=UTF-8&#8221;&gt;``¶</p>
+<p>``   &lt;title&gt;6 matches&lt;/title&gt;``¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;/head&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;body&gt;</span></code>¶</p>
+<p><a href="#id75"><span class="problematic" id="id76">``</span></a>&lt;table border=&#8221;0&#8221; cellpadding=&#8221;0&#8221; width=&#8221;100%&#8221; ``</p>
+<p>``       style=&#8221;font-family: &#8216;Arial Unicode MS&#8217;; font-size: 12&#8221;&gt;``¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;font</span> <span class="pre">face=&quot;Courier</span> <span class="pre">new&quot;</span> <span class="pre">size=3&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">on,</span> <span class="pre">there</span> <span class="pre">&lt;a</span> <span class="pre">href=&quot;116</span> <span class="pre">124</span> <span class="pre">2&quot;&gt;extended&lt;/a&gt;&amp;nbsp;i&amp;nbsp;&lt;br&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&amp;nbsp;extended</span> <span class="pre">&lt;a</span> <span class="pre">href=&quot;125</span> <span class="pre">127</span> <span class="pre">2&quot;&gt;in&lt;/a&gt;&amp;nbsp;ancient&amp;nbsp;&lt;br&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&amp;nbsp;Scott</span> <span class="pre">{S}&lt;a</span> <span class="pre">href=&quot;32</span> <span class="pre">34</span> <span class="pre">2&quot;&gt;IN&lt;/a&gt;&amp;nbsp;THAT</span> <span class="pre">PL&amp;nbsp;&lt;br&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">STRICT</span> <span class="pre">of</span> <span class="pre">&lt;a</span> <span class="pre">href=&quot;61</span> <span class="pre">66</span> <span class="pre">2&quot;&gt;merry&lt;/a&gt;&amp;nbsp;Engl&amp;nbsp;&lt;br&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">S}IN</span> <span class="pre">THAT</span> <span class="pre">&lt;a</span> <span class="pre">href=&quot;40</span> <span class="pre">48</span> <span class="pre">2&quot;&gt;PLEASANT&lt;/a&gt;&amp;nbsp;D&amp;nbsp;&lt;br&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&amp;nbsp;which</span> <span class="pre">is</span> <span class="pre">&lt;a</span> <span class="pre">href=&quot;84</span> <span class="pre">91</span> <span class="pre">2&quot;&gt;watered&lt;/a&gt;&amp;nbsp;by&amp;nbsp;&lt;br&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;/font&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;/td&gt;&lt;/table&gt;&lt;/body&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;/html&gt;</span></code>¶</p>
+<p>La figure [fig-example-concordance-2] montre la page correspondant au
+fichier ci-dessus.</p>
+<div class="figure" id="id88">
+<a class="reference internal image-reference" href="resources/img/fig10-2.png"><img alt="Exemple de concordance [fig-example-concordance-2]" src="resources/img/fig10-2.png" style="width: 5.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple de concordance [fig-example-concordance-2]</span></p>
+</div>
+</div>
+<div class="section" id="fichier-diff-html">
+<h3>Fichier diff.html<a class="headerlink" href="#fichier-diff-html" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le fichier <code class="docutils literal"><span class="pre">diff.html</span></code> est une page <code class="docutils literal"><span class="pre">HTML</span></code> qui montre les
+différences entre deux concordances. Ce fichier est encodé en UTF-8.
+Voici un exemple de fichier (des retours à la ligne ont été introduits
+pour la mise en page) :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">html</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">head</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">meta</span> <span class="n">http</span><span class="o">-</span><span class="n">equiv</span><span class="o">=</span><span class="s2">&quot;Content-Type&quot;</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;text/html;</span>
+<span class="n">charset</span><span class="o">=</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span><span class="s2">&quot;&gt;</span>
+<span class="o">&lt;</span><span class="n">style</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text/css&quot;</span><span class="o">&gt;</span>
+<span class="n">a</span><span class="o">.</span><span class="n">blue</span> <span class="p">{</span><span class="n">color</span><span class="p">:</span><span class="n">blue</span><span class="p">;</span> <span class="n">text</span><span class="o">-</span><span class="n">decoration</span><span class="p">:</span><span class="n">underline</span><span class="p">;}</span>
+<span class="n">a</span><span class="o">.</span><span class="n">red</span> <span class="p">{</span><span class="n">color</span><span class="p">:</span><span class="n">red</span><span class="p">;</span> <span class="n">text</span><span class="o">-</span><span class="n">decoration</span><span class="p">:</span><span class="n">underline</span><span class="p">;}</span>
+<span class="n">a</span><span class="o">.</span><span class="n">green</span> <span class="p">{</span><span class="n">color</span><span class="p">:</span><span class="n">green</span><span class="p">;</span> <span class="n">text</span><span class="o">-</span><span class="n">decoration</span><span class="p">:</span><span class="n">underline</span><span class="p">;}</span>
+<span class="o">&lt;/</span><span class="n">style</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">head</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">h4</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">font</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="o">&gt;</span><span class="n">Blue</span><span class="p">:</span><span class="o">&lt;/</span><span class="n">font</span><span class="o">&gt;</span> <span class="n">identical</span> <span class="n">sequences</span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">font</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="o">&gt;</span><span class="n">Red</span><span class="p">:</span><span class="o">&lt;/</span><span class="n">font</span><span class="o">&gt;</span> <span class="n">similar</span> <span class="n">but</span> <span class="n">different</span> <span class="n">sequences</span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">font</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="o">&gt;</span><span class="n">Green</span><span class="p">:</span><span class="o">&lt;/</span><span class="n">font</span><span class="o">&gt;</span> <span class="n">sequences</span> <span class="n">that</span> <span class="n">occur</span> <span class="ow">in</span> <span class="n">only</span>
+<span class="n">one</span> <span class="n">of</span> <span class="n">the</span> <span class="n">two</span> <span class="n">concordances</span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">table</span> <span class="n">border</span><span class="o">=</span><span class="s2">&quot;1&quot;</span> <span class="n">cellpadding</span><span class="o">=</span><span class="s2">&quot;0&quot;</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;font-family: Courier new;</span>
+<span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="p">:</span> <span class="mi">12</span><span class="s2">&quot;&gt;</span>
+<span class="o">&lt;</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">td</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;450&quot;</span><span class="o">&gt;&lt;</span><span class="n">font</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="o">&gt;</span><span class="n">ed</span> <span class="ow">in</span> <span class="n">ancient</span> <span class="n">times</span>
+<span class="o">&lt;</span><span class="n">u</span><span class="o">&gt;</span><span class="n">a</span> <span class="n">large</span> <span class="n">forest</span><span class="o">&lt;/</span><span class="n">u</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">covering</span> <span class="n">the</span> <span class="n">greater</span> <span class="n">par</span><span class="o">&lt;/</span><span class="n">font</span><span class="o">&gt;&lt;/</span><span class="n">td</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">td</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;450&quot;</span><span class="o">&gt;&lt;</span><span class="n">font</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="o">&gt;</span><span class="n">ed</span> <span class="ow">in</span> <span class="n">ancient</span> <span class="n">times</span>
+<span class="o">&lt;</span><span class="n">u</span><span class="o">&gt;</span><span class="n">a</span> <span class="n">largeforest</span><span class="o">&lt;/</span><span class="n">u</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">covering</span> <span class="n">the</span> <span class="n">greater</span> <span class="n">par</span><span class="o">&lt;/</span><span class="n">font</span><span class="o">&gt;&lt;/</span><span class="n">td</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">tr</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">td</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;450&quot;</span><span class="o">&gt;&lt;</span><span class="n">font</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="o">&gt;</span><span class="n">ge</span> <span class="n">forest</span><span class="p">,</span> <span class="n">covering</span>
+<span class="o">&lt;</span><span class="n">u</span><span class="o">&gt;</span><span class="n">the</span> <span class="n">greater</span> <span class="n">part</span><span class="o">&lt;/</span><span class="n">u</span><span class="o">&gt;&amp;</span><span class="n">nbsp</span><span class="p">;</span><span class="n">of</span> <span class="n">the</span> <span class="n">beautiful</span> <span class="n">hills</span> <span class="o">&lt;/</span><span class="n">font</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">td</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">td</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;450&quot;</span><span class="o">&gt;&lt;</span><span class="n">font</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="o">&gt;&lt;/</span><span class="n">font</span><span class="o">&gt;&lt;/</span><span class="n">td</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">tr</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">table</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">html</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="dictionnaires-du-texte">
+<h2>Dictionnaires du texte<a class="headerlink" href="#dictionnaires-du-texte" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Le programme <code class="docutils literal"><span class="pre">Dico</span></code> produit plusieurs fichiers qui représentent les
+dictionnaires.</p>
+<div class="section" id="dlf-et-dlc">
+<h3>dlf et dlc<a class="headerlink" href="#dlf-et-dlc" title="Lien permanent vers ce titre">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">dlf</span></code> et <code class="docutils literal"><span class="pre">dlc</span></code> sont des dictionnaires de mots simples et composés au
+format DELAF format (voir section [section-DELAF-format]).</p>
+</div>
+<div class="section" id="err">
+<h3>err<a class="headerlink" href="#err" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Ce fichier contient les mots inconnus, un par ligne.</p>
+</div>
+<div class="section" id="tags-err">
+<h3>tags_err<a class="headerlink" href="#tags-err" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Ce fichier contient les mots inconnus, un par ligne. La différence avec
+le fichier <code class="docutils literal"><span class="pre">err</span></code> est que dans celui-ci les mots simples reconnus dans
+le fichier <code class="docutils literal"><span class="pre">tags.ind</span></code> n’apparaissent pas.</p>
+</div>
+<div class="section" id="tags-ind">
+<h3>tags.ind<a class="headerlink" href="#tags-ind" title="Lien permanent vers ce titre">¶</a></h3>
+<p>[section-tags-ind] Ce fichier a le même format que <code class="docutils literal"><span class="pre">concord.ind</span></code> il
+s’obtient en mode MERGE ou REPLACE mais son en-tête est <code class="docutils literal"><span class="pre">#T</span></code>.
+Remarquons que les sorties ne commence pas par un slash.</p>
+</div>
+</div>
+<div class="section" id="dictionnaires">
+<h2>Dictionnaires<a class="headerlink" href="#dictionnaires" title="Lien permanent vers ce titre">¶</a></h2>
+<p>La compression des dictionnaires DELAF par le programme <code class="docutils literal"><span class="pre">Compress</span></code>
+produit 2 fichiers : un fichier <code class="docutils literal"><span class="pre">.bin</span></code> qui représente l’automate
+minimal des formes fléchies du dictionnaire, et un fichier <code class="docutils literal"><span class="pre">.inf</span></code> qui
+contient les formes comprimées permettant de reconstruire les lignes du
+dictionnaire à partir des formes fléchies. Cette section décrit le
+format de ces deux types de fichiers, ainsi que le format du fichier
+<code class="docutils literal"><span class="pre">CHECK_DIC.TXT</span></code>, qui contient le résultat de la vérification d’un
+dictionnaire.</p>
+<div class="section" id="fichier-bin">
+<h3>Fichier .bin<a class="headerlink" href="#fichier-bin" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Un fichier <code class="docutils literal"><span class="pre">.bin</span></code> est un fichier binaire représentant un automate. Les
+4 premiers octets du fichier représentent un entier indiquant la taille
+du fichier en octets. Les états de l’automate sont ensuite codés de la
+manière suivante :</p>
+<ul>
+<li><p class="first">les 2 premiers octets indiquent si l’état est terminal ainsi que le
+nombre de transitions qui en sortent. Le bit le plus fort vaut 0 si
+l’état est terminal et 1 sinon. Les 15 autres bits codent le nombre
+de transitions.</p>
+<p>Exemple : un état non terminal avec 17 transitions est codé par la
+séquence hexadécimale 8011</p>
+</li>
+<li><p class="first">si l’état est terminal, les 3 octets suivants codent l’indice dans le
+fichier <code class="docutils literal"><span class="pre">.inf</span></code> de la forme comprimée à utiliser pour reconstruire
+les lignes de dictionnaires pour cette forme fléchie.</p>
+<p>Exemple : si l’état renvoie à la forme comprimée d’indice 25133, la
+séquence hexadécimale correspondante est <code class="docutils literal"><span class="pre">00622D</span></code></p>
+</li>
+<li><p class="first">chaque transition sortante est ensuite codée sur 5 octets. Les 2
+premiers octets codent le caractère étiquetant la transition, et les
+3 suivants codent la position en octets dans le fichier <code class="docutils literal"><span class="pre">.bin</span></code> de
+l’état d’arrivée. Les transitions d’un état sont codées les unes à la
+suite des autres.</p>
+<p>Exemple : une transition étiquetée par le caractère A pointant vers
+l’état dont la description débute au <span class="math">\(50106\)</span>ème , octet sera
+représenté par la séquence hexadécimale <code class="docutils literal"><span class="pre">004100C3BA</span></code>.</p>
+</li>
+</ul>
+<p>Par convention, le premier état de l’automate est l’état initial.</p>
+</div>
+<div class="section" id="fichier-inf">
+<h3>Fichier.inf<a class="headerlink" href="#fichier-inf" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Un fichier <code class="docutils literal"><span class="pre">.inf</span></code> est un fichier texte décrivant les formes comprimées
+associées à un fichier <code class="docutils literal"><span class="pre">.bin</span></code>. Voici un exemple de fichier <code class="docutils literal"><span class="pre">.inf</span></code>
+file:</p>
+<p><code class="docutils literal"><span class="pre">0000000006</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">_10\0\0\7.N</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.PREP</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">_3.PREP</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.PREP,_3.PREP</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">1-1.N+Hum:mp</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">3er</span> <span class="pre">1.N+AN+Hum:fs</span></code>¶</p>
+<p>La première ligne du fichier indique le nombre de formes comprimées
+qu’il contient. Chaque ligne peut contenir une ou plusieurs formes
+comprimées. S’il y a plusieurs formes, celles-ci doivent être séparées
+par des virgules. Chaque forme comprimée est formée d’une séquence
+permettant de retrouver une forme canonique à partir d’une forme
+fléchie, suivie par la séquence de codes grammaticaux, sémantiques et
+flexionnels associés à l’entrée.</p>
+<p>Le mode de compression de la forme canonique varie en fonction de la
+forme fléchie. Si les deux formes sont exactement identiques, la forme
+comprimée se résume aux informations grammaticales, sémantiques et
+flexionnelles, comme c’est le cas dans la ligne suivante :</p>
+<p><code class="docutils literal"><span class="pre">.N+Hum:ms</span></code></p>
+<p>Si les formes sont différentes, le programme de compression découpe les
+deux formes en unités. Ces unités peuvent être soit un espace, soit un
+tiret, soit une séquence de caractères ne contenant ni espace ni tiret.
+Ce mode de découpage permet de prendre efficacement en compte les
+flexions des mots composés.</p>
+<p>Si les formes fléchies et canonique ne comportent pas le même nombre
+d’unités, le programme code la forme canonique par le nombre de
+caractères à retrancher de la forme fléchie, suivi des caractères à
+ajouter. Ainsi, la première ligne du fichier ci-dessus correspond à la
+ligne de dictionnaire :</p>
+<p><code class="docutils literal"><span class="pre">James</span> <span class="pre">Bond,007.N</span></code></p>
+<p>Comme la séquence <code class="docutils literal"><span class="pre">James</span> <span class="pre">Bond</span></code> contient trois unités et <code class="docutils literal"><span class="pre">007</span></code>
+seulement une, la forme canonique est codée par <code class="docutils literal"><span class="pre">_10\0\0\7</span></code>. Le
+caractère <code class="docutils literal"><span class="pre">_</span></code> indique que les deux formes n’ont pas le même nombre
+d’unités. Le nombre qui suit (ici 10) indique le nombre de caractères à
+retrancher. La séquence <code class="docutils literal"><span class="pre">\0\0\7</span></code> qui suit ce nombre indique que l’on
+doit ensuite ajouter la séquence <code class="docutils literal"><span class="pre">007</span></code>. Les chiffres sont précédés du
+caractère <code class="docutils literal"><span class="pre">\</span></code> pour ne pas être confondus avec le nombre de caractères
+à retrancher.</p>
+<p>Lorsque les deux formes ont le même nombre d’unités, les unités sont
+comprimées deux à deux. Si les deux unités sont composées d’un espace ou
+d’un tiret, la forme comprimée de l’unité est l’unité elle-même, comme
+c’est le cas dans la ligne suivante :</p>
+<p><code class="docutils literal"><span class="pre">0-1.N:p</span></code></p>
+<p>qui est la sortie pour <code class="docutils literal"><span class="pre">battle-axes,battle-axe.N:p</span></code></p>
+<p>Cela permet de conserver une certaine visibilité dans le fichier
+<code class="docutils literal"><span class="pre">.inf</span></code> lorsque le dictionnaire contient des mots composés.</p>
+<p>Lorsque au moins une des unités n’est ni un espace ni un tiret, la forme
+comprimée est composée du nombre de caractères à retrancher suivi de la
+séquence de caractères à ajouter. Ainsi, la ligne de dictionnaire :</p>
+<p><code class="docutils literal"><span class="pre">première</span> <span class="pre">partie,premier</span> <span class="pre">parti.N+AN+Hum:fs</span></code></p>
+<p>est codée par la ligne :</p>
+<p><code class="docutils literal"><span class="pre">3er</span> <span class="pre">1.N+AN+Hum:fs</span></code></p>
+<p>Le code <code class="docutils literal"><span class="pre">3er</span></code> indique que l’on doit retrancher 3 caractères à la
+séquence <code class="docutils literal"><span class="pre">première</span></code> et lui ajouter les caractères <code class="docutils literal"><span class="pre">er</span></code> pour obtenir
+<code class="docutils literal"><span class="pre">premier</span></code>. Le <code class="docutils literal"><span class="pre">1</span></code> indique que l’on doit simplement retirer un
+caractère à <code class="docutils literal"><span class="pre">partie</span></code> pour obtenir la séquence <code class="docutils literal"><span class="pre">parti</span></code>. Le nombre
+<code class="docutils literal"><span class="pre">0</span></code> est utilisé lorsqu’on veut indiquer que l’on ne doit supprimer
+aucun caractère.</p>
+</div>
+<div class="section" id="fichier-information-sur-un-dictionnaire">
+<h3>Fichier information sur un dictionnaire<a class="headerlink" href="#fichier-information-sur-un-dictionnaire" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Dans le cadre “Apply lexical resources”, il est possible d’obtenir
+quelques informations sur un dictionnaire par click droit. Ces
+informations sont associées aux dictionnaires <code class="docutils literal"><span class="pre">biniou.bin</span></code> ou
+<code class="docutils literal"><span class="pre">biniou.fst2</span></code> à l’aide d’un texte brut nommé <code class="docutils literal"><span class="pre">biniou.txt</span></code>, situé
+dans le même répertoire.</p>
+</div>
+<div class="section" id="fichier-check-dic-txt">
+<h3>Fichier CHECK_DIC.TXT<a class="headerlink" href="#fichier-check-dic-txt" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Ce fichier est produit par le programme de vérification de dictionnaire
+<code class="docutils literal"><span class="pre">CheckDic</span></code>. Il s’agit d’un fichier texte qui donne des informations
+sur le dictionnaire analysé, et se décom- pose en quatre parties.</p>
+<p>La première partie donne la liste, éventuellement vide, de toutes les
+erreurs de syntaxe trouvées dans le dictionnaire : absence de la forme
+fléchie ou de la forme canonique, absence de code grammatical, ligne
+vide, etc. Chaque erreur est décrite par le numéro de la ligne
+concernée, un message décrivant la nature de l’erreur, ainsi que le
+contenu de la ligne. Voici un exemple de message :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Line</span> <span class="mi">12451</span><span class="p">:</span> <span class="n">unexpected</span> <span class="n">end</span> <span class="n">of</span> <span class="n">line</span>
+<span class="n">garden</span><span class="p">,</span><span class="n">N</span><span class="p">:</span><span class="n">s</span>
+</pre></div>
+</div>
+<p>Les deuxième et troisième parties donnent respectivement les listes de
+codes grammaticaux et/ou sémantiques et flexionnels. Afin de prévenir
+des erreurs de codage, le programme signale les codes qui contiennent
+des espaces, des tabulations ou des caractères non ASCII. Ainsi, si un
+dictionnaire grec contient le code <code class="docutils literal"><span class="pre">ADV</span></code> où le caractère <code class="docutils literal"><span class="pre">A</span></code> est le
+<code class="docutils literal"><span class="pre">A</span></code> grec au lieu du <code class="docutils literal"><span class="pre">A</span></code> latin, le programme signalera
+l’avertissement suivant :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ADV</span> <span class="n">warning</span><span class="p">:</span> <span class="mi">1</span> <span class="n">suspect</span> <span class="n">char</span> <span class="p">(</span><span class="mi">1</span> <span class="n">non</span> <span class="n">ASCII</span> <span class="n">char</span><span class="p">):</span> <span class="p">(</span><span class="mi">0391</span> <span class="n">D</span> <span class="n">V</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Les caractères non ASCII sont indiqués par leur numéro de caractère en
+hexadécimal.Dans l’exemple ci-dessus, le code <code class="docutils literal"><span class="pre">0391</span></code> représente le
+<code class="docutils literal"><span class="pre">A</span></code> grec. Les espaces sont indiqués par la séquence <code class="docutils literal"><span class="pre">SPACE</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Km</span> <span class="n">s</span> <span class="n">warning</span><span class="p">:</span> <span class="mi">1</span> <span class="n">suspect</span> <span class="n">char</span> <span class="p">(</span><span class="mi">1</span> <span class="n">space</span><span class="p">):</span> <span class="p">(</span><span class="n">K</span> <span class="n">m</span> <span class="n">SPACE</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Lorsqu’on vérifie le dictionnaire suivant :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>1,2 et 3!,.INTJ
+abracadabra,INTJ
+supercalifragilisticexpialidocious,.INTJ
+damned,. INTJ
+Paul,.N+Hum+Hum
+eat,.V:W:P1s:Ps:P1p:P2p:P3p
+</pre></div>
+</div>
+<p>on obtient le fichier <code class="docutils literal"><span class="pre">CHECK_DIC.TXT</span></code> suivant :</p>
+<p><code class="docutils literal"><span class="pre">Line</span> <span class="pre">1:</span> <span class="pre">unprotected</span> <span class="pre">comma</span> <span class="pre">in</span> <span class="pre">lemma</span></code>¶</p>
+<p><a href="#id77"><span class="problematic" id="id78">``</span></a>1,2 et 3!,.INTJ <a href="#id79"><span class="problematic" id="id80">``</span></a>¶</p>
+<p><code class="docutils literal"><span class="pre">Line</span> <span class="pre">2:</span> <span class="pre">unexpected</span> <span class="pre">end</span> <span class="pre">of</span> <span class="pre">line</span></code>¶</p>
+<p><a href="#id81"><span class="problematic" id="id82">``</span></a>abracadabra,INTJ <a href="#id83"><span class="problematic" id="id84">``</span></a>¶</p>
+<p><code class="docutils literal"><span class="pre">Line</span> <span class="pre">5:</span> <span class="pre">duplicate</span> <span class="pre">semantic</span> <span class="pre">code</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Paul,.N+Hum+Hum</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Line</span> <span class="pre">6:</span> <span class="pre">an</span> <span class="pre">inflectional</span> <span class="pre">code</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">subset</span> <span class="pre">of</span> <span class="pre">another</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">eat,.V:W:P1s:Ps:P1p:P2p:P3p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-----------------------------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-------------</span>&nbsp; <span class="pre">Stats</span>&nbsp; <span class="pre">-------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-----------------------------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">File:</span> <span class="pre">D:\My</span> <span class="pre">Unitex\English\Dela\axe.dic</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Type:</span> <span class="pre">DELAF</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">6</span> <span class="pre">lines</span> <span class="pre">read</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">2</span> <span class="pre">simple</span> <span class="pre">entries</span> <span class="pre">for</span> <span class="pre">2</span> <span class="pre">distinct</span> <span class="pre">lemmas</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">0</span> <span class="pre">compound</span> <span class="pre">entry</span> <span class="pre">for</span> <span class="pre">0</span> <span class="pre">distinct</span> <span class="pre">lemma</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-----------------------------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">----</span>&nbsp; <span class="pre">All</span> <span class="pre">chars</span> <span class="pre">used</span> <span class="pre">in</span> <span class="pre">forms</span>&nbsp; <span class="pre">----</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-----------------------------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">a</span> <span class="pre">(0061)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">c</span> <span class="pre">(0063)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">d</span> <span class="pre">(0064)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">e</span> <span class="pre">(0065)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">f</span> <span class="pre">(0066)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">g</span> <span class="pre">(0067)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">i</span> <span class="pre">(0069)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">l</span> <span class="pre">(006C)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">m</span> <span class="pre">(006D)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">n</span> <span class="pre">(006E)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">o</span> <span class="pre">(006F)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">p</span> <span class="pre">(0070)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">r</span> <span class="pre">(0072)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">s</span> <span class="pre">(0073)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">t</span> <span class="pre">(0074)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">u</span> <span class="pre">(0075)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">x</span> <span class="pre">(0078)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-------------------------------------------------------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">----</span>&nbsp;&nbsp;&nbsp; <span class="pre">2</span> <span class="pre">grammatical/semantic</span> <span class="pre">codes</span> <span class="pre">used</span> <span class="pre">in</span> <span class="pre">dictionary</span>&nbsp; <span class="pre">----</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-------------------------------------------------------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">INTJ</span></code>¶</p>
+<p>`` INTJ warning: 1 suspect char (1 space): (SPACE I N T J)``¶</p>
+<p><code class="docutils literal"><span class="pre">-----------------------------------------------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">----</span>&nbsp;&nbsp;&nbsp; <span class="pre">0</span> <span class="pre">inflectional</span> <span class="pre">code</span> <span class="pre">used</span> <span class="pre">in</span> <span class="pre">dictionary</span>&nbsp; <span class="pre">-----</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-----------------------------------------------------</span></code>¶</p>
+<p>Remarquons que les codes flexionnels de <code class="docutils literal"><span class="pre">eat</span></code> ne sont pas signalés,
+puisque une erreur s’est produite dans cette ligne.</p>
+</div>
+</div>
+<div class="section" id="fichiers-elag">
+<h2>Fichiers ELAG<a class="headerlink" href="#fichiers-elag" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="fichier-tagset-de">
+<h3>Fichier tagset.de<a class="headerlink" href="#fichier-tagset-de" title="Lien permanent vers ce titre">¶</a></h3>
+<p>See section [section-elag-tagset], page .</p>
+</div>
+<div class="section" id="fichiers-lst">
+<h3>Fichiers .lst<a class="headerlink" href="#fichiers-lst" title="Lien permanent vers ce titre">¶</a></h3>
+<p>LES FICHIERS .LST NE SONT PAS CODÉS EN UNICODE.</p>
+<p>Un fichier <code class="docutils literal"><span class="pre">.lst</span></code> contient une liste de noms de fichiers <code class="docutils literal"><span class="pre">.grf</span></code>. Si
+le nom d’un fichier n’est pas absolu, il est relatif à l’emplacement du
+fichier <code class="docutils literal"><span class="pre">elag.lst</span></code>. Voici le fichier <code class="docutils literal"><span class="pre">elag.lst</span></code> fourni pour le
+français :</p>
+<p><code class="docutils literal"><span class="pre">PPVs/PpvIL.grf</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PPVs/PpvLE.grf</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PPVs/PpvLUI.grf</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PPVs/PpvPR.grf</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PPVs/PpvSeq.grf</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PPVs/SE.grf</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PPVs/postpos.grf</span></code>¶</p>
+</div>
+<div class="section" id="elg-files">
+<h3>.elg files<a class="headerlink" href="#elg-files" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les fichiers <code class="docutils literal"><span class="pre">.elg</span></code> contiennent des règles ELAG compilées. Ces
+fichiers sont au format <code class="docutils literal"><span class="pre">.fst2</span></code>.</p>
+</div>
+<div class="section" id="fichier-rul">
+<h3>Fichier .rul<a class="headerlink" href="#fichier-rul" title="Lien permanent vers ce titre">¶</a></h3>
+<p>LES FICHIERS .RUL NE SONT PAS CODÉS EN UNICODE.</p>
+<p>Un fichier <code class="docutils literal"><span class="pre">.rul</span></code> contient différents fichiers <code class="docutils literal"><span class="pre">.elg</span></code> qui compose un
+ensemble de règles ELAG. Un fichier <code class="docutils literal"><span class="pre">.rul</span></code> est constitué d’autant de
+parties qu’il y a de fichiers <code class="docutils literal"><span class="pre">.elg</span></code>. Chaque partie est composée de la
+liste des grammaires ELAG qui correspondent à un fichier <code class="docutils literal"><span class="pre">.elg</span></code> . Les
+noms de fichiers <code class="docutils literal"><span class="pre">.elg</span></code> sont entres angles. Les lignes commençant par
+une tabulation ont valeur de commentaire et sont ignorées par le
+programme <code class="docutils literal"><span class="pre">Elag</span></code>. Voici le fichier <code class="docutils literal"><span class="pre">elag.rul</span></code> fourni par défaut pour
+le français :</p>
+<p>``    PPVs/PpvIL.elg``¶</p>
+<p>``    PPVs/PpvLE.elg``¶</p>
+<p>``    PPVs/PpvLUI.elg``¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;elag.rul-0.elg&gt;</span></code>¶</p>
+<p>``    PPVs/PpvPR.elg``¶</p>
+<p>``    PPVs/PpvSeq.elg``¶</p>
+<p>``    PPVs/SE.elg``¶</p>
+<p>``    PPVs/postpos.elg``¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;elag.rul-1.elg&gt;</span></code>¶</p>
+</div>
+</div>
+<div class="section" id="fichier-taggeur">
+<h2>Fichier taggeur<a class="headerlink" href="#fichier-taggeur" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Cette section présente les fichiers produits et utilisés par les
+programmes TrainingTagger et Tagger.</p>
+<div class="section" id="fichier-corpus-txt">
+<h3>Fichier corpus.txt<a class="headerlink" href="#fichier-corpus-txt" title="Lien permanent vers ce titre">¶</a></h3>
+<p>[section-corpus-file] Ce fichier est utilisé par le programme
+TrainingTagger afin de calculer les statistiques pour le programme
+Tagger. Il contient des phrases où chaque mot est représenté sur une
+ligne séparée.</p>
+<p>Chaque ligne représentant un mot est constituée d’un mot, simple ou
+composé, suivie d’une barre oblique et de l’étiquette du mot.</p>
+<p>Cette étiquette est composée d’un code grammatical, parfois suivi
+d’une<code class="docutils literal"><span class="pre">'+'</span></code> et de codes syntaxiques ou sémantiques. Les codes
+flexionnels sont spécifiés après un <code class="docutils literal"><span class="pre">':'</span></code>. Si le mot est un composé,
+les mots simples qui y figurent doivent être séparés par un <code class="docutils literal"><span class="pre">'_'</span></code>.
+Voici un exemple d’un fichier corpus.txt:</p>
+<p><code class="docutils literal"><span class="pre">The/DET+Ddef:s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">GATT/N:s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">had/V:I3s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">formerly/ADV</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">a/DET+Dind:s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">political/A</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">assessment/N:s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">of/PREP</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">the/DET+Ddef:s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">behavior/N:s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">of/PREP</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">foreign_countries/N:p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">./PONCT</span></code>¶</p>
+<p>¶</p>
+<p><code class="docutils literal"><span class="pre">She/PRO+Nomin:3fs</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">closed/V:I3s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">easily/ADV</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">her/DET+Poss3fs:p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">eyes/N:p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">when/CONJ</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">some/DET+Dadj:p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">infractions/N:p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">might/V:I3p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">appear/V:W</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">justified/V:K</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">against/PREP</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">higher/A</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">interests/N:p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">./PONCT</span></code>¶</p>
+<p>¶</p>
+<p>REMARQUE: Les phrases doivent être délimitées par des lignes vides.</p>
+<p>Le format <code class="docutils literal"><span class="pre">.txt</span></code> peut également être utilisé (voir section
+[section-texts]). Chaque mot du texte doit être représenté par une
+étiquette lexicale valide (<code class="docutils literal"><span class="pre">{aujourd'hui,.ADV}</span></code>) et les phrases sont
+délimitées par <code class="docutils literal"><span class="pre">{S}</span></code>. Voici l’exemple précédent dans le format
+<code class="docutils literal"><span class="pre">.txt</span></code> :</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal"><span class="pre">{The,.DET+Ddef:s}</span></code> <code class="docutils literal"><span class="pre">{GATT,.N:s}</span></code> <code class="docutils literal"><span class="pre">{had,.V:I3s}</span></code>
+<code class="docutils literal"><span class="pre">{formerly,.ADV}</span></code></div>
+<div class="line"><code class="docutils literal"><span class="pre">{a,.DET+Dind:s}</span></code> <code class="docutils literal"><span class="pre">{political,.A}</span></code> <code class="docutils literal"><span class="pre">{assessment,.N:s}</span></code>
+<code class="docutils literal"><span class="pre">{of,.PREP}</span></code></div>
+<div class="line"><code class="docutils literal"><span class="pre">{the,.DET+Ddef:s}</span></code> <code class="docutils literal"><span class="pre">{behavior,.N:s}</span></code> <code class="docutils literal"><span class="pre">{of,.PREP}</span></code>
+<code class="docutils literal"><span class="pre">{foreign</span> <span class="pre">countries,.N:p}</span></code></div>
+<div class="line"><code class="docutils literal"><span class="pre">{.,.PONCT}</span></code> <code class="docutils literal"><span class="pre">{S}</span></code> <code class="docutils literal"><span class="pre">{She,.PRO+Nomin:3fs}</span></code> <code class="docutils literal"><span class="pre">{closed,.V:I3s}</span></code>
+<code class="docutils literal"><span class="pre">{easily,.ADV}</span></code></div>
+<div class="line"><code class="docutils literal"><span class="pre">{her,.DET+Poss3fs:p}</span></code> <code class="docutils literal"><span class="pre">{eyes,.N:p}</span></code> <code class="docutils literal"><span class="pre">{when,.CONJ}</span></code>
+<code class="docutils literal"><span class="pre">{some,.DET+Dadj:p}</span></code></div>
+<div class="line"><code class="docutils literal"><span class="pre">{infraction,.N:p}</span></code> <code class="docutils literal"><span class="pre">{might,.V:I3p}</span></code> <code class="docutils literal"><span class="pre">{appear,.V:W}</span></code>
+<code class="docutils literal"><span class="pre">{justified,.V:K}</span></code></div>
+<div class="line"><code class="docutils literal"><span class="pre">{against,.PREP}</span></code> <code class="docutils literal"><span class="pre">{higher,.A}</span></code> <code class="docutils literal"><span class="pre">{interests,.N:p}</span></code>
+<code class="docutils literal"><span class="pre">{.,.PONCT}</span></code> <code class="docutils literal"><span class="pre">{S}</span></code></div>
+</div>
+</div>
+<div class="section" id="le-fichier-de-donnees-du-taggueur">
+<h3>Le fichier de données du taggueur<a class="headerlink" href="#le-fichier-de-donnees-du-taggueur" title="Lien permanent vers ce titre">¶</a></h3>
+<p>[section-training-dict] The TrainingTagger programme genère deux
+fichiers de données (par défaut) utilisé par le programme Tagger afin de
+calculer un modèle de Markov caché d’ordre 2. Ces fichiers contiennent
+des tuples unigram, bigramme et trigramme extraits du corpus étiqueté
+corpus.txt. Les tuples sont composés soit d’une séquence de 2 ou 3 tags
+(pour calculer la probabilité de transition) ou d’un mot précédé par 0
+ou 1 tag (pour calculer la probabilité émise). Les unités dans un tuple
+doivent être séparées par une tabulation. Ces tuples sont suivis par la
+séquence de délimiteurs “,.” et ensuite un nombre entier représentant le
+nombre d’occurrences de ce tuple dans le corpus.</p>
+<p>Les noms de fichiers sont suffixés par “cat” ou “morph”. Dans la
+premier, les tuples sont composés tags de codes grammaticaux,
+syntaxiques et sémantiques. Dans le second, les tuples sont composés de
+tags de codes grammaticaux, syntaxiques et sémantiques parfois suivis
+par un <code class="docutils literal"><span class="pre">':'</span></code> et des codes flexionnels. Voici un exemple d’un fichier
+de données avec des tags de type “cat” :</p>
+<p><code class="docutils literal"><span class="pre">the,.9630</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">those,.236</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">eyes,.32</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DET+Ddef</span>&nbsp;&nbsp; <span class="pre">the,.9630</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DET+Ddem</span>&nbsp;&nbsp; <span class="pre">those,.140</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PRO+Pdem</span>&nbsp;&nbsp; <span class="pre">those,.96</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">N</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">eyes,.32</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DET</span>&nbsp;&nbsp;&nbsp; <span class="pre">N,.62541</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PREP</span>&nbsp; <span class="pre">DET</span>&nbsp; <span class="pre">N,.25837</span></code>¶</p>
+<p>¶</p>
+<p>Voici un exemple d’un fichier de données avec des tags de type “morph” :</p>
+<p><code class="docutils literal"><span class="pre">the,.9630</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">those,.236</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">eyes,.32</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DET+Ddef:s</span>&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">the,.4437</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DET+Ddef:p</span>&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">the,.5193</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DET+Ddem:p</span>&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">those,.140</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PRO+Pdem:p</span>&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">those,.96</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">N:p</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">eyes,.32</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DET:s</span>&nbsp; <span class="pre">N:s,.18489</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PREP</span>&nbsp;&nbsp;&nbsp; <span class="pre">DET:s</span>&nbsp; <span class="pre">N:s,.6977</span></code>¶</p>
+<p>¶</p>
+<p>Une ligne spécifique est ajoutée à des fichiers de données afin de
+déterminer si le fichier contient des tags de type “cat” ou “morph”.</p>
+<p>Cette ligne contient <code class="docutils literal"><span class="pre">CODE</span> <span class="pre">FEATURES</span></code> suivie soit le nombre 0 pour
+“cat” tags ou 1 pour “morph”.</p>
+<p>REMARQUE: À l’étape finale, TrainingTagger comprime ces deux fichiers de
+données au format <code class="docutils literal"><span class="pre">.bin</span></code>.</p>
+</div>
+</div>
+<div class="section" id="fichier-de-configuration">
+<h2>Fichier de configuration<a class="headerlink" href="#fichier-de-configuration" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="fichier-config">
+<h3>Fichier Config<a class="headerlink" href="#fichier-config" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Lorsque l’utilisateur modifie ses préférences pour une langue donnée,
+celles-ci sont sauvegardées dans un fichier texte nommé <code class="docutils literal"><span class="pre">Config</span></code> qui
+se trouve dans le répertoire de la langue courante. Ce fichier a la
+syntaxe suivante (l’ordre des lignes peut varier) :</p>
+<p><code class="docutils literal"><span class="pre">#Unitex</span> <span class="pre">configuration</span> <span class="pre">file</span> <span class="pre">of</span> <span class="pre">'paumier'</span> <span class="pre">for</span> <span class="pre">'English'</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">#Fri</span> <span class="pre">Oct</span> <span class="pre">10</span> <span class="pre">15:18:06</span> <span class="pre">CEST</span> <span class="pre">2008</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">TEXT\</span> <span class="pre">FONT\</span> <span class="pre">NAME=Courier</span> <span class="pre">New</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">TEXT\</span> <span class="pre">FONT\</span> <span class="pre">STYLE=0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">TEXT\</span> <span class="pre">FONT\</span> <span class="pre">SIZE=10</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">CONCORDANCE\</span> <span class="pre">FONT\</span> <span class="pre">NAME=Courier</span> <span class="pre">new</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">CONCORDANCE\</span> <span class="pre">FONT\</span> <span class="pre">HTML\</span> <span class="pre">SIZE=12</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">INPUT\</span> <span class="pre">FONT\</span> <span class="pre">NAME=Times</span> <span class="pre">New</span> <span class="pre">Roman</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">INPUT\</span> <span class="pre">FONT\</span> <span class="pre">STYLE=0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">INPUT\</span> <span class="pre">FONT\</span> <span class="pre">SIZE=10</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">OUTPUT\</span> <span class="pre">FONT\</span> <span class="pre">NAME=Arial</span> <span class="pre">Unicode</span> <span class="pre">MS</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">OUTPUT\</span> <span class="pre">FONT\</span> <span class="pre">STYLE=1</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">OUTPUT\</span> <span class="pre">FONT\</span> <span class="pre">SIZE=12</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DATE=true</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">FILE\</span> <span class="pre">NAME=true</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PATH\</span> <span class="pre">NAME=false</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">FRAME=true</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">RIGHT\</span> <span class="pre">TO\</span> <span class="pre">LEFT=false</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">BACKGROUND\</span> <span class="pre">COLOR=-1</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">FOREGROUND\</span> <span class="pre">COLOR=-16777216</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">AUXILIARY\</span> <span class="pre">NODES\</span> <span class="pre">COLOR=-3289651</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">COMMENT\</span> <span class="pre">NODES\</span> <span class="pre">COLOR=-65536</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">SELECTED\</span> <span class="pre">NODES\</span> <span class="pre">COLOR=-16776961</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PACKAGE\</span> <span class="pre">NODES\</span> <span class="pre">COLOR=-2302976</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">CONTEXT\</span> <span class="pre">NODES\</span> <span class="pre">COLOR=-16711936</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">CHAR\</span> <span class="pre">BY\</span> <span class="pre">CHAR=false</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">ANTIALIASING=false</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">HTML\</span> <span class="pre">VIEWER=</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">MAX\</span> <span class="pre">TEXT\</span> <span class="pre">FILE\</span> <span class="pre">SIZE=2097152</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">ICON\</span> <span class="pre">BAR\</span> <span class="pre">POSITION=West</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PACKAGE\</span> <span class="pre">PATH=D\:\\repository</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">MORPHOLOGICAL\</span> <span class="pre">DICTIONARY=D\:\\MyUnitex\\English\\Dela\\zz.bin</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">MORPHOLOGICAL\</span> <span class="pre">NODES\</span> <span class="pre">COLOR=-3911728</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">MORPHOLOGICAL\</span> <span class="pre">USE\</span> <span class="pre">OF\</span> <span class="pre">SPACE=false</span></code>¶</p>
+<p>Les deux premières lignes sont des lignes de commentaires. Les trois
+lignes suivantes indiquent le nom, le style et la taille de la police
+utilisée pour afficher les textes, les dictionnaires, les unités
+lexicales, les phrases de l’automate du texte, etc.</p>
+<p>The <code class="docutils literal"><span class="pre">CONCORDANCE</span> <span class="pre">FONT</span> <span class="pre">NAME</span></code> et <code class="docutils literal"><span class="pre">CONCORDANCE</span> <span class="pre">FONT</span> <span class="pre">HTML</span> <span class="pre">SIZE</span></code>
+définissent le nom et la taille de la police à utiliser pour afficher
+les concordances en HTML. La taille de la police doit être comprise
+entre 1 et 7.</p>
+<p>Les paramètres <code class="docutils literal"><span class="pre">INPUT</span> <span class="pre">FONT</span> <span class="pre">...</span></code> et <code class="docutils literal"><span class="pre">OUTPUT</span> <span class="pre">FONT</span> <span class="pre">...</span></code> définissent le
+nom, le style et la taille des polices utilisées pour afficher les
+chemins et les transductions des graphes.</p>
+<p>Les 10 paramètres suivants correspondent aux paramètres précisés dans
+les en-têtes des graphes. Le tableau [tab-parameters] décrit ces
+correspondances.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="51%" />
+<col width="49%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Paramètres dans le fichier <code class="docutils literal"><span class="pre">Config</span></code> file</th>
+<th class="head">Paramètres dans un fichier <code class="docutils literal"><span class="pre">.grf</span></code> file</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">DATE</span></code></td>
+<td><code class="docutils literal"><span class="pre">DDATE</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">FILE</span> <span class="pre">NAME</span></code></td>
+<td><code class="docutils literal"><span class="pre">DFILE</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">PATH</span> <span class="pre">NAME</span></code></td>
+<td><code class="docutils literal"><span class="pre">DDIR</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">FRAME</span></code></td>
+<td><code class="docutils literal"><span class="pre">DFRAME</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">RIGHT</span> <span class="pre">TO</span> <span class="pre">LEFT</span></code></td>
+<td><code class="docutils literal"><span class="pre">DRIG</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">BACKGROUND</span> <span class="pre">COLOR</span></code></td>
+<td><code class="docutils literal"><span class="pre">BCOLOR</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">FOREGROUND</span> <span class="pre">COLOR</span></code></td>
+<td><code class="docutils literal"><span class="pre">FCOLOR</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">AUXILIARY</span> <span class="pre">NODES</span> <span class="pre">COLOR</span></code></td>
+<td><code class="docutils literal"><span class="pre">ACOLOR</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">COMMENT</span> <span class="pre">NODES</span> <span class="pre">COLOR</span></code></td>
+<td><code class="docutils literal"><span class="pre">SCOLOR</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">SELECTED</span> <span class="pre">NODES</span> <span class="pre">COLOR</span></code></td>
+<td><code class="docutils literal"><span class="pre">CCOLOR</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Table: Signification des paramètres[tab-parameters]</p>
+<p>Le paramètre <code class="docutils literal"><span class="pre">PACKAGE</span> <span class="pre">NODES</span></code> définit la couleur des appels à des
+sous-graphes du répertoire de dépôt.</p>
+<p>Le paramètre <code class="docutils literal"><span class="pre">CONTEXT</span> <span class="pre">NODES</span></code> définit la couleur des boîtes
+correspondant à des débuts ou fins de contextes.</p>
+<p>Le paramètre <code class="docutils literal"><span class="pre">CONTEXT</span> <span class="pre">NODES</span></code> indique si la langue courante doit être
+traitée en mode caractère par caractère ou non.</p>
+<p>Le paramètre <code class="docutils literal"><span class="pre">ANTIALIASING</span></code> indique si les graphes ainsi que les
+automates de phrases doivent être affichés par défaut avec l’effet
+d’antialiasing.</p>
+<p>Le paramètre <code class="docutils literal"><span class="pre">HTML</span> <span class="pre">VIEWER</span></code> indique le nom du navigateur à utiliser
+pour afficher les concordances. Si aucun nom de navigateur n’est
+précisé, les concordances sont affichées dans une fenêtre d’Unitex.</p>
+<p>Le paramètre <code class="docutils literal"><span class="pre">MAX</span> <span class="pre">TEXT</span> <span class="pre">FILE</span> <span class="pre">SIZE</span></code> n’est plus utlisé.</p>
+<p>Le paramètre <code class="docutils literal"><span class="pre">ICON</span> <span class="pre">BAR</span> <span class="pre">POSITION</span></code> définit la position de la barre
+d’icônes dans les fenêtres de graphes.</p>
+<p>Le paramètre <code class="docutils literal"><span class="pre">PACKAGE</span> <span class="pre">PATH</span></code> définit le répertoire de dépôt à utiliser
+pour cette langue.</p>
+<p>Le paramètre <code class="docutils literal"><span class="pre">MORPHOLOGICAL</span> <span class="pre">DICTIONARY</span></code> indique la liste des
+dictionnaires du mode morphologique, séparés par des points virgules.</p>
+<p>Le paramètre <code class="docutils literal"><span class="pre">MORPHOLOGICAL</span> <span class="pre">NODES</span> <span class="pre">COLOR</span></code> définit la couleur des
+étiquettes du mode morphologique <code class="docutils literal"><span class="pre">$&lt;</span></code> et <code class="docutils literal"><span class="pre">$&gt;</span></code>.</p>
+<p>Le paramètre <code class="docutils literal"><span class="pre">MORPHOLOGICAL</span> <span class="pre">USE</span> <span class="pre">OF</span> <span class="pre">SPACE</span></code> indique si le programme
+<code class="docutils literal"><span class="pre">Locate</span></code> peut commencer en reconnaissant les espaces. (par défaut
+c’est non)</p>
+</div>
+<div class="section" id="fichier-system-dic-def">
+<h3>Fichier system_dic.def<a class="headerlink" href="#fichier-system-dic-def" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le fichier <code class="docutils literal"><span class="pre">system_dic.def</span></code> est un fichier texte décrivant la liste
+des dictionnaires du système à appliquer par défaut. Ce fichier se
+trouve dans le répertoire de la langue courante. Chaque ligne correspond
+à un nom de fichier <code class="docutils literal"><span class="pre">.bin</span></code> file. Les dictionnaires du système doivent
+se trouver dans le répertoire système Unitex, à l’intérieur du
+sous-répertoire <code class="docutils literal"><span class="pre">(langue</span> <span class="pre">courante)/Dela</span></code>. Voici un exemple de
+fichier&nbsp;:</p>
+<p><code class="docutils literal"><span class="pre">delacf.bin</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">delaf.bin</span></code>¶</p>
+</div>
+<div class="section" id="fichier-user-dic-def">
+<h3>Fichier user_dic.def<a class="headerlink" href="#fichier-user-dic-def" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le fichier <code class="docutils literal"><span class="pre">user_dic.def</span></code> est un fichier texte décrivant la liste des
+dictionnaires de l’utilisateur à appliquer par défaut. Ce fichier se
+trouve dans le répertoire de la langue courante et a le même format que
+le fichier <code class="docutils literal"><span class="pre">system_dic.def</span></code>. Les dictionnaires de l’utilisateur
+doivent se trouver dans le sous-répertoire <code class="docutils literal"><span class="pre">(langue</span> <span class="pre">courante)/Dela</span></code> du
+répertoire personnel de travail.</p>
+</div>
+<div class="section" id="fichiers-nom-dutilisateur-cfg-et-unitex-cfg">
+<h3>Fichiers (nom d’utilisateur).cfg et .unitex.cfg<a class="headerlink" href="#fichiers-nom-dutilisateur-cfg-et-unitex-cfg" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Sous Linux et Mac OS, Unitex considère que le répertoire personnel de
+travail se nomme <code class="docutils literal"><span class="pre">unitex</span></code> et qu’il se trouve dans le répertoire racine
+de l’utilisateur (<code class="docutils literal"><span class="pre">$HOME</span></code>). Si vous voulez changer cet emplacement par
+défaut, un fichier <code class="docutils literal"><span class="pre">.unitex.cfg</span></code> est créé dans votre répertoire
+racine, et il contient le chemin vers votre répertoire de travail
+Unitex. Ce fichier est un fichier UTF8. Si <code class="docutils literal"><span class="pre">.unitex.cfg</span></code> ne contient
+pas un chemin Linux valide vers un répertoire existant, il est
+ignoré <a class="footnote-reference" href="#id86" id="id85">[1]</a>.</p>
+<p>Sous Windows, il n’est pas toujours possible d’associer un répertoire
+par défaut à un utilisateur. Pour remédier à cela, Unitex crée pour
+chaque utilisateur un fichier <code class="docutils literal"><span class="pre">.cfg</span></code> contenant le chemin de son
+répertoire de travail. Ce fichier est sauvegardé sous le nom
+<code class="docutils literal"><span class="pre">(nom</span> <span class="pre">d’utilisateur).cfg</span></code> dans le sous-répertoire <code class="docutils literal"><span class="pre">Users</span></code> du
+répertoire système Unitex. Si l’utilisateur n’a pas les droits pour
+écrire dans ce répertoire, un fichier <code class="docutils literal"><span class="pre">.unitex.cfg</span></code> est sauvegardé
+dans le répertoire du profil utilisateur&nbsp;:</p>
+<ul class="simple">
+<li>dans <code class="docutils literal"><span class="pre">Documents</span> <span class="pre">and</span> <span class="pre">Settings\(user</span> <span class="pre">login)</span></code> sous Windows XP</li>
+<li>dans <code class="docutils literal"><span class="pre">Users\(user</span> <span class="pre">login)</span></code> sous WindowsVista ou une version plus
+récente.</li>
+</ul>
+<p>ATTENTION&nbsp;: CE FICHIER N’EST PAS EN UNICODE ET LE CHEMIN DU RÉPERTOIRE
+PERSONNEL DE TRAVAIL N’EST PAS SUIVI PAR UN RETOUR À LA LIGNE.</p>
+</div>
+</div>
+<div class="section" id="fichiers-cassys">
+<h2>Fichiers CasSys<a class="headerlink" href="#fichiers-cassys" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="fichiers-de-configuration-cassys-csc">
+<h3>Fichiers de configuration CasSys csc<a class="headerlink" href="#fichiers-de-configuration-cassys-csc" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Pour mémoriser la liste des transducteurs d’une cascade CasSys, nous
+utilisons un fichier texte (csc) dans lequel chaque ligne contient le
+chemin vers un transducteur suivi du mode de sortie (fusionner /
+remplacer) à appliquer à ce transducteur. Le format d’une ligne du
+fichier csc est : Name_and_path_of_transducer Merge Voici un exemple
+de fichier de cascade csc:</p>
+<p>“C:<span class="math">\(\backslash\)</span>apps<span class="math">\(\backslash\)</span>my_unitex<span class="math">\(\backslash\)</span>French<span class="math">\(\backslash\)</span>Graphs<span class="math">\(\backslash\)</span>grf1.fst2”
+Merge</p>
+<p>“C:<span class="math">\(\backslash\)</span>apps<span class="math">\(\backslash\)</span>my_unitex<span class="math">\(\backslash\)</span>French<span class="math">\(\backslash\)</span>Graphs<span class="math">\(\backslash\)</span>grf2.fst2”
+Replace</p>
+</div>
+</div>
+<div class="section" id="plusieurs-autres-fichiers">
+<h2>Plusieurs autres fichiers<a class="headerlink" href="#plusieurs-autres-fichiers" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Pour chaque texte, Unitex crée plusieurs fichiers contenant des
+informations destinées à être affichées dans l’interface graphique.
+Cette section décrit ces différents fichiers.</p>
+<div class="section" id="fichier-dlf-n-dlc-n-err-n-et-tags-err-n">
+<h3>Fichier dlf.n, dlc.n, err.n et tags_err.n<a class="headerlink" href="#fichier-dlf-n-dlc-n-err-n-et-tags-err-n" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Ces trois fichiers sont des fichiers texte se trouvant dans le
+répertoire du texte. Ils contiennent respectivement les nombres de
+lignes des fichiers <code class="docutils literal"><span class="pre">dlf</span></code>, <code class="docutils literal"><span class="pre">dlc</span></code>, <code class="docutils literal"><span class="pre">err</span></code> et <code class="docutils literal"><span class="pre">tags_err</span></code>. Ces
+nombres sont suivis par un retour à la ligne.</p>
+</div>
+<div class="section" id="fichier-stat-dic-n">
+<h3>Fichier stat_dic.n<a class="headerlink" href="#fichier-stat-dic-n" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Ce fichier est un fichier texte se trouvant dans le répertoire du texte.
+Il est formé de trois lignes, contenant les nombres de lignes des
+fichiers <code class="docutils literal"><span class="pre">dlf</span></code>, <code class="docutils literal"><span class="pre">dlc</span></code> and <code class="docutils literal"><span class="pre">err</span></code>.</p>
+</div>
+<div class="section" id="fichier-stats-n">
+<h3>Fichier stats.n<a class="headerlink" href="#fichier-stats-n" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Ce fichier texte se trouve dans le répertoire du texte et contient une
+ligne de la forme suivante :</p>
+<p><code class="docutils literal"><span class="pre">3949</span> <span class="pre">sentence</span> <span class="pre">delimiters,</span> <span class="pre">169394</span> <span class="pre">(9428</span> <span class="pre">diff)</span> <span class="pre">tokens,</span> <span class="pre">73788</span> <span class="pre">(9399)</span></code></p>
+<p><code class="docutils literal"><span class="pre">simple</span> <span class="pre">forms,</span> <span class="pre">438</span> <span class="pre">(10)</span> <span class="pre">digits</span></code>¶</p>
+<p>Les nombres indiqués s’interprètent de la façon suivante :</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">sentence</span> <span class="pre">delimiters</span></code>: nombre de séparateurs de phrases (<code class="docutils literal"><span class="pre">{S}</span></code>);</li>
+<li><code class="docutils literal"><span class="pre">tokens</span></code>: nombre total d’unités lexicales du texte. Le nombre
+précédant <code class="docutils literal"><span class="pre">diff</span></code> indique le nombre d’unités différentes;</li>
+<li><code class="docutils literal"><span class="pre">simple</span> <span class="pre">forms</span></code>: nombre total dans le texte d’unités lexicales
+composées de lettres. Le nombre entre parenthèses représente le
+nombre d’unités lexicales différentes qui sont composées de lettres ;</li>
+<li><code class="docutils literal"><span class="pre">digits</span></code>: nombre total dans le texte de chiffres. Le nombre entre
+parenthèses indique le nombre de chiffres différents utilisés (au
+plus 10).</li>
+</ul>
+</div>
+<div class="section" id="fichier-concord-n">
+<h3>Fichier concord.n<a class="headerlink" href="#fichier-concord-n" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le fichier <code class="docutils literal"><span class="pre">concord.n</span></code> est un fichier texte qui se trouve dans le
+répertoire du texte. Il contient des informations sur la dernière
+recherche de motifs effectuée sur ce texte et se présente de la manière
+suivante :</p>
+<p><code class="docutils literal"><span class="pre">6</span> <span class="pre">matches</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">6</span> <span class="pre">recognized</span> <span class="pre">units</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">(0.004%</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">text</span> <span class="pre">is</span> <span class="pre">covered)</span></code>¶</p>
+<p>La première ligne donne le nombre d’occurrences trouvées, la seconde le
+nombre d’unités couvertes par ces occurrences. La troisième ligne
+indique le rapport entre le nombre d’unités couvertes et le nombre total
+d’unités du texte.</p>
+</div>
+<div class="section" id="fichier-concord-tfst-n">
+<h3>Fichier concord_tfst.n<a class="headerlink" href="#fichier-concord-tfst-n" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le fichier <code class="docutils literal"><span class="pre">concord_tfst.n</span></code> est un fichier texte qui se trouve dans le
+répertoire du texte. Il contient des informations sur la dernière
+recherche sur l’automate du texte et ressemble à ce qui suit:</p>
+<p><code class="docutils literal"><span class="pre">23</span> <span class="pre">matches(45</span> <span class="pre">outputs)</span></code>¶</p>
+</div>
+<div class="section" id="fichier-regles-de-normalisation">
+<h3>Fichier règles de normalisation<a class="headerlink" href="#fichier-regles-de-normalisation" title="Lien permanent vers ce titre">¶</a></h3>
+<p>[section-normalization-file] Ce fichier est utilisé par les programmes
+<code class="docutils literal"><span class="pre">Normalization</span></code> et <code class="docutils literal"><span class="pre">XMLizer</span></code>. Il représente règles de normalisation.
+Chaque ligne représente une règle, selon le format suivant
+(<span class="math">\(\longmapsto\)</span> représente le caractère de tabulation):</p>
+<p><code class="docutils literal"><span class="pre">input</span> <span class="pre">sequence</span></code> <span class="math">\(\longmapsto\)</span> <code class="docutils literal"><span class="pre">output</span> <span class="pre">sequence</span></code></p>
+<p>Si vous souhaitez utiliser la tabulation ou le newline, vous devez les
+déspécialiser avec un antislash comme ceci:</p>
+<p><code class="docutils literal"><span class="pre">123\</span></code></p>
+<p><span class="math">\(\longmapsto\)</span> <code class="docutils literal"><span class="pre">ONE_TWO_THREE_NEW_LINE</span></code></p>
+</div>
+<div class="section" id="fichier-de-mots-interdits">
+<h3>Fichier de mots interdits<a class="headerlink" href="#fichier-de-mots-interdits" title="Lien permanent vers ce titre">¶</a></h3>
+<p>[section-forbidden-words] Le programme <code class="docutils literal"><span class="pre">PolyLex</span></code> requiert un de mots
+interdits pour le hollandais et le norvégien. Ce fichier texte brut est
+censé s’appeler <code class="docutils literal"><span class="pre">ForbiddenWords.txt</span></code> . Il doit se trouver dans le
+répertoire <code class="docutils literal"><span class="pre">Dela</span></code> correspondant à la langue courante. Chaque ligne est
+censée contenir un mot interdit.</p>
+</div>
+<div class="section" id="fichier-de-log">
+<h3>Fichier de log<a class="headerlink" href="#fichier-de-log" title="Lien permanent vers ce titre">¶</a></h3>
+<p>[section-log-file] Le programme <code class="docutils literal"><span class="pre">UnitexToolLogger</span></code>, si le fichier
+<code class="docutils literal"><span class="pre">unitex_logging_parameters.txt</span></code> est trouvé avec un chemin (pour
+enregistrer les fichiers log) crée un fichier .ulp de log de l’outil
+Unitex en cours d’exécution choisi.</p>
+<p>Il crée un fichier <code class="docutils literal"><span class="pre">unitex_logging_parameters_count.txt</span></code> qui contient
+seulement le numéro du dernier fichier log créé.</p>
+<p>Un fichier log (avec l’extension .ulp) est un fichiers zip non
+comprimés, compatibles avec unzip et tous les outils unzip standards. On
+peut le recréer avec zip d’Infozip (avec les options -0 -X). Il contient
+ces fichiers:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">test_info/command_line.txt</span></code>: une liste de paramètres de la ligne
+de commande utilisée pour exécuter l’outil. Il y a un paramètre sur
+chaque ligne. La première ligne contient la valeur de retour, la
+deuxième ligne le nombre de paramètres;</li>
+<li><code class="docutils literal"><span class="pre">test_info/command_line_synth.txt</span></code>: une simple ligne avec un résumé
+de la ligne de commande utilisée pour exécuter l’outil;</li>
+<li><code class="docutils literal"><span class="pre">test_info/list_file_in.txt</span></code>: une liste des fichiers lus par
+l’outil. La première colonne est la taille du fichier, la seconde est
+crc32, la troisième le nom du fichier;</li>
+<li><code class="docutils literal"><span class="pre">test_info/list_file_out.txt</span></code>: une liste des fichiers créés par
+l’outil. La première colonne est la taille du fichier, la seconde est
+crc32, la troisième le nom du fichier;</li>
+<li><code class="docutils literal"><span class="pre">test_info/std_out.txt</span></code>: le contenu de sortie standard de la
+console;</li>
+<li><code class="docutils literal"><span class="pre">test_info/std_err.txt</span></code>: le contenu de sortie erreurs de la
+console;</li>
+<li><code class="docutils literal"><span class="pre">src/xxx</span></code>: une copie du fichier lu par l’outil (nécessaire pour
+faire fonctionner à nouveau le log);</li>
+<li><code class="docutils literal"><span class="pre">dest/xxx</span></code>: une copie du fichier créé par l’outil</li>
+</ul>
+<p>Si la seconde ligne de unitex_logging_parameters.txt contient 0, ces
+fichiers ne sont pas enregistrés; si cette ligne contient 1, ils sont
+enregistrés;</p>
+</div>
+<div class="section" id="regles-typographiques-de-larabe-arabic-typo-rules-txt">
+<h3>Règles typographiques de l’arabe: arabic_typo_rules.txt<a class="headerlink" href="#regles-typographiques-de-larabe-arabic-typo-rules-txt" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Pour l’arabe, la recherche dans le dictionnaire peut être paramétrée
+avec un fichier qui décrit si certaines variations typographiques sont
+autorisées ou non. Ce fichier est constitué de lignes comme celles-ci:</p>
+<p><code class="docutils literal"><span class="pre">fatha</span> <span class="pre">omission=YES</span></code></p>
+<p>où <code class="docutils literal"><span class="pre">fatha</span> <span class="pre">omission</span></code> est le nom de la règle. Pour une description
+complète de toutes les règles disponibles, il faut consulter le fichier
+<code class="docutils literal"><span class="pre">Arabic.h</span></code> dans les sources du programme.</p>
+</div>
+<div class="section" id="fichier-doffsets-de-difference">
+<h3>fichier d’offsets de différence<a class="headerlink" href="#fichier-doffsets-de-difference" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les fichiers d’offsets de différence sont lu et écrit par l’outils
+Unxmlize([section-Unxmlize]), DumpOffsets([section-DumpOffsets]),
+Normalize([section-Normalize]), Fst2Txt([section-Fst2Txt]),
+Tokenize([section-Tokenize]), Concord([section-Concord]) et GrfTest, et
+lu par Tokenize([section-Tokenize]). Ces fichiers textes sont
+constituées de lignes contenant 4 entiers A B C D. Chaque ligne
+correspond à une modification du texte, exprimée de la façon suivante:
+l’intervalle [A;B[ du texte *** avant tout traitement *** est
+remplacé par l’intervalle [C;D[ après traitement, A, B, C et D étant des
+positions en caractères dans les fichiers textes.</p>
+<p>Par exemple, si on applique le programme Normalize sur le texte “Hello
+world” (avec deux espaces entre les deux mots), on aura une ligne comme
+ceci:</p>
+<p><code class="docutils literal"><span class="pre">5</span> <span class="pre">7</span> <span class="pre">5</span> <span class="pre">6</span></code></p>
+<p>signifiant qu’une séquence de deux caractères (les 2 espaces) a été
+remplacée par une séquence d’un seul caractère.</p>
+<p>Le principe est donc de produire un nouveau fichier d’offsets pour
+chaque application de programme modifiant le texte, en prenant en entrée
+le fichier d’offsets produit par le programme précédent. Ainsi, en
+regardant le dernier fichier d’offsets produit, on sait que pour chaque
+ligne A B C D, l’intervalle [C;D[ dans le fichier .snt correspond à
+l’intervalle [A;B[ dans le fichier .txt de départ</p>
+</div>
+<div class="section" id="fichier-doffsets-de-zone-commune">
+<h3>fichier d’offsets de zone commune<a class="headerlink" href="#fichier-doffsets-de-zone-commune" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les fichiers d’offsets de zone commune sont lu et écrit par DumpOffsets.
+Ces fichiers textes sont constituées de lignes contenant 4 entiers A B C
+D. Chaque ligne correspond à une modification du texte, exprimée de la
+façon suivante: l’intervalle [A;B[ du texte original correspond à
+l’intervalle [C;D[ après traitement, A, B, C et D étant des positions en
+caractères dans les fichiers textes. Sur chaque ligne, B-A=D-C.</p>
+<p>Par exemple, si on applique le programme Normalize sur le texte “Hello
+world” (avec deux espaces entre les deux mots), on aura une ligne comme
+ceci:</p>
+<p><code class="docutils literal"><span class="pre">0</span> <span class="pre">5</span> <span class="pre">0</span> <span class="pre">5</span></code> <code class="docutils literal"><span class="pre">7</span> <span class="pre">12</span> <span class="pre">6</span> <span class="pre">11</span></code></p>
+<p>signifiant que les caractère de 0 (inclus) à 5 (non inclus) des deux
+fichiers contiennent exactement le même texte, et que ceux de 7 (inclus)
+à 12 (non inclus) du premier texte contiennent exactement le même texte
+que ceux de 6 (inclus) à 11 (non inclus) du second.</p>
+</div>
+<div class="section" id="fichier-doffsets-uima">
+<h3>fichier d’offsets uima<a class="headerlink" href="#fichier-doffsets-uima" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les fichiers d’offsets uima sont écrit par Tokenize et lu par Concord
+(avec les options <code class="docutils literal"><span class="pre">--uima=</span></code>, <code class="docutils literal"><span class="pre">--xml-with-header=</span></code> ou <code class="docutils literal"><span class="pre">--xml=</span></code>).
+Ces fichiers établissent la correspondance entre chaque token successif
+et une position dans le fichier d’origine.</p>
+<p>Ces fichiers textes sont constituées de lignes contenant 3 entiers A B C
+et de texte entre &lt; et &gt;.</p>
+<p>Chaque ligne correspond à un token, exprimée de la façon suivante: Le
+token numéro A correspond au texte de la position B (inclue) à la
+position C (non inclus) du fichier d’origine, et le texte de ce token
+est mentionné entre &lt; et &gt;. Le numéro de token A correspond au numéro de
+ligne de tokens.txt où figure ce token (après avoir ajouté 1 pour la
+ligne d’en-tête de tokens.txt([fichier-tokens-txt]))</p>
+<table class="docutils footnote" frame="void" id="id86" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id85">[1]</a></td><td>Cela permet de lancer Unitex tantôt sous Linux, tantôt sous Windows,
+sur des fichiers partagés&nbsp;: le chemin Windows vers le répertoire
+personnel de travail Unitex est indiqué dans <code class="docutils literal"><span class="pre">.unitex.cfg</span></code>, et
+Unitex l’ignore quand on le lance sous Linux.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-fr.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Formats de fichiers</a><ul>
+<li><a class="reference internal" href="#codage-unicode">Codage Unicode</a></li>
+<li><a class="reference internal" href="#fichiers-dalphabet">Fichiers d’alphabet</a><ul>
+<li><a class="reference internal" href="#alphabet">Alphabet</a></li>
+<li><a class="reference internal" href="#alphabet-de-tri">Alphabet de tri</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graphes">Graphes</a><ul>
+<li><a class="reference internal" href="#format-grf">Format .grf</a></li>
+<li><a class="reference internal" href="#format-fst2">Format .fst2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#textes">Textes</a><ul>
+<li><a class="reference internal" href="#fichiers-txt">Fichiers .txt</a></li>
+<li><a class="reference internal" href="#fichiers-snt">Fichiers .snt</a></li>
+<li><a class="reference internal" href="#fichier-text-cod">Fichier text.cod</a></li>
+<li><a class="reference internal" href="#fichier-tokens-txt">Fichier tokens.txt</a></li>
+<li><a class="reference internal" href="#fichier-tok-by-alph-txt-et-tok-by-freq-txt">Fichier tok_by_alph.txt et tok_by_freq.txt</a></li>
+<li><a class="reference internal" href="#fichier-enter-pos">Fichier enter.pos</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#automate-du-texte">Automate du texte</a><ul>
+<li><a class="reference internal" href="#fichier-text-tfst">Fichier text.tfst</a></li>
+<li><a class="reference internal" href="#fichier-text-tind">Fichier text.tind</a></li>
+<li><a class="reference internal" href="#fichier-cursentence-grf">Fichier cursentence.grf</a></li>
+<li><a class="reference internal" href="#fichier-sentencen-grf">Fichier sentenceN.grf</a></li>
+<li><a class="reference internal" href="#fichier-cursentence-txt">Fichier cursentence.txt</a></li>
+<li><a class="reference internal" href="#the-cursentence-tok-file">The cursentence.tok file</a></li>
+<li><a class="reference internal" href="#fichiers-tfst-tags-by-freq-txt-et-tfst-tags-by-alph-txt">Fichiers tfst_tags_by_freq.txt et tfst_tags_by_alph.txt</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#concordances">Concordances</a><ul>
+<li><a class="reference internal" href="#fichier-concord-ind">Fichier concord.ind</a></li>
+<li><a class="reference internal" href="#fichier-concord-txt">Fichier concord.txt</a></li>
+<li><a class="reference internal" href="#fichier-concord-html">Fichier concord.html</a></li>
+<li><a class="reference internal" href="#fichier-diff-html">Fichier diff.html</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dictionnaires-du-texte">Dictionnaires du texte</a><ul>
+<li><a class="reference internal" href="#dlf-et-dlc">dlf et dlc</a></li>
+<li><a class="reference internal" href="#err">err</a></li>
+<li><a class="reference internal" href="#tags-err">tags_err</a></li>
+<li><a class="reference internal" href="#tags-ind">tags.ind</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dictionnaires">Dictionnaires</a><ul>
+<li><a class="reference internal" href="#fichier-bin">Fichier .bin</a></li>
+<li><a class="reference internal" href="#fichier-inf">Fichier.inf</a></li>
+<li><a class="reference internal" href="#fichier-information-sur-un-dictionnaire">Fichier information sur un dictionnaire</a></li>
+<li><a class="reference internal" href="#fichier-check-dic-txt">Fichier CHECK_DIC.TXT</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fichiers-elag">Fichiers ELAG</a><ul>
+<li><a class="reference internal" href="#fichier-tagset-de">Fichier tagset.de</a></li>
+<li><a class="reference internal" href="#fichiers-lst">Fichiers .lst</a></li>
+<li><a class="reference internal" href="#elg-files">.elg files</a></li>
+<li><a class="reference internal" href="#fichier-rul">Fichier .rul</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fichier-taggeur">Fichier taggeur</a><ul>
+<li><a class="reference internal" href="#fichier-corpus-txt">Fichier corpus.txt</a></li>
+<li><a class="reference internal" href="#le-fichier-de-donnees-du-taggueur">Le fichier de données du taggueur</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fichier-de-configuration">Fichier de configuration</a><ul>
+<li><a class="reference internal" href="#fichier-config">Fichier Config</a></li>
+<li><a class="reference internal" href="#fichier-system-dic-def">Fichier system_dic.def</a></li>
+<li><a class="reference internal" href="#fichier-user-dic-def">Fichier user_dic.def</a></li>
+<li><a class="reference internal" href="#fichiers-nom-dutilisateur-cfg-et-unitex-cfg">Fichiers (nom d’utilisateur).cfg et .unitex.cfg</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fichiers-cassys">Fichiers CasSys</a><ul>
+<li><a class="reference internal" href="#fichiers-de-configuration-cassys-csc">Fichiers de configuration CasSys csc</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#plusieurs-autres-fichiers">Plusieurs autres fichiers</a><ul>
+<li><a class="reference internal" href="#fichier-dlf-n-dlc-n-err-n-et-tags-err-n">Fichier dlf.n, dlc.n, err.n et tags_err.n</a></li>
+<li><a class="reference internal" href="#fichier-stat-dic-n">Fichier stat_dic.n</a></li>
+<li><a class="reference internal" href="#fichier-stats-n">Fichier stats.n</a></li>
+<li><a class="reference internal" href="#fichier-concord-n">Fichier concord.n</a></li>
+<li><a class="reference internal" href="#fichier-concord-tfst-n">Fichier concord_tfst.n</a></li>
+<li><a class="reference internal" href="#fichier-regles-de-normalisation">Fichier règles de normalisation</a></li>
+<li><a class="reference internal" href="#fichier-de-mots-interdits">Fichier de mots interdits</a></li>
+<li><a class="reference internal" href="#fichier-de-log">Fichier de log</a></li>
+<li><a class="reference internal" href="#regles-typographiques-de-larabe-arabic-typo-rules-txt">Règles typographiques de l’arabe: arabic_typo_rules.txt</a></li>
+<li><a class="reference internal" href="#fichier-doffsets-de-difference">fichier d’offsets de différence</a></li>
+<li><a class="reference internal" href="#fichier-doffsets-de-zone-commune">fichier d’offsets de zone commune</a></li>
+<li><a class="reference internal" href="#fichier-doffsets-uima">fichier d’offsets uima</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-fr.html">Documentation overview</a><ul>
+      <li>Previous: <a href="13-programs_FR_utf8.html" title="Chapitre précédent">Utilisation des programmes externes</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/14-formats_FR_utf8.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, SCTB.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/14-formats_FR_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

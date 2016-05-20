@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Automate de Séquences &mdash; documentation Unitex-fr 1.0.1</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Unitex-fr 1.0.1" href="Unitex-fr.html" />
+    <link rel="next" title="Lexique-grammaire" href="09-lexicon-grammar_FR_utf8.html" />
+    <link rel="prev" title="Automate du texte" href="07-text_automaton_FR_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="automate-de-sequences">
+<h1>Automate de Séquences<a class="headerlink" href="#automate-de-sequences" title="Lien permanent vers ce titre">¶</a></h1>
+<p>La construction de grammaires locales peut être un long processus durant
+lequel le linguiste répète de nombreuses fois les mêmes opérations. La
+finalité du programme <code class="docutils literal"><span class="pre">Seq2Grf</span></code> est de produire rapidement et
+automatiquement des grammaires locales.</p>
+<p>Ce programme peut être utilisé en ligne de commande ou en cliquant sur
+“Construct Sequences Automaton” dans le menu “Text”. L’utilisation de la
+commande <code class="docutils literal"><span class="pre">Seq2Grf</span></code> est décrite à la section&nbsp;[Seq2Grf].</p>
+<p>Pour un document donné (<code class="docutils literal"><span class="pre">TEILite</span></code> ou des fichiers au format <code class="docutils literal"><span class="pre">txt</span></code> ou
+<code class="docutils literal"><span class="pre">SNT</span></code> quand ils sont prétraités pour cette tâche avec des marqueurs
+<code class="docutils literal"><span class="pre">{STOP}</span></code>) ce programme construit un unique automate qui reconnaît
+toutes les séquences contenues dans le document.</p>
+<p>On doit porter une attention particulière à la construction de la liste
+de séquences qui doivent être reconnues par le graphe.</p>
+<p>Ce chapitre présente les formats de fichiers supportés par le programme
+<code class="docutils literal"><span class="pre">Seq2Grf</span></code>, la construction de l’automate de séquences et l’utilisation
+de jokers.</p>
+<div class="section" id="corpus-de-sequences">
+<h2>Corpus de séquences<a class="headerlink" href="#corpus-de-sequences" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Nous appelons <em>corpus de séquences</em> ou <em>corpus qualifié</em> une liste de
+séquences d’un ou plusieurs mots que l’on veut reconnaître par une
+grammaire locale représentée par un seul graphe.</p>
+<p>Le corpus de séquences est stocké dans un seul fichier qui peut avoir
+l’un des formats suivants :</p>
+<ul class="simple">
+<li>fichiers texte brut, dans lequel les séquences sont délimitées par
+des fins de lignes</li>
+<li>fichiers <code class="docutils literal"><span class="pre">SNT</span></code> déjà prétraités par ce menu : les séquences sont
+délimitées par <code class="docutils literal"><span class="pre">{STOP}</span></code></li>
+<li>fichiers <code class="docutils literal"><span class="pre">TEILite</span></code> dont les séquences sont délimitées par un tag
+<code class="docutils literal"><span class="pre">xml</span></code> de la forme : <code class="docutils literal"><span class="pre">&lt;seg</span> <span class="pre">type=&quot;sequence&quot;&gt;example&lt;/seg&gt;}</span></code></li>
+</ul>
+<p>Puisque le corpus contient des séquences spécifiques, il doit être fait
+à la main. Cela signifie que vous devez soit écrire toutes les séquences
+dans un fichier texte brut et les séparer par une fin de ligne
+(figure&nbsp;[fig8-1CorpusTxt]), soit insérer la balise <code class="docutils literal"><span class="pre">XML</span></code> spécifique
+dans un document existant <code class="docutils literal"><span class="pre">TEILite</span></code> (figure&nbsp;[fig8-3CorpusTEI]). Le
+prétraitement des documents <code class="docutils literal"><span class="pre">TXT</span></code> ou <code class="docutils literal"><span class="pre">XML</span></code> génère un fichier <code class="docutils literal"><span class="pre">SNT</span></code>
+qui est utilisé pour la construction de l’automate de séquences
+(figure&nbsp;[fig8-2CorpusSNT]). Ce fichier peut être utilisé comme une
+entrée. Le graphe produit ne reconnaîtra que les séquences qui sont
+correctement délimitées. La production de grammaires locales est
+automatique uniquement à partir d’un corpus de séquences bien définies.
+Si vous disposez d’un tel corpus, alors le gain de temps est
+considérable.</p>
+<p>[h!]0.5 <img alt="SNT[fig8-2CorpusSNT]" src="resources/img/fig8-2tomorrowSNT.png" /></p>
+<p>[h!]0.5 <img alt="SNT[fig8-2CorpusSNT]" src="resources/img/fig8-2tomorrowSNT.png" /></p>
+<p>[h!] <a class="reference internal" href="resources/img/fig8-3tomorrowTEI.png"><img alt="TEILite[fig8-3CorpusTEI]" src="resources/img/fig8-3tomorrowTEI.png" style="width: 14.00000cm;" /></a></p>
+</div>
+<div class="section" id="utilisation">
+<h2>Utilisation<a class="headerlink" href="#utilisation" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Pour créer un automate de séquences, cliquez sur “Séquence Construct
+Automate” dans le menu “Text”. Vous verrez alors apparaître la fenêtre
+de la figure&nbsp;[fig8-4Menu1].</p>
+<p>Cette fenêtre vous permet de définir les paramètres pour produire un
+automate séquence. Vous devez suivre ces trois étapes :</p>
+<ul>
+<li><p class="first">choisissez le corpus séquences : celui-ci peut être un fichier dont
+le format est l’un des trois formats décrits dans la section
+précédente. Le format de fichier est automatiquement détecté en
+fonction de l’extension de fichier.</p>
+</li>
+<li><p class="first">définissez les options spécifiques : “Apply the beautifying
+algorithm” placera chaque boîte de manière à ce que le graphe
+résultant soit le plus petit et le plus facile à lire que possible.
+“Exact case matching” mettra les tokens littéraux entre accolades
+dans le graphe afin que ceui-ci ne reconnaisse pas des tokens avec
+les mêmes lettres mais avec des différences de casse.</p>
+<p>Vous pouvez définir des options supplémentaires pour produire un
+graphe qui permet une reconnaissance approximative : vous pouvez
+fixer le nombre de jokers à utiliser pour produire de nouvelles
+séquences dérivées des séquences du corpus original, et choisir le
+joker approprié. Tous les détails sur l’utilisation des jokers se
+trouvent dans la section [approximation]</p>
+</li>
+<li><p class="first">choisissez le répertoire où le graphe sera enregistré.</p>
+</li>
+</ul>
+<p>[h!]0.5 <a class="reference internal" href="resources/img/fig8-4Menu2.png"><img alt="Menu options de l’automate de séquences[fig8-4Menu2]" src="resources/img/fig8-4Menu2.png" style="width: 8.00000cm;" /></a></p>
+<p>[h!]0.5 <a class="reference internal" href="resources/img/fig8-4Menu2.png"><img alt="Menu options de l’automate de séquences[fig8-4Menu2]" src="resources/img/fig8-4Menu2.png" style="width: 8.00000cm;" /></a></p>
+<p>Vous pouvez voir figures&nbsp;[fig8-5GRFnoBeautify] et &nbsp;[fig8-6GRFBeautify]
+les graphes sans jokers produits avec ou sans “beautify”.</p>
+<p>[h!]0.5 <a class="reference internal" href="resources/img/fig8-6GRFBeautify.png"><img alt="Automate avec l’option “beautify”[fig8-6GRFBeautify]" src="resources/img/fig8-6GRFBeautify.png" style="width: 8.00000cm;" /></a></p>
+<p>[h!]0.5 <a class="reference internal" href="resources/img/fig8-6GRFBeautify.png"><img alt="Automate avec l’option “beautify”[fig8-6GRFBeautify]" src="resources/img/fig8-6GRFBeautify.png" style="width: 8.00000cm;" /></a></p>
+</div>
+<div class="section" id="recherche-par-approximation">
+<h2>Recherche par approximation<a class="headerlink" href="#recherche-par-approximation" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Lorsque vous effectuez un “Locate” sur un texte en utilisant un graphe
+produit avec le programme <code class="docutils literal"><span class="pre">Seq2Grf</span></code>, vous trouverez uniquement des
+séquences présentes dans le corpus de séquences original. Des séquences
+proches de celles du corpus original peuvent être présentes dans le
+texte et être ignorées parce qu’elles ne figurent pas dans ce corpus.
+Ces séquences devraient être incluses dans l’automate de séquences. Afin
+d’inclure ces séquences, vous devez appliquer les trois sortes de jokers
+et produire ainsi un graphe qui reconnaît toutes les séquences du
+corpus, et les nouvelles séquences . Chaque joker, permet d’appliquer
+une opération pour générer de nouvelles séquences.</p>
+<ul class="simple">
+<li>insertion : pour chaque séquence, ajouter à l’automate toutes les
+séquences où <code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code> a été inséré entre deux mots de la séquence
+originale.</li>
+<li>remplacement : pour chaque séquence, ajouter à l’automate toutes les
+séquences où <span class="math">\(i\)</span> tokens ont été remplacés par <code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code></li>
+<li>suppression: pour chaque séquence, ajouter à l’automate toutes les
+séquences où un token a été supprimé</li>
+</ul>
+<p>Chacune de ces opérations peut être appliquée plusieurs fois aux
+séquences originales. L’application de cette grammaire à un texte permet
+d’introduire des approximations dans la recherche des séquences du
+texte.</p>
+<p>Si les jokers sont utilisés, les graphes produits suivent les règles
+suivantes :</p>
+<ul class="simple">
+<li>les séquences originales et les séquences dérivées sont incluses dans
+l’automate,</li>
+<li>aucune séquence vide, ni une séquence composée uniquement de jokers
+ne seront ajoutées à ce graphe (de telles séquences peuvent être
+produites par des suppressions ou des remplacements sur des séquences
+courtes)</li>
+<li>pas d’insertion de jokers au début ou à la fin d’une séquence</li>
+<li>chaque token d’une séquence y compris le premier et le dernier
+peuvent être remplacés par un joker</li>
+</ul>
+<p>Les graphes produits en utilisant des jokers contiennent de nombreuses
+séquences erronées et doivent être confrontées avec le corpus au moyen
+de <code class="docutils literal"><span class="pre">Locate</span></code> pour ne garder que les séquences pertinentes. Ces
+séquences peuvent être utilisées pour produire un nouveau graphe, que
+vous voudrez peut-être garder.</p>
+<p>Le graphe de la figure &nbsp;[fig8-7GRF1replace] a été produit avec
+remplacement de 1 token et avec l’option “beautifying” activée. (cf.
+figure &nbsp;[fig8-2CorpusSNT])</p>
+<div class="figure" id="id1">
+<a class="reference internal image-reference" href="resources/img/fig8-7GRF1replace.png"><img alt="Automate avec un remplacement permis[fig8-7GRF1replace]" src="resources/img/fig8-7GRF1replace.png" style="width: 8.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Automate avec un remplacement permis[fig8-7GRF1replace]</span></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-fr.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Automate de Séquences</a><ul>
+<li><a class="reference internal" href="#corpus-de-sequences">Corpus de séquences</a></li>
+<li><a class="reference internal" href="#utilisation">Utilisation</a></li>
+<li><a class="reference internal" href="#recherche-par-approximation">Recherche par approximation</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-fr.html">Documentation overview</a><ul>
+      <li>Previous: <a href="07-text_automaton_FR_utf8.html" title="Chapitre précédent">Automate du texte</a></li>
+      <li>Next: <a href="09-lexicon-grammar_FR_utf8.html" title="Chapitre suivant">Lexique-grammaire</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/08-sequence-automaton_FR_utf8.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, SCTB.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/08-sequence-automaton_FR_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
