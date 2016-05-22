@@ -1,0 +1,406 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation d’Unitex &mdash; documentation Unitex-fr 1.0.1</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Unitex-fr 1.0.1" href="Unitex-fr.html" />
+    <link rel="next" title="Chargement d’un texte" href="02-loading_texts_FR_utf8.html" />
+    <link rel="prev" title="Introduction" href="00-introduction_FR_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation-dunitex">
+<h1>Installation d’Unitex<a class="headerlink" href="#installation-dunitex" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Unitex est un système multi-plateformes capable de fonctionner aussi
+bien sous Windows que sous Linux ou OS&nbsp;X. Ce chapitre décrit
+l’installation et le lancement d’Unitex pour chacun de ces systèmes. Il
+présente également les procédures d’ajout de nouvelles langues et de
+désinstallation.</p>
+<div class="section" id="licences">
+<h2>Licences<a class="headerlink" href="#licences" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Unitex est un logiciel libre. Cela signifie que le code source des
+programmes est distribué avec le logiciel, et que chacun peut le
+modifier et le redistribuer. Le code des programmes d’Unitex est sous
+licence LGPL (<a href="#id1"><span class="problematic" id="id2">:raw-latex:`\cite{LGPL}`</span></a>), à l’exception de&nbsp;:</p>
+<ol class="arabic simple">
+<li>la bibliothèque de manipulation d’expressions régulières TRE de Ville
+Laurikari (<a href="#id3"><span class="problematic" id="id4">:raw-latex:`\cite{TRE}`</span></a>), qui est sous une licence du
+genre des licences BSD à 2 clauses&nbsp;;</li>
+<li>la bibliothèque <code class="docutils literal"><span class="pre">wingetopt</span></code> de Todd Miller et de la Fondation
+NetBSD, également sous une licence du genre des licences BSD à 2
+clauses, plus permissive que la licence LPGL&nbsp;;</li>
+<li>l’analyseur syntaxique Xerces2 Java Parser, de l’Apache Software
+Foundation, sous licence Apache&nbsp;;</li>
+<li>la bibliothèque LibYAML de Kirill Simonov, qui est sous licence MIT,
+également plus permissive que la licence LGPL&nbsp;;</li>
+<li>la bibliothèque SVNKit de TMate Software, sous licence TMate.</li>
+</ol>
+<p>La licence LGPL est plus permissive que la licence GPL, car elle permet
+d’utiliser du code LGPL dans des logiciels non libres. Dans les deux
+cas, le logiciel peut librement être utilisé et distribué.</p>
+<p>Toutes les ressources linguistiques distribuées avec Unitex sont
+soumises à la licence LGPLLR (<a href="#id5"><span class="problematic" id="id6">:raw-latex:`\cite{LGPLLR}`</span></a>).</p>
+<p>Le texte complet des licences LGPL, BSD à 2 clauses, Apache, MIT, TMate
+et LGPLLR se trouve dans les annexes à la fin de ce manuel.</p>
+</div>
+<div class="section" id="environnement-dexecution-java">
+<h2>Environnement d’exécution Java<a class="headerlink" href="#environnement-dexecution-java" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Unitex est composé d’une interface graphique écrite en Java et de
+programmes externes écrits en <em>C/C-.05em-.1em</em>. Ce mélange de langages
+de programmation permet d’avoir une application rapide et portable sous
+différents systèmes d’exploitation.</p>
+<p>Afin de pouvoir utiliser l’interface graphique, il faut préalablement
+installer un environnement d’exécution, communément appelé machine
+virtuelle ou JRE (Java Runtime Environment).</p>
+<p>Pour fonctionner en mode graphique, Unitex nécessite une version 1.6 (ou
+plus récente) de Java. Si vous avez une version trop ancienne de Java,
+Unitex se bloquera après que vous ayez choisi votre langue de travail.</p>
+<p>Vous pouvez télécharger librement la machine virtuelle correspondant à
+votre système d’exploitation sur le site de Sun Microsystems
+(<a href="#id7"><span class="problematic" id="id8">:raw-latex:`\cite{site-java}`</span></a>) à l’adresse suivante :
+<a class="reference external" href="http://java.sun.com">http://java.sun.com</a>.</p>
+<p>Si vous travaillez sous Linux ou OS X, ou si vous utilisez une version
+de Windows gérant des comptes personnels pour les utilisateurs, il vous
+faudra demander à votre administrateur système d’installer Java.</p>
+</div>
+<div class="section" id="programme-dinstallation">
+<h2>Programme d’installation<a class="headerlink" href="#programme-dinstallation" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Le programme d’installation d’Unitex/GramLab peut être téléchargé depuis
+cette page&nbsp;:</p>
+<p><a href="#id14"><span class="problematic" id="id15">`\\UnitexURLLatestReleases &lt;\UnitexURLLatestReleases&gt;`__</span></a></p>
+<div class="section" id="sous-windows">
+<h3>Sous Windows<a class="headerlink" href="#sous-windows" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le nom du fichier téléchargé sera par exemple&nbsp;:</p>
+<p>Ensuite, double-cliquez sur ce fichier et suivez les instructions
+(fig.&nbsp;[fig-installer]). Il est recommandé de désinstaller toute version
+existante avant d’en installer une nouvelle. Unitex/GramLab sera
+installé dans un répertoire (dossier) situé de préférence dans le
+répertoire <code class="docutils literal"><span class="pre">Program</span> <span class="pre">Files</span></code>, et qui sera appelé dans ce manuel le
+répertoire système Unitex.</p>
+<div class="figure" id="id11">
+<a class="reference internal image-reference" href="resources/img/installer.png"><img alt="Programme d’installation sous Windows[fig-installer]" src="resources/img/installer.png" style="width: 13.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Programme d’installation sous Windows[fig-installer]</span></p>
+</div>
+<p>Une fois l’installation terminée, une icône Unitex et une icône GramLab
+apparaissent sur le bureau&nbsp;: double-cliquez dessus pour lancer Unitex ou
+GramLab (voir&nbsp;[section-first-use]). (Si le programme d’installation n’a
+pas créé ces icônes, ouvrez le répertoire Unitex système&nbsp;: il contient
+plusieurs sous-répertoires, dont un est <code class="docutils literal"><span class="pre">App</span></code>. Ce dernier répertoire
+contient deux fichiers <code class="docutils literal"><span class="pre">Unitex.jar</span></code> et <code class="docutils literal"><span class="pre">GramLab.jar</span></code>. Ce sont les
+fichiers Java qui lancent les interfaces graphiques. Double-cliquez sur
+l’un d’entre eux pour lancer Unitex ou GramLab
+(voir&nbsp;[section-first-use]). Pour faciliter le lancement du programme, il
+est conseillé de créer des raccourcis vers ces fichiers sur le bureau.)</p>
+<p>Si vous désirez installer Unitex sur une machine Windows
+multi-utilisateurs, il est préférable de demander à votre administrateur
+de le faire. Si vous êtes le seul utilisateur de votre machine, vous
+pouvez effectuer l’installation vous-même.</p>
+<p>Le programme d’installation sous Windows peut aussi être lancé en ligne
+de commande et dans ce cas il accepte plusieurs paramètres optionnels.
+En voici quelques-uns&nbsp;:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">/AllUsers</span></code></p>
+<div class="line-block">
+<div class="line">Par défaut i’installation vaudra pour tous les utilisateurs</div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">/CurrentUser</span></code></p>
+<div class="line-block">
+<div class="line">Par défaut i’installation vaudra pour l’utilisateur seulement</div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">/D</span> <span class="pre">C:\path\without</span> <span class="pre">quotes\</span></code></p>
+<div class="line-block">
+<div class="line">Spécifie le répertoire d’installation par défaut</div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">/NCRC</span></code></p>
+<div class="line-block">
+<div class="line">Saute le contrôle de redondance cyclique</div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">/S</span></code></p>
+<p>Supprime toutes les questions</p>
+</li>
+</ul>
+<p>Sous Windows&nbsp;7, on peut avoir des problèmes avec le fichier de
+configuration d’Unitex, car Unitex essaie de le créer dans le
+sous-répertoire Unitex et Windows&nbsp;7 le lui interdit.</p>
+</div>
+<div class="section" id="sous-gnu-linux-et-os-x">
+<h3>Sous GNU/Linux et OS&nbsp;X<a class="headerlink" href="#sous-gnu-linux-et-os-x" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le nom du fichier téléchargé sera par exemple&nbsp;:</p>
+<p>Donnez-lui les droits d’exécution, par exemple par&nbsp;:</p>
+<p>chmod a+x</p>
+<p>Le fichier <code class="docutils literal"><span class="pre">.run</span></code> est une archive qu’on décompresse en l’exécutant&nbsp;:</p>
+<p>./</p>
+<p>Le fichier d’installation sous GNU/Linux et OS&nbsp;X accepte plusieurs
+paramètres de ligne de commande optionnels. En voici quelques-uns&nbsp;:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">--confirm</span></code></p>
+<div class="line-block">
+<div class="line">Demander avant de lancer le script d’installation</div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--quiet</span></code></p>
+<div class="line-block">
+<div class="line">N’afficher que les messages d’erreur</div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--noexec</span></code></p>
+<div class="line-block">
+<div class="line">Ne pas lancer le script d’installation</div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--target</span> <span class="pre">dir</span></code></p>
+<p>Spécifier le répertoire d’installation par défaut</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="installation-manuelle">
+<h2>Installation manuelle<a class="headerlink" href="#installation-manuelle" title="Lien permanent vers ce titre">¶</a></h2>
+<p>On peut aussi installer Unitex/GramLab manuellement à l’aide du paquet
+de distribution. Téléchargez-le depuis cette page&nbsp;:</p>
+<p><a href="#id14"><span class="problematic" id="id16">`\\UnitexURLLatestReleases/source &lt;\UnitexURLLatestReleases/source&gt;`__</span></a></p>
+<p>Le nom du fichier téléchargé sera par exemple&nbsp;:</p>
+<p>Créez un répertoire que vous nommez par exemple Unitex, de préférence
+dans le répertoire <code class="docutils literal"><span class="pre">Program</span> <span class="pre">Files</span></code>, et qui sera appelé dans ce manuel
+le répertoire système Unitex. Décompressez-y le paquet de distribution.</p>
+<p>Si votre ordinateur est sous un des systèmes d’exploitation suivants,
+l’installation est terminée&nbsp;: Windows (32 bits ou 64 bits), GNU/Linux
+(i686 ou x86_64) et OS&nbsp;X (10.7+). (S’il fonctionne sous un autre
+système Unix, comme FreeBSD, ou s’il a une autre architecture de
+processeur, comme ARM, allez dans le répertoire <code class="docutils literal"><span class="pre">App/install</span></code> et
+lancez&nbsp;:</p>
+<p><code class="docutils literal"><span class="pre">sh</span> <span class="pre">setup</span></code></p>
+<p>Ce script vérifie si Java est installé, compile les sources C++, crée
+les répertoires personnels de travail Unitex et GramLab et met en place
+des raccourcis sur le bureau <a class="footnote-reference" href="#id10" id="id9">[1]</a>.)</p>
+<p>Une fois l’installation terminée, le répertoire système Unitex contient
+plusieurs sous-répertoires dont un est <code class="docutils literal"><span class="pre">App</span></code>.</p>
+<ul class="simple">
+<li>Sous Windows&nbsp;: <code class="docutils literal"><span class="pre">App</span></code> contient des fichiers <code class="docutils literal"><span class="pre">Unitex.jar</span></code> et
+<code class="docutils literal"><span class="pre">GramLab.jar</span></code>. Ce sont les fichiers Java qui lancent les interfaces
+graphiques. Double-cliquez sur l’un d’entre eux pour lancer Unitex ou
+GramLab (voir&nbsp;[section-first-use]). Pour faciliter le lancement du
+programme, il est conseillé de créer des raccourcis vers ces fichiers
+sur le bureau.</li>
+<li>Sous Linux ou OS&nbsp;X: le répertoire <code class="docutils literal"><span class="pre">App</span></code> contient deux scripts shell
+<code class="docutils literal"><span class="pre">Unitex</span></code> et <code class="docutils literal"><span class="pre">GramLab</span></code>. Lancez l’un d’entre eux pour démarrer
+Unitex or GramLab (voir&nbsp;[section-first-use]). Si vous avez lancé le
+script d’installation, il a normalement fait apparaitre sur le bureau
+des raccourcis vers ces fichiers.</li>
+</ul>
+</div>
+<div class="section" id="premiere-utilisation">
+<h2>Première utilisation<a class="headerlink" href="#premiere-utilisation" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Si vous travaillez sous Windows, le programme vous demandera de choisir
+un répertoire personnel de travail , que vous pourrez changer
+ultérieurement dans “Info&gt;Preferences...&gt;Di-rectories”. Pour créer un
+répertoire, cliquez sur l’icône représentant un dossier (voir
+figure&nbsp;[fig-creation-personal-directory]).</p>
+<p>Sous Linux et OS X, le programme créera automatiquement un répertoire
+personnel de travail, appelé <code class="docutils literal"><span class="pre">/unitex</span></code>, dans votre répertoire
+<code class="docutils literal"><span class="pre">$HOME</span></code>.</p>
+<p>Le répertoire personnel de travail, ou répertoire de l’utilisateur, vous
+permettra de stocker vos données Unitex personnelles. Pour chaque langue
+que vous utiliserez, le programme copiera l’arborescence de la langue
+dans votre répertoire de travail, à l’exception des dictionnaires. Vous
+pourrez ainsi modifier à votre guise votre copie des données sans
+risquer d’endommager les données du système, stockées dans le répertoire
+système Unitex.</p>
+<div class="figure" id="id12">
+<a class="reference internal image-reference" href="resources/img/fig1-1.png"><img alt="Première utilisation sous Windows" src="resources/img/fig1-1.png" style="width: 6.30000cm;" /></a>
+<p class="caption"><span class="caption-text">Première utilisation sous Windows</span></p>
+</div>
+<div class="figure" id="id13">
+<a class="reference internal image-reference" href="resources/img/fig1-2.png"><img alt="Première utilisation sous Linux" src="resources/img/fig1-2.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Première utilisation sous Linux</span></p>
+</div>
+</div>
+<div class="section" id="ajout-de-nouvelles-langues">
+<h2>Ajout de nouvelles langues<a class="headerlink" href="#ajout-de-nouvelles-langues" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Il y a deux manières d’ajouter des langues. Si vous désirez ajouter une
+nouvelle langue accessible à tous les utilisateurs, il vous faut copier
+le répertoire correspondant à cette langue dans le répertoire système
+Unitex, ce qui nécessite d’avoir les droits d’accès à ce répertoire (il
+vous faudra peut-être demander à votre administrateur système de le
+faire). En revanche, si vous êtes le seul utilisateur concerné par la
+langue, vous pouvez copier le répertoire en question dans votre
+répertoire de travail. Vous pourrez ainsi travailler sur cette langue
+sans qu’elle soit proposée aux autres utilisateurs.</p>
+</div>
+<div class="section" id="desinstallation">
+<h2>Désinstallation<a class="headerlink" href="#desinstallation" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Quel que soit le système sous lequel vous travaillez, il vous suffit de
+supprimer le répertoire <code class="docutils literal"><span class="pre">Unitex</span></code> pour effacer tous les fichiers du
+système. Sous Windows, vous devrez ensuite supprimer le raccourci vers
+<code class="docutils literal"><span class="pre">Unitex.jar</span></code> si vous en avez créé un ; même chose sous Linux ou OS X
+si vous avez créé un alias.</p>
+</div>
+<div class="section" id="unitex-pour-les-developpeurs">
+<h2>Unitex pour les développeurs<a class="headerlink" href="#unitex-pour-les-developpeurs" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Si vous êtes programmeur, cela peut vous intéresser de lier votre code
+avec les sources C++ d’Unitex. Pour faciliter cette opération, vous
+pouvez compiler Unitex en tant que bibliothèque dynamique qui contient
+toutes les fonctions Unitex, sauf les <code class="docutils literal"><span class="pre">main</span></code>s, bien sûr. La page
+<a class="reference external" href="http://docs.unitexgramlab.org/projects/unitex-library/fr/latest/">http://docs.unitexgramlab.org/projects/unitex-library/fr/latest/</a> est une
+documentation sur la bibliothèque. Les sources C++ d’Unitex contiennent
+du code pour des bindings Java JNI, Ruby et Microsoft .NET. La page
+<a class="reference external" href="https://github.com/patwat/python-unitex">https://github.com/patwat/python-unitex</a> contient des bindings Python.</p>
+<p>Sous Linux/OS X, tapez&nbsp;:</p>
+<p><code class="docutils literal"><span class="pre">make</span> <span class="pre">LIBRARY=yes</span></code></p>
+<p>et vous obtiendrez une bibliothèque nommée <code class="docutils literal"><span class="pre">libunitex.so</span></code>. Si vous
+souhaitez produire DLL Windows nommée <code class="docutils literal"><span class="pre">unitex.dll</span></code>, utilisez les
+commandes suivantes:</p>
+<p>Windows: <code class="docutils literal"><span class="pre">make</span> <span class="pre">SYSTEM=windows</span> <span class="pre">LIBRARY=yes</span></code></p>
+<p>Cross-compilation avec mingw32: <code class="docutils literal"><span class="pre">make</span> <span class="pre">SYSTEM=mingw32</span> <span class="pre">LIBRARY=yes</span></code></p>
+<p>dans tous les cas, vous obtiendrez aussi un programme nommé
+<code class="docutils literal"><span class="pre">Test_lib</span></code>(<code class="docutils literal"><span class="pre">.exe</span></code>). Si tout a bien fonctionné, ce programme
+devrait afficher l’écran suivant:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Expression</span> <span class="n">converted</span><span class="o">.</span>
+<span class="n">Reg2Grf</span> <span class="n">exit</span> <span class="n">code</span><span class="p">:</span> <span class="mi">0</span>
+
+<span class="c1">#Unigraph</span>
+<span class="n">SIZE</span> <span class="mi">1313</span> <span class="mi">950</span>
+<span class="n">FONT</span> <span class="n">Times</span> <span class="n">New</span> <span class="n">Roman</span><span class="p">:</span>  <span class="mi">12</span>
+<span class="n">OFONT</span> <span class="n">Times</span> <span class="n">New</span> <span class="n">Roman</span><span class="p">:</span><span class="n">B</span> <span class="mi">12</span>
+<span class="n">BCOLOR</span> <span class="mi">16777215</span>
+<span class="n">FCOLOR</span> <span class="mi">0</span>
+<span class="n">ACOLOR</span> <span class="mi">12632256</span>
+<span class="n">SCOLOR</span> <span class="mi">16711680</span>
+<span class="n">CCOLOR</span> <span class="mi">255</span>
+<span class="n">DBOXES</span> <span class="n">y</span>
+<span class="n">DFRAME</span> <span class="n">y</span>
+<span class="n">DDATE</span> <span class="n">y</span>
+<span class="n">DFILE</span> <span class="n">y</span>
+<span class="n">DDIR</span> <span class="n">y</span>
+<span class="n">DRIG</span> <span class="n">n</span>
+<span class="n">DRST</span> <span class="n">n</span>
+<span class="n">FITS</span> <span class="mi">100</span>
+<span class="n">PORIENT</span> <span class="n">L</span>
+<span class="c1">#</span>
+<span class="mi">7</span>
+<span class="s2">&quot;&lt;E&gt;&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">1</span> <span class="mi">5</span>
+<span class="s2">&quot;&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">0</span>
+<span class="s2">&quot;a&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">1</span> <span class="mi">6</span>
+<span class="s2">&quot;b&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">1</span> <span class="mi">4</span>
+<span class="s2">&quot;c&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">1</span> <span class="mi">6</span>
+<span class="s2">&quot;&lt;E&gt;&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span>
+<span class="s2">&quot;&lt;E&gt;&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">1</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<table class="docutils footnote" frame="void" id="id10" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id9">[1]</a></td><td>Si vous voulez uniquement compiler les sources C++, extrayez les
+fichiers du paquet de distribution, placez-vous dans le répertoire
+Src/C++/build et lancez make install.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-fr.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation d’Unitex</a><ul>
+<li><a class="reference internal" href="#licences">Licences</a></li>
+<li><a class="reference internal" href="#environnement-dexecution-java">Environnement d’exécution Java</a></li>
+<li><a class="reference internal" href="#programme-dinstallation">Programme d’installation</a><ul>
+<li><a class="reference internal" href="#sous-windows">Sous Windows</a></li>
+<li><a class="reference internal" href="#sous-gnu-linux-et-os-x">Sous GNU/Linux et OS&nbsp;X</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installation-manuelle">Installation manuelle</a></li>
+<li><a class="reference internal" href="#premiere-utilisation">Première utilisation</a></li>
+<li><a class="reference internal" href="#ajout-de-nouvelles-langues">Ajout de nouvelles langues</a></li>
+<li><a class="reference internal" href="#desinstallation">Désinstallation</a></li>
+<li><a class="reference internal" href="#unitex-pour-les-developpeurs">Unitex pour les développeurs</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-fr.html">Documentation overview</a><ul>
+      <li>Previous: <a href="00-introduction_FR_utf8.html" title="Chapitre précédent">Introduction</a></li>
+      <li>Next: <a href="02-loading_texts_FR_utf8.html" title="Chapitre suivant">Chargement d’un texte</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/01-installation_FR_utf8.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, SCTB.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/01-installation_FR_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

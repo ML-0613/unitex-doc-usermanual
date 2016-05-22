@@ -1,0 +1,872 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Grammaires locales &mdash; documentation Unitex-fr 1.0.1</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Unitex-fr 1.0.1" href="Unitex-fr.html" />
+    <link rel="next" title="Utilisation avancée des graphes" href="06-advanced-use_FR_utf8.html" />
+    <link rel="prev" title="Recherche d’expressions rationnelles" href="04-pattern_matching_FR_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="grammaires-locales">
+<h1>Grammaires locales<a class="headerlink" href="#grammaires-locales" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Les grammaires locales sont un moyen puissant de représenter la plupart
+des phéno- mènes linguistiques. La première section présentera le
+formalisme sur lesquel ces grammaires reposent. Nous verrons ensuite
+comment construire et présenter des grammaires avec Unitex.</p>
+<div class="section" id="formalisme-des-grammaires-locales">
+<h2>Formalisme des grammaires locales<a class="headerlink" href="#formalisme-des-grammaires-locales" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="grammaires-algebriques">
+<h3>Grammaires algébriques<a class="headerlink" href="#grammaires-algebriques" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les grammaires Unitex sont des variantes des grammaires algébriques,
+également appelées grammaires hors-contexte. Une grammaire algébrique
+est constituée de règles de réécriture. Voici une grammaire qui
+reconnaît n’importe quel nombre de caractères <span class="math">\(a\)</span>:</p>
+<p><span class="math">\(S \rightarrow\)</span> <span class="math">\(aS\)</span></p>
+<p><span class="math">\(S \rightarrow\)</span></p>
+<p>Les symboles figurant à gauche des règles sont appelés <em>symboles
+non-terminaux</em> car ils peuvent être réécrits. Les symboles qui ne
+peuvent pas être réécrits par des règles sont appelés <em>symboles
+terminaux</em>. Les membres droits des règles sont des suites de symboles
+non-terminaux et terminaux. Le symbole epsilon noté &nbsp; désigne le mot
+vide. Dans la grammaire ci-dessus, <span class="math">\(S\)</span> est un symbole non-terminal
+et <span class="math">\(a\)</span> un terminal. <span class="math">\(S\)</span> peut se réécrire soit en un
+<span class="math">\(a\)</span> suivi d’un <span class="math">\(S\)</span>, soit en mot vide. L’opération de
+réécriture par l’application d’une règle est appelée <em>dérivation</em>. On
+dit qu’une grammaire reconnaît un mot s’il existe une suite de
+dérivations qui produit ce mot. Le non-terminal qui sert de point de
+départ à la première dérivation est appelé <em>axiome</em>.</p>
+<p>La grammaire ci-dessus reconnaît ainsi le mot <em>aa</em>, car on peut obtenir
+ce mot depuis l’axiome <span class="math">\(S\)</span> en effectuant les dérivations
+suivantes:</p>
+<p>Dérivation 1: réécriture de l’axiome en <span class="math">\(aS\)</span></p>
+<p><span class="math">\(\rightarrow aS\)</span></p>
+<p>Dérivation 2: réécriture du <span class="math">\(S\)</span> du membre droit en <span class="math">\(aS\)</span></p>
+<p><span class="math">\(S\)</span> <span class="math">\(\rightarrow a\)</span> <span class="math">\(\rightarrow aaS\)</span></p>
+<p>Dérivation 3: réécriture du <span class="math">\(S\)</span> to</p>
+<p><span class="math">\(S\)</span> <span class="math">\(\rightarrow aS \rightarrow aa\)</span> <span class="math">\(\rightarrow aa\)</span></p>
+<p>On appelle <em>langage d’une grammaire</em> l’ensemble des mots reconnus par
+celle-ci. Les langages reconnus par les grammaires algébriques sont
+appelés <em>Languages algébriques</em> ou <em>Langages hors-contexte</em>.</p>
+</div>
+<div class="section" id="grammaires-algebriques-etendues">
+<h3>Grammaires algébriques étendues<a class="headerlink" href="#grammaires-algebriques-etendues" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les grammaires algébriques étendues sont des grammaires algébriques où
+les membres droits des règles ne sont plus des suites de symboles mais
+des expressions rationnelles. Ainsi, la grammaire reconnaissant une
+suite quelconque de <span class="math">\(a\)</span> peut se réécrire en une grammaire étendue
+d’une seule règle:</p>
+<p><span class="math">\(S \rightarrow\)</span> <span class="math">\(a^{*}\)</span></p>
+<p>Ces grammaires, également appelées <em>réseaux de transitions récursifs</em>
+(<em>RTN en Anglais</em>) ou <em>diagrammes de syntaxe</em>, se prêtent à une
+représentation graphique conviviale. En effet, le membre droit d’une
+règle peut être représenté par un graphe dont le nom est le membre
+gauche de la règle.</p>
+<p>Toutefois, les grammaires Unitex ne sont pas exactement des grammaires
+algébriques étendues, car elles intégrent la notion de <em>transduction</em>.
+Cette notion, empruntée aux automates à états finis, signifie qu’une
+grammaire peut produire des sorties. Dans un souci de clarté, nous
+utiliserons malgré tout les termes grammaire ou graphe. Quand une
+grammaire produira des sorties, nous utiliserons le terme
+<em>transducteur</em>, par extension de la définition d’un transducteur dans le
+domaine des automates à états finis.</p>
+</div>
+</div>
+<div class="section" id="edition-de-graphes">
+<h2>Édition de graphes<a class="headerlink" href="#edition-de-graphes" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="creation-dun-graphe">
+<h3>Création d’un graphe<a class="headerlink" href="#creation-dun-graphe" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Pour créer un graphe, cliquez sur “New” dans le menu “FSGraph”
+([fig-fsgraph-menu]).</p>
+<div class="figure" id="id7">
+<a class="reference internal image-reference" href="resources/img/fig5-1.png"><img alt="Menu FSGraph[fig-fsgraph-menu]" src="resources/img/fig5-1.png" style="width: 13.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Menu FSGraph[fig-fsgraph-menu]</span></p>
+</div>
+<p>On voit alors apparaitre une fenêtre comme celle de la
+figure&nbsp;[fig-new-graph].</p>
+<div class="figure" id="id8">
+<a class="reference internal image-reference" href="resources/img/fig5-2.png"><img alt="Graphe vierge[fig-new-graph]" src="resources/img/fig5-2.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe vierge[fig-new-graph]</span></p>
+</div>
+<p>Pour pouvoir importer des graphes Intex dans Unitex, il faut les
+convertir en Unicode. Le procédé de conversion est le même que pour les
+textes (voir section&nbsp;[section-conversion-texte-unicode]).</p>
+<p>Le symbole en forme de flèche est <em>l’état initial</em> du graphe. Le symbole
+composé d’un rond contenant un carré est <em>l’état final</em> du graphe. La
+grammaire reconnaît les séquences décrites par les chemins allant de
+l’état initial à l’état final</p>
+<p>Pour créer une boîte, cliquez sur la fenêtre tout en appuyant sur la
+touche Ctrl. Vous verrez alors apparaître un carré bleu symbolisant la
+boîte vide créée (voir figure &nbsp;[fig-box-creation]). Lors de la création
+d’une boîte, celle-ci est automatiquement sélectionnée.</p>
+<div class="figure" id="id9">
+<a class="reference internal image-reference" href="resources/img/fig5-3.png"><img alt="Création d’une boîte[fig-box-creation]" src="resources/img/fig5-3.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Création d’une boîte[fig-box-creation]</span></p>
+</div>
+<p>Le contenu de la boîte s’affiche dans la zone de texte située en haut de
+la fenêtre (figure&nbsp;[fig-box-creation]). La boîte créée contient le
+symbole <code class="docutils literal"><span class="pre">&lt;E&gt;</span></code> qui représente le mot vide epsilon. Remplacez ce symbole
+par le texte <code class="docutils literal"><span class="pre">I+you+he+she+it+we+they</span></code> et validez en appuyant sur la
+touche Entrée. Vous venez de créer une boîte contenant sept lignes (voir
+figure&nbsp;[fig-pronoun-box]).</p>
+<div class="figure" id="id10">
+<a class="reference internal image-reference" href="resources/img/fig5-4.png"><img alt="Boîte contenant ``I+you+he+she+it+we+they``\ [fig-pronoun-box]" src="resources/img/fig5-4.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Boîte contenant <code class="docutils literal"><span class="pre">I+you+he+she+it+we+they</span></code>[fig-pronoun-box]</span></p>
+</div>
+<p>En effet, le caractère <code class="docutils literal"><span class="pre">+</span></code> sert de séparateur. La boîte apparaît sous
+la forme de lignes de texte rouge car elle n’est pour l’instant reliée à
+aucune autre. On utilise souvent ce type de boîtes pour insérer des
+commentaires dans un graphe.</p>
+<p>Si vous souhaitez ajouter un commentaire dans un graphe, vous devez
+créer une boîte qui commence par <code class="docutils literal"><span class="pre">/</span></code>. Le texte de la boîte est affiché
+en vert, et peut contenir des lignes vides. La boîte ne peut avoir, ni
+de transition entrante, ni de transition sortante (voir
+figure&nbsp;[comment-box]).</p>
+<div class="figure" id="id11">
+<a class="reference internal image-reference" href="resources/img/fig5-4b.png"><img alt="Boîte contenant un commentaire[comment-box]" src="resources/img/fig5-4b.png" style="width: 12.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Boîte contenant un commentaire[comment-box]</span></p>
+</div>
+<p>Pour relier une boîte à une autre, il faut cliquer sur la boîte de
+départ, puis sur la boîte de destination. S’il y a déjà une transition
+entre les deux boîtes, celle-ci est enlevée. Il est possible d’effectuer
+cette même opération en cliquant d’abord sur la boîte de destination,
+puis sur la boîte de départ tout en pressant sur la touche Shift. Dans
+notre exemple, une fois la boîte reliée à l’état initial et à l’état
+final du graphe, on obtient le graphe de la figure&nbsp;[fig-pronoun-graph]:</p>
+<div class="figure" id="id12">
+<a class="reference internal image-reference" href="resources/img/fig5-5.png"><img alt="Graphe reconnaissant des pronoms anglais[fig-pronoun-graph]" src="resources/img/fig5-5.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe reconnaissant des pronoms anglais[fig-pronoun-graph]</span></p>
+</div>
+<p>REMARQUE: si vous double-cliquez sur une boîte, vous relierez cette
+boîte à elle-même (voir figure&nbsp;[fig-loop-box]). Pour annuler,
+double-cliquez une nouvelle fois sur la boîte.</p>
+<div class="figure" id="id13">
+<a class="reference internal image-reference" href="resources/img/fig5-6.png"><img alt="Boîte reliée à elle-même[fig-loop-box]" src="resources/img/fig5-6.png" style="width: 4.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Boîte reliée à elle-même[fig-loop-box]</span></p>
+</div>
+<p>Cliquez sur “Save as...” dans le menu “FSGraph” pour enregistrer le
+graphe. Par défaut, Unitex propose d’enregistrer le graphe dans le
+sous-répertpoire <code class="docutils literal"><span class="pre">Graphs</span></code> de votre répertoire de travail. Vous pouvez
+voir si le graphe a été modifié après le dernier enregistrement en
+vérifiant si le titre du graphe contient le texte <code class="docutils literal"><span class="pre">(Unsaved)</span></code>.</p>
+<p>Un graphe peut contenir des boucles. Une boucle peut entourer une seule
+boite, comme dans la fig.&nbsp;[fig-loop-box], ou plusieurs, comme dans la
+fig.&nbsp;[multi-selection]. Le contenu de la boucle sera reconnu n’importe
+quel nombre de fois en séquence. On peut fixer des limites au nombre de
+fois, mais uniquement pour une boucle autour d’une seule boite: voir la
+section&nbsp;[nb-repetitions].</p>
+<p>Lorsqu’on modifie un graphe, on peut faire apparaître, par un clic
+droit, un menu contextuel (fig.&nbsp;[contextual-menu]) qui permet
+d’effectuer les opérations les plus usuelles&nbsp;:</p>
+<div class="figure" id="id14">
+<a class="reference internal image-reference" href="resources/img/fig5-6b.png"><img alt="Menu contextuel[contextual-menu]" src="resources/img/fig5-6b.png" style="width: 7.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Menu contextuel[contextual-menu]</span></p>
+</div>
+<ul class="simple">
+<li>créer une boîte</li>
+<li>enregistrer ou imprimer le graphe courant ou modifier les paramètres
+de la page</li>
+<li>les menus habituels “Tools”, “Format” et “Zoom” également accessibles
+dans le menu “FSGraph”</li>
+</ul>
+<p>Si une ou plusieurs boîtes sont sélectionnées, les menus suivants
+deviennent accessibles, et permettent d’effectuer plusieurs types
+d’opérations sur cet ensemble de boîtes. Sinon, ils sont inutiles et
+donc désactivés.</p>
+<ul class="simple">
+<li>entourer les boîtes sélectionnées avec la définition d’une variable
+d’entrée ou de sortie, d’un contexte au sens de la
+section&nbsp;[section-contexts], ou des délimiteurs du mode morphologique.
+Ces opérations sont également réalisables avec la barre d’outils de
+la fenêtre d’édition du graphe (voir section&nbsp;[toolbar-commands]).</li>
+<li>fusionner les boîtes sélectionnées</li>
+<li>exporter les boîtes sélectionnées en tant que nouveau graphe</li>
+</ul>
+</div>
+<div class="section" id="sous-graphes">
+<h3>Sous-graphes<a class="headerlink" href="#sous-graphes" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Pour faire appel à un sous-graphe, il faut indiquer son nom dans une
+boîte en le faisant précéder du caractère <code class="docutils literal"><span class="pre">:</span></code>. Si vous entrez dans une
+boîte le texte suivant:</p>
+<p><code class="docutils literal"><span class="pre">alpha+:beta+gamma+:E:\greek\delta.grf</span></code></p>
+<p>vous obtiendrez une boîte similaire à celle de la
+figure&nbsp;[fig-subgraph-call].</p>
+<p>Vous pouvez indiquer le nom complet du graphe (<code class="docutils literal"><span class="pre">E:\greek\delta.grf</span></code>)
+ou simplement le nom sans le chemin d’accès (<code class="docutils literal"><span class="pre">beta</span></code>); dans ce cas, le
+sous-graphe est supposé se trouver dans le même répertoire que le graphe
+qui y fait référence. Il est déconseillé d’utiliser des noms de graphes
+comportant des chemins absolus, car cela nuit à leur portabilité. Si
+vous utilisez un nom de graphe absolu, comme c’est ici le cas pour
+<code class="docutils literal"><span class="pre">E:\greek\delta.grf</span></code> le compilateur de graphe émettra un avertissement
+(voir figure&nbsp;[fig-warning-absolute-graph-name]).</p>
+<p>Pour les mêmes raisons de portabilité, il est déconseillé d’utiliser
+<code class="docutils literal"><span class="pre">\</span></code> ou <code class="docutils literal"><span class="pre">/</span></code> comme séparateur dans les noms de graphes. À la place, il
+vaut mieux utiliser le caractère <code class="docutils literal"><span class="pre">:</span></code> qui joue le rôle de séparateur
+universel, valable quel que soit le système sous lequel vous travaillez.
+On peut d’ailleurs voir sur la figure &nbsp;[fig-warning-absolute-graph-name]
+que c’est ce séparateur qui est utilisé en interne par le compilateur de
+graphe (<code class="docutils literal"><span class="pre">E::greek:delta.grf</span></code>).</p>
+<p><strong>Répertoire de dépôt</strong> [section-repository]</p>
+<p>Lorsqu’on souhaite réutiliser une grammaire <span class="math">\(X\)</span> dans une grammaire
+<span class="math">\(Y\)</span>, une pratique répandue est de recopier tous les graphes de
+<span class="math">\(X\)</span> dans le répertoire où se trouvent les graphes de <span class="math">\(Y\)</span>, ce
+qui pose deux problèmes :</p>
+<ul class="simple">
+<li>le nombre de graphes dans le répertoire devient vite très important&nbsp;;</li>
+<li>deux graphes ne peuvent pas avoir le même nom.</li>
+</ul>
+<p>Afin d’éviter cela, il est possible de stocker la grammaire <span class="math">\(X\)</span>
+dans un répertoire particulier, appelé <em>répertoire de dépôt</em>. Ce
+répertoire est une sorte de bibliothèque dans laquelle on peut ranger
+des graphes, et faire ensuite appel à ces graphes au moyen de <code class="docutils literal"><span class="pre">::</span></code> au
+lieu de <code class="docutils literal"><span class="pre">:</span></code>. Pour utiliser ce mécanisme, il faut tout d’abord définir
+le répertoire de dépôt dans le menu “Info&gt;Preferences...&gt;Directories”
+(voir figure [directories]). Choisissez votre répertoire dans le cadre
+“Graph repository”. Le répertoire de dépôt est propre à la langue de
+travail, vous n’êtes donc pas obligé d’utiliser le même répertoire pour
+plusieurs langues.</p>
+<div class="figure" id="id15">
+<a class="reference internal image-reference" href="resources/img/fig5-10.png"><img alt="Configuration du répertoire de dépôt[directories]" src="resources/img/fig5-10.png" style="width: 8.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Configuration du répertoire de dépôt[directories]</span></p>
+</div>
+<p>Supposons que l’on ait une arborescence comme celle de la figure
+[repository]. Si l’on souhaite faire appel au graphe <code class="docutils literal"><span class="pre">DET</span></code> qui se
+trouve dans le sous-répertoire <code class="docutils literal"><span class="pre">Johnson</span></code>, on utilisera l’appel</p>
+<p><code class="docutils literal"><span class="pre">::Det:Johnson:DET</span></code> (voir figure [repository-graph-call] <a class="footnote-reference" href="#id5" id="id1">[1]</a>).</p>
+<div class="figure" id="id16">
+<a class="reference internal image-reference" href="resources/img/fig5-11.png"><img alt="Exemple de répertoire de dépôt[repository]" src="resources/img/fig5-11.png" style="width: 3.90000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple de répertoire de dépôt[repository]</span></p>
+</div>
+<div class="figure" id="id17">
+<a class="reference internal image-reference" href="resources/img/fig5-12.png"><img alt="Appel un graphe du répertoire de dépôt[repository-graph-call]" src="resources/img/fig5-12.png" style="width: 6.70000cm;" /></a>
+<p class="caption"><span class="caption-text">Appel un graphe du répertoire de dépôt[repository-graph-call]</span></p>
+</div>
+<p>ASTUCE: si vous voulez éviter de mettre dans vos graphes un chemin
+compliqué comme <code class="docutils literal"><span class="pre">::Det:Johnson:DET</span></code>, vous pouvez créer un graphe nommé
+<code class="docutils literal"><span class="pre">DET</span></code> que vous placerez à la racine du répertoire de dépôt
+<code class="docutils literal"><span class="pre">D:\repository\DET.grf</span></code>). Ce graphe contiendra simplement un appel au
+graphe <code class="docutils literal"><span class="pre">::Det:Johnson:DET</span></code>. Vous pourrez alors mettre dans vos graphes
+un simple appel à <code class="docutils literal"><span class="pre">::DET</span></code>. Cela permet 1) de ne pas avoir de noms
+compliqués et 2) de pouvoir modifier les graphes du répertoire de dépôt
+sans avoir à modifier tous vos graphes. En effet, il vous suffira de
+mettre à jour le graphe situé à la racine du répertoire de dépôt.</p>
+<p>Les appels à des sous-graphes sont représentés dans les boîtes par des
+lignes sur fond gris (figure&nbsp;[fig-subgraph-call]), ou kaki dans le cas
+de sous-graphes à rechercher dans le répertoire de dépôt
+(figure&nbsp;[repository-graph-call]). Si le fichier <code class="docutils literal"><span class="pre">.grf</span></code> du sous-graphe
+n’est pas trouvé au chemin indiqué, Unitex cherchera le fichier
+<code class="docutils literal"><span class="pre">.fst2</span></code> de même nom. Si Unitex ne trouve ni le fichier <code class="docutils literal"><span class="pre">.grf</span></code> ni le
+fichier <code class="docutils literal"><span class="pre">.fst2</span></code>, l’appel au graphe manquant apparaît dans une ligne
+sur fond rouge.</p>
+<div class="figure" id="id18">
+<a class="reference internal image-reference" href="resources/img/fig5-9.png"><img alt="Les sous-graphes manquants apparaissent en rouge" src="resources/img/fig5-9.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Les sous-graphes manquants apparaissent en rouge</span></p>
+</div>
+<p>Sous Windows, vous pouvez ouvrir un sous-graphe en cliquant sur la ligne
+grisée tout en appuyant sur la touche Alt. Sous Linux, la combinaison
+&lt;Alt+Click&gt; est interceptée par le système <a class="footnote-reference" href="#id6" id="id2">[2]</a> : pour ouvrir un
+sous-graphe, faites un clic central sur son nom (avec le bouton central)
+ou faites un clic simultané (avec les boutons gauche et droit).</p>
+<p>La liste des graphes appelés par le graphe courant et celle des graphes
+qui appellent le graphe courant peuvent être affichées en cliquant sur
+le second et troisième bouton du quatrième groupe de boutons de la barre
+d’outils (figure&nbsp;[list-called-graphs]&nbsp;; voir aussi figure&nbsp;[fig-toolbar],
+section&nbsp;[toolbar-commands]). Dans ces listes de sous-graphes:</p>
+<ul class="simple">
+<li>les sous-graphes directement appelés par le graphe courant
+apparaissent avec leur simple nom de fichier</li>
+<li>les sous-graphes indirectement appelés par l’un des graphes appelés
+par le graphe courant apparaissent avec une flèche devant leurs nom</li>
+<li>les sous-graphes qui apparaissent dans des graphes appelés par le
+graphe courant sans être connectés et donc non traités ont leur nom
+en orange</li>
+<li>les sous-graphes non trouvés (ni en .grf ni en .fst2) apparaissent en
+rouge.</li>
+</ul>
+</div>
+<div class="section" id="manipulation-des-boites">
+<h3>Manipulation des boîtes<a class="headerlink" href="#manipulation-des-boites" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Vous pouvez sélectionner plusieurs boîtes au moyen de la souris. Pour
+cela, cliquez et déplacez la souris sans relâcher le bouton. Lorsque
+vous relâcherez le bouton, toutes les boîtes touchées par le rectangle
+de sélection seront sélectionnées et s’afficheront alors en blanc sur
+fond bleu (figure [multi-selection]).</p>
+<div class="figure" id="id19">
+<a class="reference internal image-reference" href="resources/img/fig5-13.png"><img alt="Sélection de plusieurs boîtes[multi-selection]" src="resources/img/fig5-13.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Sélection de plusieurs boîtes[multi-selection]</span></p>
+</div>
+<p>Vous pouvez sélectionner plusieurs boîtes en maintenant les touches
+&lt;CTRL&gt; et &lt;SHIFT&gt; et en cliquant sur chaque boîte à ajouter à la
+sélection. De cette manière, vous pouvez sélectionner plusieurs boîtes
+sans avoir à sélectionner une zone complète (figure [multi-selection2]).</p>
+<div class="figure" id="id20">
+<a class="reference internal image-reference" href="resources/img/fig5-13b.png"><img alt="Sélection de boîtes éloignées[multi-selection2]" src="resources/img/fig5-13b.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Sélection de boîtes éloignées[multi-selection2]</span></p>
+</div>
+<p>Lorsque des boîtes sont sélectionnées, vous pouvez les déplacer en
+cliquant et en déplaçant le curseur sans relâcher le bouton. Pour
+annuler la sélection, cliquez sur une zone vide du graphe ; si vous
+cliquez sur une boîte, toutes les boîtes de la sélection seront reliées
+à celle-ci.</p>
+<p>Vous pouvez effectuer un copier-coller sur plusieurs boîtes, comme dans
+la figure&nbsp;[copy-paste-multi-selection]. Pour cela, sélectionnez-les et
+appuyez sur &lt;Ctrl+C&gt; ou cliquez sur “Copy” dans le menu “Edit”. Votre
+sélection multiple est maintenant dans le presse-papiers d’Unitex. Vous
+pouvez alors coller cette sélection en pressant &lt;Ctrl+V&gt; ou en cliquant
+sur “Paste” dans le menu “Edit”.</p>
+<p>NOTE: Vous pouvez coller une sélection multiple dans des graphes
+différents de celui dont elle est issue.</p>
+<p>Pour supprimer des boîtes, sélectionnez-les, effacez le texte qu’elles
+contiennent (c’est-à-dire le texte affiché dans le champ situé en haut
+de la fenêtre) et appuyez sur Enter.</p>
+<p>On ne peut pas supprimer l’état initial ni l’état final.</p>
+</div>
+<div class="section" id="sortie">
+<h3>Sortie<a class="headerlink" href="#sortie" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Il est possible d’associer une sortie à une boîte. Pour cela, on utilise
+le caractère spécial <code class="docutils literal"><span class="pre">/</span></code>. Tous les caractères situés à droite de
+celui-ci seront considérés comme faisant partie de la sortie. Ainsi, le
+texte <code class="docutils literal"><span class="pre">one+two+three/number</span></code> donne la boîte de la figure
+&nbsp;[fig-exemple-transduction].</p>
+<div class="figure" id="id21">
+<a class="reference internal image-reference" href="resources/img/fig5-15.png"><img alt="Exemple de sortie[fig-exemple-transduction]" src="resources/img/fig5-15.png" style="width: 4.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple de sortie[fig-exemple-transduction]</span></p>
+</div>
+<p>Pour créer une boite vide avec une sortie contenant <code class="docutils literal"><span class="pre">number</span></code>, on écrit
+<code class="docutils literal"><span class="pre">&lt;E&gt;/number</span></code> (exemple&nbsp;: la boite la plus à droite dans la
+figure&nbsp;[fig-using-variable] est vide et a une sortie). La sortie
+associée à une boîte est représentée en gras sous celle-ci.</p>
+<p><strong>Poids</strong></p>
+<p>On peut attribuer un poids à des boîtes d’un transducteur. Ainsi,
+lorsqu’une séquence est reconnue par plusieurs chemins avec des sorties
+différentes (transducteur ambigu), seul un chemin de poids maximal sera
+conservé. Après un “Locate”, la concordance ne comportera qu’une seule
+fois la séquence reconnue, et avec la sortie appropiée
+(figure&nbsp;[fig-weights-in-graphs]).</p>
+<div class="figure" id="id22">
+<a class="reference internal image-reference" href="resources/img/fig5-15b.png"><img alt="Poids dans les graphes [fig-weights-in-graphs]" src="resources/img/fig5-15b.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Poids dans les graphes [fig-weights-in-graphs]</span></p>
+</div>
+<p>Les poids sont des valeurs entières. Pour donner à une boite le poids 1,
+on insère <code class="docutils literal"><span class="pre">${1}$</span></code> dans la sortie de la boite, comme dans
+<code class="docutils literal"><span class="pre">&lt;E&gt;/${1}$</span></code>.</p>
+<p>Le poids d’un chemin est le dernier poids trouvé en parcourant le
+chemin. Un poids peut être nul, mais pas strictement négatif. Un chemin
+qui a un poids, même nul, a la priorité sur un chemin sans poids.</p>
+<p>Avec des poids, on peut définir une priorité entre des chemins qui
+reconnaissent la même séquence. On ne peut pas définir une priorité
+entre deux séquences dont une est incluse dans l’autre (cf.
+section&nbsp;[section-configuration-recherche]), ni entre des séquences qui
+se chevauchent (cf. section&nbsp;[section-priorite-gauche]).</p>
+<p>Les poids ne sont valides qu’à l’intérieur du graphe, et non dans les
+sous-graphes ni les graphes appelants.</p>
+</div>
+<div class="section" id="variables-dentree">
+<h3>Variables d’entrée<a class="headerlink" href="#variables-dentree" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Il est possible de sélectionner des parties du texte reconnu par une
+grammaire au moyen de variables d’entrée. Pour associer une variable
+d’entrée <code class="docutils literal"><span class="pre">var1</span></code> à une partie d’une grammaire, on utilise soit le
+bouton avec les parenthèses rouges dans la barre d’icônes au-dessus du
+graphe (section &nbsp;[toolbar-commands]), soit les symboles spéciaux
+<code class="docutils literal"><span class="pre">$var1(</span></code> et <code class="docutils literal"><span class="pre">$var1)</span></code>. (Ces symboles définissent respectivement le
+début et la fin de la zone à mémoriser. Créez deux boîtes contenant
+l’une <code class="docutils literal"><span class="pre">$var1(</span></code> et l’autre <code class="docutils literal"><span class="pre">$var1)</span></code>. Ces boîtes ne doivent rien
+contenir d’autre que le nom de la variable précédé de <code class="docutils literal"><span class="pre">$</span></code> et suivi
+d’une parenthèse. Reliez ensuite ces boîtes à la zone de la grammaire
+voulue.) Dans le graphe de la figure&nbsp;[fig-using-variable], on reconnaît
+une séquence commençant par un nombre, que l’on stocke dans une variable
+nommée <code class="docutils literal"><span class="pre">var1</span></code>, suivi de <code class="docutils literal"><span class="pre">dollar</span></code> ou <code class="docutils literal"><span class="pre">dollars</span></code>.</p>
+<p>Les noms de variables peuvent contenir des lettres latines non
+accentuées, minuscules ou majuscules, ainsi que des chiffres et le
+caractère <code class="docutils literal"><span class="pre">_</span></code> (underscore). Unitex fait la différence entre les
+lettres minuscules et majuscules.</p>
+<p>Quand une variable a ainsi été définie, on peut l’utiliser dans les
+sorties en encadrant son nom avec le caractère <code class="docutils literal"><span class="pre">$</span></code>. La grammaire de la
+figure&nbsp;[fig-date-grammar] reconnaît une date formée d’un mois et d’une
+année, et produit en sortie la même date, mais dans l’ordre année-mois.</p>
+<p>Si on veut utiliser le caractère <code class="docutils literal"><span class="pre">$</span></code> en sortie d’une boîte, on doit le
+redoubler, comme le montre la figure&nbsp;[fig-using-variable].</p>
+<p>Quand une boite redéfinit une variable qui avait déjà été définie, la
+nouvelle valeur écrase l’ancienne. Ainsi, si la variable est définie
+dans une boucle, la valeur de la variable juste après la boucle dépend
+du dernier passage dans la boucle.</p>
+<p>Par défaut <code class="docutils literal"><span class="pre">Locate</span></code> et <code class="docutils literal"><span class="pre">LocateTfst</span></code> considèrent que les variables
+non définies sont vides. On peut modifier ce comportement (voir section
+[section-advanced-search-options]). De plus, il est possible dans un
+graphe d’interroger une variable pour savoir si elle a été initialisée
+ou non (section&nbsp;[section-variables]).</p>
+</div>
+<div class="section" id="copie-de-listes">
+<h3>Copie de listes<a class="headerlink" href="#copie-de-listes" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Il peut être pratique d’effectuer un copier-coller d’une liste de mots
+ou d’expressions depuis un éditeur de texte vers une boîte dans un
+graphe. Afin d’éviter de devoir copier manuellement chaque terme, Unitex
+propose un mécanisme de copie de listes. Pour l’utili- ser, sélectionnez
+votre liste dans votre éditeur de texte et copiez-la au moyen de
+&lt;Ctrl+C&gt; ou de la fonction de copie intégrée à votre éditeur. Créez
+ensuite une boîte dans votre graphe, et utilisez &lt;Ctrl+V&gt; ou la commande
+“Paste” du menu “Edit” pour la coller dans la boîte. Vous verrez alors
+apparaître la fenêtre de la
+figure&nbsp;[fig-setting-contexts-for-multiple-copy].</p>
+<p>Cette fenêtre vous permet de définir les contextes gauche et droit qui
+seront ajoutés automatiquement à chaque terme de la liste. Par défaut,
+ces contextes sont vides. Si l’on applique les contextes <code class="docutils literal"><span class="pre">&lt;</span></code> et
+<code class="docutils literal"><span class="pre">.V&gt;</span></code> à la liste suivante:</p>
+<p><em>eat</em></p>
+<p><em>sleep</em></p>
+<p><em>drink</em></p>
+<p><em>play</em></p>
+<p><em>read</em></p>
+<p>on obtient la boîte de la figure&nbsp;[fig-multiple-copy].</p>
+</div>
+<div class="section" id="symboles-speciaux">
+<h3>Symboles spéciaux<a class="headerlink" href="#symboles-speciaux" title="Lien permanent vers ce titre">¶</a></h3>
+<p>L’éditeur de graphes d’Unitex interprète de façon particulière les
+symboles suivants:</p>
+<p><code class="docutils literal"><span class="pre">&quot;</span> <span class="pre">+</span> <span class="pre">:</span> <span class="pre">/</span> <span class="pre">&lt;</span> <span class="pre">&gt;</span> <span class="pre">#</span> <span class="pre">\</span></code></p>
+<p>Le tableau &nbsp;[tab-special-symbols] résume la signification pour Unitex de
+ces symboles, ainsi que la ou les façons de reconnaître ces caractères
+dans des textes.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="76%" />
+<col width="13%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><code class="docutils literal"><span class="pre">Caractère</span></code></th>
+<th class="head"><code class="docutils literal"><span class="pre">Signification</span></code></th>
+<th class="head"><code class="docutils literal"><span class="pre">Codage</span></code></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;</span></code></td>
+<td>les guillemets délimitent des séquences qui ne doivent ni être interprétées par Unitex, ni subir de variantes de casse</td>
+<td><code class="docutils literal"><span class="pre">\&quot;</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">+</span></code></td>
+<td><code class="docutils literal"><span class="pre">+</span></code> sépare les différentes lignes boîtes</td>
+<td><code class="docutils literal"><span class="pre">&quot;+&quot;</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">:</span></code></td>
+<td><code class="docutils literal"><span class="pre">:</span></code> sert à introduire à appel à un sous-graphe</td>
+<td><code class="docutils literal"><span class="pre">&quot;:&quot;</span></code> or <code class="docutils literal"><span class="pre">\:</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">/</span></code></td>
+<td><code class="docutils literal"><span class="pre">/</span></code> indique le début de la sortie d’une boîte</td>
+<td><code class="docutils literal"><span class="pre">\/</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&lt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">&lt;</span></code> indique le début d’un motif ou d’un méta</td>
+<td><code class="docutils literal"><span class="pre">&quot;&lt;&quot;</span></code> or <code class="docutils literal"><span class="pre">\&lt;</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&gt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">&gt;</span></code> indique la fin d’un motif ou d’un méta</td>
+<td><code class="docutils literal"><span class="pre">&quot;&gt;&quot;</span></code> or <code class="docutils literal"><span class="pre">\&gt;</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">#</span></code></td>
+<td><code class="docutils literal"><span class="pre">#</span></code> sert à interdire la présence de l’espace</td>
+<td><code class="docutils literal"><span class="pre">&quot;#&quot;</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">\</span></code></td>
+<td><code class="docutils literal"><span class="pre">\</span></code> sert à déspécialiser la plupart des caractères spéciaux</td>
+<td><code class="docutils literal"><span class="pre">\\</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Table: Codage des symboles spéciaux dans l’éditeur de
+graphes[tab-special-symbols]</p>
+</div>
+<div class="section" id="commandes-de-la-barre-dicones">
+<h3>Commandes de la barre d’icônes<a class="headerlink" href="#commandes-de-la-barre-dicones" title="Lien permanent vers ce titre">¶</a></h3>
+<p>[toolbar-commands]</p>
+<p>La barre d’icônes présente au-dessus des graphes contient des raccourcis
+vers certaines commandes et permet de manipuler les boîtes d’un graphe
+en utilisant des “outils”. Cette barre d’icônes peut être déplacée en
+cliquant sur la zone “rugueuse”. Elle peut même être dissociée du graphe
+et apparaître alors comme une fenêtre séparée (voir
+figure&nbsp;[fig-toolbar]). Dans ce cas, le fait de fermer cette fenêtre
+replace la barre d’icônes à sa position initiale. Chaque graphe possède
+sa propre barre d’icônes.</p>
+<div class="figure" id="id23">
+<a class="reference internal image-reference" href="resources/img/fig5-20.png"><img alt="Barre d’outils[fig-toolbar]" src="resources/img/fig5-20.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Barre d’outils[fig-toolbar]</span></p>
+</div>
+<p>Les deux premières icônes sont des raccourcis permettant de sauver et de
+compiler le graphe. Les cinq suivantes correspondent aux opérations
+“Copier”, “Couper”, “Coller”, “Redo” et “Undo”.</p>
+<p>Les 6 icônes suivantes correspondent à des commandes d’édition des
+boîtes. La première, en forme de flèche blanche, correspond au mode
+d’édition normal des boîtes. Les 5 autres correspondent à des outils.
+Pour utiliser un outil, cliquez sur l’icône correspondante : le curseur
+de la souris changera alors de forme et les clics de la souris seront
+alors interprétés de façon particulière. Voici la description des
+outils, de gauche à droite:</p>
+<ul class="simple">
+<li>création de boîtes: crée une boîte vide à l’endroit du clic;</li>
+<li>suppression de boîtes: supprime la boîte sur laquelle vous cliquez;</li>
+<li>relier des boîtes à une autre boîte: cet outil permet de sélectionner
+une ou plusieurs boîtes, et de la ou les relier à une autre. À la
+différence du mode normal, la ou les transitions qui vont être créées
+sont affichées pendant le déplacement du pointeur de la souris;</li>
+<li>relier des boîtes à une autre boîte en sens inverse: cet outil
+effectue la même chose que le précédent, mais en reliant en sens
+inverse les boîtes sélectionnées à la boîte cliquée;</li>
+<li>ouvrir un sous-graphe: ouvre un sous-graphe lorsque vous cliquez sur
+la ligne grisée correspondante dans une boîte.</li>
+</ul>
+<p>Pour que le curseur retrouve sa forme initiale de flèche blanche, faites
+un clic droit sur le fond du graphe&nbsp;: les clics seront à nouveau
+interprétés normalement.</p>
+<p>L’icône en forme de clé anglaise est un raccourci pour ouvrir la fenêtre
+des options d’affichage du graphe. Les deux suivantes permettent de voir
+les listes de graphes en relation avec le graphe courant:</p>
+<ul class="simple">
+<li>Le premier bouton affiche la liste des graphes appelés par le graphe
+courant</li>
+<li>Le deuxième bouton affiche la liste des graphes qui appellent le
+graphe courant</li>
+</ul>
+<p>Le bouton muni de deux flèches vertes rafraîchit le graphe courant en
+chargeant sa dernière version. Si un fichier <code class="docutils literal"><span class="pre">.grf</span></code> est modifié alors
+que le graphe qu’il contient est affiché dans une fenêtre Unitex, une
+fenêtre pop up vous invitera à le recharger.</p>
+<p>Le bouton portant l’icône d’une balance permet de comparer le graphe
+courant à un autre graphe ou à une autre version du même graphe. Une
+nouvelle fenêtre est alors affichée (voir figure&nbsp;[Graph-DIFF]) qui
+contient les deux graphes avec des couleurs qui indiquent les types de
+différences entre les deux graphes : insertion, suppression, déplacement
+de boîtes et changement de contenu d’une boîte apparaissent
+respectivement en vert, rouge, mauve et jaune.</p>
+<div class="figure" id="id24">
+<a class="reference internal image-reference" href="resources/img/DIFF.png"><img alt="DIFF[Graph-DIFF]" src="resources/img/DIFF.png" style="width: 15.60000cm;" /></a>
+<p class="caption"><span class="caption-text">DIFF[Graph-DIFF]</span></p>
+</div>
+<p>Les six derniers boutons sont des raccourcis pour la définition d’une
+variable, du mode morphologique ou d’un contexte sur une ou plusieurs
+boîtes sélectionnées. Ces boutons ne sont activés que si une ou
+plusieurs boîtes sont sélectionnées:</p>
+<ul class="simple">
+<li>: variable d’entrée (voir section&nbsp;[section-using-variables])</li>
+<li>: variable de sortie (voir section&nbsp;[section-output-variables])</li>
+<li>: mode morphologique (voir section&nbsp;[section-morphological-mode])</li>
+<li>: contexte gauche (voir section&nbsp;[section-contexts])</li>
+<li>: contexte droit (voir section&nbsp;[section-contexts])</li>
+<li>: contexte droit négatif (voir section&nbsp;[section-contexts])</li>
+</ul>
+</div>
+</div>
+<div class="section" id="options-de-presentation">
+<h2>Options de présentation<a class="headerlink" href="#options-de-presentation" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="tri-des-lignes-dune-boite">
+<h3>Tri des lignes d’une boîte<a class="headerlink" href="#tri-des-lignes-dune-boite" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Vous pouvez trier le contenu d’une boîte en la sélectionnant et en
+cliquant sur “Sort Node Label” dans le sous-menu “Tools” du menu
+“FSGraph”. Ce tri ne fait pas appel au programme <code class="docutils literal"><span class="pre">SortTxt</span></code>. Il s’agit
+d’un tri basique qui trie les lignes de la boîte selon l’ordre des
+caractères dans le codage Unicode.</p>
+</div>
+<div class="section" id="zoom">
+<h3>Zoom<a class="headerlink" href="#zoom" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le sous-menu “Zoom” vous permet de choisir l’échelle à laquelle sera
+affiché le graphe.</p>
+<div class="figure" id="id25">
+<a class="reference internal image-reference" href="resources/img/fig5-21.png"><img alt="Sous-menu Zoom" src="resources/img/fig5-21.png" style="width: 6.40000cm;" /></a>
+<p class="caption"><span class="caption-text">Sous-menu Zoom</span></p>
+</div>
+<p>L’option “Fit in screen” étire ou rétrécit le graphe pour lui donner la
+taille de l’écran. L’option “Fit in window” ajuste le graphe pour qu’il
+soit entièrement affiché dans la fenêtre.</p>
+</div>
+<div class="section" id="antialiasing">
+<h3>Antialiasing<a class="headerlink" href="#antialiasing" title="Lien permanent vers ce titre">¶</a></h3>
+<p>L’antialiasing est un effet de rendu qui permet d’éviter l’effet de
+pixellisation. Vous pouvez activer cet effet en cliquant sur
+“Antialiasing...” dans le sous-menu “Format”. La
+figure&nbsp;[fig-antialiasing] montre deux graphes affichés normalement
+(graphe du haut) et avec antialiasing (graphe du bas).</p>
+<div class="figure" id="id26">
+<a class="reference internal image-reference" href="resources/img/fig5-22.png"><img alt="Exemple d’antialiasing[fig-antialiasing]" src="resources/img/fig5-22.png" style="width: 13.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple d’antialiasing[fig-antialiasing]</span></p>
+</div>
+<p>Cet effet ralentit l’exécution d’Unitex. Nous vous conseillons de ne pas
+l’utiliser si votre machine est peu puissante.</p>
+</div>
+<div class="section" id="alignement-des-boites">
+<h3>Alignement des boîtes<a class="headerlink" href="#alignement-des-boites" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Afin d’obtenir des graphes harmonieux, il est utile de pouvoir aligner
+les boîtes, aussi bien horizontalement que verticalement. Pour cela,
+sélectionnez les boîtes à aligner et cli- quez sur “Alignment...” dans
+le sous-menu “Format” du menu “FSGraph” ou appuyez sur &lt;Ctrl+M&gt;. Vous
+voyez alors apparaître la fenêtre de la figure&nbsp;[fig-alignment-frame].</p>
+<p>Les possibilités d’alignement horizontal sont:</p>
+<ul class="simple">
+<li>Top: les boîtes sont alignées sur la boîte la plus haute;</li>
+<li>Center: les boîtes sont toutes centrées sur un même axe;</li>
+<li>Bottom: les boîtes sont alignées sur la boîte la plus basse.</li>
+</ul>
+<div class="figure" id="id27">
+<a class="reference internal image-reference" href="resources/img/fig5-23.png"><img alt="Fenêtre d’alignement[fig-alignment-frame]" src="resources/img/fig5-23.png" style="width: 6.60000cm;" /></a>
+<p class="caption"><span class="caption-text">Fenêtre d’alignement[fig-alignment-frame]</span></p>
+</div>
+<p>Les possibilités d’alignement vertical sont:</p>
+<ul class="simple">
+<li>Left: les boîtes sont alignées sur la boîte la plus à gauche;</li>
+<li>Center: les boîtes sont toutes centrées sur un même axe;</li>
+<li>Right: les boîtes sont alignées sur la boîte la plus à droite.</li>
+</ul>
+<p>La figure &nbsp;[fig-vertical-left-alignment] montre un exemple d’alignement.
+Le groupe de boîtes situé à droite est une copie des boîtes de gauche
+qui a été alignée verticalement à gauche.</p>
+<p>L’option “Use Grid” de la fenêtre d’alignement permet d’afficher une
+grille en arrière-plan du graphe. Cela permet d’aligner
+approximativement les boîtes.</p>
+<div class="figure" id="id28">
+<a class="reference internal image-reference" href="resources/img/fig5-25.png"><img alt="Exemple d’utilisation d’une grille" src="resources/img/fig5-25.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple d’utilisation d’une grille</span></p>
+</div>
+</div>
+<div class="section" id="presentation-polices-et-couleurs">
+<h3>Présentation, polices et couleurs<a class="headerlink" href="#presentation-polices-et-couleurs" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Vous pouvez configurer l’aspect d’un graphe en appuyant sur &lt;Ctrl+R&gt; ou
+en cliquant sur “Presentation...” dans le sous-menu “Format” du menu
+“FSGraph”, ce qui provoque l’af- fichage de la fenêtre de la
+figure&nbsp;[fig-graph-display-configuration].</p>
+<p>Les paramètres de polices sont:</p>
+<ul class="simple">
+<li>Input: police utilisée dans les boîtes, ainsi que dans la zone de
+texte où l’on édite le contenu des boîtes;</li>
+<li>Output: police utilisée pour afficher les sorties des boîtes.</li>
+</ul>
+<p>Les paramètres de couleur sont:</p>
+<ul class="simple">
+<li>Background: couleur de fond;</li>
+<li>Foreground: couleur utilisée pour le texte et le dessin des boîtes;</li>
+<li>Auxiliary Nodes: couleur des boîtes faisant appel à des sous-graphes
+;</li>
+<li>Selected Nodes: couleur utilisée pour dessiner les boîtes quand elles
+sont sélectionnées ;</li>
+<li>Comment Nodes: couleur utilisée pour dessiner les boîtes qui ne sont
+reliées à aucune autre.</li>
+</ul>
+<p>Les autres paramètres sont:</p>
+<ul class="simple">
+<li>Date: affichage de la date courante dans le coin inférieur gauche du
+graphe;</li>
+<li>File Name: affichage du nom du graphe dans le coin inférieur gauche
+du graphe;</li>
+<li>Pathname: affichage du nom du graphe avec son chemin complet dans le
+coin inférieur gauche du graphe. Cette option n’a d’effet que si
+l’option “File Name” est sélectionnée;</li>
+<li>Frame: dessine un cadre autour du graphe;</li>
+<li>Right to Left: inverse le sens de lecture du graphe (voir exemple de
+la figure&nbsp;[fig-right-to-left-graph]).</li>
+</ul>
+<div class="figure" id="id29">
+<a class="reference internal image-reference" href="resources/img/fig5-27.png"><img alt="Graphe se lisant de droite à gauche[fig-right-to-left-graph]" src="resources/img/fig5-27.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe se lisant de droite à gauche[fig-right-to-left-graph]</span></p>
+</div>
+<p>Vous pouvez rétablir les paramètres par défaut en cliquant sur le bouton
+“Default”. Si vous cliquez sur le bouton “OK”, seul le graphe courant
+sera modifié. Pour modifier les préférences par défaut d’une langue,
+cliquez sur “Preferences...” dans le menu “Info” et choisissez l’onglet
+“Graph Presentation”.</p>
+</div>
+</div>
+<div class="section" id="les-graphes-en-dehors-dunitex">
+<h2>Les graphes en dehors d’Unitex<a class="headerlink" href="#les-graphes-en-dehors-dunitex" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="inclusion-dun-graphe-dans-un-document">
+<h3>Inclusion d’un graphe dans un document<a class="headerlink" href="#inclusion-dun-graphe-dans-un-document" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Pour inclure un graphe dans un document, il faut en faire une image.
+Pour cela, une première méthode consiste à exporter votre graphe vers un
+format d’image&nbsp;: PNG, JPEG ou SVG. Pour cela, allez dans le menu
+“FSGraph” et cliquez sur “Export as image”. Choisissez ensuite le type
+de fichier. Vous obtiendrez ainsi une image prête à être intégrée dans
+un document ou à être éditée avec un logiciel de retouche d’images. Afin
+de rendre l’image plus lisse, vous pouvez activer l’antialiasing pour le
+graphe qui vous intéresse. Contraitement au JPEG, le format PNG utilise
+une compression sans perte de qualité, donc le PNG donne toujours un
+meilleurs résultat que le JPEG. Et contrairement au PNG et au JPEG, qui
+sont des fomats bitmap, le format SVG est un format vectoriel, ce qui
+permet souvent un meilleur résultat. A l’aide du logiciel Inkscape, il
+est également possible de convertir le fichier SVG en EPS ou en PDF,
+avec des lignes de commandes de ce type:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Inkscape</span> <span class="o">-</span><span class="n">z</span> <span class="o">-</span><span class="n">E</span> <span class="n">graph</span><span class="o">.</span><span class="n">eps</span> <span class="n">graph</span><span class="o">.</span><span class="n">svg</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Inkscape</span> <span class="o">-</span><span class="n">z</span> <span class="o">-</span><span class="n">A</span> <span class="n">graph</span><span class="o">.</span><span class="n">pdf</span> <span class="n">graph</span><span class="o">.</span><span class="n">svg</span>
+</pre></div>
+</div>
+<p>La seconde méthode consiste à faire une capture d’écran:</p>
+<p>Sous Windows:</p>
+<p>Appuyez sur la touche “Imprime écran” de votre clavier qui doit se
+trouver près de la touche F12. Lancez le programme <code class="docutils literal"><span class="pre">Paint</span></code> dans le
+menu “Accessoires” de Windows. Appuyez sur &lt;Ctrl+V&gt;. <code class="docutils literal"><span class="pre">Paint</span></code> peut vous
+dire que l’image contenue dans le presse-papiers est trop grande et vous
+demander si vous voulez agrandir l’image. Cliquez sur “Oui”. Vous pouvez
+maintenant éditer l’image de l’écran. Sélectionnez la zone qui vous
+intéresse. Pour cela, passez en mode sélection en cliquant sur le
+rectangle en pointillé qui se trouve dans le coin supérieur gauche de la
+fenêtre. Vous pouvez maintenant sélectionner une zone de l’image avec la
+souris. Une fois votre zone sélectionnée, appuyez sur &lt;Ctrl+C&gt;. Votre
+sélection est maintenant dans le presse-papier, il ne vous reste plus
+qu’à aller dans votre document et à appuyer sur &lt;Ctrl+V&gt; pour coller
+votre image.</p>
+<p>Sous Linux:</p>
+<p>Effectuez une capture d’écran (par exemple avec le programme <code class="docutils literal"><span class="pre">xv</span></code>).
+Retaillez ensuite votre image avec un éditeur graphique (par exemple
+<code class="docutils literal"><span class="pre">TheGimp</span></code>), et collez votre image dans votre document de la même façon
+que sous Windows.</p>
+<p><strong>Image vectorielle</strong></p>
+<p>Si vous préférez une image vectorielle, vous pouvez exporter votre
+graphe vers le format SVG, qui est utilisable avec des logiciels comme
+Inkscape (<a href="#id3"><span class="problematic" id="id4">:raw-latex:`\cite{Inkscape}`</span></a>). Il permet d’obtenir des sorties
+PostScript utilisables dans des documents LaTeX.</p>
+</div>
+<div class="section" id="impression-dun-graphe">
+<h3>Impression d’un graphe<a class="headerlink" href="#impression-dun-graphe" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Vous pouvez imprimer un graphe en cliquant sur “Print...” dans le menu
+“FSGraph” ou en appuyant sur &lt;Ctrl+P&gt;.</p>
+<p>ATTENTION: vous devez vous assurer que le paramètre d’orientation de
+l’imprimante (portrait ou paysage) correspond bien à l’orientation de
+votre graphe.</p>
+<p>Vous pouvez définir vos préférences d’impression en cliquant sur “Page
+Setup” dans le menu “FSGraph”. Vous pouvez également imprimer tous les
+graphes qui sont ouverts en cliquant sur “Print All...”.</p>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Dans un souci de clarté, les appels à des graphes du répertoire de
+dépôt sont affichés sur fond kaki au lieu de gris.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Si vous travaillez sous KDE, désactivez &lt;Alt+Click&gt; dans kcontrol.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-fr.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Grammaires locales</a><ul>
+<li><a class="reference internal" href="#formalisme-des-grammaires-locales">Formalisme des grammaires locales</a><ul>
+<li><a class="reference internal" href="#grammaires-algebriques">Grammaires algébriques</a></li>
+<li><a class="reference internal" href="#grammaires-algebriques-etendues">Grammaires algébriques étendues</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#edition-de-graphes">Édition de graphes</a><ul>
+<li><a class="reference internal" href="#creation-dun-graphe">Création d’un graphe</a></li>
+<li><a class="reference internal" href="#sous-graphes">Sous-graphes</a></li>
+<li><a class="reference internal" href="#manipulation-des-boites">Manipulation des boîtes</a></li>
+<li><a class="reference internal" href="#sortie">Sortie</a></li>
+<li><a class="reference internal" href="#variables-dentree">Variables d’entrée</a></li>
+<li><a class="reference internal" href="#copie-de-listes">Copie de listes</a></li>
+<li><a class="reference internal" href="#symboles-speciaux">Symboles spéciaux</a></li>
+<li><a class="reference internal" href="#commandes-de-la-barre-dicones">Commandes de la barre d’icônes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#options-de-presentation">Options de présentation</a><ul>
+<li><a class="reference internal" href="#tri-des-lignes-dune-boite">Tri des lignes d’une boîte</a></li>
+<li><a class="reference internal" href="#zoom">Zoom</a></li>
+<li><a class="reference internal" href="#antialiasing">Antialiasing</a></li>
+<li><a class="reference internal" href="#alignement-des-boites">Alignement des boîtes</a></li>
+<li><a class="reference internal" href="#presentation-polices-et-couleurs">Présentation, polices et couleurs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#les-graphes-en-dehors-dunitex">Les graphes en dehors d’Unitex</a><ul>
+<li><a class="reference internal" href="#inclusion-dun-graphe-dans-un-document">Inclusion d’un graphe dans un document</a></li>
+<li><a class="reference internal" href="#impression-dun-graphe">Impression d’un graphe</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-fr.html">Documentation overview</a><ul>
+      <li>Previous: <a href="04-pattern_matching_FR_utf8.html" title="Chapitre précédent">Recherche d’expressions rationnelles</a></li>
+      <li>Next: <a href="06-advanced-use_FR_utf8.html" title="Chapitre suivant">Utilisation avancée des graphes</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/05-grammars_FR_utf8.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, SCTB.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/05-grammars_FR_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,1193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Automate du texte &mdash; documentation Unitex-fr 1.0.1</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Unitex-fr 1.0.1" href="Unitex-fr.html" />
+    <link rel="next" title="Automate de Séquences" href="08-sequence-automaton_FR_utf8.html" />
+    <link rel="prev" title="Utilisation avancée des graphes" href="06-advanced-use_FR_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="automate-du-texte">
+<h1>Automate du texte<a class="headerlink" href="#automate-du-texte" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Les langues naturelles contiennent beaucoup d’ambiguïtés lexicales.
+L’automate du texte est un moyen efficace et visuel de représenter ces
+ambiguïtés. Chaque phrase du texte est représentée par un automate dont
+les chemins expriment toutes les interprétations possibles.</p>
+<p>Ce chapitre présente les automates de texte, le détail de leur
+construction ainsi que les opérations qui peuvent leur être appliquées,
+en particulier la levée d’ambiguïtés au moyen du programme ELAG. Depuis
+la version 2.1, il est possible d’effectuer des recherches de motifs sur
+l’automate du texte (voir section [section-locate-tfst]).</p>
+<div class="section" id="presentation">
+<h2>Présentation<a class="headerlink" href="#presentation" title="Lien permanent vers ce titre">¶</a></h2>
+<p>L’automate du texte permet d’exprimer toutes les interprétations
+lexicales possibles des mots. Ces différentes interprétations sont les
+différentes entrées présentes dans les dictionnaires du texte. La
+figure&nbsp;[fig-sentence-automaton] montre l’automate de la quatrième phrase
+du texte <em>Ivanhoe</em>.</p>
+<div class="figure" id="id13">
+<a class="reference internal image-reference" href="resources/img/fig7-1.png"><img alt="Exemple d’automate de phrase[fig-sentence-automaton]" src="resources/img/fig7-1.png" style="width: 15.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple d’automate de phrase[fig-sentence-automaton]</span></p>
+</div>
+<p>On peut voir sur la figure&nbsp;[fig-sentence-automaton] que le mot <code class="docutils literal"><span class="pre">Here</span></code>
+possède ici trois interprétations (adjectif, adverbe et nom),
+<code class="docutils literal"><span class="pre">haunted</span></code> deux (adjectif et verbe), etc. Toutes les combinaisons
+possibles sont exprimées, car chaque interprétation de chaque mot est
+reliée à toutes les interprétations des mots suivants et précédents.</p>
+<p>En cas de concurrence entre un mot composé et une séquence de mots
+simples, l’automate contient un chemin étiqueté par le mot composé,
+parallèle aux chemins exprimant les combinaisons de mots simples. Ceci
+est illustré par la figure&nbsp;[fig-overlap], où le mot composé
+<code class="docutils literal"><span class="pre">courts</span> <span class="pre">of</span> <span class="pre">law</span></code> est concurrent avec une combinaison de mots simples.</p>
+<p>Par construction, l’automate du texte ne contient pas de boucle. On dit
+que l’automate du texte est <em>acyclique</em>.</p>
+<p>NOTE: le terme “automate du texte” est un abus de langage. En effet, il
+y a en réalité un automate pour chaque phrase du texte. Cependant, la
+concaténation de tous ces automates correspondrait à l’automate de tout
+le texte. On utilise donc le terme “automate du texte” même si l’on ne
+manipule pas réellement cet objet pour des raisons pratiques.</p>
+</div>
+<div class="section" id="construction">
+<h2>Construction<a class="headerlink" href="#construction" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Pour construire l’automate d’un texte, vous devez ouvrir ce texte, puis
+cliquer dans le menu “Text” sur “Construct FST-Text...”. Il est
+recommandé d’avoir découpé le texte en phrases et de lui avoir appliqué
+les dictionnaires. Si vous n’avez pas découpé le texte en phrases, le
+programme de construction découpera arbitrairement le texte en séquences
+de 2000 unités lexicales au lieu de construire un automate par phrase.
+Si vous n’avez pas appliqué les dictionnaires, les automates de phrase
+que vous obtiendrez ne seront constitués que d’un seul chemin ne
+comportant que des mots inconnus.</p>
+<div class="section" id="regles-de-construction-de-lautomate-du-texte">
+<h3>Règles de construction de l’automate du texte<a class="headerlink" href="#regles-de-construction-de-lautomate-du-texte" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les automates de phrase sont construits à partir des dictionnaires du
+texte. Le degré d’ambiguïté obtenu est donc directement lié à la finesse
+de description des dictionnaires utilisés. Sur l’automate de phrase de
+la figure&nbsp;[fig-ambiguity-of-which], on peut voir que le mot <code class="docutils literal"><span class="pre">which</span></code> a
+été codé deux fois comme déterminant dans deux sous-catégories de la
+catégorie <code class="docutils literal"><span class="pre">DET</span></code>. Cette finesse de description ne sera d’aucune utilité
+si l’on ne s’intéresse qu’à la catégorie grammaticale de ce mot. Il faut
+donc adapter la finesse des dictionnaires à l’utilisation recherchée.</p>
+<p>Pour chaque unité lexicale de la phrase, Unitex recherche toutes ses
+interprétations possibles dans le dictionnaire des mots simples du
+texte. On recherche ensuite toutes les suites d’unités lexicales qui ont
+une interprétation dans le dictionnaire des mots composés du texte.
+Toutes les combinaisons de ces interprétations forment l’automate de la
+phrase.</p>
+<p>NOTE : quand le texte contient des étiquettes lexicales (<em>e.g.</em>
+<code class="docutils literal"><span class="pre">{aujourd’hui,.ADV}</span></code>), ces étiquettes sont reproduites à l’identique
+dans l’automate, sans que le programme essaye de décomposer les
+séquences qu’elles représentent.</p>
+<p>Dans chaque boîte, la <span class="math">\(1\iere\)</span> ligne contient la forme fléchie
+trouvée dans le texte, et la <span class="math">\(2\ieme\)</span> ligne contient la forme
+canonique si elle est différente. Les autres informations sont codées
+sous la boîte (voir section&nbsp;[section-displaying-sentence-automata]).</p>
+<p>Les espaces séparant les unités lexicales ne sont pas retranscrits dans
+l’automate, à l’exception des espaces à l’intérieur de mots composés.</p>
+<p>La casse des unités lexicales est conservée. Par exemple, si l’on trouve
+le mot <code class="docutils literal"><span class="pre">Here</span></code>, on conserve la majuscule (voir
+figure&nbsp;[fig-sentence-automaton]). Ce choix permet de ne pas perdre cette
+information lors du passage à l’automate du texte, ce qui pourra être
+utile pour des applications où la casse est importante, telle que la
+reconnaissance des noms propres.</p>
+</div>
+<div class="section" id="normalisation-de-formes-ambigues">
+<h3>Normalisation de formes ambiguës<a class="headerlink" href="#normalisation-de-formes-ambigues" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Lors de la construction de l’automate, il est possible d’effectuer une
+normalisation de formes ambiguës en appliquant une grammaire de
+normalisation. Cette grammaire doit se nommer <code class="docutils literal"><span class="pre">Norm.fst2</span></code> et doit être
+placée dans votre répertoire personnel, dans le sous-répertoire
+<code class="docutils literal"><span class="pre">/Graphs/Normalization</span></code> de la langue voulue. Les grammaires de
+normalisation de formes ambiguës sont décrites à la
+section&nbsp;[section-normalizing-text-automataon].</p>
+<p>Si une séquence du texte est reconnue par la grammaire de normalisation,
+toutes les interprétations décrites par la grammaire sont insérées dans
+l’automate du texte. La figure &nbsp;[fig-example-tfst-normalization-graph]
+montre l’extrait de la grammaire utilisée pour le français qui explicite
+l’ambiguïté de la séquence <code class="docutils literal"><span class="pre">l'</span></code>.</p>
+<p>Si l’on applique cette grammaire à une phrase française contenant la
+séquence <code class="docutils literal"><span class="pre">l'</span></code>, on obtient un automate de phrase similaire à celui de
+la figure &nbsp;[fig-tfst-normalization-results].</p>
+<p>Dans l’automate obtenu, on peut voir que les quatre règles de réécriture
+de la séquence <code class="docutils literal"><span class="pre">l'</span></code> ont été appliquées, ce qui a ajouté quatre
+étiquettes dans l’automate. Ces étiquettes ne sont pas concurrentes avec
+les deux chemins préexistants pour la séquence <code class="docutils literal"><span class="pre">l’</span></code> grâce à
+l’heuristique “keep best paths” (voir section
+[section-keeping-best-paths]). La normalisation à la construction de
+l’automate du texte permet d’ajouter des chemins à l’automate, pas d’en
+supprimer. La suppression des chemins est partiellement faite par
+l’heuristique “keep best paths” si elle est sélectionnée. Pour aller
+plus loin, vous devez utiliser les fonctionnalités de désambïguisation
+du système ELAG</p>
+</div>
+<div class="section" id="normalisation-des-pronoms-clitiques-en-portugais">
+<h3>Normalisation des pronoms clitiques en portugais<a class="headerlink" href="#normalisation-des-pronoms-clitiques-en-portugais" title="Lien permanent vers ce titre">¶</a></h3>
+<p>En portugais, les verbes au futur et au conditionnel peuvent être
+modifiés par l’inser- tion d’un ou deux pronoms clitiques entre le
+radical et le suffixe du verbe. Par exemple, la séquence <em>dir-me-ão</em>
+(<em>ils me diront</em>), correspond à la forme verbale complète <em>dirão</em>,
+associée au pronom <em>me</em>. En vue de pouvoir effectuer des manipulations
+sur cette forme sous-jacente, il est nécessaire de l’introduire dans
+l’automate du texte, en parallèle avec la séquence d’origine. Ainsi,
+l’utilisateur pourra rechercher l’une ou l’autre forme selon ses
+besoins. Les figures&nbsp;[fig-1285-not-normalized] et&nbsp;[fig-1285-normalized]
+montrent l’automate d’une phrase avant et après normalisation des
+clitiques.</p>
+<div class="figure" id="id14">
+<a class="reference internal image-reference" href="resources/img/fig7-6.png"><img alt="Automate de phrase non normalisé[fig-1285-not-normalized]" src="resources/img/fig7-6.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Automate de phrase non normalisé[fig-1285-not-normalized]</span></p>
+</div>
+<div class="figure" id="id15">
+<a class="reference internal image-reference" href="resources/img/fig7-7.png"><img alt="Automate de phrase normalisé[fig-1285-normalized]" src="resources/img/fig7-7.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Automate de phrase normalisé[fig-1285-normalized]</span></p>
+</div>
+<p>Le programme <code class="docutils literal"><span class="pre">Reconstrucao</span></code> permet de construire dynamiquement pour
+chaque texte une grammaire de normalisation de ces formes. La grammaire
+ainsi produite peut alors être utilisée pour normaliser l’automate du
+texte. La fenêtre de configuration de construction de l’automate propose
+l’option “Build clitic normalization grammar” (voir figure
+&nbsp;[fig-Txt2Tfst-configuration]). Cette option lance automatiquement la
+construction de la grammaire de normalisation, qui est ensuite utilisée
+pour construire l’automate du texte, si vous avez sélectionné l’option
+“Apply the Normalization grammar”.</p>
+</div>
+<div class="section" id="conservation-des-meilleurs-chemins">
+<h3>Conservation des meilleurs chemins<a class="headerlink" href="#conservation-des-meilleurs-chemins" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Il peut arriver qu’un mot inconnu vienne parasiter l’automate du texte
+en étant concurrent avec une séquence complètement étiquetée. Ainsi,
+dans l’automate de phrase de la figure&nbsp;[fig-unknown-word-ambiguity], on
+peut voir que l’adverbe <code class="docutils literal"><span class="pre">aujourd'hui</span></code> est concurrencé par le mot
+inconnu <code class="docutils literal"><span class="pre">aujourd</span></code>, suivi d’une apostrophe et du participe passé du
+verbe <code class="docutils literal"><span class="pre">huir</span></code>.</p>
+<div class="figure" id="id16">
+<a class="reference internal image-reference" href="resources/img/fig7-9.png"><img alt="Automate d’une phrase thaï[fig-thai-sentence-automaton]" src="resources/img/fig7-9.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Automate d’une phrase thaï[fig-thai-sentence-automaton]</span></p>
+</div>
+<p>On trouve également ce phénomène dans le traitement de certaines langues
+asiatiques comme le thaï. Quand les mots ne sont pas délimités, il n’y a
+pas d’autre solution que d’envisager toutes les combinaisons possibles,
+ce qui entraîne la création de nombreux chemins comportant des mots
+inconnus qui s’entremêlent avec les chemins étiquetés. La figure
+&nbsp;[fig-thai-sentence-automaton] montre un exemple d’un tel automate de
+phrase en thaï.</p>
+<p>Il est possible de supprimer ces chemins parasites. Pour cela, il faut
+sélectionner l’option “Clean Text FST” dans la fenêtre de configuration
+de la construction de l’automate du texte (voir
+figure&nbsp;[fig-Txt2Tfst-configuration]). Cette option indique au programme
+de construction de l’automate qu’il doit nettoyer chaque automate de
+phrase.</p>
+<p>Ce nettoyage s’effectue selon le principe suivant : si plusieurs chemins
+sont en concurrence dans l’automate, le programme garde ceux qui
+contiennent le moins de mots inconnus. Par exemple, la séquence.
+<code class="docutils literal"><span class="pre">aujourd'hui</span></code> en tant qu’adverbe composé l’emporte sur la
+décomposition en <code class="docutils literal"><span class="pre">aujourd</span></code> suivi d’une apostrophe et de <code class="docutils literal"><span class="pre">hui</span></code>, car
+<code class="docutils literal"><span class="pre">aujourd</span></code> est un mot inconnu, ce qui fait une forme non étiquetée
+contre zéro dans le cas de l’adverbe composé. La
+figure&nbsp;[fig-clean-thai-sentence-automaton] montre l’automate de la
+figure&nbsp;[fig-thai-sentence-automaton] après nettoyage.</p>
+</div>
+</div>
+<div class="section" id="levee-dambiguites-lexicales-avec-elag">
+<h2>Levée d’ambiguïtés lexicales avec ELAG<a class="headerlink" href="#levee-dambiguites-lexicales-avec-elag" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Le programme ELAG permet d’appliquer des grammaires de levée
+d’ambiguïtés sur l’automate du texte. C’est un mécanisme puissant qui
+permet à chacun d’écrire ses propres règles de façon indépendante des
+règles déjà existantes. Cette section présente rapidement le formalisme
+des grammaires utilisées par ELAG ainsi que le fonctionnement du
+programme. Pour plus de détails, le lecteur pourra se reporter à
+<a href="#id1"><span class="problematic" id="id2">:raw-latex:`\cite{elag-blanc-dister}`</span></a> et <a href="#id3"><span class="problematic" id="id4">:raw-latex:`\cite{ELAG}`</span></a>.</p>
+<div class="section" id="grammaires-de-levee-dambiguites">
+<h3>Grammaires de levée d’ambiguïtés<a class="headerlink" href="#grammaires-de-levee-dambiguites" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les grammaires manipulées par ELAG ont une syntaxe particulière. Elles
+comportent deux parties, que nous appelerons partie <em>si</em> et <em>alors</em>. La
+partie <em>si</em> d’une grammaire ELAG se divise en deux zones délimitées par
+des boîtes contenant le symbole <code class="docutils literal"><span class="pre">&lt;!&gt;</span></code>. La partie <em>alors</em> est divisée
+de la même façon au moyen du symbole <code class="docutils literal"><span class="pre">&lt;=&gt;</span></code>. La signification d’une
+grammaire est la suivante : dans l’automate du texte, si l’on trouve une
+séquence reconnue par la partie <em>si</em> alors elle doit aussi être reconnue
+par la partie <em>alors</em> de la grammaire, faute de quoi elle sera retirée
+de l’automate du texte.</p>
+<div class="figure" id="id17">
+<a class="reference internal image-reference" href="resources/img/fig7-12.png"><img alt="Exemple de grammaire ELAG ``elag-tu.grf``\ [fig-elag-tu]" src="resources/img/fig7-12.png" style="width: 13.10000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple de grammaire ELAG <code class="docutils literal"><span class="pre">elag-tu.grf</span></code>[fig-elag-tu]</span></p>
+</div>
+<p>La figure&nbsp;[fig-elag-tu] montre un exemple de grammaire. La partie <em>si</em>
+reconnait un verbe à la deuxième personne du singulier suivi par un
+tiret et <code class="docutils literal"><span class="pre">tu</span></code>, soit en tant que pronom, soit en tant que participe
+passé du verbe <code class="docutils literal"><span class="pre">taire</span></code>. La partie <em>alors</em> impose que <code class="docutils literal"><span class="pre">tu</span></code> soit alors
+considéré comme pronom. La figure&nbsp;[fig-applying-tu-grammar] montre le
+résultat de l’application de cette grammaire sur la phrase “<em>Feras-tu
+cela bientôt:math:`~`?</em>”. On peut voir sur l’automate du bas que le
+chemin correspondant à <code class="docutils literal"><span class="pre">tu</span></code> participe passé a été éliminé.</p>
+<div class="section" id="point-de-synchronisation">
+<h4>Point de synchronisation<a class="headerlink" href="#point-de-synchronisation" title="Lien permanent vers ce titre">¶</a></h4>
+<p>Les parties <em>si</em> et <em>alors</em> d’une grammaire ELAG sont divisées en deux
+par le deuxième symbole <code class="docutils literal"><span class="pre">&lt;!&gt;</span></code> dans la partie <em>si</em>, et par le deuxième
+symbole <code class="docutils literal"><span class="pre">&lt;=&gt;</span></code> dans la partie <em>alors</em>. Ces symboles forment un <em>point
+de synchronisation</em>. Cela permet d’écrire des règles dans lesquelles les
+contraintes <em>si</em> et <em>alors</em> ne sont pas nécessairement alignées, comme
+c’est par exemple le cas sur la figure&nbsp;[fig-synchronization-point].
+Cette grammaire s’interprète de la manière suivante : si on trouve un
+tiret suivi par <code class="docutils literal"><span class="pre">il</span></code>, <code class="docutils literal"><span class="pre">elle</span></code> ou <code class="docutils literal"><span class="pre">on</span></code>, alors ce tiret doit être
+précédé par un verbe, éventuellement suivi de <code class="docutils literal"><span class="pre">-t</span></code>. Ainsi, si l’on
+considère la phrase de la figure&nbsp;[fig-est-il] commençant par <em>Est-il</em>,
+on peut voir que toutes les interprétations non verbales de <code class="docutils literal"><span class="pre">Est</span></code> ont
+été supprimées.</p>
+</div>
+</div>
+<div class="section" id="compilation-des-grammaires-elag">
+<h3>Compilation des grammaires ELAG<a class="headerlink" href="#compilation-des-grammaires-elag" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Avant de pouvoir être appliquée à un automate de texte, une grammaire
+ELAG doit être compilée en un fichier <code class="docutils literal"><span class="pre">.rul</span></code>. Cette opération
+s’effectue via la commande “Elag Rules”, dans le menu “Text”, qui fait
+apparaître la fenêtre de la figure &nbsp;[fig-elag-rules].</p>
+<div class="figure" id="id18">
+<a class="reference internal image-reference" href="resources/img/fig7-16.png"><img alt="Fenêtre de compilation des grammaires ELAG[fig-elag-rules]" src="resources/img/fig7-16.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Fenêtre de compilation des grammaires ELAG[fig-elag-rules]</span></p>
+</div>
+<p>Si le cadre à droite contient déjà des grammaires que vous ne souhaitez
+pas utiliser, vous pouvez les retirer au moyen du bouton “&lt;&lt;”.
+Sélectionnez ensuite votre grammaire dans l’explorateur de fichiers
+situé dans le cadre gauche, et cliquez sur le bouton“&gt;&gt;” pour l’ ajouter
+à la liste du cadre droit. Cliquez alors sur le bouton “Compile”. Ceci
+lancera le programme <code class="docutils literal"><span class="pre">ElagComp</span></code> qui va compiler la grammaire
+sélectionnée pour créer un fichier nommé <code class="docutils literal"><span class="pre">elag.rul</span></code> par défaut.</p>
+<p>Si vous avez sélectionné votre grammaire dans le cadre droit, vous
+pouvez rechercher les motifs qu’elle reconnaît en cliquant sur le bouton
+“Locate”. Cela ouvre la fenêtre “Locate Pattern” en spécifiant
+automatiquement un nom de graphe se terminant par <code class="docutils literal"><span class="pre">-conc.fst2</span></code>. Ce
+graphe correspond à la partie <em>si</em> de la grammaire. Vous pouvez ainsi
+obtenir les occurrences du texte sur lesquelles la grammaire
+s’appliquera.</p>
+<p>NOTE: le fichier <code class="docutils literal"><span class="pre">-conc.fst2</span></code> utilisé pour localiser la partie <em>si</em>
+d’une grammaire est généré lors de la compilation des grammaires ELAG au
+moyen du bouton “Compile”. Il faut donc avoir d’abord compilé votre
+grammaire avant d’utiliser la fonction de recherche du bouton “Locate”.</p>
+</div>
+<div class="section" id="levee-dambiguites">
+<h3>Levée d’ambiguïtés<a class="headerlink" href="#levee-dambiguites" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Une fois que vous avez compilé votre grammaire en un fichier
+<code class="docutils literal"><span class="pre">elag.rul</span></code> vous pouvez l’appliquer à l’automate du texte. Dans la
+fenêtre de l’automate du texte, cliquez sur le bouton “Apply Elag Rule”.
+Une boîte de dialogue apparaîtra pour vous demander le nom du fichier
+<code class="docutils literal"><span class="pre">.rul</span></code> à utiliser (voir figure&nbsp;[fig-text-auto1]). Comme le fichier par
+défaut est bien <code class="docutils literal"><span class="pre">elag.rul</span></code>, cliquez simplement sur “OK”. Cela lancera
+le programme <code class="docutils literal"><span class="pre">Elag</span></code> qui va effectuer la levée d’ambiguïtés.</p>
+<div class="figure" id="id19">
+<a class="reference internal image-reference" href="resources/img/fig7-17.png"><img alt="Fenêtre de l’automate du texte [fig-text-auto1]" src="resources/img/fig7-17.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Fenêtre de l’automate du texte [fig-text-auto1]</span></p>
+</div>
+<p>Une fois le programme terminé, vous pouvez consulter l’automate résultat
+en cliquant sur le bouton “Open Elag Frame” button. Comme on le voit sur
+la figure&nbsp;[fig-text-auto2], la fenêtre est séparée en deux: l’automate
+d’origine est affiché en haut, et l’automate résultat en bas.</p>
+<div class="figure" id="id20">
+<a class="reference internal image-reference" href="resources/img/fig7-18.png"><img alt="Fenêtre de l’automate du texte séparée en deux [fig-text-auto2]" src="resources/img/fig7-18.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Fenêtre de l’automate du texte séparée en deux [fig-text-auto2]</span></p>
+</div>
+<p>Ne soyez pas étonné si l’automate du bas semble plus compliqué. Cela
+s’explique par le fait que les entrées lexicales factorisées <a class="footnote-reference" href="#id9" id="id5">[1]</a> ont
+été <em>explosées</em> de façon à traiter séparément chaque interprétation
+flexionnelle. Pour refactoriser ces entrées, cliquez sur le bouton
+“Implode”. Un clic sur le bouton “Explode” vous donne une vue explosée
+de l’automate du texte.</p>
+<p>Si vous cliquez sur le bouton “Replace”, l’automate résultat deviendra
+le nouvel automate du texte. Ainsi, si vous utilisez d’autres
+grammaires, elles s’appliqueront sur l’automate déjà partiellement
+désambiguïsé, ce qui permet de cumuler les effets de plusieurs
+grammaires.</p>
+</div>
+<div class="section" id="ensembles-de-grammaires">
+<h3>Ensembles de grammaires<a class="headerlink" href="#ensembles-de-grammaires" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Il est possible de regrouper plusieurs grammaires ELAG en un ensemble de
+grammaires, afin de les appliquer en une seule fois. Les ensembles de
+grammaires ELAG sont décrits dans des fichiers <code class="docutils literal"><span class="pre">.lst</span></code>. Ils sont gérés
+depuis la fenêtre de compilation des grammaires ELAG
+(figure&nbsp;[fig-elag-rules]). Le label en haut à gauche indique le nom de
+l’ensemble courant, par défaut <code class="docutils literal"><span class="pre">elag.lst</span></code>.C’est le contenu de cet
+ensemble qui est affiché dans le cadre droit de la fenêtre.</p>
+<p>Pour modifier le nom de l’ensemble, cliquez sur le bouton “Browse”. Dans
+la boîte de dialogue qui apparaît alors, choisissez le nom du
+fichier<code class="docutils literal"><span class="pre">.lst</span></code> que vous voulez donner à votre ensemble.</p>
+<p>Pour ajouter une grammaire à l’ensemble, sélectionnez-la dans
+l’explorateur de fichiers du cadre gauche, et cliquez sur le bouton &gt;&gt;.
+Pour retirer une grammaire de l’ensemble, sélectionnez-la dans le cadre
+droit et cliquez sur le bouton &lt;&lt;. Une fois que vous avez sélectionné
+toutes vos grammaires, compilez-les en cliquant sur le bouton “Compile”.
+Cela créera un fichier <code class="docutils literal"><span class="pre">.rul</span></code> portant le nom indiqué en bas à droite
+(le nom du fichier est obtenu en remplaçant l’extension <code class="docutils literal"><span class="pre">.lst</span></code> par
+<code class="docutils literal"><span class="pre">.rul</span></code>).</p>
+<p>Vous pouvez maintenant appliquer votre ensemble de grammaires. Comme
+expliqué plus haut, cliquez sur le bouton “Apply Elag Rule” dans la
+fenêtre de l’automate du texte. Quand la boîte de dialogue vous demande
+le nom du fichier <code class="docutils literal"><span class="pre">.rul</span></code> à utiliser, cliquez sur le bouton “Browse” et
+séletionnez votre ensemble. L’automate résultat est identique à celui
+qui aurait été obtenu en appliquant successivement chacune des
+grammaires.</p>
+</div>
+<div class="section" id="fenetre-de-traitement-delag">
+<h3>Fenêtre de traitement d’ELAG<a class="headerlink" href="#fenetre-de-traitement-delag" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Lors de la désambiguïsation, le programme <code class="docutils literal"><span class="pre">Elag</span></code> est lancé dans une
+fenêtre de traitement qui permet de voir les messages émis par le
+programme pendant son exécution.</p>
+<p>Par exemple, lorsque l’automate du texte contient des symboles qui ne
+correspondent pas au jeu d’étiquettes d’ELAG (voir section suivante), un
+message indique la nature de l’erreur rencontrée. De même, lorsqu’une
+phrase est rejetée (toutes les analyses possibles ont été éliminées par
+les grammaires), un message indique le numéro de la phrase. Cela permet
+de localiser rapidement la source des problèmes.</p>
+<div class="section" id="evaluation-du-taux-dambiguite">
+<h4>Évaluation du taux d’ambiguïté<a class="headerlink" href="#evaluation-du-taux-dambiguite" title="Lien permanent vers ce titre">¶</a></h4>
+<p>L’évaluation du taux d’ambiguïté ne se base pas uniquement sur le nombre
+moyen d’interprétations par mot. Afin d’avoir une mesure plus
+représentative, le système prend égale- ment en compte les différentes
+combinaisons de mots. Durant la levée d’ambiguïtés, le programme
+<code class="docutils literal"><span class="pre">Elag</span></code> calcule le nombre d’analyses possibles dans l’automate du texte
+avant et après modification (cela correspond au nombre de chemins
+possibles dans l’automate). En se basant sur cette valeur, le programme
+calcule l’ambiguïté moyenne par phrase et par mot. C’est cette dernière
+mesure qui est utilisée pour représenter le taux d’ambiguïtés du texte,
+car elle ne varie pas avec la taille du corpus, ni avec le nombre de
+phrases de celui-ci. La formule appliquée est:</p>
+<p><em>taux
+d’ambiguïtés</em><span class="math">\(=exp^{\frac{log(nombre de chemins)}{longueur du texte}}\)</span></p>
+<p>Le rapport entre le taux d’ambiguïtés avant et après l’application des
+grammaires donne une mesure de leur efficacité. Toutes ces informations
+sont affichées dans le fenêtre de traitement d’ELAG.</p>
+</div>
+</div>
+<div class="section" id="description-du-jeu-detiquettes">
+<h3>Description du jeu d’étiquettes<a class="headerlink" href="#description-du-jeu-detiquettes" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les programmes <code class="docutils literal"><span class="pre">Elag</span></code> and <code class="docutils literal"><span class="pre">ElagComp</span></code> nécessitent une description
+formelle du jeu d’étiquettes des dictionnaires utilisés. Cette
+description consiste, grosso modo, en une énumération de toutes les
+catégories grammaticales présentes dans les dictionnaires, avec pour
+chacune d’elle, la liste des codes syntaxiques et flexionnels qui leur
+sont associées et une description de leurs possibles combinaisons. Ces
+informations sont décrites dans le fichier nommé <code class="docutils literal"><span class="pre">tagset.def</span></code> qui se
+trouve dans votre répertoire personnel, dans le sous-répertoire de la
+langue choisie</p>
+<div class="section" id="tagset-def-file">
+<h4><code class="docutils literal"><span class="pre">tagset.def</span></code> file<a class="headerlink" href="#tagset-def-file" title="Lien permanent vers ce titre">¶</a></h4>
+<p>Voici un extrait du fichier <code class="docutils literal"><span class="pre">tagset.def</span></code> utilisé pour le français.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">NAME</span> <span class="n">french</span>
+
+<span class="n">POS</span> <span class="n">ADV</span>
+<span class="o">.</span>
+
+<span class="n">POS</span> <span class="n">PRO</span>
+<span class="n">flex</span><span class="p">:</span>
+<span class="n">pers</span>   <span class="o">=</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>
+<span class="n">genre</span>  <span class="o">=</span> <span class="n">m</span> <span class="n">f</span>
+<span class="n">nombre</span> <span class="o">=</span> <span class="n">s</span> <span class="n">p</span>
+<span class="n">discr</span><span class="p">:</span>
+<span class="n">subcat</span> <span class="o">=</span> <span class="n">Pind</span> <span class="n">Pdem</span> <span class="n">PpvIL</span> <span class="n">PpvLUI</span> <span class="n">PpvLE</span> <span class="n">Ton</span> <span class="n">PpvPR</span> <span class="n">PronQ</span> <span class="n">Dnom</span> <span class="n">Pposs1s</span><span class="o">...</span>
+<span class="n">complete</span><span class="p">:</span>
+<span class="n">Pind</span>     <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">Pdem</span>     <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">Pposs1s</span>  <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">Pposs1p</span>  <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">Pposs2s</span>  <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">Pposs2p</span>  <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">Pposs3s</span>  <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">Pposs3p</span>  <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">PpvIL</span>    <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span>
+<span class="n">PpvLE</span>    <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span>
+<span class="n">PpvLUI</span>   <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span>      <span class="c1">#</span>
+<span class="n">Ton</span>      <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span>      <span class="c1"># lui, elle, moi</span>
+<span class="n">PpvPR</span>                                 <span class="c1"># en y</span>
+<span class="n">PronQ</span>                                 <span class="c1"># ou qui que quoi</span>
+<span class="n">Dnom</span>                                  <span class="c1"># rien</span>
+<span class="o">.</span>
+
+<span class="n">POS</span> <span class="n">A</span> <span class="c1">## adjectifs</span>
+<span class="n">flex</span><span class="p">:</span>
+<span class="n">genre</span>  <span class="o">=</span> <span class="n">m</span> <span class="n">f</span>
+<span class="n">nombre</span> <span class="o">=</span> <span class="n">s</span> <span class="n">p</span>
+<span class="n">cat</span><span class="p">:</span>
+<span class="n">gauche</span> <span class="o">=</span> <span class="n">g</span>
+<span class="n">droite</span> <span class="o">=</span> <span class="n">d</span>
+<span class="n">complete</span><span class="p">:</span>
+<span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">_</span>  <span class="c1"># pour {de bonne humeur,.A}, {au bord des larmes,.A} par exemple</span>
+<span class="o">.</span>
+
+
+<span class="n">POS</span> <span class="n">V</span>
+<span class="n">flex</span><span class="p">:</span>
+<span class="n">temps</span>  <span class="o">=</span> <span class="n">C</span> <span class="n">F</span> <span class="n">I</span> <span class="n">J</span> <span class="n">K</span> <span class="n">P</span> <span class="n">S</span> <span class="n">T</span> <span class="n">W</span> <span class="n">Y</span> <span class="n">G</span> <span class="n">X</span>
+<span class="n">pers</span>   <span class="o">=</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>
+<span class="n">genre</span>  <span class="o">=</span> <span class="n">m</span> <span class="n">f</span>
+<span class="n">nombre</span> <span class="o">=</span> <span class="n">s</span> <span class="n">p</span>
+<span class="n">complete</span><span class="p">:</span>
+<span class="n">W</span>
+<span class="n">G</span>
+<span class="n">C</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">F</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">I</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">J</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">P</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">S</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">T</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">X</span> <span class="mi">1</span> <span class="n">s</span>   <span class="c1"># eusse dusse puisse fusse (-je)</span>
+<span class="n">Y</span> <span class="mi">1</span> <span class="n">p</span>
+<span class="n">Y</span> <span class="mi">2</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">K</span> <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="o">.</span>
+</pre></div>
+</div>
+<p>Le symbole <code class="docutils literal"><span class="pre">#</span></code> indique que le reste de la ligne est en commentaire. Un
+commentaire peut apparaître à n’importe quel endroit dans le fichier. Le
+fichier commence toujours par le mot <code class="docutils literal"><span class="pre">NAME</span></code>, suivi par un identifiant
+(<code class="docutils literal"><span class="pre">french</span></code>, dans l’exemple). La suite du fichier est constituée de
+sections <code class="docutils literal"><span class="pre">POS</span></code> (pour Part-Of-Speech, partie du discours), une pour
+chaque catégorie grammaticale. Chaque section décrit la structure des
+étiquettes des entrées lexicales appartenant à la catégorie grammaticale
+concernée. Chaque section se compose de 4 parties qui sont toutes
+optionnelles:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">flex</span></code>: cette partie énumère les codes flexionnels relatifs à la
+catégorie grammaticale. Par exemple, les codes <code class="docutils literal"><span class="pre">1,2,3</span></code> qui dénotent
+la personne de l’entrée, sont des codes pertinents pour les pronoms
+mais pas pour les adjectifs. Chaque ligne décrit un attribut
+flexionnel (genre, temps, etc), et est composée du nom de l’attribut,
+suivi du signe <code class="docutils literal"><span class="pre">=</span></code> et des valeurs qu’il peut prendre; Par exemple,
+la ligne suivante déclare un attribut <span class="math">\(pers\)</span> pouvant prendre
+les valeurs <span class="math">\(1\)</span>, <span class="math">\(2\)</span> or <span class="math">\(3\)</span>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pers</span> <span class="o">=</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">cat</span></code>: cette partie déclare les attributs syntaxiques et
+sémantiques qui peuvent être attribués aux entrées appartenant à la
+catégorie grammaticale concernée. Chaque ligne décrit un attribut et
+les valeurs qu’il peut prendre. Les codes déclarés pour un même
+attribut doivent être exclusifs les uns des autres. Autrement dit,
+une entrée ne peut pas prendre plus d’une valeur pour un même
+attribut. En revanche, il peut exister des étiquettes ne prenant
+aucune valeur pour un attribut donné. Par exemple, pour définir
+l’attribut <code class="docutils literal"><span class="pre">niveau_de_langue</span></code> pouvant prendre les valeurs <code class="docutils literal"><span class="pre">z1</span></code>,
+<code class="docutils literal"><span class="pre">z2</span></code> et <code class="docutils literal"><span class="pre">z3</span></code>, on écrira la ligne suivante:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">niveau_de_langue</span> <span class="o">=</span> <span class="n">z1</span> <span class="n">z2</span> <span class="n">z3</span>
+</pre></div>
+</div>
+<p>mais cet attribut n’est pas forcément présent pour tous les mots.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">discr</span></code>: cette partie est constituée de la déclaration d’un unique
+attribut. La syntaxe est la même que dans la partie <code class="docutils literal"><span class="pre">cat</span></code> et
+l’attribut décrit ici ne doit pas y être répété. Cette partie permet
+de diviser la catégorie grammaticale en sous-catégories
+<em>discriminantes</em> dans lesquelles les entrées ont des attributs
+flexionnels similaires. Pour les pronoms par exemple, une indication
+de personne est attribuée aux entrées appartenant à la sous-catégorie
+des pronoms personnels mais non aux pronoms relatifs. Ces dépendances
+sont décrites dans la partie <code class="docutils literal"><span class="pre">complete</span></code>;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">complete</span></code>: Dans cette partie est explicité l’étiquetage
+morphologique des mots appartenant à la catégorie grammaticale
+courante. Chaque ligne décrit une combinaison valide de codes
+flexionnels en fonction de leur sous catégorie discriminante (si une
+telle catégorie a été déclarée). Lorsqu’un nom d’attribut apparaît
+entre angles (<code class="docutils literal"><span class="pre">&lt;</span></code> et <code class="docutils literal"><span class="pre">&gt;</span></code>), cela signifie que n’importe quelle
+valeur de cet attribut peut convenir. Il est également possible de
+déclarer qu’une entrée ne prend aucun trait flexionnel au moyen d’une
+ligne ne contenant que le caractère <code class="docutils literal"><span class="pre">_</span></code> (underscore). Ainsi par
+exemple, si nous considérons les lignes suivantes extraites de la
+section concernant la description des verbes :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">W</span>
+<span class="n">K</span> <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Elles permettent de déclarer que les verbes à l’infinitif (dénoté par
+le code <code class="docutils literal"><span class="pre">W</span></code>) n’ont pas d’autres traits flexionnels positionnés
+tandis que les formes à participe passé (code <code class="docutils literal"><span class="pre">K</span></code>) sont également
+attribuées d’un genre et d’un nombre.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="description-des-codes-flexionnels">
+<h4>Description des codes flexionnels<a class="headerlink" href="#description-des-codes-flexionnels" title="Lien permanent vers ce titre">¶</a></h4>
+<p>La principale fonction de la partie <code class="docutils literal"><span class="pre">discr</span></code> est de diviser les
+étiquettes en sous-catégories ayant un comportement morphologique
+similaire. Ces sous-catégories sont ensuite utilisées pour faciliter
+l’écriture de la partie <code class="docutils literal"><span class="pre">complete</span></code>.</p>
+<p>Pour la lisibilité des grammaires ELAG, il est souhaitable que les
+éléments d’une même sous-catégorie aient tous le même comportement
+flexionnel; dans ce cas, la partie <code class="docutils literal"><span class="pre">complete</span></code> est composée d’une seule
+ligne par sous-catégorie.</p>
+<p>Considérons par exemple les lignes suivantes, extraites de la
+description des pronoms:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Pdem</span>  <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span>
+<span class="n">PpvIl</span> <span class="o">&lt;</span><span class="n">genre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">pers</span><span class="o">&gt;</span>
+<span class="n">PpvPr</span>
+</pre></div>
+</div>
+<p>Ces lignes signifient:</p>
+<ul class="simple">
+<li>tous les pronoms démonstratifs (<code class="docutils literal"><span class="pre">PRO+Pdem&gt;</span></code>) ont des indications de
+genre et de nombre, et aucune autre ;</li>
+<li>les pronoms personnels nominatifs (<code class="docutils literal"><span class="pre">&lt;PRO+PpvIl&gt;</span></code>) sont étiquetés
+morphologiquement par une personne, un genre et nombre ;</li>
+<li>les pronoms prépositionnels (<em>en</em>, <em>y</em>) n’ont aucun trait flexionnel.</li>
+</ul>
+<p>Toutes les combinaisons des traits flexionnels et discriminants qui
+apparaissent dans les dictionnaires doivent être décrites dans le
+fichier <code class="docutils literal"><span class="pre">tagset.def</span></code>; faute de quoi les entrées correspondantes seront
+rejetées par ELAG.</p>
+<p>Dans le cas où des mots d’une même sous-catégorie diffèrent par leurs
+traits flexionnels, il est nécessaire d’écrire plusieurs lignes dans la
+partie <code class="docutils literal"><span class="pre">complete</span></code>. L’inconvénient de cette méthode de description est
+qu’il devient difficile de faire la distinction entre de tels mots dans
+une grammaire ELAG.</p>
+<p>Si l’on considère la description donnée précédemment en exemple,
+certains adjectifs du français prennent un genre et un nombre, alors que
+d’autres n’ont aucun trait flexionnel. C’est par exemple le cas de
+séquences figées comme <em>de bonne humeur</em> qui ont un comportement
+syntaxique très proche de celui des adjectifs.</p>
+<p>De telles séquences ont ainsi été intégrées dans le dictionnaire du
+français en tant qu’adjectifs invariables et donc sans trait flexionnel.
+Le problème est que si l’on veut faire référence exclusivement à ce type
+d’adjectifs dans une grammaire de désambiguïsation, le symbole <code class="docutils literal"><span class="pre">&lt;A&gt;</span></code>
+ne convient pas, puisqu’il donnera tous les adjectifs. Pour contourner
+cette difficulté, il est possible de nier un attribut flexionnel, en
+écrivant le caractère <code class="docutils literal"><span class="pre">&#64;</span></code> juste avant une des valeurs possibles pour
+cet attribut. Ainsi, le symbole <code class="docutils literal"><span class="pre">&lt;A:&#64;m&#64;p&gt;</span></code> reconnaît tous les
+adjectifs qui n’ont ni genre ni nombre. A l’aide de cet opérateur, il
+est maintenant possible d’écrire des grammaires comme celles de la
+figure&nbsp;[fig-NA], qui imposent l’accord en genre et en nombre entre un
+nom et l’adjectif qui le suit  <a class="footnote-reference" href="#id10" id="id6">[2]</a>. Cette grammaire conservera
+l’analyse correcte de phrases comme: <em>Les personnes de bonne humeur
+m’insupportent</em>.</p>
+<p>Il est toutefois recommandé de limiter l’usage de l’opérateur &#64;, car
+cela nuit à la lisibilité des grammaires. Il est préférable de
+distinguer les étiquettes qui acceptent différentes com- binaisons
+flexionnelles au moyen de sous-catégories discriminantes définies dans
+la partie <code class="docutils literal"><span class="pre">discr</span></code>.</p>
+</div>
+<div class="section" id="codes-optionnels">
+<h4>Codes optionnels<a class="headerlink" href="#codes-optionnels" title="Lien permanent vers ce titre">¶</a></h4>
+<p>Les codes syntaxiques et sémantiques optionnels sont déclarés dans la
+partie cat. Ils peuvent être utilisés dans les grammaires ELAG comme les
+autres codes. La différence est que ces codes n’interviennent pas pour
+décider si une étiquette doit être rejetée comme invalide ou non, lors
+du chargement de l’automate du texte.</p>
+<p>Ce sont des codes facultatifs, qui sont indépendants des autres codes,
+comme par exemple l’attribut de niveau de langue (<code class="docutils literal"><span class="pre">z1</span></code>, <code class="docutils literal"><span class="pre">z2</span></code> or
+<code class="docutils literal"><span class="pre">z3</span></code>). De la même manière que pour les codes flexionnels, il est
+également possible de nier un attribut flexionnel en écrivant le
+caractère <code class="docutils literal"><span class="pre">!</span></code> juste avant le nom de l’attribut. Ainsi, avec notre
+fichier d’exemple, le symbole <code class="docutils literal"><span class="pre">&lt;A!gauche:f&gt;</span></code> reconnaît tous les
+adjectifs au féminin qui ne possèdent pas le code <code class="docutils literal"><span class="pre">gauche</span></code>, <a class="footnote-reference" href="#id11" id="id7">[3]</a>.</p>
+<p>Tous les codes qui ne sont pas déclarés dans le fichier <code class="docutils literal"><span class="pre">tagset.def</span></code>
+sont ignorés par ELAG. Si une entrée de dictionnaire contient un tel
+code, ELAG produira un avetissement et retirera le code de l’entrée.</p>
+<p>En conséquence, si deux entrées concurrentes ne différaient dans
+l’automate du texte d’origine que par des codes non déclarés, ces
+entrées deviendront indistinguables par le programme et seront donc
+unifiées en une seule entrée dans l’automate résultat.</p>
+<p>Ainsi, le jeu d’étiquettes décrit dans le fichier <code class="docutils literal"><span class="pre">tagset.def</span></code> peut
+suffire à réduire l’ambiguïté, en factorisant des mots qui ne diffèrent
+que par des codes non déclarés et ceci indépendamment des grammaires
+appliquées.</p>
+<p>Par exemple, dans la version la plus complète du dictionnaire du
+français, chaque emploi distinct d’un verbe est caractérisé par une
+référence vers la table du lexique-grammaire qui le caractérise. Nous
+avons considéré jusqu’à présent que ces informations relèvent plus de la
+syntaxe que de l’analyse lexicale et nous ne les avons donc pas
+intégrées dans la description du jeu d’étiquettes. Celle-ci sont donc
+automatiquement éliminées lors du chargement de l’automate du texte, ce
+qui réduit son taux d’ambiguïtés.</p>
+<p>Afin de bien distinguer les effets liés au jeu d’étiquettes de ceux des
+grammaires ELAG, il est conseillé de procéder à une étape préalable de
+normalisation de l’automate du texte avant de lui appliquer les
+grammaires de désambiguïsation. Cette normalisation s’effectue en
+appliquant à l’automate du texte une grammaire n’imposant aucune
+contrainte, comme celle de la figure&nbsp;[fig-elag-norm]. Notez que cette
+grammaire est normalement présente dans la distribution d’Unitex et
+pré-compilée dans le fichier <code class="docutils literal"><span class="pre">norm.rul</span></code>.</p>
+<div class="figure" id="id21">
+<a class="reference internal image-reference" href="resources/img/fig7-20.png"><img alt="Grammaire ELAG n’exprimant aucune contrainte[fig-elag-norm]" src="resources/img/fig7-20.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Grammaire ELAG n’exprimant aucune contrainte[fig-elag-norm]</span></p>
+</div>
+<p>Le résultat de l’application de cette grammaire est que l’automate
+d’origine est nettoyé de tous les codes qui ne sont, soit pas décrits
+dans le fichier <code class="docutils literal"><span class="pre">tagset.def</span></code>, soit non conformes à cette description
+(à cause de catégories grammaticales inconnues ou de combinaisons
+invalides de traits flexionnels). En remplaçant alors l’automate du
+texte par l’automate ainsi normalisé, on peut être sûr que les
+modifications ultérieures de l’automate seront uniquement dues aux
+effets des grammaires ELAG.</p>
+</div>
+</div>
+<div class="section" id="optimiser-les-grammaires">
+<h3>Optimiser les grammaires<a class="headerlink" href="#optimiser-les-grammaires" title="Lien permanent vers ce titre">¶</a></h3>
+<p>La compilation des grammaires effectuée par le programme <code class="docutils literal"><span class="pre">ElagComp</span></code>
+consiste à constr-uire un automate dont le langage est l’ensemble des
+séquences d’entrées lexicales (ou interprétations lexicales d’une
+phrase) qui ne sont pas rejetées par les grammaires. Cette tâche est
+complexe et peut prendre beaucoup de temps, il est toutefois possible de
+l’accélérer sensiblement en observant certains principes lors de
+l’écriture des grammaires.</p>
+<div class="section" id="limiter-le-nombre-de-branches-alors">
+<h4>Limiter le nombre de branches <em>alors</em><a class="headerlink" href="#limiter-le-nombre-de-branches-alors" title="Lien permanent vers ce titre">¶</a></h4>
+<p>Il est recommandé de réduire au minimum le nombre de parties <em>alors</em>
+d’une grammaire. Cela peut réduire considérablement le temps de
+compilation des grammaires. Le plus souvent, une grammaire possédant
+beaucoup de parties <em>alors</em> peut être réécrite avec une ou deux parties
+<em>then</em> sans perte de lisibilité. C’est par exemple le cas de la
+grammaire de la figure &nbsp;[fig-NA-bad] qui impose une contrainte entre un
+verbe et le pronom qui le suit.</p>
+<p>Comme on peut le voir sur la figure&nbsp;[fig-NA-good], on peut écrire une
+grammaire équivalente en factorisant toutes les parties <em>alors</em> en une
+seule. Les deux grammaires auront exactement le même effet sur
+l’automate du texte, mais la seconde sera compilée beaucoup plus
+rapidement.</p>
+</div>
+<div class="section" id="utilisation-des-symboles-lexicaux">
+<h4>Utilisation des symboles lexicaux<a class="headerlink" href="#utilisation-des-symboles-lexicaux" title="Lien permanent vers ce titre">¶</a></h4>
+<p>Il vaut mieux n’utiliser les lemmes que lorsque c’est absolument
+nécessaire. Cela est particulièrement vrai pour les mots grammaticaux,
+lorsque leurs sous-catégories portent presque autant d’information que
+les lemmes eux-mêmes. Si vous utilisez malgré tout un lemme dans un
+symbole, il est recommandé de préciser le plus possible ses traits
+syntaxiques, sémantiques et flexionnels. Par exemple, avec les
+dictionnaires fournis pour le français, il est préférable de remplacer
+des symboles comme <code class="docutils literal"><span class="pre">&lt;je.PRO:1s&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;je.PRO+PpvIL:1s&gt;</span></code> et
+<code class="docutils literal"><span class="pre">&lt;je.PRO&gt;</span></code> par le symbole <code class="docutils literal"><span class="pre">&lt;PRO+PpvI1:1s&gt;</span></code>. En effet, tous ces
+symboles sont identiques dans la mesure où ils ne peuvent reconnaître
+que l’unique entrée de dictionnaire <code class="docutils literal"><span class="pre">{je,PRO+PpvIL:1ms:1fs}</span></code>.
+Cependant, comme le programme ne peut pas déduire automatiquement cette
+information, si l’on ne précise pas tous ces traits, le programme
+considérera en vain des étiquettes non existantes telles
+<code class="docutils literal"><span class="pre">&lt;je.PRO:3p&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;je.PRO+PronQ&gt;</span></code> etc. en vain.</p>
+</div>
+</div>
+</div>
+<div class="section" id="linearisation-de-lautomate-du-texte-avec-le-taggeur">
+<h2>Linéarisation de l’automate du texte avec le taggeur<a class="headerlink" href="#linearisation-de-lautomate-du-texte-avec-le-taggeur" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Par défaut, l’automate du texte contient de nombreux chemins étiquetés
+en raison de l’ambiguïté lexicale. Le processus de linéarisation
+consiste à choisir un chemin unique, une séquence d’étiquettes avec une
+étiquette par token et de supprimer les autres. Le résultat est un
+automate du texte avec un seul chemin (voir section
+[section-linear-text] pour convertir un automate linéaire en un texte
+linéaire). Le choix du chemin dépend de son score. Le chemin avec le
+meilleur score est choisi et les autres supprimés Le score d’un chemin
+est calculé par un modèle statistique entrainé sur un corpus annoté. Ce
+modèle utilise des fichiers de données du taggeur produites par le
+programme TrainingTagger (vour section [section-TrainingTagger]). Par
+exemple, vous pouvez voir figure [fig7-linearize2], l’automate du texte
+original sur la phrase <em>Les insectes nuisibles envahissent la maison</em>.
+L’automate du texte après linéarisation est celui de la figure
+[fig7-linearize3].</p>
+<div class="figure" id="id22">
+<a class="reference internal image-reference" href="resources/img/fig7-linearize3.png"><img alt="Automate du texte linéarisé[fig7-linearize3]" src="resources/img/fig7-linearize3.png" style="width: 16.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Automate du texte linéarisé[fig7-linearize3]</span></p>
+</div>
+<div class="section" id="compatibilite-du-jeu-detiquettes">
+<h3>Compatibilité du jeu d’étiquettes<a class="headerlink" href="#compatibilite-du-jeu-detiquettes" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le jeu d’étiquettes du taggeur est identique à celui du corpus
+d’entrainement ou en est une variante (voir ci-dessous). Toutefois, pour
+utiliser le taggeur sur l’automate du texte, on doit faire attention au
+jeu d’étiquettes et à la morphologie. Le jeu d’étiquettes du modèle doit
+être identique à celui de l’automate du texte. Par exemple, si le modèle
+statistique a été calculé avec les étiquettes <code class="docutils literal"><span class="pre">DET</span></code> pour les mots
+<code class="docutils literal"><span class="pre">the</span></code>, l’étiquette correspondante dans le texte doit être <code class="docutils literal"><span class="pre">DET</span></code>.
+Unitex dispose d’une fonctionnalité qui permet de changer la forme des
+mots du texte, par exemple pour normaliser <code class="docutils literal"><span class="pre">doesn't</span></code> en <code class="docutils literal"><span class="pre">does</span> <span class="pre">not</span></code>.
+Appliquer des graphes de remplacement ou de normalisation peut entrainer
+des modifications de la forme des mots. Si un tel traitement a été
+appliqué au texte, il doit avoir été appliqué également au corpus
+d’entrainement. Si ces règles ne sont pas respectées, le taggeur
+pourrait être incapable de trouver le chemin souhaité dans l’automate du
+texte.</p>
+<p>Le programme TrainingTagger produit deux variantes de taggeur. Le
+premier supprime des transitions sur la base de codes gramaticaux,
+sémantiques, syntaxiques et flexionnels (par exemple, <code class="docutils literal"><span class="pre">the.DET+Ddef:s</span></code>
+au lieu de <code class="docutils literal"><span class="pre">the.DET+Ddef:p</span></code>). Le second supprime les transitions sur
+la base de codes gramaticaux, sémantiques et syntaxiques
+(<code class="docutils literal"><span class="pre">that.DET+Ddem</span></code> au lieu de <code class="docutils literal"><span class="pre">that.PRO+Pdem</span></code>). Ce traitement accélère
+l’entrainement et les informations flexionnelles ne sont plus
+nécessaires pour toutes les applications.</p>
+</div>
+<div class="section" id="utilisation-du-tagger">
+<h3>Utilisation du Tagger<a class="headerlink" href="#utilisation-du-tagger" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Pour linéariser l’automate du texte, vous devez choisir l’option
+“Linearize with the Tagger” dans la fenêtre de configuration pour
+construire l’automate du texte (cf. figure [fig7-linearize1]). Avec
+cette option, le programme linéarise chaque phrase de l’automate. Vous
+devez également sélectionner le fichier de données du taggeur (avec
+l’extension “.bin”) en cliquant sur le bouton “Set”. Le fichier de
+données du taggeur suffixé par “morph” est la première variante (avec
+les codes flexionnels) et celle suffixée par “cat” est la seconde (sans
+codes flexionnels). Si vous utilisez les données de type “morph”, vous
+devez également cliquer sur “Normalize accordind to Elag tagset.def”
+(pour plus de détails, voir section [section-Tagger] au sujet du
+programme <code class="docutils literal"><span class="pre">Tagger</span></code>).</p>
+<p>Par exemple, l’automate du texte, de la figure [fig7-linearize3], est la
+sortie de la linéarisation de l’automate du texte de la figure
+[fig7-linearize2] avec la version “cat”. La linéarisation de l’automate
+avec la version “morph” se trouve figure [fig7-linearize4].</p>
+</div>
+<div class="section" id="creation-dun-nouveau-taggeur">
+<h3>Création d’un nouveau taggeur<a class="headerlink" href="#creation-dun-nouveau-taggeur" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Pour créer un nouveau taggeur pour votre langue, vous devez lancer le
+programme TrainingTagger sur votre propre corpus annoté. Le format du
+corpus annoté est décrit dans [section-corpus-file]. Comme nous le
+signalions à la section [section-linearization-tagset], vous devez faire
+attention au jeu d’étiquettes et à la morphologie. Avant de calculer un
+modèle statistique, vous devez décider quels dictionnaires et graphes de
+normalisation vous utiliserez pour construire l’automate du texte. Puis,
+vous devrez modifier le corpus annoté si la forme des mots ou le jeu
+d’étiquettes ne sont pas identiques. Par exemple, si le graphe de
+normalisation transforme le mot <code class="docutils literal"><span class="pre">jusqu'</span></code> en <code class="docutils literal"><span class="pre">jusque</span></code>, le mot
+correspondant dans le corpus annoté doit être<code class="docutils literal"><span class="pre">jusque</span></code>.</p>
+<p>Un taggeur pour le français est fourni avec Unitex. Il a été créé avec
+un corpus annoté composé d’étiquettes dépourvues de codes sémantiques et
+syntaxiques.</p>
+</div>
+</div>
+<div class="section" id="manipulation-de-lautomate-du-texte">
+<h2>Manipulation de l’automate du texte<a class="headerlink" href="#manipulation-de-lautomate-du-texte" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="affichage-des-automates-de-phrases">
+<h3>Affichage des automates de phrases<a class="headerlink" href="#affichage-des-automates-de-phrases" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Comme nous l’avons vu précédemment, l’automate d’un texte est en réalité
+l’ensemble des automates des phrases de ce texte. Cette structure peut
+être représentée grâce au format <code class="docutils literal"><span class="pre">.fst2</span></code>, utilisé pour représenter les
+grammaires compilées. Cependant, ce format ne permet pas d’afficher
+directement les automates de phrases. Il faut donc utiliser un programme
+<code class="docutils literal"><span class="pre">Fst2Grf</span></code> pour convertir un automate de phrase en un graphe pour qu’il
+puisse être affiché. Ce programme est appelé automatiquement quand vous
+sélectionnez une phrase pour générer le fichier <code class="docutils literal"><span class="pre">.grf</span></code>.</p>
+<p>Les fichiers <code class="docutils literal"><span class="pre">.grf</span></code> générés ne sont pas interprétés de la même manière
+que les fichiers <code class="docutils literal"><span class="pre">.grf</span></code> qui représentent des graphes construits par
+l’utilisateur. En effet, dans un graphe normal, les lignes d’une boîte
+sont séparées par le symbole <code class="docutils literal"><span class="pre">+</span></code>. Dans un graphe de phrase, chaque
+boîte est, soit une unité lexicale sans étiquette, soit une entrée de
+dictionnaire encadrée par des accolades. Si la boîte ne contient qu’une
+unité sans étiquette, celle-ci apparaît seule dans la boîte. Si la boîte
+contient une entrée de dictionnaire, la forme fléchie est affichée,
+suivie de sa forme canonique si celle-ci est différente. Les
+informations grammaticales et flexionnelles sont affichées sous la
+boîte, comme dans les transductions.</p>
+<p>La figure&nbsp;[fig-first-sentence-Ivanhoe] montre le graphe obtenu pour la
+première phrase <em>Ivanhoe</em>. Les mots <code class="docutils literal"><span class="pre">Ivanhoe</span></code>, <code class="docutils literal"><span class="pre">Walter</span></code> et <code class="docutils literal"><span class="pre">Scott</span></code>
+sont considérés comme des mots inconnus. Le mot <code class="docutils literal"><span class="pre">by</span></code> correspond à deux
+entrées dans le dictionnaire. Le mot <code class="docutils literal"><span class="pre">Sir</span></code> correspond également à deux
+entrées du dictionnaire, mais comme la forme canonique de ces entrées
+est <code class="docutils literal"><span class="pre">sir</span></code>, elle est affichée puisqu’elle diffère de la forme fléchie
+par une minuscule.</p>
+</div>
+<div class="section" id="modifier-manuellement-lautomate-du-texte">
+<h3>Modifier manuellement l’automate du texte<a class="headerlink" href="#modifier-manuellement-lautomate-du-texte" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Il est possible de modifier manuellement les automates de phrase, sauf
+ceux qui appa- raissent dans le cadre réservé à ELAG (cadre du bas). On
+peut modifier ou supprimer des boîtes ou des transitions (voir
+figure&nbsp;[fig-modified-sentence-automaton]).</p>
+<div class="figure" id="id23">
+<a class="reference internal image-reference" href="resources/img/fig7-24.png"><img alt="Automate de phrase modifié[fig-modified-sentence-automaton]" src="resources/img/fig7-24.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Automate de phrase modifié[fig-modified-sentence-automaton]</span></p>
+</div>
+<p>Lorsqu’un graphe est modifié, il est sauvegardé dans le répertoire du
+texte sous le nom <code class="docutils literal"><span class="pre">sentenceN.grf</span></code>, où <span class="math">\(N\)</span> représente le numéro
+de la phrase, mais cette opération ne modifie pas l’automate global du
+texte. On peut donc annuler les modifications faites manuellement et
+réinitialiser l’automate de cette phrase en cliquant sur le bouton
+“Reset Sentence Graph”.</p>
+<p>Lorsqu’on sélectionne une phrase, si un graphe modifié existe pour cette
+phrase, Unitex l’affiche.</p>
+<p>Après avoir édité des automates de phrases, on peut sauvegarder ses
+modifications manuelles dans l’automate global du texte. Pour cela, on
+clique sur le bouton “Rebuild FST-Text”. Toutes les phrases pour
+lesquelles des modifications ont été faites sont alors remplacées dans
+l’automate du texte par leur version modifiée. Le nouvel automate du
+texte est ensuite rechargé automatiquement.</p>
+<p>Lors de la construction de l’automate d’un texte
+([construction-text-automaton]), toutes les modifications manuelles
+sauvegardées dans l’automate du texte sont annulées.</p>
+<div class="section" id="levee-manuelle-des-ambiguites">
+<h4>Levée manuelle des ambiguïtés<a class="headerlink" href="#levee-manuelle-des-ambiguites" title="Lien permanent vers ce titre">¶</a></h4>
+<p>L’automate du texte peut contenir de nombreux chemins étiquetés en
+raison de l’ambiguïté lexicale. Vous pouvez soit lever les ambiguités
+avec des grammaires ELAG, soit sélectionner manuellement les chemins
+corrects pour l’un ou tous les graphes de l’automate de phrase. Vous
+devez pour cela effectuer un clic droit sur la boîte que vous voulez
+garder lorsque plusieurs boîtes avec différentes étiquettes sont
+proposées. Les bords de la boîte sélectionnée deviendront plus gras
+tandis que les autres boîtes apparaîtront grisées (voir
+figure&nbsp;[fig-manually-resolve-ambiguities]).</p>
+<p>Vous pouvez alors cliquer sur le bouton “Remove greyed states” pour ne
+garder que les boîtes sélectionnées (figure&nbsp;[fig-removed-ambiguities]).</p>
+</div>
+</div>
+<div class="section" id="parametres-de-presentation">
+<h3>Paramètres de présentation<a class="headerlink" href="#parametres-de-presentation" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les automates de phrase sont soumis aux mêmes options de présentation
+que les graphes. Ils partagent les mêmes couleurs et polices de
+caractères, ainsi que l’utilisation de l’effet d’antialiasing. Pour
+configurer l’apparence des automates de phrase, vous devez modifier la
+configuration générale en cliquant sur “Preferences...” dans le menu
+“Info”. Pour plus de détails, reportez-vous à la
+section&nbsp;[section-display-fonts-colors].</p>
+<p>Vous pouvez également imprimer un automate de phrase en cliquant sur
+“Print...” dans le menu “FSGraph” ou en appuyant sur &lt;Ctrl+P&gt;.
+Assurez-vous que le paramètre d’orientation de l’imprimante est bien
+réglé sur le mode paysage. Pour régler ce paramètre, cliquez sur “Page
+Setup” dans le menu “FSGraph”.</p>
+</div>
+</div>
+<div class="section" id="convertir-lautomate-du-texte-en-texte-lineaire">
+<h2>Convertir l’automate du texte en texte linéaire<a class="headerlink" href="#convertir-lautomate-du-texte-en-texte-lineaire" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Si l’automate du texte ne contient plus la moindre ambiguïté, il est
+possible de construire un fichier texte correspondant à l’unique chemin
+représenté par cet automate. Pour cela, allez dans le menu “Text” et
+cliquez sur “Convert FST-Text to Text...”. La fenêtre de la figure
+&nbsp;[fig-linearization-configuration] vous permet alors de définir le
+fichier texte de sortie.</p>
+<p>Si l’automate n’est pas complètement linéaire, un message d’erreur vous
+indiquera le numéro de la première phrase contenant une ambiguïté.
+Sinon, le programme <code class="docutils literal"><span class="pre">Tfst2Unambig</span></code> construira le fichier de sortie
+selon les principes suivants:</p>
+<ul class="simple">
+<li>le fichier de sortie contient une ligne par phrase;</li>
+<li>toutes les phrases sauf la dernière sont terminées par <code class="docutils literal"><span class="pre">{S}</span></code>;</li>
+<li>pour chaque boîte, le programme écrit son contenu suivi par un
+espace.</li>
+</ul>
+<div class="figure" id="id24">
+<a class="reference internal image-reference" href="resources/img/fig7-26.png"><img alt="Exemple d’automate de texte linéaire[fig-linear-automaton]" src="resources/img/fig7-26.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple d’automate de texte linéaire[fig-linear-automaton]</span></p>
+</div>
+<p>NOTE : la gestion des espaces est entièrement laissée à l’utilisateur.
+Ainsi, si le texte d’origine est celui de l’automate de phrase de la
+figure [fig-linear-automaton], le texte produit sera:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">2</span> <span class="mi">3</span> <span class="p">{</span><span class="n">cats</span><span class="p">,</span><span class="n">cat</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">Anl</span><span class="p">:</span><span class="n">p</span><span class="p">}</span> <span class="p">{</span><span class="n">are</span><span class="p">,</span><span class="n">be</span><span class="o">.</span><span class="n">V</span><span class="p">:</span><span class="n">P2s</span><span class="p">:</span><span class="n">P1p</span><span class="p">:</span><span class="n">P2p</span><span class="p">:</span><span class="n">P3p</span><span class="p">}</span> <span class="p">{</span><span class="n">white</span><span class="p">,</span><span class="n">white</span><span class="o">.</span><span class="n">A</span><span class="p">}</span> <span class="o">.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="recherche-de-motifs-dans-lautomate-du-texte">
+<h2>Recherche de motifs dans l’automate du texte<a class="headerlink" href="#recherche-de-motifs-dans-lautomate-du-texte" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Le programme <code class="docutils literal"><span class="pre">LocateTfst</span></code> d’Unitex peut effectuer des recherches sur
+l’automate du texte. Les principaux avantages sont que vous pouvez:</p>
+<ul class="simple">
+<li>bénéficier de la suppression de l’ambiguité;</li>
+<li>bénéficier de l’application de grammaire de normalisation (voir
+ci-dessous);</li>
+<li>travailler à plusieurs niveaux morphologiques (mots composés, mots
+simples morphèmes). C’est particulièrement intéressant car vous
+pouvez facilement manipuler les langues agglutinantes comme le coréen
+(pour le coréen, voir section [section-korean]).</li>
+</ul>
+<p>Les règles sont très proches de celles qui s’appliquent lors des
+recherches avec <code class="docutils literal"><span class="pre">Locate</span></code>. Voici les différences:</p>
+<ul class="simple">
+<li>vous ne pouvez pas mémoriser des séquences dans des variables, comme
+avec <code class="docutils literal"><span class="pre">Locate</span></code> (voir figure [fig-context6], page )</li>
+<li>vous ne pouvez pas reconnaître des choses qui ne sont pas l’automate
+du texte: si l’automate du texte contient seulement l’étiquette d’un
+mot composé, mais pas des mots simples qu’il renferme, vous ne
+pourrez pas reconnaître les mots simples. Par exemple, dans la phrase
+de l’automate de la figure&nbsp;[fig7-locatetfst1], il est impossible
+reconnaître <code class="docutils literal"><span class="pre">soixante</span></code> ou <code class="docutils literal"><span class="pre">huit</span></code>, puisque ces chemins n’existent
+pas.</li>
+<li>les séquences reconnues peuvent être différentes de celles
+apparaissant dans les concordances. En fait, l’automate du texte peut
+contenir des étiquettes qui ne correspondent pas au texte brut
+d’entrée, en particulier lorsqu’une grammaire de normalisation a été
+appliquée. Par exemple, si vous recherchez le motif <code class="docutils literal"><span class="pre">&lt;le.DET&gt;</span></code> dans
+l’automate du texte de <em>80jours</em>, vous obtenez 7703 matches, tandis
+que <code class="docutils literal"><span class="pre">Locate</span></code> n’en trouve que 5763. Ceci provient du fait que
+quelques mots ont été normalisés, comme <code class="docutils literal"><span class="pre">au</span></code> <span class="math">\(\rightarrow\)</span>
+<code class="docutils literal"><span class="pre">à</span> <span class="pre">le</span></code> ou <code class="docutils literal"><span class="pre">du</span></code> <span class="math">\(\rightarrow\)</span><code class="docutils literal"><span class="pre">de</span> <span class="pre">le</span></code>. Ainsi, quand vous
+cherchez <code class="docutils literal"><span class="pre">&lt;le.DET&gt;</span></code>, <code class="docutils literal"><span class="pre">LocateTfst</span></code> reconnaît les étiquettes
+ajoutées à l’automate du texte par la grammaire de normalisation,
+alors que <code class="docutils literal"><span class="pre">Concord</span></code> utilise le fichier texte original pour produire
+la concordance, comme le montre la figure&nbsp;[fig7-locatetfst2].</li>
+<li><code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code> ne reconnaît pas les tokens tel que définis dans
+<code class="docutils literal"><span class="pre">tokens.txt</span></code>. Il reconnaît n’importe quelle étiquette de l’automate
+du texte. Les étiquettes reconnues peuvent être plus longues que les
+tokens si ce sont des étiquettes de mots composés, ou même plus
+courtes, si l’automate comporte une analyse mophologique comme <code class="docutils literal"><span class="pre">un</span></code>
+comme le montre la figure [morphoB], page .</li>
+<li>même sans entrer dans le mode morphologique, on peut définir des
+variables de dictionnaire (cf. section&nbsp;[dictionary-variables]).
+Ensuite, on peut extraire de ces variables la forme fléchie, la forme
+canonique et les codes des entrées lexicales correspondantes, leur
+catégorie grammaticale, leurs codes sémantiques, leurs codes
+flexionnels et la valeur <code class="docutils literal"><span class="pre">zzz</span></code> de l’attribut <code class="docutils literal"><span class="pre">yyy</span></code> s’il y figure
+un code de la forme <code class="docutils literal"><span class="pre">yyy=zzz</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="affichage-de-la-table">
+<h2>Affichage de la Table<a class="headerlink" href="#affichage-de-la-table" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Les automates de phrases peuvent être affichées sous forme de tableau.
+Pour ce faire, il vous suffit de sélectionner l’onglet “Tableau” dans la
+zone automate de texte. Vous verrez alors un tableau comme indiqué sur
+la figure [fig7-table1].</p>
+<div class="figure" id="id25">
+<a class="reference internal image-reference" href="resources/img/fig7-table1.png"><img alt="Affichage d’un tableau[fig7-table1]" src="resources/img/fig7-table1.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Affichage d’un tableau[fig7-table1]</span></p>
+</div>
+<p>Ce tableau n’est pas tout à fait équivalent à l’automate de phrase, car
+il affiche seulement les POS possibles pour chaque mot simple ou
+composé. Il devrait être considéré comme une vue approximative et
+compacte des informations contenues dans l’automate. Vous pouvez
+également filtrer les codes grammaticaux / sémantiques à afficher.
+Choisissez “All” et vous verrez tous les codes. Choisissez “Only POS
+category” les premiers codes (supposés représenter la catégorie de la
+POS) seront affichés. Si vous choisissez “Use filter” et écrivez une
+expression régulière <span class="math">\(X\)</span>, les codes non reconnus par <span class="math">\(X\)</span>
+seront supprimés. Toute expression rationnelle POSIX est acceptée en
+tant que filtre. Vérifiez “Always show POS category”, and as said, the
+POS category will be kept even if not matched by the filter, if any. For
+instance, Figure [fig7-table2] shows a filtering result, obtained with
+the filter <code class="docutils literal"><span class="pre">^[A-Z]</span></code> that matches any code starting with an uppercase
+letter, thus discarding codes like <code class="docutils literal"><span class="pre">z1</span></code>.</p>
+<div class="figure" id="id26">
+<a class="reference internal image-reference" href="resources/img/fig7-table2.png"><img alt="Affichage d’une table filtrée[fig7-table2]" src="resources/img/fig7-table2.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Affichage d’une table filtrée[fig7-table2]</span></p>
+</div>
+<p>Le bouton “Export all text as POS list” peut être utilisé pour exporter
+ce tableau d’affichage de l’ensemble du texte automate dans un fichier
+texte, en utilisant un format particulier. Actuellement, cette
+fonctionnalité est expérimentale et peut être modifiée dans le futur.
+Voici un exemple de sortie:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">Je</span><span class="o">/</span><span class="n">N</span><span class="p">:</span><span class="n">ms</span><span class="p">:</span><span class="n">mp</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">Je</span><span class="o">/</span><span class="n">PRO</span><span class="o">/</span><span class="n">PpvIL</span><span class="p">:</span><span class="mi">1</span><span class="n">fs</span><span class="p">:</span><span class="mi">1</span><span class="n">ms</span><span class="p">)</span> <span class="p">(</span><span class="n">suis</span><span class="o">/</span><span class="n">V</span><span class="p">:</span><span class="n">P1s</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">suis</span><span class="o">/</span><span class="n">V</span><span class="p">:</span><span class="n">Y2s</span><span class="p">:</span><span class="n">P2s</span><span class="p">:</span><span class="n">P1s</span><span class="p">)</span>
+<span class="n">M</span><span class="o">/</span><span class="n">N</span><span class="p">:</span><span class="n">mp</span><span class="p">:</span><span class="n">ms</span> <span class="o">.</span> <span class="n">Mdiba</span> <span class="p">(</span><span class="n">de</span><span class="o">/</span><span class="n">DET</span><span class="o">/</span><span class="n">Dind</span><span class="p">:</span><span class="n">fp</span><span class="p">:</span><span class="n">mp</span><span class="p">:</span><span class="n">fs</span><span class="p">:</span><span class="n">ms</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">de</span><span class="o">/</span><span class="n">PREP</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">de</span><span class="o">/</span><span class="n">PREP</span><span class="o">/</span><span class="n">z1</span>
+<span class="o">+</span><span class="n">de</span> <span class="n">la</span><span class="o">/</span><span class="n">DET</span><span class="o">/</span><span class="n">Dind</span><span class="o">/</span><span class="n">z1</span><span class="p">:</span><span class="n">fs</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">de</span><span class="o">/</span><span class="n">PREP</span><span class="o">/</span><span class="n">z1</span><span class="o">+</span><span class="n">des</span><span class="o">/</span><span class="n">DET</span><span class="o">/</span><span class="n">Dind</span><span class="o">/</span><span class="n">z1</span><span class="p">:</span><span class="n">mp</span><span class="p">:</span><span class="n">fp</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">de</span><span class="o">/</span><span class="n">PREP</span><span class="o">/</span><span class="n">z1</span>
+<span class="o">+</span><span class="n">du</span><span class="o">/</span><span class="n">DET</span><span class="o">/</span><span class="n">Dind</span><span class="o">/</span><span class="n">z1</span><span class="p">:</span><span class="n">ms</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">de</span> <span class="n">la</span><span class="o">/</span><span class="n">DET</span><span class="o">/</span><span class="n">Dind</span><span class="o">/</span><span class="n">z1</span><span class="p">:</span><span class="n">fs</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">des</span><span class="o">/</span><span class="n">DET</span><span class="o">/</span><span class="n">Dind</span><span class="o">/</span><span class="n">z1</span><span class="p">:</span><span class="n">mp</span><span class="p">:</span><span class="n">fp</span><span class="p">)</span><span class="o">|</span>
+<span class="p">(</span><span class="n">du</span><span class="o">/</span><span class="n">DET</span><span class="o">/</span><span class="n">Dind</span><span class="o">/</span><span class="n">z1</span><span class="p">:</span><span class="n">ms</span><span class="p">)</span> <span class="n">LG</span> <span class="o">-</span> <span class="n">ville</span><span class="o">/</span><span class="n">N</span><span class="p">:</span><span class="n">fs</span> <span class="o">.</span> <span class="p">{</span><span class="n">S</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="le-cas-particulier-du-coreen">
+<h2>Le cas particulier du coréen<a class="headerlink" href="#le-cas-particulier-du-coreen" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Le coréen est une langue agglutinante qui possède un système d’écriture
+spécifique&nbsp;: les mots sont formés de caractères représentant des
+syllabes et appelés Hangul, mais un caractère Hangul correspond à
+plusieurs caractères de l’alphabet JAMO. Par exemple, la
+figure&nbsp;[fig7-korean1] donne deux exemples de caractères Hangul suivis de
+leurs équivalents en alphabet Jamo.</p>
+<div class="figure" id="id27">
+<a class="reference internal image-reference" href="resources/img/fig7-korean1.png"><img alt="Caractères et leurs équivalents en alphabet Jamo [fig7-korean1]" src="resources/img/fig7-korean1.png" style="width: 4.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Caractères et leurs équivalents en alphabet Jamo [fig7-korean1]</span></p>
+</div>
+<p>En outre, tous les morphèmes ne correspondent pas à des caractères
+Hangul. Par exemple, la figure&nbsp;[fig7-korean2] montre un token (en vert)
+analysé comme une combinaison de deux éléments&nbsp;: un verbe et un
+modifieur. Le problème est que le modifieur n’est formé que d’un
+caractère Jamo qui se combine avec le dernier caractère Hangul du verbe
+pour donner le dernier caractère Hangul du mot entier (en vert).</p>
+<div class="figure" id="id28">
+<a class="reference internal image-reference" href="resources/img/fig7-korean2.png"><img alt="Décomposition d’un caractère Hangul[fig7-korean2]" src="resources/img/fig7-korean2.png" style="width: 6.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Décomposition d’un caractère Hangul[fig7-korean2]</span></p>
+</div>
+<p>Par conséquent, il est préférable pour les utilisateurs coréens d’écrire
+des grammaires avec un mélange de caractères Hangul et Jamo. Ainsi, une
+grammaire comme celle de la figure&nbsp;[fig7-korean3] reconnaîtra des
+séquences comme celles de la figure&nbsp;[fig7-korean4].</p>
+<div class="figure" id="id29">
+<a class="reference internal image-reference" href="resources/img/fig7-korean3.png"><img alt="Une grammaire avec deux lettres Jamo[fig7-korean3]" src="resources/img/fig7-korean3.png" style="width: 5.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Une grammaire avec deux lettres Jamo[fig7-korean3]</span></p>
+</div>
+<p>En coréen, l’automate du texte affiche les tokens non étiquetés sur fond
+lavande <a class="footnote-reference" href="#id12" id="id8">[4]</a>.</p>
+<p>REMARQUES:</p>
+<ol class="arabic simple">
+<li>Les lettres Jamo ne sont pas dans le fichier contenant l’alphabet
+coréen (<code class="docutils literal"><span class="pre">Alphabet.txt</span></code>). NE LES AJOUTEZ PAS A CE FICHIER, parce que
+cela occasionnerait des disfonctionnements des programmes.</li>
+<li>Ce fichier alphabet contient les équivalences entre certains
+caractères chinois et des Hangul. Dans la pratique, si la grammaire
+contient un caractère chinois qui possède un Hangul comme équivalent,
+il reconnaît celui-ci dans l’automate du texte. Par exemple la
+grammaire de la figure&nbsp;[fig7-korean5] reconnaît la phrase de la
+figure&nbsp;[fig7-korean4], parce que l’alphabet contient un équivalent
+pour ce caractère, comme le montre la figure&nbsp;[fig7-korean6].</li>
+</ol>
+<div class="figure" id="id30">
+<a class="reference internal image-reference" href="resources/img/fig7-korean5.png"><img alt="Une grammaire avec un caractère chinois[fig7-korean5]" src="resources/img/fig7-korean5.png" style="width: 5.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Une grammaire avec un caractère chinois[fig7-korean5]</span></p>
+</div>
+<div class="figure" id="id31">
+<a class="reference internal image-reference" href="resources/img/fig7-korean6.png"><img alt="Extrait du fichier contenant l’alphabet coréen[fig7-korean6]" src="resources/img/fig7-korean6.png" style="width: 3.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Extrait du fichier contenant l’alphabet coréen[fig7-korean6]</span></p>
+</div>
+<table class="docutils footnote" frame="void" id="id9" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[1]</a></td><td>Ce sont des entrées qui regroupent plusieurs interprétations
+flexionnelles différentes, comme par exemple :
+<code class="docutils literal"><span class="pre">{se,.PRO+PpvLE:3ms:3fs:3mp:3fp}</span></code>.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id10" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[2]</a></td><td>Cette grammaire n’est pas complètement correcte, car elle élimine par
+exemple l’analyse correcte de la phrase : <em>J’ai reçu des coups de fil
+de ma mère hallucinants.</em></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id11" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7">[3]</a></td><td>Ce code indique que l’adjectif doit apparaître à gauche du nom auquel
+il se rapporte, comme c’est le cas pour <em>bel</em>.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id12" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id8">[4]</a></td><td>En coréen, les versions avant la 3.1&nbsp;bêta rév. 4272 affichent les
+tokens non étiquetés en vert, comme dans les figures&nbsp;[fig7-korean2]
+et [fig7-korean4].</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-fr.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Automate du texte</a><ul>
+<li><a class="reference internal" href="#presentation">Présentation</a></li>
+<li><a class="reference internal" href="#construction">Construction</a><ul>
+<li><a class="reference internal" href="#regles-de-construction-de-lautomate-du-texte">Règles de construction de l’automate du texte</a></li>
+<li><a class="reference internal" href="#normalisation-de-formes-ambigues">Normalisation de formes ambiguës</a></li>
+<li><a class="reference internal" href="#normalisation-des-pronoms-clitiques-en-portugais">Normalisation des pronoms clitiques en portugais</a></li>
+<li><a class="reference internal" href="#conservation-des-meilleurs-chemins">Conservation des meilleurs chemins</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#levee-dambiguites-lexicales-avec-elag">Levée d’ambiguïtés lexicales avec ELAG</a><ul>
+<li><a class="reference internal" href="#grammaires-de-levee-dambiguites">Grammaires de levée d’ambiguïtés</a><ul>
+<li><a class="reference internal" href="#point-de-synchronisation">Point de synchronisation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#compilation-des-grammaires-elag">Compilation des grammaires ELAG</a></li>
+<li><a class="reference internal" href="#levee-dambiguites">Levée d’ambiguïtés</a></li>
+<li><a class="reference internal" href="#ensembles-de-grammaires">Ensembles de grammaires</a></li>
+<li><a class="reference internal" href="#fenetre-de-traitement-delag">Fenêtre de traitement d’ELAG</a><ul>
+<li><a class="reference internal" href="#evaluation-du-taux-dambiguite">Évaluation du taux d’ambiguïté</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#description-du-jeu-detiquettes">Description du jeu d’étiquettes</a><ul>
+<li><a class="reference internal" href="#tagset-def-file"><code class="docutils literal"><span class="pre">tagset.def</span></code> file</a></li>
+<li><a class="reference internal" href="#description-des-codes-flexionnels">Description des codes flexionnels</a></li>
+<li><a class="reference internal" href="#codes-optionnels">Codes optionnels</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#optimiser-les-grammaires">Optimiser les grammaires</a><ul>
+<li><a class="reference internal" href="#limiter-le-nombre-de-branches-alors">Limiter le nombre de branches <em>alors</em></a></li>
+<li><a class="reference internal" href="#utilisation-des-symboles-lexicaux">Utilisation des symboles lexicaux</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#linearisation-de-lautomate-du-texte-avec-le-taggeur">Linéarisation de l’automate du texte avec le taggeur</a><ul>
+<li><a class="reference internal" href="#compatibilite-du-jeu-detiquettes">Compatibilité du jeu d’étiquettes</a></li>
+<li><a class="reference internal" href="#utilisation-du-tagger">Utilisation du Tagger</a></li>
+<li><a class="reference internal" href="#creation-dun-nouveau-taggeur">Création d’un nouveau taggeur</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#manipulation-de-lautomate-du-texte">Manipulation de l’automate du texte</a><ul>
+<li><a class="reference internal" href="#affichage-des-automates-de-phrases">Affichage des automates de phrases</a></li>
+<li><a class="reference internal" href="#modifier-manuellement-lautomate-du-texte">Modifier manuellement l’automate du texte</a><ul>
+<li><a class="reference internal" href="#levee-manuelle-des-ambiguites">Levée manuelle des ambiguïtés</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#parametres-de-presentation">Paramètres de présentation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#convertir-lautomate-du-texte-en-texte-lineaire">Convertir l’automate du texte en texte linéaire</a></li>
+<li><a class="reference internal" href="#recherche-de-motifs-dans-lautomate-du-texte">Recherche de motifs dans l’automate du texte</a></li>
+<li><a class="reference internal" href="#affichage-de-la-table">Affichage de la Table</a></li>
+<li><a class="reference internal" href="#le-cas-particulier-du-coreen">Le cas particulier du coréen</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-fr.html">Documentation overview</a><ul>
+      <li>Previous: <a href="06-advanced-use_FR_utf8.html" title="Chapitre précédent">Utilisation avancée des graphes</a></li>
+      <li>Next: <a href="08-sequence-automaton_FR_utf8.html" title="Chapitre suivant">Automate de Séquences</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/07-text_automaton_FR_utf8.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, SCTB.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/07-text_automaton_FR_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
