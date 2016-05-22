@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh_CN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>介绍 &mdash; Unitex-zh 1.0.1 文档</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-zh 1.0.1 文档" href="Unitex-zh.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>介绍<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>Unitex
+是一个使用语言资源，来处理自然语言文本的软件包。这些资源以电子字典，语法，词汇语法表的形式存在。
+他们由法语开始，由自动化文献和语言学实验室(LADL)的&nbsp;Maurice Gross 建立。
+. 这项工作是通过&nbsp;RELEX 实验室网络扩展到其他语言。
+电子字典描述某种语言的简单词和复合词，以相关的原型或是语义和变位代码。这些字典的存在，表明了与普通搜索模式工具的主要差别，因为我们可以参考其包含信息，以很简单的方式描述不同种类的词。这些字典都是以&nbsp;DELA
+形式，被多国语言团队开发成几种语言（法语，英语，希腊语，意大利语，西班牙语，德语，泰语，韩语，波兰语，挪威语，葡萄牙语，等...）。</p>
+<p>这里使用的语法是递归转移网络(RTN)的基础上的语言现象，一个与有限状态自动机密切相关的形式化。大量研究显示自动机为语言问题的大量研究显示自动机为语言问题的一致性
+从词法和句法的音标问题的所有描述的水平。与&nbsp;Unitex
+共同创建的语法使用甚至比自动更强大的形式主义进一步落实这一做法。这些语法被表示为使得用户能够容易地创建和更新的图像。
+，语法表是描述一些词性质矩阵。许多这样的表已构建了法语所有简单的动词作为描述及其相关语法属性的一种方式。经验表明，每字具有几乎唯一的行为，而这些表是呈现每个元素的语法于词典的一个方法，故名词典
+- 语法为此语言理论。Unitex 提供了一种从词汇，语法表自动构建语法的方法。</p>
+<p>Unitex
+可以被看作是一个工具，其中可以导入语言资源，并使用它们。其技术特点是它的便携性，模块化，处理使用特殊的书写系统（如许多亚洲语言）语言的可能性，以及它的开放性，这要归功于其开源分发。其语言特征是具有的那些促使这些资源的制定：精密，完整性，以及要考虑到词组的情况，最明显的是涉及复合词。</p>
+<div class="section" id="id2">
+<h2>3.0 版本新内容是什么?<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>以下是主要的新特性:</p>
+<ul class="simple">
+<li>使用更少栈引擎速度更快。</li>
+<li>更新&nbsp;<code class="docutils literal"><span class="pre">CasSys``&nbsp;</span> <span class="pre">版本，新的&nbsp;\</span> <span class="pre">``csc</span></code> 文件，菜单&nbsp;<code class="docutils literal"><span class="pre">FSGraph</span></code>
+用于&nbsp;<code class="docutils literal"><span class="pre">Share</span></code>
+目录的压制，打开级联，应用到定点的，通用的图形，最后一个文件可能不规范（第&nbsp;&nbsp;[chap-cassys]
+章）。</li>
+<li>malgache 的介绍。</li>
+<li><code class="docutils literal"><span class="pre">main_UnitexTool_C</span></code> 的公共方法作为公共&nbsp;API。</li>
+<li>增强图形编辑器版本：框中选择，编辑框中，打开，保存，导出为
+图像([section-editing-graphs]， [exporting-graphs])。</li>
+<li>不适用的菜单项现在为灰。</li>
+<li>操作&nbsp;<code class="docutils literal"><span class="pre">&lt;n.LEMMA&gt;</span></code> 的介绍，用于犹太语的词形变化 (目前无文档)。</li>
+<li>最近打开的图形和语料库的列表介绍。</li>
+<li>打开的窗口列表的介绍。</li>
+<li>使用&nbsp;Ruby 增强兼容性。</li>
+<li><code class="docutils literal"><span class="pre">InstallLingResourcePackage</span></code>
+的介绍，安装资源包和脚本到目标环境的工具（但没有文件）。</li>
+<li><code class="docutils literal"><span class="pre">RunScript</span></code>
+的介绍，在目标环境中运行&nbsp;<code class="docutils literal"><span class="pre">InstallLingResourcePackage</span></code>
+安装的脚本（目前无文件）。使用这两项工具，用户可以在环境中实施&nbsp;Unitex
+的操作和部署它们于另一个。</li>
+<li>自动机搜索算法中&nbsp;“match word boundaries”
+选项的介绍&nbsp;([section-locate-tfst])&nbsp;:
+此选项在默认情况下，对大多数语言启用。<em>enlever</em> 不等同于&nbsp;<em>en
+lever</em>（目前无文件）。</li>
+<li>在不同版本语料库中对给定位置语料库的地址之间的偏移增强跟踪。([section-DumpOffsets])。</li>
+<li>适用于&nbsp;Windows 的日常可执行汇编 &nbsp;(32-bit, 64-bit)， GNU/Linux (Intel,
+Intel 64-bit) et 0S X (10.7+)。</li>
+<li>提供了所有目标平台上的安装设置。</li>
+</ul>
+<p>注意:
+文章的一些格式已经被修改或增加，我们建议重新预处理您的文本尤其是如果您使用了文本自动机。</p>
+</div>
+<div class="section" id="id3">
+<h2>内容<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>[chap-install]章节描述如何安装运行&nbsp;Unitex。</p>
+<p>[chap-text]章节表示文档分析的各个阶段。
+[chap-dictionaries]章节描述了&nbsp;DELA
+电子词典可被应用于它们的各种操作的形式。</p>
+<p>[chap-regexp] 和 [chap-grammars]章节 呈现不同的方式来搜索文本模式。
+[chap-grammars]章节描述图形编辑器的使用细节。 refchap-advanced-grammars
+章节致力于不同的用途语法。每种类型的语法的特殊性介绍。</p>
+<p>[chap-text-automaton]章节介绍文字自动机的概念，并介绍了这一概念的属性。本章还介绍了操作对象，特别是如何消除歧义与&nbsp;ELAG
+程序词项。</p>
+<p>[chap-lexicon-grammar]章节包含了词库文法表，以及基于这些表的语法结构的方法的说明。</p>
+<p>[chap-alignment]章节描述了基于&nbsp;xalign 工具的文本的对齐模块。
+[chap-multiflex]章节描述了词组的词形变换模型，作为单词词性变换模型的补充，在&nbsp;&nbsp;[chap-dictionaries]章节中有所介绍。</p>
+<p>[chap-cassys]章节描述了&nbsp;CasSys 转换器的级联系统。</p>
+<p>Le chapitre [chap-external-programs] 包含组成&nbsp;Unitex
+系统的外部程序细节说明。 [chap-file-formats]章节包含所有&nbsp;Unitex
+使用的文件格式说明。</p>
+<p>读者可以在&nbsp;Unitex 发布的源代码上找到&nbsp;LGPL
+附属协议和适用于语言数据的&nbsp;LGPLLR 协议。还可以发现适用于&nbsp;TRE
+库的&nbsp;2-clause BSD 协议，运用在&nbsp;Unitex 的形态滤波器中。</p>
+</div>
+<div class="section" id="unitex">
+<h2>对&nbsp;Unitex 的贡献<a class="headerlink" href="#unitex" title="永久链接至标题">¶</a></h2>
+<p>Unitex 是作为世界开源理论动力而产生的(见
+<a class="reference external" href="http://igm.univ-mlv.fr/~unitex/why_unitex.html">http://igm.univ-mlv.fr/~unitex/why_unitex.html</a>)基于这样的假设，人们将有兴趣在这样一个开放的项目分享他们的知识和技能。</p>
+<ul class="simple">
+<li>Olivier Blanc:已经加入&nbsp;Unitex 的&nbsp;ELAG 系统，该系统最初由&nbsp;Eric Laporte
+设计，Anne Monceaux
+和她的一些学生也写了&nbsp;<code class="docutils literal"><span class="pre">RebuildTfst</span></code>（原&nbsp;<code class="docutils literal"><span class="pre">MergeTextAutomaton</span></code>）</li>
+<li>Matthieu Constant: <code class="docutils literal"><span class="pre">Grf2Fst2</span></code> 的作者</li>
+<li>Julien Decreton:Unitex
+集成文本编译器的作者，也实现了图形编辑器的&nbsp;<code class="docutils literal"><span class="pre">undo</span></code> 功能</li>
+<li>Claude Devis: 在&nbsp;TRE 库上添加形态滤波器</li>
+<li>Hyun-Gue Huh:韩文字典管理工具的作者</li>
+<li>Claude Martineau: 在&nbsp;<code class="docutils literal"><span class="pre">MultiFlex</span></code> 上处理有关简单的词形变化工作</li>
+<li>Sebastian Nagel: 优化许多代码部分，同样适用于德语和瑞士语的
+&nbsp;<code class="docutils literal"><span class="pre">PolyLex</span></code></li>
+<li>Alexis Neme: 优化 &nbsp;<code class="docutils literal"><span class="pre">Dico</span></code> 和&nbsp; <code class="docutils literal"><span class="pre">Tokenize</span></code>， 并在&nbsp;<code class="docutils literal"><span class="pre">Dico</span></code>
+中集中&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code> 来获取字典图像</li>
+<li>Aljosa Obuljen: &nbsp;<code class="docutils literal"><span class="pre">Stats</span></code> 的作者</li>
+<li>Sébastien Paumier: 主开发者</li>
+<li>Agata Savary: &nbsp;<code class="docutils literal"><span class="pre">MultiFlex</span></code> 的作者</li>
+<li>Gilles Vollant:&nbsp;<code class="docutils literal"><span class="pre">UnitexTool</span></code> 的作者， 优化大量&nbsp;Uintex
+代码部分（存储量，速度，多编译器的兼容性等）</li>
+<li>Patrick Watrin: <code class="docutils literal"><span class="pre">XMLizer</span></code> 的作者， 实现&nbsp;<code class="docutils literal"><span class="pre">XAlign</span></code> 在&nbsp;Unitex
+上的集成</li>
+<li>Anthony Sigogne: <code class="docutils literal"><span class="pre">Tagger</span></code> 和 &nbsp;de <code class="docutils literal"><span class="pre">TrainingTagger</span></code> 的作者</li>
+<li>Nathalie Friburger:&nbsp; <code class="docutils literal"><span class="pre">CaSsys</span></code> 的作者</li>
+</ul>
+<p>需要强调的是没有精确的相关语言资源的&nbsp;Unitex
+是无用的。所有的资源都是由人们实现的庞大且困难的工作成果，向所有工作人员致敬。有些资源在字典警告中被指出，详细完整信息请参考：</p>
+<p><a class="reference external" href="http://igm.univ-mlv.fr/~unitex/linguistic_data_bib.html">http://igm.univ-mlv.fr/~unitex/linguistic_data_bib.html</a></p>
+</div>
+<div class="section" id="id4">
+<h2>如果您在搜索项目中使用&nbsp;Unitex...<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>Unitex已经在多个搜索项目中被运用。一些搜索项目被列在&nbsp;Unitex&nbsp;主页山的“相关工作”一栏中。如果您已经用&nbsp;Unitex
+执行了搜索工作（资源，项目，文章，论文，……）并且如果您想在网站上获取更多相关信息，发送邮件到&nbsp;<a class="reference external" href="mailto:unitex&#37;&#52;&#48;univ-mlv&#46;fr">unitex<span>&#64;</span>univ-mlv<span>&#46;</span>fr</a>。</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-zh.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">介绍</a><ul>
+<li><a class="reference internal" href="#id2">3.0 版本新内容是什么?</a></li>
+<li><a class="reference internal" href="#id3">内容</a></li>
+<li><a class="reference internal" href="#unitex">对&nbsp;Unitex 的贡献</a></li>
+<li><a class="reference internal" href="#id4">如果您在搜索项目中使用&nbsp;Unitex...</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-zh.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/00-introduction_ZH_utf8.txt"
+            rel="nofollow">显示源代码</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>快速搜索</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/00-introduction_ZH_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

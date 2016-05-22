@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh_CN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>语法和词汇 &mdash; Unitex-zh 1.0.1 文档</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-zh 1.0.1 文档" href="Unitex-zh.html" />
+    <link rel="next" title="文本对齐" href="10-alignment_ZH_utf8.html" />
+    <link rel="prev" title="序列控制器" href="08-sequence-automaton_ZH_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>语法和词汇<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>词典 -
+语法表是表示语言的元素的句法属性的一个紧凑的方式。能够通过一个参数化机构自动构建从这些表中的本地文法，图表</p>
+<p>第二部分介绍了参数化图形和从语法词汇表生成图形自动机制。</p>
+<div class="section" id="id2">
+<h2>语法词汇表<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>语法词汇已被 Maurice Gross 和他的团队开发了一种方法 LADL
+(<a href="#id3"><span class="problematic" id="id4">:raw-latex:`\cite{L}`</span></a>, <a href="#id5"><span class="problematic" id="id6">:raw-latex:`\cite{BGL}`</span></a>,
+<a href="#id7"><span class="problematic" id="id8">:raw-latex:`\cite{methodes-en-syntaxe}`</span></a>, <a href="#id9"><span class="problematic" id="id10">:raw-latex:`\cite{GL}`</span></a>,
+<a href="#id11"><span class="problematic" id="id12">:raw-latex:`\cite{gross1994}`</span></a>, <a href="#id13"><span class="problematic" id="id14">:raw-latex:`\cite{gross1994b}`</span></a>,
+<a href="#id15"><span class="problematic" id="id16">:raw-latex:`\cite{gross1991}`</span></a>, <a href="#id17"><span class="problematic" id="id18">:raw-latex:`\cite{gross1986}`</span></a>,
+<a href="#id19"><span class="problematic" id="id20">:raw-latex:`\cite{gross1984}`</span></a>, <a href="#id21"><span class="problematic" id="id22">:raw-latex:`\cite{gross1984b}`</span></a>,
+<a href="#id23"><span class="problematic" id="id24">:raw-latex:`\cite{gross1983}`</span></a>, <a href="#id25"><span class="problematic" id="id26">:raw-latex:`\cite{gross1982}`</span></a>,
+<a href="#id27"><span class="problematic" id="id28">:raw-latex:`\cite{gross1978}`</span></a>, <a href="#id29"><span class="problematic" id="id30">:raw-latex:`\cite{leclere2005}`</span></a>,
+<a href="#id31"><span class="problematic" id="id32">:raw-latex:`\cite{salkoff2004}`</span></a>)
+主要原则是每个动词几乎单一的语法属性。因此，这些性能必须系统描述的，因为它是不可能预测动词的精确的行为。这些系统的描述是通过矩阵，其中的行对应的动词，和列语法属性表示。所考虑的特性是正式性能如由动词允许添加和所述不同的转换，这动词可经历（被动，名词，外位等）的数量和性质。矩阵通常也称为表，是二进制：一个符号<code class="docutils literal"><span class="pre">+</span></code>如果动词检查属性，标志<code class="docutils literal"><span class="pre">-</span></code>出现在一个行的交叉点和属性的列，否则用。有关更多信息，语法属性看<a class="reference external" href="http://infolingu.univ-mlv.fr">http://infolingu.univ-mlv.fr</a>，其中词汇，语法表都可以免费下载。</p>
+<p>(<a href="#id33"><span class="problematic" id="id34">:raw-latex:`\cite{these-annie}`</span></a>),表语(<a href="#id35"><span class="problematic" id="id36">:raw-latex:`\cite{les-nominalisations}`</span></a>,:raw-latex:<cite>cite{les-predicats-nominaux}</cite>,
+<a href="#id37"><span class="problematic" id="id38">:raw-latex:`\cite{giry1978}`</span></a>, <a href="#id39"><span class="problematic" id="id40">:raw-latex:`\cite{gross1976}`</span></a>,
+<a href="#id41"><span class="problematic" id="id42">:raw-latex:`\cite{ranchhod2001}`</span></a>), adverbes
+(<a href="#id43"><span class="problematic" id="id44">:raw-latex:`\cite{syntaxe-de-ladverbe}`</span></a>,
+<a href="#id45"><span class="problematic" id="id46">:raw-latex:`\cite{grammaire-des-adverbes}`</span></a>),
+在许多语言中有很多固定表达，
+(<a href="#id47"><span class="problematic" id="id48">:raw-latex:`\cite{lexique-grammaire-allemand2}`</span></a>,
+<a href="#id49"><span class="problematic" id="id50">:raw-latex:`\cite{lexique-grammaire-italien2}`</span></a>,
+<a href="#id51"><span class="problematic" id="id52">:raw-latex:`\cite{lexique-grammaire-italien}`</span></a>,
+<a href="#id53"><span class="problematic" id="id54">:raw-latex:`\cite{lexique-grammaire-coreen2}`</span></a>,
+<a href="#id55"><span class="problematic" id="id56">:raw-latex:`\cite{lexique-grammaire-coreen}`</span></a>,
+<a href="#id57"><span class="problematic" id="id58">:raw-latex:`\cite{lexique-grammaire-malgache}`</span></a>,
+<a href="#id59"><span class="problematic" id="id60">:raw-latex:`\cite{lexique-grammaire-espagnol}`</span></a>,
+<a href="#id61"><span class="problematic" id="id62">:raw-latex:`\cite{lexique-grammaire-allemand}`</span></a>,
+<a href="#id63"><span class="problematic" id="id64">:raw-latex:`\cite{lexique-grammaire-hongrois}`</span></a>,
+<a href="#id65"><span class="problematic" id="id66">:raw-latex:`\cite{ranchhod1996}`</span></a>, <a href="#id67"><span class="problematic" id="id68">:raw-latex:`\cite{ranchhod1991}`</span></a>,
+<a href="#id69"><span class="problematic" id="id70">:raw-latex:`\cite{gross1986b}`</span></a>).</p>
+<p>图&nbsp;[fig-table-32NM]显示语法词汇的列表。此表涉及动词承认数字的补充。</p>
+<div class="figure" id="id78">
+<a class="reference internal image-reference" href="_images/fig8-1.png"><img alt="32NM语法表[fig-table-32NM]" src="_images/fig8-1.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">32NM语法表[fig-table-32NM]</span></p>
+</div>
+</div>
+<div class="section" id="id71">
+<h2>转换图表<a class="headerlink" href="#id71" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id72">
+<h3>图表主要参数<a class="headerlink" href="#id72" title="永久链接至标题">¶</a></h3>
+<p>变换的图表是由图机构的装置
+设置。其原理是：我们建立一个描述可能的结构图。此图通过变量引用表列。然后对表中，该曲线图，其中，变量根据位于对应的列的交叉点，并经处理的线的单元中的内容置换的副本中的每一行生成。如果表格单元格中包含的标志<code class="docutils literal"><span class="pre">+</span></code>相应的变量由<code class="docutils literal"><span class="pre">&gt;</span></code>取代。如果单元格包含符号<code class="docutils literal"><span class="pre">-</span></code>,含有相应变量的框被删除，同时删除这个框的路径。在所有其他情况下，该变量修改为被替换的单元的内容。</p>
+</div>
+<div class="section" id="id73">
+<h3>表的格式<a class="headerlink" href="#id73" title="永久链接至标题">¶</a></h3>
+<p>词汇，语法表使用电子表格程序通常编码比如OpenOffice.org Calc
+(<a href="#id74"><span class="problematic" id="id75">:raw-latex:`\cite{OpenOffice}`</span></a>).要使用 Unitex ，该表必须在Unicode文本使用以下约定编码：列必须在标签和行由回车符分隔。</p>
+<p>.org
+Calc的表，保存文本文件(拓展名为<code class="docutils literal"><span class="pre">.csv</span></code>)。然后该程序通过提供类似图&nbsp;[fig-csv-export].窗口设置备份。选择编码“Unicode”，选择制表符分隔列，不指定文字分隔符。</p>
+<div class="figure" id="id79">
+<a class="reference internal image-reference" href="_images/fig8-2.png"><img alt="使用OpenOffice.org Calc的备份配置表[fig-csv-export]" src="_images/fig8-2.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">使用OpenOffice.org Calc的备份配置表[fig-csv-export]</span></p>
+</div>
+<p>，Unitex跳过第一行，考虑给予列的标题。因此，您必须确保列的标题正好占据一行。如果没有标题行，表中的第一行会被忽略，并且有几个头线，它们将来自第二线条被解释表。</p>
+</div>
+<div class="section" id="id76">
+<h3>图的参数<a class="headerlink" href="#id76" title="永久链接至标题">¶</a></h3>
+<p>参数化曲线是显示在参照表语法词汇的列中的变量的曲线图。通常使用这种机制与语法图，但没有什么会阻止建立参数化图形，或预处理标准。</p>
+<p><code class="docutils literal"><span class="pre">&#64;</span></code>其次是用大写字母列名（列的编号从<code class="docutils literal"><span class="pre">A</span></code>).</p>
+<p>例子： <code class="docutils literal"><span class="pre">&#64;C</span></code>参照该表的第三列。</p>
+<p><code class="docutils literal"><span class="pre">+</span></code> 或 <code class="docutils literal"><span class="pre">-</span></code>代替， <code class="docutils literal"><span class="pre">-</span></code>标记对应于通过这个变量去除的方式。
+有可能通过字符前述执行反向操作
+<code class="docutils literal"><span class="pre">&#64;</span></code>一个感叹号。在这种情况下，这是当变量是指标志<code class="docutils literal"><span class="pre">+</span></code>路径被删除。如果变量返回或标志既不是<code class="docutils literal"><span class="pre">+</span></code>，也不是
+<code class="docutils literal"><span class="pre">-</span></code>,它是由格子中的替换内容。</p>
+<p><code class="docutils literal"><span class="pre">&#64;%</span></code>
+，这是由在表中的行号代替。它的值是每行不同的事实允许使用容易地表征的线。这个变量不会受到感叹号的在左边。</p>
+<p>图&nbsp;[fig-reference-graph]给出了示例参数化的曲线图，旨在被应用到如图&nbsp;[fig-table-31H]词库的无关文法表中的31H表。</p>
+<div class="figure" id="id80">
+<a class="reference internal image-reference" href="_images/fig8-3.png"><img alt="图的参数的实例[fig-reference-graph]" src="_images/fig8-3.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">图的参数的实例[fig-reference-graph]</span></p>
+</div>
+<div class="figure" id="id81">
+<a class="reference internal image-reference" href="_images/fig8-4.png"><img alt="词汇语法31H表[fig-table-31H]" src="_images/fig8-4.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">词汇语法31H表[fig-table-31H]</span></p>
+</div>
+</div>
+<div class="section" id="id77">
+<h3>自动生成图像<a class="headerlink" href="#id77" title="永久链接至标题">¶</a></h3>
+<p>从参数化图形和表格生成图表，它必须首先通过点击菜单中的“词汇，语法”打开表“打开...”（参见&nbsp;[fig-lexicon-grammar-menu]）。该表必须已转换为Unicode文本。</p>
+<div class="figure" id="id82">
+<a class="reference internal image-reference" href="_images/fig8-5.png"><img alt="Menu “Lexicon-Grammar”[fig-lexicon-grammar-menu]" src="_images/fig8-5.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Menu “Lexicon-Grammar”[fig-lexicon-grammar-menu]</span></p>
+</div>
+<p>（见图&nbsp;[fig-table-display]）选定的表格显示在一个窗口。如果它不显示在屏幕上，它可以被其他窗口Unitex被隐藏。</p>
+<div class="figure" id="id83">
+<a class="reference internal image-reference" href="_images/fig8-6.png"><img alt="Displaying a table[fig-table-display]" src="_images/fig8-6.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Displaying a table[fig-table-display]</span></p>
+</div>
+<p>要自动生成一个参数化图形图表，请点击“编译到GRF...”，从“词汇，语法”菜单。出现如图[fig-configuration-graph-generation]。</p>
+<div class="figure" id="id84">
+<a class="reference internal image-reference" href="_images/fig8-7.png"><img alt="确认自动生成图像[fig-configuration-graph-generation]" src="_images/fig8-7.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">确认自动生成图像[fig-configuration-graph-generation]</span></p>
+</div>
+<p>“参考图形（在GRF格式）”，然后设置为使用图的名称。在“结果GRF语法”中，指定将要生成的主图的名称。主图表是利用已生成的所有图的曲线图。通过搜索这个图形文字，你会同时应用和所有生成的图表。</p>
+<p>设置“子图名”让你指定要生成的图的名称。可以肯定，所有的图形都会有不同的名称，建议使用变量<code class="docutils literal"><span class="pre">&#64;</span></code>，这个变量将被替换为通过它的数字每个输入，以确保所有的图表都不同的名称。例如，如果填充的名称帧“<code class="docutils literal"><span class="pre">TestGraph.grf</span></code>”，并且如果子图被命名为“<code class="docutils literal"><span class="pre">TestGraph_&#64;.grf</span></code>”，从16产生的子图第16线将被命名为“<code class="docutils literal"><span class="pre">TestGraph_0016.grf</span></code>”。</p>
+<p>图[fig-archaiser]
+和图[fig-badauder]表明通过施加图的参数化曲线产生两个图&nbsp;[fig-reference-graph]在表31H.</p>
+<p>图&nbsp;[fig-main-graph]显示获得的主要图。</p>
+<div class="figure" id="id85">
+<a class="reference internal image-reference" href="_images/fig8-8.png"><img alt="对于动词生成的图表 ``archaiser``\ [fig-archaiser]" src="_images/fig8-8.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">对于动词生成的图表 <code class="docutils literal"><span class="pre">archaiser</span></code>[fig-archaiser]</span></p>
+</div>
+<div class="figure" id="id86">
+<a class="reference internal image-reference" href="_images/fig8-9.png"><img alt="对于动词生成的图表 ``badauder``\ [fig-badauder]" src="_images/fig8-9.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">对于动词生成的图表 <code class="docutils literal"><span class="pre">badauder</span></code>[fig-badauder]</span></p>
+</div>
+<div class="figure" id="id87">
+<a class="reference internal image-reference" href="_images/fig8-10.png"><img alt="主图调用所有生成的图[fig-main-graph]" src="_images/fig8-10.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">主图调用所有生成的图[fig-main-graph]</span></p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-zh.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">语法和词汇</a><ul>
+<li><a class="reference internal" href="#id2">语法词汇表</a></li>
+<li><a class="reference internal" href="#id71">转换图表</a><ul>
+<li><a class="reference internal" href="#id72">图表主要参数</a></li>
+<li><a class="reference internal" href="#id73">表的格式</a></li>
+<li><a class="reference internal" href="#id76">图的参数</a></li>
+<li><a class="reference internal" href="#id77">自动生成图像</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-zh.html">Documentation overview</a><ul>
+      <li>Previous: <a href="08-sequence-automaton_ZH_utf8.html" title="上一章">序列控制器</a></li>
+      <li>Next: <a href="10-alignment_ZH_utf8.html" title="下一章">文本对齐</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/09-lexicon-grammar_ZH_utf8.txt"
+            rel="nofollow">显示源代码</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>快速搜索</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/09-lexicon-grammar_ZH_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

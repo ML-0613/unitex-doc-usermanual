@@ -1,0 +1,572 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh_CN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>正则表达式搜索 &mdash; Unitex-zh 1.0.1 文档</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-zh 1.0.1 文档" href="Unitex-zh.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>正则表达式搜索<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>本章介绍了如何使用正则表达式来搜索文本的简单模式。</p>
+<div class="section" id="id2">
+<h2>定义<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>本章的目的不是对正式语言的介绍，而是展示了如何在&nbsp;Unitex
+中使用正则表达式，来查找简单的模式，感兴趣的读者可以参考更多相关作品。</p>
+<p>一个正则表达式，又称正规表示法，可以表示为：</p>
+<ul class="simple">
+<li>一个&nbsp;<code class="docutils literal"><span class="pre">token</span></code>（&nbsp;<code class="docutils literal"><span class="pre">livre</span></code>
+）或者一个词汇掩模（&nbsp;<code class="docutils literal"><span class="pre">&lt;manger.V&gt;</span></code> ）；</li>
+<li>在文本中的特定位置：开始&nbsp;<code class="docutils literal"><span class="pre">{^}</span></code> 或结尾&nbsp;<code class="docutils literal"><span class="pre">{$}</span></code>；</li>
+<li>两个正则表达式的连接（&nbsp;<code class="docutils literal"><span class="pre">je</span> <span class="pre">mange</span></code> ）；</li>
+<li>两个正则表达式的结合（&nbsp;<code class="docutils literal"><span class="pre">Pierre+Paul</span></code> ）；</li>
+<li>Kleene星号的正则表达式 （&nbsp;<code class="docutils literal"><span class="pre">très*</span></code> ）。</li>
+</ul>
+</div>
+<div class="section" id="token">
+<h2>Token<a class="headerlink" href="#token" title="永久链接至标题">¶</a></h2>
+<p>在一个正则表达式，&nbsp;<code class="docutils literal"><span class="pre">token</span></code> 的定义在&nbsp;[tokenization]（页码
+）。说明了句号，加号，星号，小于号，开闭括号，和双引号有特殊意义，因此，有必要在它们前面加上一个转义字符&nbsp;<code class="docutils literal"><span class="pre">\</span></code>
+如果您要寻找他们。下面是&nbsp;<code class="docutils literal"><span class="pre">token</span></code> 正确的一些例子：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">chat</span>
+\<span class="o">.</span>
+<span class="o">&lt;</span><span class="n">N</span><span class="p">:</span><span class="n">ms</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="n">S</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>默认情况下，&nbsp;Unitex
+被设置为让小写模式也能找到大写并与其匹配。可以使用引号来强制区分大小写。因此，&nbsp;<code class="docutils literal"><span class="pre">&quot;pierre&quot;</span></code>
+只能识别&nbsp;<code class="docutils literal"><span class="pre">pierre</span></code> 而不能识别&nbsp;<code class="docutils literal"><span class="pre">Pierre</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">PIERRE</span></code>。</p>
+<p>注意：为了使空格强制性的，它需要用引号括起来。</p>
+</div>
+<div class="section" id="id3">
+<h2>词汇掩模<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>&nbsp;&nbsp;词汇掩模是&nbsp;<code class="docutils literal"><span class="pre">token</span></code> 或一串&nbsp;<code class="docutils literal"><span class="pre">token</span></code> 对应的搜索查询。</p>
+<div class="section" id="id4">
+<h3>特殊符号<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>有两种词汇掩模。第一种在章节介绍&nbsp;[section-sentence-splitting]，包含除了&nbsp;<code class="docutils literal"><span class="pre">&lt;PNC&gt;</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">&lt;^&gt;</span></code>。（符号&nbsp;<code class="docutils literal"><span class="pre">&lt;PNC&gt;</span></code>
+的特殊符号和元符号，能够匹配标点符号，只有在预处理阶段有效&nbsp;； <code class="docutils literal"><span class="pre">&lt;^&gt;</span></code>
+匹配换行，但当所有的换行都被空格替换，此符号在搜索词汇掩模时就不适用了。）
+可用于搜索文本的模式的元符号的情况如下～：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;E&gt;</span></code> : 空词， 或者ε。识别出空序列；</li>
+<li><code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code> : 识别任意&nbsp;<code class="docutils literal"><span class="pre">token</span></code> 除了默认用于形态滤波器的空格；</li>
+<li><code class="docutils literal"><span class="pre">&lt;WORD&gt;</span></code> : 识别任意字母组成的&nbsp;<code class="docutils literal"><span class="pre">token</span></code>；</li>
+<li><code class="docutils literal"><span class="pre">&lt;LOWER&gt;</span></code> : 识别任意小写字母组成的&nbsp;<code class="docutils literal"><span class="pre">token</span></code>；</li>
+<li><code class="docutils literal"><span class="pre">&lt;UPPER&gt;</span></code> : 识别任意大写字母组成的&nbsp;<code class="docutils literal"><span class="pre">token</span></code>；</li>
+<li><code class="docutils literal"><span class="pre">&lt;FIRST&gt;</span></code> : 识别任意首字母大写组成的&nbsp;<code class="docutils literal"><span class="pre">token</span></code>；</li>
+<li><code class="docutils literal"><span class="pre">&lt;DIC&gt;</span></code> : 识别任意出现在文本字典的词；</li>
+<li><code class="docutils literal"><span class="pre">&lt;SDIC&gt;</span></code> : 识别任意出现在文本字典的单词；</li>
+<li><code class="docutils literal"><span class="pre">&lt;CDIC&gt;</span></code> : 识别任意出现在文本字典的复合词；</li>
+<li><code class="docutils literal"><span class="pre">&lt;TDIC&gt;</span></code> : 识别任何标签&nbsp;<code class="docutils literal"><span class="pre">token</span></code> 比如&nbsp;<code class="docutils literal"><span class="pre">{XXX,XXX.XXX}</span></code>；</li>
+<li><code class="docutils literal"><span class="pre">&lt;NB&gt;</span></code> : 识别任何连续的数字串（&nbsp;1234 可以被识别，但是&nbsp;1 234
+不可以）；</li>
+<li><code class="docutils literal"><span class="pre">#</span></code> :禁止空格的存在。</li>
+</ul>
+<p>对应旧代码&nbsp;<code class="docutils literal"><span class="pre">&lt;WORD&gt;</span></code>，&nbsp;<code class="docutils literal"><span class="pre">&lt;LOWER&gt;</span></code>，&nbsp;<code class="docutils literal"><span class="pre">&lt;UPPER&gt;</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">&lt;FIRST&gt;</span></code> 分别是&nbsp;<code class="docutils literal"><span class="pre">&lt;MOT&gt;</span></code>，&nbsp;<code class="docutils literal"><span class="pre">&lt;MIN&gt;</span></code>，&nbsp;<code class="docutils literal"><span class="pre">&lt;MAJ&gt;</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">&lt;PRE&gt;</span></code>。它们仍然可以使用，以保持现有图形的系统兼容性，但是现在它们是过时的，也就是说为了最新版本的运行，我们建议在图形设计中避免它们的使用 <a class="footnote-reference" href="#id32" id="id5">[1]</a>，以避免不必要词汇掩模的使用增加。</p>
+<p>注意：如章节[tokenization]所述，任何&nbsp;métas
+都不能用来识别标记&nbsp;<code class="docutils literal"><span class="pre">{STOP}</span></code>，&nbsp;<code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code> 也不能。</p>
+</div>
+<div class="section" id="id6">
+<h3>参考字典提供的信息<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>第二种词汇掩模包括来那些能够查找文本字典的信息.四种可能的形式是&nbsp;：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;lire&gt;</span></code>: 识别所有包含&nbsp;<code class="docutils literal"><span class="pre">lire</span></code> 的词条作为标准形式。如果
+<code class="docutils literal"><span class="pre">lire</span></code> 是一个语法代码同时又是一个语义代码，我们说这种形式是歧义的；</li>
+<li><code class="docutils literal"><span class="pre">&lt;lire.&gt;</span></code>:识别所有包含&nbsp;<code class="docutils literal"><span class="pre">lire</span></code>的词条作为标准形式。
+这个词汇掩模在上一种情况中不是歧义的；</li>
+<li><code class="docutils literal"><span class="pre">&lt;be.V&gt;</span></code>: 识别所有包含&nbsp;<code class="docutils literal"><span class="pre">lire</span></code> 和语法代码&nbsp;<code class="docutils literal"><span class="pre">V</span></code>
+的词条，作为标准形式；</li>
+<li><code class="docutils literal"><span class="pre">&lt;V&gt;</span></code>: 识别所有包含语法代码&nbsp;<code class="docutils literal"><span class="pre">V</span></code> 的词条。
+这个词汇掩模是歧义的如同第一种情况。为了消除歧义性，我们可以使用&nbsp;<code class="docutils literal"><span class="pre">&lt;.V&gt;</span></code>
+或者&nbsp;<code class="docutils literal"><span class="pre">&lt;+V&gt;</span></code>；</li>
+<li><code class="docutils literal"><span class="pre">{lirons,lire.V}</span></code> 或&nbsp;<code class="docutils literal"><span class="pre">&lt;lirons,lire.V&gt;</span></code> :
+识别所有包含&nbsp;<code class="docutils literal"><span class="pre">lirons</span></code> 的词条作为词形变化形式,包含&nbsp;<code class="docutils literal"><span class="pre">lire</span></code>
+的词条作为标准形式和包含语法代码&nbsp;<code class="docutils literal"><span class="pre">V</span></code>。
+如果您在文本自动机进行了说明词的多义性工作，这种类型的词汇掩模是唯一有用的。
+当我们搜索一篇文章时，这个掩模和&nbsp;<code class="docutils literal"><span class="pre">token</span></code> &nbsp;<code class="docutils literal"><span class="pre">lirons</span></code>
+识别相同的东西。</li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h3>语法和语义约束<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>前面的词汇掩模的例子是简单的。为了表达更为复杂的模式，在语法，语义代码中间用&nbsp;<code class="docutils literal"><span class="pre">+</span></code>
+分隔开。如果有很多代码，符号&nbsp;<code class="docutils literal"><span class="pre">+</span></code> 可以解释成‘’和’’&nbsp;:
+在字典中一个词条只有当它所有的代码都包括在掩模中，才能被识别。
+掩模&nbsp;<code class="docutils literal"><span class="pre">&lt;N+z1&gt;</span></code> 识别这些词条：</p>
+<p><code class="docutils literal"><span class="pre">broderies,broderie.N+z1:fp</span></code></p>
+<p><code class="docutils literal"><span class="pre">capitales</span> <span class="pre">européennes,capitale</span> <span class="pre">européenne.N+NA+Conc+HumColl+z1:fp</span></code></p>
+<p>不识别以下：</p>
+<p><code class="docutils literal"><span class="pre">Descartes,René</span> <span class="pre">Descartes.N+Hum+NPropre:ms</span></code></p>
+<p><code class="docutils literal"><span class="pre">habitué,.A+z1:ms</span></code></p>
+<p>我们可以排除代码，在它之前加上字符&nbsp;<code class="docutils literal"><span class="pre">~</span></code> 而不用&nbsp;<code class="docutils literal"><span class="pre">+</span></code>。
+为了能被识别，一个词条必须包括所有掩模所要求的代码，不包含任何它禁止的代码。
+举个例子，&nbsp;<code class="docutils literal"><span class="pre">&lt;A~z3&gt;</span></code>
+识别所有包含代码&nbsp;<code class="docutils literal"><span class="pre">A</span></code>，而不包含代码&nbsp;<code class="docutils literal"><span class="pre">z3</span></code>
+的词条（cf.table&nbsp;[tab-semantic-codes]）  <a class="footnote-reference" href="#id33" id="id8">[2]</a>。
+如果我们想要搜索一个包含字符&nbsp;<code class="docutils literal"><span class="pre">~</span></code>
+的代码，我们需要在它前面加一个字符&nbsp;<code class="docutils literal"><span class="pre">\</span></code>。</p>
+<p>注：2.1版本之前，否定运算符是减号。如果想要使用旧图不加修改，需要在命令行加&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code>
+和操作&nbsp;<code class="docutils literal"><span class="pre">-g</span> <span class="pre">minus</span></code>。</p>
+<p>词汇掩模的句法在语法码(table&nbsp;[tab-grammatical-codes])和语义码(table&nbsp;[tab-semantic-codes])之间没有差别。在&nbsp;DELAF
+电子词典里，语法码是那些出现在第一个和编码语法范畴，但在&nbsp;Unitex
+的词汇掩模中，语法码和语义码的出现顺序不重要。以下三个词汇掩模是等价的：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">N</span><span class="o">~</span><span class="n">Hum</span><span class="o">+</span><span class="n">z1</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">z1</span><span class="o">+</span><span class="n">N</span><span class="o">~</span><span class="n">Hum</span><span class="o">&gt;</span>
+<span class="o">&lt;~</span><span class="n">Hum</span><span class="o">+</span><span class="n">z1</span><span class="o">+</span><span class="n">N</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>一个词汇掩模可以包含语义码而没有语法范畴的代码。</p>
+<p>注意：使用只有禁止码的掩模是不可以的。&nbsp;<code class="docutils literal"><span class="pre">&lt;~N&gt;</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">&lt;~A~z1&gt;</span></code>
+是不正确的掩模。但是，您可以运用上下文解释这个约束。（见章节&nbsp;[section-contexts]）</p>
+</div>
+<div class="section" id="id9">
+<h3>变位限制<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>另外，也可以指定有关变位代码约束。这些限制都必须先通过至少一个语法或语义代码。他们遵循相同格式的约束，由字典中的变位代码组成。以下是一些使用变位限制的词汇掩模的例子：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;A:m&gt;</span></code> 识别一个阳性的形容词&nbsp;；</li>
+<li><code class="docutils literal"><span class="pre">&lt;A:mp&gt;</span></code> 识别一个阳性复数形容词。</li>
+</ul>
+<p>变位代码由字母引入&nbsp;<code class="docutils literal"><span class="pre">:</span></code>
+有一个或多个字母构成，而且每个字母传达一个信息。先从一个单独变位代码组成的词汇条目和掩模的简单情况开始。为了词条条目&nbsp;<span class="math">\(E\)</span>
+被掩模&nbsp;<span class="math">\(M\)</span> 识别，需要&nbsp;<span class="math">\(E\)</span> 的变位代码中包含了&nbsp;<span class="math">\(M\)</span>
+的变位代码中的所有字符&nbsp;：</p>
+<p><span class="math">\(E\)</span>=<code class="docutils literal"><span class="pre">sépare,séparer.V:Y2s</span></code></p>
+<p><span class="math">\(M\)</span>=<code class="docutils literal"><span class="pre">&lt;V:Y2&gt;</span></code></p>
+<p><span class="math">\(E\)</span>的&nbsp;<code class="docutils literal"><span class="pre">Y2s</span></code> 包括字符&nbsp;<code class="docutils literal"><span class="pre">Y</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">2</span></code>。<span class="math">\(E\)</span>
+至少包括一个&nbsp;<code class="docutils literal"><span class="pre">Y2</span></code>， 词汇掩模&nbsp;<span class="math">\(M\)</span> 识别条目&nbsp;<span class="math">\(E\)</span>。</p>
+<p>变位代码内部字符的顺序是无关紧要的。所有的语法和语义代码必须先于变位代码。</p>
+<p>如果几个变位码存在于一个词法掩模，符号&nbsp;<code class="docutils literal"><span class="pre">:</span></code> 表示&nbsp;‘’ 或&nbsp;”&nbsp;：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;A:mp:f&gt;</span></code> 同时匹配&nbsp;<code class="docutils literal"><span class="pre">&lt;A:mp&gt;</span></code> 和&nbsp;<a href="#id10"><span class="problematic" id="id11">``</span></a>&lt;A:f&gt;``&nbsp;；
+它识别要么阳性复数形容词，要么阴性形容词&nbsp;；</li>
+<li><code class="docutils literal"><span class="pre">&lt;V:2:3&gt;</span></code>
+识别第2人称或第3人称；排除了既没有第二或第三人称（不定式，过去分词和现在分词）的所有时态以及以第一人称变位的时态。</li>
+</ul>
+<p>为了一个字典词条&nbsp;<span class="math">\(E\)</span> 被掩模&nbsp;<span class="math">\(M\)</span> 识别，需要&nbsp;<span class="math">\(E\)</span>
+中的至少一个变位代码包含&nbsp;<span class="math">\(M\)</span>
+的至少一种变位代码的所有字符。考虑以下的例子：</p>
+<p><span class="math">\(E\)</span>=<code class="docutils literal"><span class="pre">sépare,séparer.V:W:P1s:P3s:S1s:S3s:Y2s</span></code></p>
+<p><span class="math">\(M\)</span>=<code class="docutils literal"><span class="pre">&lt;V:P2s:Y2&gt;</span></code></p>
+<p>没有同时包含&nbsp;<code class="docutils literal"><span class="pre">P</span></code>，&nbsp;<code class="docutils literal"><span class="pre">2</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">s</span></code>
+的变位代码&nbsp;<span class="math">\(E\)</span>。然而，<span class="math">\(E\)</span> 代码&nbsp;<code class="docutils literal"><span class="pre">Y2s</span></code>
+却包含字符&nbsp;<code class="docutils literal"><span class="pre">Y</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">2</span></code>。代码&nbsp;<code class="docutils literal"><span class="pre">Y2</span></code>
+至少包括一个代码&nbsp;<span class="math">\(E\)</span>，因此词汇掩模&nbsp;<span class="math">\(M\)</span>能识别条目&nbsp;<span class="math">\(E\)</span>。</p>
+</div>
+<div class="section" id="id12">
+<h3>词汇掩模的否定<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>可以通过排列字符&nbsp;&nbsp;<code class="docutils literal"><span class="pre">!</span></code> 于字符&nbsp;&nbsp;<code class="docutils literal"><span class="pre">&lt;</span></code>
+后面来否定词汇掩模。否定是可能的，当掩模为
+&nbsp;<code class="docutils literal"><span class="pre">&lt;WORD&gt;</span></code>，&nbsp;<code class="docutils literal"><span class="pre">&lt;LOWER&gt;</span></code>，&nbsp;<code class="docutils literal"><span class="pre">&lt;UPPER&gt;</span></code>， &nbsp;<code class="docutils literal"><span class="pre">&lt;FIRST&gt;</span></code>  <a class="footnote-reference" href="#id34" id="id13">[3]</a>，
+<code class="docutils literal"><span class="pre">&lt;DIC&gt;</span></code> 以及只包含语法，语义和变位的词汇掩模（<em>i.e.</em>
+<code class="docutils literal"><span class="pre">&lt;!V~z3:P3&gt;</span></code>）。掩模&nbsp;<code class="docutils literal"><span class="pre">#</span></code> 和 &nbsp;<code class="docutils literal"><span class="pre">&quot;&quot;</span></code> 彼此是否定的。
+掩模&nbsp;<code class="docutils literal"><span class="pre">&lt;!WORD&gt;</span></code>
+能够识别所有的不由字母组成的&nbsp;<code class="docutils literal"><span class="pre">token</span></code>，除了句子分隔符&nbsp;<code class="docutils literal"><span class="pre">{S}</span></code>
+和标记 &nbsp;<code class="docutils literal"><span class="pre">{STOP}</span></code>。 否定对 &nbsp;<code class="docutils literal"><span class="pre">&lt;NB&gt;</span></code>，
+&nbsp;<code class="docutils literal"><span class="pre">&lt;SDIC&gt;</span></code>，&nbsp;<code class="docutils literal"><span class="pre">&lt;CDIC&gt;</span></code>，&nbsp;<code class="docutils literal"><span class="pre">&lt;TDIC&gt;</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code>
+没有影响。</p>
+<p>该否定以一种特别方式解释，当掩模是
+&nbsp;<code class="docutils literal"><span class="pre">&lt;!DIC&gt;</span></code>，&nbsp;<code class="docutils literal"><span class="pre">&lt;!LOWER&gt;</span></code>，&nbsp;<code class="docutils literal"><span class="pre">&lt;!UPPER&gt;</span></code> 和 &nbsp;<code class="docutils literal"><span class="pre">&lt;!FIRST&gt;</span></code></p>
+<blockquote>
+<div><a class="footnote-reference" href="#id35" id="id14">[4]</a>。</div></blockquote>
+<p>这些掩模只识别字母序列的形式，而不是识别不能被非否定掩模匹配的形式。
+因此， 掩模 &nbsp;<code class="docutils literal"><span class="pre">&lt;!DIC&gt;</span></code> 让您找到未知词语的文本 (cf.
+figure&nbsp;[fig-search-&lt;!DIC&gt;])。这些未知的形式大多是专有名词，新词和拼写错误。</p>
+<div class="figure" id="id36">
+<a class="reference internal image-reference" href="_images/fig4-1.png"><img alt="&nbsp;méta 查找的结果 ``&lt;!DIC&gt;``\ [fig-search-&lt;!DIC&gt;]" src="_images/fig4-1.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">&nbsp;méta 查找的结果 <code class="docutils literal"><span class="pre">&lt;!DIC&gt;</span></code>[fig-search-&lt;!DIC&gt;]</span></p>
+</div>
+<p>词汇掩模的否定，例如 &nbsp;<code class="docutils literal"><span class="pre">&lt;V:G&gt;</span></code> 能匹配所有词，除了能被该掩模匹配的词。
+然而，掩模 &nbsp;<code class="docutils literal"><span class="pre">&lt;!V:G&gt;</span></code>
+无法识别英文形式&nbsp;<em>being</em>，即使存在于词典同名非动词条目：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">being</span><span class="p">,</span><span class="o">.</span><span class="n">A</span>
+<span class="n">being</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">Abst</span><span class="p">:</span><span class="n">s</span>
+<span class="n">being</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">Hum</span><span class="p">:</span><span class="n">s</span>
+</pre></div>
+</div>
+<p>下面是不同约束类型的词汇掩模例子:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;A~Hum:fs&gt;</span></code> : 非人类的单数阴性形容词；</li>
+<li><code class="docutils literal"><span class="pre">&lt;lire.V:P:F&gt;</span></code> : 动词 &nbsp;<em>lire</em> 的现在时态或将来时态;</li>
+<li><code class="docutils literal"><span class="pre">&lt;suis,suivre.V&gt;</span></code> : 变位动词 &nbsp;<em>suivre</em> 的配合词&nbsp;<em>suis</em> （动词原形
+<em>être</em>）；</li>
+<li><code class="docutils literal"><span class="pre">&lt;facteur.N~Hum&gt;</span></code> : 所有包含标准形式&nbsp;<em>facteur</em>
+的名词入口，且无语义代码&nbsp;<code class="docutils literal"><span class="pre">Hum</span></code>；</li>
+<li><code class="docutils literal"><span class="pre">&lt;!ADV&gt;</span></code> : 所有不是副词的词；</li>
+<li><code class="docutils literal"><span class="pre">&lt;!WORD&gt;</span></code> :
+所有不是字母组成的&nbsp;<code class="docutils literal"><span class="pre">token</span></code>，除了分隔符（见章节&nbsp;[fig-search-&lt;!WORD&gt;]）。
+该掩模不识别句子分隔符&nbsp;<code class="docutils literal"><span class="pre">{S}</span></code> 也不识别标签&nbsp;<code class="docutils literal"><span class="pre">{STOP}</span></code>。</li>
+</ul>
+<div class="figure" id="id37">
+<a class="reference internal image-reference" href="_images/fig4-2.png"><img alt="&nbsp;méta 查找的结果 ``&lt;!WORD&gt;``\ [fig-search-&lt;!WORD&gt;]" src="_images/fig4-2.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">&nbsp;méta 查找的结果 <code class="docutils literal"><span class="pre">&lt;!WORD&gt;</span></code>[fig-search-&lt;!WORD&gt;]</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="id15">
+<h2>级联<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h2>
+<p>有三种连接正则表达式的方法。第一种使用由点表示的级联运算符。表达式如下：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">DET</span><span class="o">&gt;.&lt;</span><span class="n">N</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>识别一个由名词跟着的限定词。该空格也可以用于级联，以及空字符串。
+以下为表达式例子：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">le</span> <span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="n">chat</span>
+<span class="n">le</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="n">chat</span>
+</pre></div>
+</div>
+<p>识别&nbsp;<a href="#id16"><span class="problematic" id="id17">``</span></a>token``&nbsp;<em>le</em>，后面跟着的是形容词和&nbsp;<a href="#id18"><span class="problematic" id="id19">``</span></a>token``&nbsp;<em>chat</em>。括号被用作正则表达式的分隔符。
+以下表达式都是等效的：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">le</span> <span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="n">chat</span>
+<span class="p">(</span><span class="n">le</span> <span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="p">)</span><span class="n">chat</span>
+<span class="n">le</span><span class="o">.&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="n">chat</span>
+<span class="p">(</span><span class="n">le</span><span class="p">)</span><span class="o">.&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="n">chat</span>
+<span class="p">(</span><span class="n">le</span><span class="o">.</span><span class="p">(</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="p">))</span> <span class="p">(</span><span class="n">chat</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id20">
+<h2>合并<a class="headerlink" href="#id20" title="永久链接至标题">¶</a></h2>
+<p>正则表达式的合并通过字符&nbsp;<code class="docutils literal"><span class="pre">+</span></code> 分隔开。 表达式如下：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">je</span><span class="o">+</span><span class="n">tu</span><span class="o">+</span><span class="n">il</span><span class="o">+</span><span class="n">elle</span><span class="o">+</span><span class="n">on</span><span class="o">+</span><span class="n">nous</span><span class="o">+</span><span class="n">vous</span><span class="o">+</span><span class="n">ils</span><span class="o">+</span><span class="n">elles</span><span class="p">)</span> <span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>识别代词后跟一个动词。如果在表达式中的元素是可选的，它足以使用该元素和空字符的联合。
+例子：</p>
+<p><code class="docutils literal"><span class="pre">le(petit+&lt;E&gt;)chat</span></code> 识别序列&nbsp;<em>le chat</em> 和&nbsp;<em>le petit chat</em>。</p>
+<p><code class="docutils literal"><span class="pre">(&lt;E&gt;+franco-)(anglais+belge)</span></code> 识别&nbsp;<em>anglais</em>，&nbsp;<em>belge</em>，
+&nbsp;<em>franco-anglais</em> 和&nbsp;<em>franco-belge</em>。</p>
+</div>
+<div class="section" id="kleene">
+<h2>Kleene星号<a class="headerlink" href="#kleene" title="永久链接至标题">¶</a></h2>
+<p>Kleene 星号，由符号 &nbsp;<code class="docutils literal"><span class="pre">*</span></code>
+表示，可以识别零，出现一个或多个在表达式中。星号应该位于相关元素的右边。
+表达式如下：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">il</span> <span class="n">fait</span> <span class="n">très</span><span class="o">*</span> <span class="n">froid</span>
+</pre></div>
+</div>
+<p>识别&nbsp;<em>il fait froid</em>， &nbsp;<em>il fait très froid</em>， &nbsp;<em>il fait très très
+froid</em>， 等等。 星号较其他运算符有较
+高优先级。为了在复杂的表达式中使用星号，需要使用括号。 表达式如下：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">0</span><span class="p">,(</span><span class="mi">0</span><span class="o">+</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">+</span><span class="mi">3</span><span class="o">+</span><span class="mi">4</span><span class="o">+</span><span class="mi">5</span><span class="o">+</span><span class="mi">6</span><span class="o">+</span><span class="mi">7</span><span class="o">+</span><span class="mi">8</span><span class="o">+</span><span class="mi">9</span><span class="p">)</span><span class="o">*</span>
+</pre></div>
+</div>
+<p>识别零，后跟一个逗号和一串空数字。</p>
+<p>注意 : 禁止用正则表达式搜索空词。如果我们尝试查找
+<code class="docutils literal"><span class="pre">(0+1+2+3+4+5+6+7+8+9)*</span></code>， 系统将报错， 如图&nbsp;[fig-epsilon-error]。</p>
+<div class="figure" id="id38">
+<a class="reference internal image-reference" href="_images/fig4-3.png"><img alt="当搜索识别到空词的表达式时，出现错误 [fig-epsilon-error]" src="_images/fig4-3.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">当搜索识别到空词的表达式时，出现错误 [fig-epsilon-error]</span></p>
+</div>
+</div>
+<div class="section" id="id21">
+<h2>形态滤波器<a class="headerlink" href="#id21" title="永久链接至标题">¶</a></h2>
+<p>将形态滤波器用于词汇单位的查找是可能的。为此， 有必要立即跟随
+由在双括号的滤波器中找到的词汇单位：</p>
+<div class="line-block">
+<div class="line"><em>motif</em><code class="docutils literal"><span class="pre">&lt;&lt;</span></code><em>motif morphologique</em><code class="docutils literal"><span class="pre">&gt;&gt;</span></code></div>
+<div class="line">该形态滤波器表示为&nbsp;POSIX 格式的正则表达式（见 <a href="#id22"><span class="problematic" id="id23">:raw-latex:`\cite{TRE}`</span></a>
+详细语法）。 下面是基本过滤器的一些例子：</div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;&lt;ss&gt;&gt;</span></code>: 包含 <code class="docutils literal"><span class="pre">ss</span></code>。</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;^a&gt;&gt;</span></code>: 开始于 <code class="docutils literal"><span class="pre">a</span></code>。</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;ez$&gt;&gt;</span></code>: 以 <code class="docutils literal"><span class="pre">ez</span></code>结束。</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;a.s&gt;&gt;</span></code>: 包含 <code class="docutils literal"><span class="pre">a</span></code> 后跟任何一个字符， 后跟 <code class="docutils literal"><span class="pre">s</span></code>。</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;a.*s&gt;&gt;</span></code>: 包含 <code class="docutils literal"><span class="pre">a</span></code> 后跟任何多个字符， 后跟<code class="docutils literal"><span class="pre">s</span></code>。</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;ss|tt&gt;&gt;</span></code>: 包含 <code class="docutils literal"><span class="pre">ss</span></code> 或者 <code class="docutils literal"><span class="pre">tt</span></code>。</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;[aeiouy]&gt;&gt;</span></code>: 包含无重音符号原音。</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;[aeiouy]{3，5}&gt;&gt;</span></code>: 包含一串无重音符号原音， 其长度在3到5之间。</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;es?&gt;&gt;</span></code>: 包含 <code class="docutils literal"><span class="pre">e</span></code> 后可跟一个字符 <code class="docutils literal"><span class="pre">s</span></code>。</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;ss[^e]?&gt;&gt;</span></code>: 包含 <code class="docutils literal"><span class="pre">ss</span></code> 后跟非原音字符 <code class="docutils literal"><span class="pre">e</span></code>。</li>
+</ul>
+<p>可以组合这些基本过滤器，以形成更复杂的过滤器：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;&lt;[ai]ble$&gt;&gt;</span></code>: 结束于 &nbsp;<code class="docutils literal"><span class="pre">able</span></code> 或者&nbsp;<code class="docutils literal"><span class="pre">ible</span></code>。</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;^(anti|pro)-?&gt;&gt;</span></code>: 开始于&nbsp;<code class="docutils literal"><span class="pre">anti</span></code>
+或者&nbsp;<code class="docutils literal"><span class="pre">pro</span></code>，后可跟一个破折号。</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;^([rst][aeiouy]){2,}$&gt;&gt;</span></code>: 由两个或更多词组成的，由
+&nbsp;<code class="docutils literal"><span class="pre">r</span></code>，&nbsp;<code class="docutils literal"><span class="pre">s</span></code> 或者&nbsp;<code class="docutils literal"><span class="pre">t</span></code> 开头，后跟一个无重音符号原音。</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;^([^l]|l[^e])&gt;&gt;</span></code>: 不由&nbsp;<code class="docutils literal"><span class="pre">l</span></code>
+开头或者第二个词不是&nbsp;<code class="docutils literal"><span class="pre">e</span></code>，也就是说无论什么词除了&nbsp;<code class="docutils literal"><span class="pre">le</span></code>
+开头的。这种限制更好的说明在章节(见&nbsp;[section-contexts])。</li>
+</ul>
+<p>一般情况下，单独一个形态滤波器被认为是将其应用于词汇掩模&nbsp;<code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code>，
+这里指除了空格和&nbsp;<code class="docutils literal"><span class="pre">{STOP}</span></code>的任意&nbsp;<code class="docutils literal"><span class="pre">token</span></code>。
+另一方面，当过滤器紧跟一个词汇掩模，它适用于由词法掩模识别的。这里有这样的组合的一些例子：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;V:K&gt;&lt;&lt;i$&gt;&gt;</span></code>: 过去分词由 &nbsp;<code class="docutils literal"><span class="pre">i</span></code> 结尾。</li>
+<li><code class="docutils literal"><span class="pre">&lt;CDIC&gt;&lt;&lt;-&gt;&gt;</span></code>: 复合词中包含破折号。</li>
+<li><code class="docutils literal"><span class="pre">&lt;CDIC&gt;&lt;&lt;</span> <span class="pre">.*</span> <span class="pre">&gt;&gt;</span></code>: 含有至少两个空格的复合词。</li>
+<li><code class="docutils literal"><span class="pre">&lt;A:fs&gt;&lt;&lt;^pro&gt;&gt;</span></code>:由``pro``开始的阴性单数形容词。</li>
+<li><code class="docutils literal"><span class="pre">&lt;DET&gt;&lt;&lt;^([^u]|(u[^n])|(un.+))&gt;&gt;</span></code>: 不同于&nbsp;<code class="docutils literal"><span class="pre">un</span></code> 的限定词。</li>
+<li><code class="docutils literal"><span class="pre">&lt;!DIC&gt;&lt;&lt;es$&gt;&gt;</span></code>: 不在字典里的词而且结束于&nbsp;<code class="docutils literal"><span class="pre">es</span></code>。</li>
+<li><code class="docutils literal"><span class="pre">&lt;V:S:T&gt;&lt;&lt;uiss&gt;&gt;</span></code>: 包含&nbsp;<code class="docutils literal"><span class="pre">uiss</span></code> 的现在、过去虚拟式动词。</li>
+</ul>
+<p>标记 : 一般情况下，默认情况下，形态滤波器受词汇掩模一样的变化。
+因此，过滤器 &nbsp;<code class="docutils literal"><span class="pre">&lt;&lt;^é&gt;&gt;</span></code> 能识别所有&nbsp;<code class="docutils literal"><span class="pre">é</span></code>，&nbsp;<code class="docutils literal"><span class="pre">E</span></code> 或 &nbsp;<code class="docutils literal"><span class="pre">É</span></code>
+开头的单词。为了增
+强严格遵守过滤器的容量，需要在过滤后立即加上&nbsp;<code class="docutils literal"><span class="pre">_f_</span></code>。 例子：
+<code class="docutils literal"><span class="pre">&lt;A&gt;&lt;&lt;^é&gt;&gt;_f_</span></code>。</p>
+</div>
+<div class="section" id="id24">
+<h2>搜索<a class="headerlink" href="#id24" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id25">
+<h3>搜索配置<a class="headerlink" href="#id25" title="永久链接至标题">¶</a></h3>
+<p>为了搜索一个表达式， 首先需要打开一篇文章 （见章节&nbsp;[chap-text]）。
+然后点击 “ Locate Pattern...”在菜单“ Text ”中。
+窗口如图片所示&nbsp;[fig-regexp-search-configuration]</p>
+<div class="figure" id="id39">
+<a class="reference internal image-reference" href="_images/fig4-4.png"><img alt="表达式搜索的窗口[fig-regexp-search-configuration]" src="_images/fig4-4.png" style="width: 8.80000cm;" /></a>
+<p class="caption"><span class="caption-text">表达式搜索的窗口[fig-regexp-search-configuration]</span></p>
+</div>
+<p>“Locate Pattern”框让您可以选择正则表达式或者一个语法。 点击 “Regular
+expression”。</p>
+<p>“Index”框可以选择识别模式：</p>
+<ul class="simple">
+<li>“Shortest matches” : 优先考虑最短序列。 比如， 如果程序识别这两个序列
+&nbsp;<em>very hot chili</em> 和&nbsp;<em>very hot</em>， 第一个会被丢弃;</li>
+<li>“Longest matches” : 优先考虑最长序列。 这是默认模式；</li>
+<li>“All matches” : 考虑所有识别出的序列。</li>
+</ul>
+<p>“Search
+limitation”框用于限制一个特定的情况数量。默认情况，搜索情况数量是&nbsp; 200。</p>
+<p>“Grammar outputs”的选项和正则表达式无关。具体情况描述于章节
+&nbsp;[section-applying-graphs-to-text]。 同样为了选项标签 “Advanced
+options”（见章节[section-advanced-search-options]）。</p>
+<p>在 “Search algorithm”框， 我们规定如果我们想对文章用程序&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code>
+进行搜索，或者在自动程序
+&nbsp;<code class="docutils literal"><span class="pre">LocateTfst</span></code>。默认情况下使用程序&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code>。如果您想使用&nbsp;<code class="docutils literal"><span class="pre">LocateTfst</span></code>，
+可阅读章节 [section-locate-tfst]。</p>
+<p>输入表达式，然后单击“Search”以开始搜索。Unitex
+将表达式转变成了一种&nbsp;<code class="docutils literal"><span class="pre">.grf</span></code>
+格式的语法。此语法将被编译成格式&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code> 的语法，这将用于程序搜索。</p>
+</div>
+<div class="section" id="id26">
+<h3>显示结果<a class="headerlink" href="#id26" title="永久链接至标题">¶</a></h3>
+<p>一旦搜索结束， 窗口如图&nbsp;[fig-search-results]出现，
+指出找到的匹配个数，识别的&nbsp;<code class="docutils literal"><span class="pre">token</span></code> 的总数，和它占文章&nbsp;<code class="docutils literal"><span class="pre">token</span></code>
+总数的比例。</p>
+<div class="figure" id="id40">
+<a class="reference internal image-reference" href="_images/fig4-5.png"><img alt="搜索结果 [fig-search-results]" src="_images/fig4-5.png" style="width: 6.50000cm;" /></a>
+<p class="caption"><span class="caption-text">搜索结果 [fig-search-results]</span></p>
+</div>
+<p>点击 “OK”后， 您将会看到窗口如图 [fig-configuration-concordance]
+它显示匹配的事件。您也可以通过点击“Display Located Sequences...” 在菜单
+“Text”来显示该窗口。 我们把 &nbsp;<em>concordance</em> 叫做事件清单。</p>
+<div class="figure" id="id41">
+<a class="reference internal image-reference" href="_images/fig4-6.png"><img alt="找到发生事件的显示配置[fig-configuration-concordance]" src="_images/fig4-6.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">找到发生事件的显示配置[fig-configuration-concordance]</span></p>
+</div>
+<p>“Modify text”让我们有可能把找到的事件替换成最终输
+出。这在章节&nbsp;[chap-advanced-grammars]提到。</p>
+<p>“Extract units”框让您可以用所有包含或不包含
+匹配单元的句子来创建一个文本文件。按钮 “Set File”让您选择
+输出文件。然后点击 “Extract matching units” 或 “Extract unmatching
+units” 取决于您是否喜欢句子包含匹配单元或否。</p>
+<p>在 “Show Matching Sequences in
+Context”框，您可以选择匹配单元显示的左右边文章字符长度。如果匹配具有比文章右部更少的字符，这行将会以必要字符显示。如果匹配具有比文章右部更多的字符，它会被完全显示出来。</p>
+<p>注：在泰国，上下文的大小是由可显示的字符衡量的，而不是实际的字符，这有利于保持匹配单元行的直线性，尽管连接其他字母的区别符号不是像一般字符那样显示的。</p>
+<p>您可以在“Sort According to”中选择排序顺序。“Text Order”
+模式按事件在文章出现的顺序显示。其他六种模式允许列的排列。行的三个区域分别是左侧文本，匹配事件，右侧文本。匹配事件和右侧文本从左向右排序。左侧文本从右向左排序。使用的默认模式是
+“Center, Left Col.”。索引生成 &nbsp;HTML 格式的文件。</p>
+<p>如果一个索引对应上千个事件，它最好用一个浏览器来显示 （ &nbsp;Firefox
+<a href="#id27"><span class="problematic" id="id28">:raw-latex:`\cite{Firefox}`</span></a>， Netscape <a href="#id29"><span class="problematic" id="id30">:raw-latex:`\cite{Netscape}`</span></a>，
+Internet Explorer， 等等）。 然后选择 “Use a web browser to view the
+concordance” （参见图 &nbsp;[fig-configuration-concordance]）。
+当事件超过3000，该选项将默认自动执行。为了自定义使用的浏览器， 点击
+“Preferences...” 在菜单 “Info”。单击选项卡 “Text Presentation”
+然后在“Html Viewer” 选择使用的程序。
+（参见图&nbsp;[fig-browser-selection]）。</p>
+<p>如果您选择在 &nbsp;Unitex 内部打开索引，[fig-example-concordance]。 选项
+“Enable links”默认运行，以保证匹配事件的超链接。 而且，
+当我们点击一个事件，文本窗口被打开，相应的序列被突出显示。此外，如果文本可自动建立，如果此窗口未图标化，包含索引的句子自动器将被装载。如果我们选择选项“Allow
+concordance edition”， 我们不能点击索引，
+但是我们可以作为文本修改它。可以用光标移
+动它，如果我们要处理大量的文章，使用索引会变得很方便。</p>
+<div class="figure" id="id42">
+<a class="reference internal image-reference" href="_images/fig4-7.png"><img alt="选择一个浏览器来显示词汇索引[fig-browser-selection]" src="_images/fig4-7.png" style="width: 8.00000cm;" /></a>
+<p class="caption"><span class="caption-text">选择一个浏览器来显示词汇索引[fig-browser-selection]</span></p>
+</div>
+<div class="figure" id="id43">
+<a class="reference internal image-reference" href="_images/fig4-8.png"><img alt="一致性的例子[fig-example-concordance]" src="_images/fig4-8.png" style="height: 18.00000cm;" /></a>
+<p class="caption"><span class="caption-text">一致性的例子[fig-example-concordance]</span></p>
+</div>
+</div>
+<div class="section" id="id31">
+<h3>统计<a class="headerlink" href="#id31" title="永久链接至标题">¶</a></h3>
+<p>如果我们在“Located sequences..”选择 “Statistics” ，
+显示如图的面板&nbsp;[fig-statistics]。该面板可以让您从之前的索引序列中得到一些统计数据。</p>
+<div class="figure" id="id44">
+<a class="reference internal image-reference" href="_images/fig4-9.png"><img alt="统计面板 [fig-statistics]" src="_images/fig4-9.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">统计面板 [fig-statistics]</span></p>
+</div>
+<p>在面板 “Mode”，您可以选择您想要的统计方式：</p>
+<ul class="simple">
+<li>搭配词由频率： 指出文章中的&nbsp;<code class="docutils literal"><span class="pre">token</span></code> 在匹配文章，</li>
+<li>搭配词由Z值： 同上， （在匹配文章和整个文库的匹配 词的数量，
+搭配词的Z值）</li>
+<li>上下文由频率： 指出在左右侧文本&nbsp;<code class="docutils literal"><span class="pre">token</span></code> (见下文)。 “count”
+是识别序列的匹配的总数。</li>
+</ul>
+<p>在第二个面板， 我们选择左右侧文本的长度为了使用无空格&nbsp;<code class="docutils literal"><span class="pre">token</span></code>。
+注意： 这个上下文的概念和语法的不同。</p>
+<p>在最后一个面板， 我们可以允许或不允许大小写转换。 在允许的情况下，
+<code class="docutils literal"><span class="pre">the</span></code> 和 &nbsp;<code class="docutils literal"><span class="pre">THE</span></code> 是同样的&nbsp;<code class="docutils literal"><span class="pre">token</span></code>，计数总和是 &nbsp;<code class="docutils literal"><span class="pre">the</span></code>
+的总数加上 &nbsp;<code class="docutils literal"><span class="pre">THE</span></code> 的总数。</p>
+<p>下图显示了在计算各模式的查询统计 &nbsp;<code class="docutils literal"><span class="pre">&lt;have&gt;</span></code> 于 &nbsp;<code class="docutils literal"><span class="pre">ivanhoe.snt</span></code>.</p>
+<div class="figure" id="id45">
+<a class="reference internal image-reference" href="_images/fig4-10.png"><img alt="事件的背景下+左+右+上下文匹配数[fig-statistics-mode0]" src="_images/fig4-10.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">事件的背景下+左+右+上下文匹配数[fig-statistics-mode0]</span></p>
+</div>
+<div class="figure" id="id46">
+<a class="reference internal image-reference" href="_images/fig4-11.png"><img alt="搭配组合[fig-statistics-mode1]" src="_images/fig4-11.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">搭配组合[fig-statistics-mode1]</span></p>
+</div>
+<div class="figure" id="id47">
+<a class="reference internal image-reference" href="_images/fig4-12.png"><img alt="搭配组合，统计和其他信息 [fig-statistics-mode2]" src="_images/fig4-12.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">搭配组合，统计和其他信息 [fig-statistics-mode2]</span></p>
+</div>
+<table class="docutils footnote" frame="void" id="id32" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[1]</a></td><td>从3.1版本开始，修改于2015年十月二号。</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id33" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id8">[2]</a></td><td>如果字典写入一个由&nbsp;<code class="docutils literal"><span class="pre">A+z3</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">A</span></code>
+入口开头的词条，该词条由&nbsp;<code class="docutils literal"><span class="pre">&lt;A+z3&gt;</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">A</span></code> 识别。</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id34" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id13">[3]</a></td><td>和其等同减值&nbsp;&lt;MOT&gt;，&nbsp;&lt;MIN&gt;，&nbsp; &lt;MAJ&gt;，&nbsp;&lt;PRE&gt;。
+见章节&nbsp;[section-special-symbols]。</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id35" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id14">[4]</a></td><td>和其等同减值&nbsp;&lt;MIN&gt;，&nbsp;&lt;MAJ&gt; 和&nbsp;&lt;PRE&gt; 时。
+参考章节&nbsp;[section-special-symbols]。</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-zh.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">正则表达式搜索</a><ul>
+<li><a class="reference internal" href="#id2">定义</a></li>
+<li><a class="reference internal" href="#token">Token</a></li>
+<li><a class="reference internal" href="#id3">词汇掩模</a><ul>
+<li><a class="reference internal" href="#id4">特殊符号</a></li>
+<li><a class="reference internal" href="#id6">参考字典提供的信息</a></li>
+<li><a class="reference internal" href="#id7">语法和语义约束</a></li>
+<li><a class="reference internal" href="#id9">变位限制</a></li>
+<li><a class="reference internal" href="#id12">词汇掩模的否定</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id15">级联</a></li>
+<li><a class="reference internal" href="#id20">合并</a></li>
+<li><a class="reference internal" href="#kleene">Kleene星号</a></li>
+<li><a class="reference internal" href="#id21">形态滤波器</a></li>
+<li><a class="reference internal" href="#id24">搜索</a><ul>
+<li><a class="reference internal" href="#id25">搜索配置</a></li>
+<li><a class="reference internal" href="#id26">显示结果</a></li>
+<li><a class="reference internal" href="#id31">统计</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-zh.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/04-pattern_matching_ZH_utf8.txt"
+            rel="nofollow">显示源代码</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>快速搜索</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/04-pattern_matching_ZH_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

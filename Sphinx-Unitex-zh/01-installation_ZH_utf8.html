@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh_CN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>安装Unitex &mdash; Unitex-zh 1.0.1 文档</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-zh 1.0.1 文档" href="Unitex-zh.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="unitex">
+<h1>安装Unitex<a class="headerlink" href="#unitex" title="永久链接至标题">¶</a></h1>
+<p>Unitex&nbsp;是一个多平台软件，它能在&nbsp;Windows、Linux 或&nbsp;MacOS
+下良好运行。这一章节描述了&nbsp;Unitex
+在这些操作系统下的安装和运行。这一章节也阐述了加入新语言和卸载的方法。</p>
+<div class="section" id="id1">
+<h2>证书<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>Unitex
+是一个开放的软件，也就是说这些工程的资源是由该软件分配的，而且每个人都能修改或再分配。Unitex
+工程的代码是遵循&nbsp;LPGL
+证书的(<a href="#id2"><span class="problematic" id="id3">:raw-latex:`\cite{LGPL}`</span></a>)，除了对常规表达的操作库&nbsp;TRE(<a href="#id4"><span class="problematic" id="id5">:raw-latex:`\cite{TRE}`</span></a>)，这遵循着证书&nbsp;“2
+Clause BSD” (比&nbsp;LPGL 证书更加宽松)，而&nbsp;LibYAML 库遵循的&nbsp;MIT
+证书也比&nbsp;LGPL 更宽松。 &nbsp;LGPL 证书比&nbsp;GPL
+宽松，因为它能在不开源的软件中使用&nbsp;LGPL
+代码。从用户们的角度两者没有区别，因为他们都能自由的使用和分配。</p>
+<p>&nbsp;Unitex 分配的语言学暑假都遵循&nbsp;LGPLLR 证书 (<a href="#id6"><span class="problematic" id="id7">:raw-latex:`\cite{LGPLLR}`</span></a>).</p>
+<p>GPL，LGPL 和&nbsp;LGPLLR 证书的完整文本都在用户手册的附件中。</p>
+</div>
+<div class="section" id="java">
+<h2>执行&nbsp;Java 的环境<a class="headerlink" href="#java" title="永久链接至标题">¶</a></h2>
+<p>Unitex 包含了由&nbsp;Java 语言编写的图形界面而外部程序由
+<em>C/C-.05em-.1em</em>。这种编程语言的混合使用使程序更迅速并能在多个操作系统下运行。</p>
+<p>为了使用图形界面，需要先准备一个虚拟机或&nbsp; JRE (Java 运行环境).</p>
+<p>在图形模式下运行，Unitex 需要1.6（或更高版本）的&nbsp;Java
+版本。如果你还是&nbsp;Java 的旧版本，Unitex 将你选择了你的工作语言后锁定。</p>
+<p>您可以随意下载的虚拟机操作系统从&nbsp;Sun Microsystems 的网站
+(<a href="#id8"><span class="problematic" id="id9">:raw-latex:`\cite{site-java}`</span></a>) : <a class="reference external" href="http://java.sun.com">http://java.sun.com</a>.</p>
+<p>如果你正在使用&nbsp;Linux 或&nbsp;MacOS 或如果你使用一个版本的&nbsp;Windows
+的管理做实个人账户的用户，你需要问你的系统管理员安装&nbsp;Java。</p>
+</div>
+<div class="section" id="windows">
+<h2>Windows 下安装<a class="headerlink" href="#windows" title="永久链接至标题">¶</a></h2>
+<p>下载文件的名字如下：</p>
+<p>解压缩文件 <code class="docutils literal"><span class="pre">Unitex3.1beta.zip</span></code> (或 <code class="docutils literal"><span class="pre">Unitex3.0.zip</span></code>) —
+您可以在以下地址下载这些文件: <a class="reference external" href="http://igm.univ-mlv.fr/~unitex">http://igm.univ-mlv.fr/~unitex</a> —
+在提前创建的&nbsp;<code class="docutils literal"><span class="pre">Unitex3.1beta</span></code> 目录(文件夹)中，
+在偏好目录&nbsp;<code class="docutils literal"><span class="pre">Program</span> <span class="pre">Files</span></code>，而它会调用系统目录中的&nbsp;Unitex。</p>
+<p>解压缩之后，目录 &nbsp;<code class="docutils literal"><span class="pre">Unitex3.1beta</span></code> (le répertoire système Unitex)
+包含了多个名为&nbsp;<code class="docutils literal"><span class="pre">App</span></code> 的子目录。
+最后一个目录包含了名为&nbsp;<code class="docutils literal"><span class="pre">Unitex.jar</span></code> 的文件。 该&nbsp;Java
+文件用于运行图形界面。您仔细双击该图表就能运行该软件。
+为了更方便地运行，建议您在桌面建立快捷方式。</p>
+</div>
+<div class="section" id="linux">
+<h2>Linux 安装<a class="headerlink" href="#linux" title="永久链接至标题">¶</a></h2>
+<p>在&nbsp;Linux 和&nbsp;MacOS
+系统上安装&nbsp;Unitex，要求管理员权限。您将文件&nbsp;<code class="docutils literal"><span class="pre">Unitex3.1beta.zip</span></code>
+解压缩于名为&nbsp;<code class="docutils literal"><span class="pre">Unitex</span></code> 的文件夹，通过以下命令：</p>
+<p><code class="docutils literal"><span class="pre">unzip</span> <span class="pre">Unitex3.1beta.zip</span> <span class="pre">-d</span> <span class="pre">Unitex</span></code></p>
+<p>该目录将会调用系统目录&nbsp;Unitex, 接着您在目录 &nbsp;<code class="docutils literal"><span class="pre">Unitex/Src/C++/build</span></code>
+中通过以下命令进行编译：</p>
+<p><code class="docutils literal"><span class="pre">安装</span></code></p>
+<p>如果是六十四位计算机：</p>
+<p><code class="docutils literal"><span class="pre">make</span> <span class="pre">install</span> <span class="pre">64BITS=yes</span></code> 然后在接下来的模型中创建一个别名在:</p>
+<p><code class="docutils literal"><span class="pre">alias</span> <span class="pre">unitex='cd</span> <span class="pre">/..../Unitex/App/</span> <span class="pre">;</span> <span class="pre">java</span> <span class="pre">-jar</span> <span class="pre">Unitex.jar'</span></code></p>
+</div>
+<div class="section" id="macos-x-unitex">
+<h2>MacOS X 系统安装&nbsp;Unitex<a class="headerlink" href="#macos-x-unitex" title="永久链接至标题">¶</a></h2>
+<p>[section-macos-install] 注：这个简短的教程将告诉你如何在&nbsp;Mac OS X 系统中
+安装和运行&nbsp;Unitex。 欢迎提出你的问题或对我们的评价和建议。 请联系:
+<a class="reference external" href="mailto:cedrick&#46;fairon&#37;&#52;&#48;uclouvain&#46;be">cedrick<span>&#46;</span>fairon<span>&#64;</span>uclouvain<span>&#46;</span>be</a></p>
+<p>Java 的 &nbsp;Oracle 正式版 适用于 &nbsp;MacOS X 10.7.3 (Lion) 至最新版本。
+查看&nbsp;Mac OS X 系统安装和使用&nbsp;Oracle Java 的基本配置及详细说明”
+于以下网页&nbsp; <a class="reference external" href="https://www.java.com/fr/download/faq/java_mac.xml">https://www.java.com/fr/download/faq/java_mac.xml</a></p>
+<p>适用于 &nbsp;MacOS X 10.7 至最新版本 的 &nbsp;Apple 的&nbsp;Java 结构， 详情见以下网页
+<a class="reference external" href="https://support.apple.com/kb/DL1572">https://support.apple.com/kb/DL1572</a>. 适用于&nbsp; MacOS X 10.6 的 &nbsp;Apple
+的结构， 详情见以下网页&nbsp; <a class="reference external" href="https://support.apple.com/kb/DL1573">https://support.apple.com/kb/DL1573</a>.</p>
+<p>Java 1.6 正式版 适用于&nbsp;MacOS X 10.5, 64-bit Intel (Core 2 Duo),
+但对于&nbsp;OS X 的更早版本(10.4 或更早)没有正式的解决方法, PowerPC 和&nbsp;32-bit
+Intel (Core Duo)。然而,如果你的系统是&nbsp;OS X 10.5（ MacOS 64-bit
+Intel）,只需有 &nbsp;JRE 1.6. Apple。唯一的问题是这个版本不能默认启动。 查看
+&nbsp;“Java 适用于 &nbsp;Mac OS X 10.5 Update 10”, 于以下网页
+&nbsp;<a class="reference external" href="https://support.apple.com/kb/DL1359">https://support.apple.com/kb/DL1359</a></p>
+<p><strong>如何查看处理器是三十二位还是六十四位?</strong></p>
+<p>Apple菜单中, 点击 “关于本机”。你将看到以下条目: &nbsp;“Processor : x.xx Ghz
+Intel Core Duo”, 您的处理器是&nbsp;32 bits。</p>
+<p>如果你看到：“Processeur: x.xx Ghz Intel Core 2 Duo”,
+或你的处理器是&nbsp;Intel(如Xeon) 的, 那么你的处理器是六十四位的。</p>
+<div class="section" id="apple-java-1-6-runtime">
+<h3>使用 &nbsp;Apple Java 1.6 runtime<a class="headerlink" href="#apple-java-1-6-runtime" title="永久链接至标题">¶</a></h3>
+<p>如果你使用 &nbsp;Mac OS X 10.5 (或更高版本) 于&nbsp;Intel 64 bits 处理器,
+你就能轻松地使用&nbsp;Java 1.6 d’Apple。 详细说明于以下网页
+<a class="reference external" href="https://support.apple.com/kb/DL1359">https://support.apple.com/kb/DL1359</a>.</p>
+<p>点击进入 &nbsp;Application -&gt; Utilities -&gt; Java Preferences 然后在&nbsp;“Java
+Applications” 列表中 找到&nbsp;“Java SE 6”。</p>
+<div class="section" id="id10">
+<h4>选项&nbsp;1：更改&nbsp;Java 应用程序的默认运行<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h4>
+<p>如果你不使用&nbsp;Java 1.5 应用程序，
+那么你可以按照个人使用习惯，在&nbsp;“Applications Java” 列表中将&nbsp;“Java SE 6”
+置顶。</p>
+</div>
+<div class="section" id="java1-6">
+<h4>选项&nbsp;2：创建一个别名运行&nbsp;Java1.6<a class="headerlink" href="#java1-6" title="永久链接至标题">¶</a></h4>
+<p>如果你不想修改&nbsp;Java 中的全局变量,你能创建一个别名。</p>
+<p><code class="docutils literal"><span class="pre">alias</span> <span class="pre">jre6=&quot;/System/Library/Frameworks/JavaVM.framework/Versions/</span></code>
+<code class="docutils literal"><span class="pre">1.6/Commands/java&quot;</span></code></p>
+<p><code class="docutils literal"><span class="pre">jre6</span> <span class="pre">-jar</span> <span class="pre">Unitex.jar</span></code></p>
+<p>然后从终端运行&nbsp;Unitex</p>
+</div>
+</div>
+<div class="section" id="mac-os">
+<h3>如何使&nbsp;Mac OS 中的所有文件可见<a class="headerlink" href="#mac-os" title="永久链接至标题">¶</a></h3>
+<p>查看 <a class="reference external" href="http://www.macworld.com/article/51830/2006/07/showallfinder.html">http://www.macworld.com/article/51830/2006/07/showallfinder.html</a>.</p>
+<p>或立即尝试... 输入:</p>
+<p><code class="docutils literal"><span class="pre">defaults</span> <span class="pre">write</span> <span class="pre">com.apple.Finder</span> <span class="pre">AppleShowAllFiles</span> <span class="pre">ON</span></code></p>
+<p>然后重新运行&nbsp;Finder:</p>
+<p><code class="docutils literal"><span class="pre">killall</span> <span class="pre">Finder</span></code></p>
+<div class="figure" id="id15">
+<a class="reference internal image-reference" href="_images/fig-mac6.png"><img alt="重新运行 &nbsp;Finder[fig-mac6]" src="_images/fig-mac6.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">重新运行 &nbsp;Finder[fig-mac6]</span></p>
+</div>
+<p>要返回原来的配置，需要输入：</p>
+<p><code class="docutils literal"><span class="pre">defaults</span> <span class="pre">write</span> <span class="pre">com.apple.Finder</span> <span class="pre">AppleShowAllFiles</span> <span class="pre">OFF</span></code></p>
+</div>
+</div>
+<div class="section" id="id11">
+<h2>第一次使用<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<p>如果您使用的是&nbsp;Windows，你需要选择一个工作主目录 &nbsp;。
+您可以在“信息&gt;首选项...&gt;目录”更改。要创建一个文件夹，点击文件夹图标
+（见图 [fig-creation-personal-directory]).</p>
+<p>如果您使用的是&nbsp;Linux 和&nbsp;Mac
+OS，该程序会自动创建一个个人工作目录，称为&nbsp;<code class="docutils literal"><span class="pre">/unitex</span></code>
+在目录<code class="docutils literal"><span class="pre">$HOME</span></code>.</p>
+<p>在个人工作目录，您将存储您的&nbsp;Unitex
+个人资料。您所使用的每种语言，程序会复制语言的树在你的工作目录中，除了字典。然后，您可以编辑，你需要不损坏的复制你的数据存放在&nbsp;Unitex
+系统目录系统数据。</p>
+<div class="figure" id="id16">
+<a class="reference internal image-reference" href="_images/fig1-1.png"><img alt="&nbsp;Windows 系统第一次使用" src="_images/fig1-1.png" style="width: 6.30000cm;" /></a>
+<p class="caption"><span class="caption-text">&nbsp;Windows 系统第一次使用</span></p>
+</div>
+<div class="figure" id="id17">
+<a class="reference internal image-reference" href="_images/fig1-2.png"><img alt="&nbsp;Linux 系统第一次使用" src="_images/fig1-2.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">&nbsp;Linux 系统第一次使用</span></p>
+</div>
+<div class="figure" id="id18">
+<a class="reference internal image-reference" href="_images/fig1-3.png"><img alt="个人工作目录的建立 [fig-creation-personal-directory]" src="_images/fig1-3.png" style="width: 13.00000cm;" /></a>
+<p class="caption"><span class="caption-text">个人工作目录的建立 [fig-creation-personal-directory]</span></p>
+</div>
+</div>
+<div class="section" id="id12">
+<h2>添加新的语言<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h2>
+<p>有两种方法来添加语言。如果你想添加一个新的语言到所有用户，你必须复制进&nbsp;Unitex
+系统语言目录,
+这需要有访问该目录的权利(你可能需要询问系统管理员).但是，如果是这语言有关的唯一用户，你可以在你的工作目录复制目录。
+您将能够在这语言工作而不提供给其他用户。</p>
+</div>
+<div class="section" id="id13">
+<h2>卸载<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h2>
+<p>不管是什么系统，你的工作，你只需删除&nbsp;<code class="docutils literal"><span class="pre">Unitex</span></code>
+目录所有的系统文件。在&nbsp;Windows 上，则必须删除快捷方式&nbsp;<code class="docutils literal"><span class="pre">Unitex.jar</span></code>
+如果您已创建了一个;同样在&nbsp;Linux 或&nbsp;MacOS 上，如果你已经创建了一个别名。</p>
+</div>
+<div class="section" id="id14">
+<h2>Unitex 开发<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h2>
+<p>如果你是一个程序员，那你可能感兴趣是&nbsp;Unitex 的&nbsp;C++
+代码来源的链接。为了推动这项工作，你就可以编译&nbsp;Unitex
+为包含除库&nbsp;<code class="docutils literal"><span class="pre">main</span></code>s 所有功能以外&nbsp;Unitex 功
+能的动态。<a class="reference external" href="http://docs.unitexgramlab.org/projects/unitex-library/fr/latest/">http://docs.unitexgramlab.org/projects/unitex-library/fr/latest/</a>页面包含有关库文档。</p>
+<p>Linux/MacOS 下, 输入:</p>
+<p><code class="docutils literal"><span class="pre">make</span> <span class="pre">LIBRARY=yes</span></code></p>
+<p>你会得到一个库命名为 &nbsp;<code class="docutils literal"><span class="pre">libunitex.so</span></code>. 如果你想制作的&nbsp;Windows DLL
+文件名为&nbsp;<code class="docutils literal"><span class="pre">unitex.dll</span></code>,请使用以下命令：</p>
+<p>Windows: <code class="docutils literal"><span class="pre">make</span> <span class="pre">SYSTEM=windows</span> <span class="pre">LIBRARY=yes</span></code></p>
+<p>带&nbsp;mingw32 的交叉编译: <code class="docutils literal"><span class="pre">make</span> <span class="pre">SYSTEM=mingw32</span> <span class="pre">LIBRARY=yes</span></code></p>
+<p>在所有情况下，你也将获得一个所谓的&nbsp;AA 程序&nbsp; <code class="docutils literal"><span class="pre">Test_lib</span></code>(<code class="docutils literal"><span class="pre">.exe</span></code>).
+如果一切行之有效，该程序应显示以下画面：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Expression</span> <span class="n">converted</span><span class="o">.</span>
+<span class="n">Reg2Grf</span> <span class="n">exit</span> <span class="n">code</span><span class="p">:</span> <span class="mi">0</span>
+
+<span class="c1">#Unigraph</span>
+<span class="n">SIZE</span> <span class="mi">1313</span> <span class="mi">950</span>
+<span class="n">FONT</span> <span class="n">Times</span> <span class="n">New</span> <span class="n">Roman</span><span class="p">:</span>  <span class="mi">12</span>
+<span class="n">OFONT</span> <span class="n">Times</span> <span class="n">New</span> <span class="n">Roman</span><span class="p">:</span><span class="n">B</span> <span class="mi">12</span>
+<span class="n">BCOLOR</span> <span class="mi">16777215</span>
+<span class="n">FCOLOR</span> <span class="mi">0</span>
+<span class="n">ACOLOR</span> <span class="mi">12632256</span>
+<span class="n">SCOLOR</span> <span class="mi">16711680</span>
+<span class="n">CCOLOR</span> <span class="mi">255</span>
+<span class="n">DBOXES</span> <span class="n">y</span>
+<span class="n">DFRAME</span> <span class="n">y</span>
+<span class="n">DDATE</span> <span class="n">y</span>
+<span class="n">DFILE</span> <span class="n">y</span>
+<span class="n">DDIR</span> <span class="n">y</span>
+<span class="n">DRIG</span> <span class="n">n</span>
+<span class="n">DRST</span> <span class="n">n</span>
+<span class="n">FITS</span> <span class="mi">100</span>
+<span class="n">PORIENT</span> <span class="n">L</span>
+<span class="c1">#</span>
+<span class="mi">7</span>
+<span class="s2">&quot;&lt;E&gt;&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">1</span> <span class="mi">5</span>
+<span class="s2">&quot;&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">0</span>
+<span class="s2">&quot;a&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">1</span> <span class="mi">6</span>
+<span class="s2">&quot;b&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">1</span> <span class="mi">4</span>
+<span class="s2">&quot;c&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">1</span> <span class="mi">6</span>
+<span class="s2">&quot;&lt;E&gt;&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span>
+<span class="s2">&quot;&lt;E&gt;&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">1</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-zh.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">安装Unitex</a><ul>
+<li><a class="reference internal" href="#id1">证书</a></li>
+<li><a class="reference internal" href="#java">执行&nbsp;Java 的环境</a></li>
+<li><a class="reference internal" href="#windows">Windows 下安装</a></li>
+<li><a class="reference internal" href="#linux">Linux 安装</a></li>
+<li><a class="reference internal" href="#macos-x-unitex">MacOS X 系统安装&nbsp;Unitex</a><ul>
+<li><a class="reference internal" href="#apple-java-1-6-runtime">使用 &nbsp;Apple Java 1.6 runtime</a><ul>
+<li><a class="reference internal" href="#id10">选项&nbsp;1：更改&nbsp;Java 应用程序的默认运行</a></li>
+<li><a class="reference internal" href="#java1-6">选项&nbsp;2：创建一个别名运行&nbsp;Java1.6</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mac-os">如何使&nbsp;Mac OS 中的所有文件可见</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id11">第一次使用</a></li>
+<li><a class="reference internal" href="#id12">添加新的语言</a></li>
+<li><a class="reference internal" href="#id13">卸载</a></li>
+<li><a class="reference internal" href="#id14">Unitex 开发</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-zh.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/01-installation_ZH_utf8.txt"
+            rel="nofollow">显示源代码</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>快速搜索</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/01-installation_ZH_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

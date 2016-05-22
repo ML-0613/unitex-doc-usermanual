@@ -1,0 +1,1620 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh_CN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>使用外部程序 &mdash; Unitex-zh 1.0.1 文档</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-zh 1.0.1 文档" href="Unitex-zh.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>使用外部程序<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>本章介绍了不同程序的使用，其中包括&nbsp;Unitex。这些程序可在&nbsp;<code class="docutils literal"><span class="pre">Unitex/App</span></code>
+目录中找到， 由接口自动启动（实际上， 启动&nbsp;<code class="docutils literal"><span class="pre">UnitexToolLogger</span></code>
+以显著减少下载的zip文件的大小）。点击
+“Info&gt;Console”查看已执行的命令。也可点击 “Info&gt;Help on
+commands”查看不同程序的操作（如图&nbsp;[fig-help]）。所有&nbsp;Unitex
+程序有&nbsp;<code class="docutils literal"><span class="pre">-h</span></code>/<code class="docutils literal"><span class="pre">--help</span></code> 所示操作。</p>
+<div class="figure" id="id63">
+<a class="reference internal image-reference" href="_images/fig11-1.png"><img alt="命令帮助[fig-help]" src="_images/fig11-1.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">命令帮助[fig-help]</span></p>
+</div>
+<p>注意:
+许多程序使用文本目录(<code class="docutils literal"><span class="pre">mon_texte_snt</span></code>)。此目录在文本正常化之后由图形界面创建。如果你使用命令行，你必须在程序标准化执行之前手动创建该目录。</p>
+<p>注意(2): 当一个参数包含空格，它需要在两边加
+引号，以防止它被视为多个参数。</p>
+<p>注意(3):许多程序使用一个&nbsp;Alphabet.txt
+文件。对于这些程序，也可省略该步骤。在这种情况下，一个默认字母定义被使用（见在源文件&nbsp;<code class="docutils literal"><span class="pre">Unicode.cpp</span></code>
+中的&nbsp;<code class="docutils literal"><span class="pre">u_is_letter</span></code>）。</p>
+<div class="section" id="id2">
+<h2>创建日志文件<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>[section-creating-log-files]</p>
+<div class="figure" id="id64">
+<a class="reference internal image-reference" href="_images/fig11-1a.png"><img alt="日志文件配置[fig-logging-config]" src="_images/fig11-1a.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">日志文件配置[fig-logging-config]</span></p>
+</div>
+<p>您可以创建外部程序启动的&nbsp;<code class="docutils literal"><span class="pre">log</span></code>
+文件。这些日志文件可以使用在调试或回归测试过程中。你只需要在偏好设置中启用此功能。你必须选择，所有的日志文件将存储在日志目录，选择“Produce
+log”。点击“Clear all logs”按钮将删除这个目录中的所有日志文
+件。然后，任何进一步的程序执行将产生位于&nbsp;log
+目录中的&nbsp;<code class="docutils literal"><span class="pre">unitex_log_XXX.ulp</span></code> 文件。 <code class="docutils literal"><span class="pre">XXX</span></code>
+代表在控制台中的日志编号（见下节）。</p>
+</div>
+<div class="section" id="id3">
+<h2>控制台<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>[section-console] 当&nbsp;Unitex
+启动外部程序时，调用命令行被存储在控制台中。查看点击“Info&gt;Console”。当命令没有发出任何错误消息，它显示一个绿色的图标。否则，该显示图标是一个红色三角形，你可以点击查看错误信息，如图&nbsp;[fig-console]所示。当出现错误信息非常快，你无法读取时，这是非常有效的。如果一个命令已被记录，其日志号显示在第二列。请注意，您可以用&nbsp;Ctrl+C
+导出控制台显示的所有命令。</p>
+<div class="figure" id="id65">
+<a class="reference internal image-reference" href="_images/fig11-2.png"><img alt="控制台[fig-console]" src="_images/fig11-2.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">控制台[fig-console]</span></p>
+</div>
+</div>
+<div class="section" id="unitex-jni">
+<h2>Unitex JNI<a class="headerlink" href="#unitex-jni" title="永久链接至标题">¶</a></h2>
+<p>[section-unitex-JNI]</p>
+<p>您可以使用&nbsp;Unitex 和&nbsp;JNI作为以下接口：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fr.umlv.unitex.jni.UnitexJni</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">java.io.</span><span class="o">*</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">fr.umlv.unitex.</span><span class="o">*</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>这将允许您加载的&nbsp;.bin，.fst2
+和字母文件，并保留在内存中持续。您使用&nbsp;loadPersistent* 创建的文件名。</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">persistentAlphabet</span> <span class="o">=</span> <span class="n">UnitexJni</span><span class="o">.</span><span class="n">loadPersistentAlphabet</span><span class="p">(</span><span class="s2">&quot;/.../unitex/French/Alphabet.txt&quot;</span><span class="p">);</span>
+<span class="n">String</span> <span class="n">persistentFst2</span> <span class="o">=</span> <span class="n">UnitexJni</span><span class="o">.</span><span class="n">loadPersistentFst2</span><span class="p">(</span><span class="s2">&quot;/.../unitex/French/Dela/fogg-r.fst2&quot;</span><span class="p">);</span>
+<span class="n">String</span> <span class="n">persistentDictionary</span> <span class="o">=</span> <span class="n">UnitexJni</span><span class="o">.</span><span class="n">loadPersistentDictionary</span><span class="p">(</span>
+        <span class="s2">&quot;/.../unitex/French/Dela/communesFR+.bin&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>文本文件编码设置<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>[section-text-file-encoding-parameters] 对于文本文件&nbsp;Unitex 使用&nbsp;Unicode
+见章节&nbsp;[unicode-encoding]。所有的程序，读取或写入文本文件共享相同的编码参数。允许的格式有&nbsp;utf16le-bom，
+utf16le-no-bom， utf16be-bom， utf16be-no-bom， utf8-bom，
+utf8-no-bom，对应&nbsp;Unicode 的&nbsp;Big-Endian，Little-Endian
+和&nbsp;UTF-8，有或无在文件的开头“Unicode字节顺序标记”。对于输入格式，您可以指定几个&nbsp;-bom
+编码用逗号隔开，但只有一个&nbsp;-no-BOM 编码。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-k=ENCODING</span></code>/<code class="docutils literal"><span class="pre">--input_encoding=ENCODING</span></code>:
+输入文本文件格式。可以包含多个值，用逗号分隔；</li>
+<li><code class="docutils literal"><span class="pre">-q=ENCODING</span></code>/<code class="docutils literal"><span class="pre">--output_encoding=ENCODING</span></code>: 输出文本文件格式。</li>
+</ul>
+<p>默认值为: <code class="docutils literal"><span class="pre">--input_encoding=utf16le-bom，utf16be-bom，utf8-bom</span></code>
+<code class="docutils literal"><span class="pre">--output_encoding=utf16le-bom</span></code>.</p>
+</div>
+<div class="section" id="krawu">
+<h2>构建KrAwu字典<a class="headerlink" href="#krawu" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">BuildKrMwuDic</span> <span class="pre">[OPTIONS]</span> <span class="pre">dic</span></code></p>
+<p>该程序从一个&nbsp;<code class="docutils literal"><span class="pre">dic</span></code> 表产生图表，来描述了每个复合词的每个分量。
+<strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">GRF</span></code>/<code class="docutils literal"><span class="pre">--output=GRF</span></code>: 产生文件 <code class="docutils literal"><span class="pre">.grf</span></code>；</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">DIR</span></code>/<code class="docutils literal"><span class="pre">--directory=DIR</span></code>:
+包含以产生基层形态学变型所需要的变位图形目录；</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>:使用的字母文件；</li>
+<li><code class="docutils literal"><span class="pre">-b</span> <span class="pre">BIN</span></code>/<code class="docutils literal"><span class="pre">--binary=BIN</span></code>: 使用简单类型&nbsp;<code class="docutils literal"><span class="pre">.bin</span></code> 的词典；</li>
+</ul>
+</div>
+<div class="section" id="cassys">
+<h2>Cassys<a class="headerlink" href="#cassys" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Cassys</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;snt&gt;</span></code></p>
+<p>该程序适用一个有序语法列表以一个文本和创建已发现事件的索引。 <strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: 字母文件；</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--transducer_dir=X</span></code>: 在目录 &nbsp;<code class="docutils literal"><span class="pre">X</span></code>
+采用一个译码器（对于每个译码器不用给完整路径； 注意 &nbsp;<code class="docutils literal"><span class="pre">X</span></code>
+必须反斜线结束；</li>
+<li><code class="docutils literal"><span class="pre">-w</span> <span class="pre">DIC/--morpho=DIC</span></code>: 表明&nbsp;<code class="docutils literal"><span class="pre">DIC</span></code> 是一个 &nbsp;<code class="docutils literal"><span class="pre">.bin</span></code>
+使用形态模式的字典。也可使用有&nbsp;<code class="docutils literal"><span class="pre">.bin</span></code> 的&nbsp;<code class="docutils literal"><span class="pre">-m</span> <span class="pre">XXX</span></code>
+q<code class="docutils literal"><span class="pre">.bin</span></code>。你可以用冒号来分隔许多 。 &nbsp;<code class="docutils literal"><span class="pre">.bin</span></code>。</li>
+<li><code class="docutils literal"><span class="pre">-l</span> <span class="pre">TRANSDUCERS_LIST</span></code>/<code class="docutils literal"><span class="pre">--transducers_list=TRANSDUCERS_LIST</span></code>:
+含有译码器的列表以及它们的应用方法的文件；</li>
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">transducer.fst2</span></code>/<code class="docutils literal"><span class="pre">--transducer_file=transducer.fst2</span></code>:
+使用译码器；</li>
+<li><code class="docutils literal"><span class="pre">-m</span> <span class="pre">output_policy</span></code>/<code class="docutils literal"><span class="pre">--transducer_policy=output_policy</span></code>:
+指定的译码器的应用程序模式；</li>
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--text=TXT</span></code>:文本文件进行修改，以扩展名&nbsp;<code class="docutils literal"><span class="pre">.snt</span></code>；</li>
+<li><code class="docutils literal"><span class="pre">-i</span></code>/<code class="docutils literal"><span class="pre">--in_place</span></code>: 意味着对每个译码器使用相同的 &nbsp;<code class="docutils literal"><span class="pre">csc/snt</span></code>
+目录；</li>
+<li><code class="docutils literal"><span class="pre">-d</span></code>/<code class="docutils literal"><span class="pre">--no_create_directory</span></code>: 意味着所有&nbsp;<code class="docutils literal"><span class="pre">snt/csc</span></code>
+目录已经存在，并不需要创建；</li>
+<li><code class="docutils literal"><span class="pre">-g</span> <span class="pre">minus</span></code>/<code class="docutils literal"><span class="pre">--negation_operator=minus</span></code>: 使用减号作为否定运算符 （
+Unitex 版本 2.0）；</li>
+<li><code class="docutils literal"><span class="pre">-g</span> <span class="pre">tilde</span></code>/<code class="docutils literal"><span class="pre">--negation_operator=tilde</span></code>:
+使用波浪号作为否定运算符（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-h</span></code>/<code class="docutils literal"><span class="pre">--help</span></code>: 显示帮助</li>
+</ul>
+<p>Cassys 使用一系列语法于文章，并保存匹配序列索引
+于文本目录下一个名为&nbsp;<code class="docutils literal"><span class="pre">concord.ind</span></code>
+的文件。目标文本文件必须是一个&nbsp;<code class="docutils literal"><span class="pre">\_snt/</span></code>
+文件。译码器列表文件，其中每一行包含路径到一个换能器，随后通过输出政策应用于该译码器的一个文件。</p>
+<p>除了一个列表，你还可以指定每个文件和应用程序方法通过一对变量来介绍列表&nbsp;<code class="docutils literal"><span class="pre">-s/--transducer\_file</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">-m/--transducer\_policy</span></code>。</p>
+<p>应用程序方法可以是合并或替换。</p>
+<p>该文件选项，字母选项和译码器列表文件选项是强制性的。</p>
+<p>作为定位程序，该程序将事件索引保存在&nbsp;<code class="docutils literal"><span class="pre">_snt/</span></code>
+目录下的&nbsp;<code class="docutils literal"><span class="pre">concord.ind</span></code> 文件，<code class="docutils literal"><span class="pre">concord.ind</span></code>
+文件产生的格式与章节&nbsp;[chap-file-formats]的一样，但是级联形式可由合并或替换形式图像组成，这种情况下&nbsp;#M
+或&nbsp;#R 在&nbsp;<code class="docutils literal"><span class="pre">concord.ind</span></code> 文件第一行没有意义。</p>
+</div>
+<div class="section" id="id5">
+<h2>检查字典<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">CheckDic</span> <span class="pre">[OPTIONS]</span> <span class="pre">dic</span></code></p>
+<p>该程序执行&nbsp;DELAS 或者&nbsp;DELAF 的字典格式的验证。<code class="docutils literal"><span class="pre">dic</span></code>
+对应于要被验证的字典的名称。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-f</span></code>/<code class="docutils literal"><span class="pre">--delaf</span></code>: 检查屈折字典；</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--delas</span></code>: 检查标准的字典；</li>
+<li><code class="docutils literal"><span class="pre">-r</span></code>/<code class="docutils literal"><span class="pre">--strict</span></code>: 严格的语法检查，对未受保护点和逗号检查；</li>
+<li><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--tolerate</span></code>: 允许无保护点和逗号（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no_space_warning</span></code>:允许语法/语义/屈折码中的空格；</li>
+<li><code class="docutils literal"><span class="pre">-p</span></code>/<code class="docutils literal"><span class="pre">--skip_path</span></code>:不显示词典的（对于在多个系统一致的日志文件有用）的完整路径；</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>:指定使用的字母文件。</li>
+</ul>
+<p>程序检查字典的行的语法。它还创建了词尾变化和规范化形式存在的所有字符列表，还创建了语法代码和语法的列表，以及使用的变位代码列表。验证的结果存储在一个称为&nbsp;<code class="docutils literal"><span class="pre">CHECK_DIC.TXT</span></code>
+的文件中。</p>
+<p>选择&nbsp;<code class="docutils literal"><span class="pre">--strict</span></code>
+选项用于检测词形变化形式的未受保护点的使用，或未受保护的逗号。<code class="docutils literal"><span class="pre">--tolerate</span></code>
+运行照常如在&nbsp;Unitex 2.0 版本和更低版本和无法检测到。</p>
+</div>
+<div class="section" id="id6">
+<h2>压缩<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<p>[section-compress] <code class="docutils literal"><span class="pre">Compress</span> <span class="pre">[OPTIONS]</span> <span class="pre">dictionary</span></code></p>
+<p><strong>选项:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">BIN</span></code>/<code class="docutils literal"><span class="pre">--output=BIN</span></code>:
+设置输出文件。默认情况下，一个&nbsp;<code class="docutils literal"><span class="pre">xxx.dic</span></code>
+文件将产生一个&nbsp;<code class="docutils literal"><span class="pre">xxx.bin</span></code> 文件；</li>
+<li><code class="docutils literal"><span class="pre">-f</span></code>/<code class="docutils literal"><span class="pre">--flip</span></code>:
+表明词形变化和规范形式应该在压缩字典交换。这个功能被用于构建逆词典所必需的程序&nbsp;<code class="docutils literal"><span class="pre">Reconstrucao</span></code>；</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--semitic</span></code>: 指示闪语压缩算法应该被使用。
+该选项设置闪语如阿拉伯语显著降低输出字典的大小。</li>
+<li><code class="docutils literal"><span class="pre">--v1</span></code>: 产生一个老式的&nbsp;<code class="docutils literal"><span class="pre">.bin</span></code> 文件；</li>
+<li><code class="docutils literal"><span class="pre">--v2</span></code>: 产生一个新式的&nbsp;.bin
+文件，具有更小的尺寸而且没有文件大小限制为&nbsp;16 MB（默认）。</li>
+</ul>
+<p>该程序占用一个&nbsp;DELAF 字典作为参数，并进行压缩。该 字典&nbsp;<code class="docutils literal"><span class="pre">dico.dic</span></code>
+的压缩产生两个文件：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">dico.bin</span></code>: 包含字典的变化形式的最小自动化二进制文件；</li>
+<li><code class="docutils literal"><span class="pre">dico.inf</span></code>:
+包含重建从在控制器中的词尾变化形式的字典行所需的压缩形式文本文件。</li>
+</ul>
+<p>有关这些文件格式的更多详细信息，请参见章节&nbsp;[chap-file-formats]。</p>
+</div>
+<div class="section" id="id7">
+<h2>一致性<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>[section-Concord] <code class="docutils literal"><span class="pre">Concord</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;index&gt;</span></code></p>
+<p>此程序采用由&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code>
+程序产生的一个协调索引文件，并产生一个索引。它也可以产生一个修改后的文本版本考虑到相关联事件的换能器的输出。下面是参数说明：</p>
+<p><strong>功能:</strong></p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-f</span> <span class="pre">FONT</span></code>/<code class="docutils literal"><span class="pre">--font=FONT</span></code>: 如果输出是一个&nbsp;HTML
+文件要使用的字体的名称；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--fontsize=N</span></code>: 输出是一个&nbsp;HTML
+文件使用的字体大小。如果输出是一个&nbsp;HTML
+文件的，那么字体参数是必需的；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--only_ambiguous</span></code>:只显示有不明确产出的相同事件，按照文本顺序。</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--only_matches</span></code>:
+此选项将迫使左右上下文为空。此外，如果与&nbsp;<code class="docutils literal"><span class="pre">-t/--text</span></code>
+使用，索引不会与周围已知序列匹配。</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-l</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--left=X</span></code>:事件（默认值为0）左侧的字符数。
+在泰语模式，这代表着无音调符号字符数。</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-r</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--right=X</span></code>:发生事件右侧的字符（泰语模式下非音调符号）的数量（默认值为&nbsp;0）。
+如果发生低于该值时，一行的索引完成到右边。如果发生高于该值（由右决定）时，它将被全部保存。</p>
+<p>注意: 对于 &nbsp;<code class="docutils literal"><span class="pre">--left</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">--right</span></code>， 你可以加入字符&nbsp;<code class="docutils literal"><span class="pre">s</span></code>
+在句子&nbsp;<code class="docutils literal"><span class="pre">{S}</span></code> 末端的第一个符号。 例如， 如果你把&nbsp;<code class="docutils literal"><span class="pre">40s</span></code>
+作为左边的值， 左边的文本字符数将最多&nbsp;40，如果&nbsp;<code class="docutils literal"><span class="pre">{S}</span></code>
+字符在之前，小于&nbsp;40。</p>
+</li>
+</ul>
+<p><strong>排序模式:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">--TO</span></code>: 按事件出现在文本的顺序（默认）；</li>
+<li><code class="docutils literal"><span class="pre">--LC</span></code>: 左侧上下文为主要分类，出现顺序作为第二分类；</li>
+<li><code class="docutils literal"><span class="pre">--LR</span></code>: 左边上下文， 右边上下文；</li>
+<li><code class="docutils literal"><span class="pre">--CL</span></code>: 事件出现，左边上下文；</li>
+<li><code class="docutils literal"><span class="pre">--CR</span></code>: 事件出现， 右边上下文；</li>
+<li><code class="docutils literal"><span class="pre">--RL</span></code>: 右边上下文， 左边上下文；</li>
+<li><code class="docutils literal"><span class="pre">--RC</span></code>: 右边上下文， 事件出现。</li>
+</ul>
+<p>有关排序模式的详细信息，请参见&nbsp;[section-display-occurrences]。</p>
+<p><strong>输出模式:</strong></p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-H</span></code>/<code class="docutils literal"><span class="pre">--html</span></code>: 生成一个在&nbsp;UTF-8 编码下&nbsp;HTML 格式的索引
+（默认下）；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--text</span></code>: 生成一个&nbsp;Unicode 文本格式的索引；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-g</span> <span class="pre">SCRIPT</span></code>/<code class="docutils literal"><span class="pre">--glossanet=SCRIPT</span></code>: 为&nbsp;GlossaNet 生成一个&nbsp;HTML
+格式的索引。 HTML 文件是&nbsp;UTF-8 编码；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-p</span> <span class="pre">SCRIPT</span></code>/<code class="docutils literal"><span class="pre">--script=SCRIPT</span></code>: 生成一个&nbsp;HTML
+格式的索引，连接由&nbsp;<code class="docutils literal"><span class="pre">SCRIPT</span></code>
+写的事件。例如，如果你使用&nbsp;<code class="docutils literal"><span class="pre">-phttp://www.google.com/search?q=</span></code>，
+您将得到一个&nbsp;HTML 格式的索引，事件连接的是访问&nbsp;Google 的地址；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-i</span></code>/<code class="docutils literal"><span class="pre">--index</span></code>: 产生一个一致性的索引，
+他包括事件（跟随语法的输出， 如果有的话），
+在文本文件事件位置之前，由字符表示；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-u</span></code> <code class="docutils literal"><span class="pre">offsets</span></code>/<code class="docutils literal"><span class="pre">--uima=offsets</span></code>:
+产生一个一致性相关原文本文件的索引， 在&nbsp;Unitex 的所有操作实施前。
+Offsets 是由&nbsp;Tokenize 在&nbsp;<code class="docutils literal"><span class="pre">--output_offsets</span></code> 操作下生成的文件</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-e</span></code>/<code class="docutils literal"><span class="pre">--xml</span></code>: 生成一个一致性的&nbsp;xml 索引；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-w</span></code>/<code class="docutils literal"><span class="pre">--xml-with-header</span></code>: 生成一个一致性的&nbsp;xml 索引和头文件；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--lemmatize</span></code>: 生成一个&nbsp;HTML 索引文件专门用于&nbsp;Unitex
+图形接口的&nbsp;lemmatisation 接口。</p>
+<p>注意: 命令操作&nbsp;-e 和&nbsp;-w接受&nbsp;offset 的两种文件，与&nbsp;-u 情况相同</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--PRLG=X,Y</span></code>: 产生一个文库&nbsp;PRLG 的索引，每行用&nbsp;Unxmlize
+的&nbsp;<code class="docutils literal"><span class="pre">--PRLG</span></code> 进行信息提取前缀。 X 是 &nbsp;Unxmlize
+的&nbsp;<code class="docutils literal"><span class="pre">--PRLG</span> <span class="pre">操作产生的文件，</span> <span class="pre">Y</span> <span class="pre">是\</span> <span class="pre">Tokenize</span> <span class="pre">的</span> <span class="pre">\</span> <span class="pre">\verb</span></code>–output_offsets+
+操作产生的文件。注意如果该操作与&nbsp;<code class="docutils literal"><span class="pre">-u</span></code> 一起使用，Y 的参数覆盖&nbsp;X
+的参数；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-A</span></code>/<code class="docutils literal"><span class="pre">--axis</span></code>:与&nbsp;<code class="docutils literal"><span class="pre">--index</span></code> 十分相似，
+但是数量代表了每个事件的中位字符。更多详细信息，见:raw-latex:<cite>cite{axis}</cite>；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-x</span></code>/<code class="docutils literal"><span class="pre">--xalign</span></code>: 另一个索引文件，被文本排列模块所使用。
+每一行是由&nbsp;3 个整数&nbsp;<span class="math">\(X\)</span> <span class="math">\(Y\)</span> <span class="math">\(Z\)</span>
+组成，之后的事件的内容。<span class="math">\(X\)</span> 是句子号码，从&nbsp;1
+开始。<span class="math">\(Y\)</span> 和&nbsp;<span class="math">\(Z\)</span>
+是在字符句子中一个事件开始和结束位置；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-m</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--merge=TXT</span></code>:
+表明程序应该产生一个修改版本的文本，并将其保存在名为&nbsp;<code class="docutils literal"><span class="pre">TXT</span></code>
+的文件（见&nbsp;&nbsp;[section-modifying-text]）。</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">T--export_csv</span></code>:
+产生具有制表分隔符的文件&nbsp;export.csv，文本顺序如下格式: A B C D E F，
+其中: A =文件的行数&nbsp;.csv B =句子的数量 C =&nbsp;PRLG 附注，如果存在 D
+=存在于文本的变位 E 原型，如果存在 F = 代码，如果有
+运行需要再次调用文件&nbsp;concord.ind， 该文件既没有标记&nbsp;S 也不包括空格。</p>
+</li>
+</ul>
+<p><strong>其他功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">DIR</span></code>/<code class="docutils literal"><span class="pre">--directory=DIR</span></code>:指示程序它不能正常工作程序，在同一个目录&nbsp;<code class="docutils literal"><span class="pre">&lt;index&gt;</span></code>
+但在&nbsp;<code class="docutils literal"><span class="pre">DIR</span></code> 可行；</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: 用于分类排序的字母文件；</li>
+<li><code class="docutils literal"><span class="pre">-T</span></code>/<code class="docutils literal"><span class="pre">--thai</span></code>: 用于泰文词汇索引的选项。</li>
+</ul>
+<p>如果词汇配合是文本模式创建的，该程序的应用的结果是一个名为&nbsp;<code class="docutils literal"><span class="pre">concord.txt</span></code>
+的文件，如果该程序建立可编辑的文本，那么是一个文件 &nbsp;<code class="docutils literal"><span class="pre">concord.html</span></code>
+用于模式&nbsp;<code class="docutils literal"><span class="pre">--html</span></code>， <code class="docutils literal"><span class="pre">--glossanet</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">--script</span></code>，和另一个由用户定义的文本文件。</p>
+<p>在&nbsp;<code class="docutils literal"><span class="pre">--html</span></code> 模式下，
+事件被编码一个超文链接。该链接的附注是&nbsp;<code class="docutils literal"><span class="pre">&lt;a</span> <span class="pre">href=&quot;X</span> <span class="pre">Y</span> <span class="pre">Z&quot;&gt;</span></code>
+形式的。在文件&nbsp;<code class="docutils literal"><span class="pre">text_name.snt</span></code> 中，<code class="docutils literal"><span class="pre">X</span></code> 和 &nbsp;<code class="docutils literal"><span class="pre">Y</span></code>
+代表了字符事件的开端和结束。<code class="docutils literal"><span class="pre">Z</span></code> 代表了出现事件的句子号码。</p>
+</div>
+<div class="section" id="concordiff">
+<h2>ConcorDiff<a class="headerlink" href="#concordiff" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">ConcorDiff</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;concor1&gt;</span> <span class="pre">&lt;concor2&gt;</span></code></p>
+<p>该程序需要两个文件的一致性，并产生一个&nbsp;HTML 页面，显示
+他们的区别（见&nbsp;[section-comparing-concordances]，页）。
+一致性文件&nbsp;<code class="docutils literal"><span class="pre">&lt;concor1&gt;</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">&lt;concor2&gt;</span></code>
+必须有绝对的文件名，因为&nbsp;Unitex 使用这些名称推断哪个已经过计算。</p>
+<p><strong>功能选项:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--out=X</span></code>: 输出&nbsp;HTML 页面；</li>
+<li><code class="docutils literal"><span class="pre">-f</span> <span class="pre">FONT</span></code>/<code class="docutils literal"><span class="pre">--font=FONT</span></code>:在输出&nbsp;HTML 页面中使用的字体；</li>
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--size=N</span></code>:在输出&nbsp;HTML 页面中使用的字体大小；</li>
+<li><code class="docutils literal"><span class="pre">-d/--diff_only</span></code>: 不显示相同的序列；</li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h2>转换<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Convert</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;text_1&gt;</span> <span class="pre">[&lt;text_2&gt;</span> <span class="pre">&lt;text_3&gt;</span> <span class="pre">...]</span></code></p>
+<p>该程序用于转码文本文件。</p>
+<p><strong>功能选项:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--src=X</span></code>: 输入编码；</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--dest=X</span></code>: 输出编码 （默认 = &nbsp;<code class="docutils literal"><span class="pre">LITTLE-ENDIAN</span></code>）；</li>
+</ul>
+<p><strong>音译选项（仅适用于阿拉伯语）:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-F</span></code>/<code class="docutils literal"><span class="pre">--delaf</span></code>:输入是&nbsp;DELAF，我们只直译词尾变位形式和原型；</li>
+<li><code class="docutils literal"><span class="pre">-S</span></code>/<code class="docutils literal"><span class="pre">--delas</span></code>: 输入是&nbsp;DELAS，我们只直译原型。</li>
+</ul>
+<p><strong>输出功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-r</span></code>/<code class="docutils literal"><span class="pre">--replace</span></code>: 输入文件将被覆盖（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">file</span></code>/<code class="docutils literal"><span class="pre">--output=file</span></code>: 目标文件名（只有一个文件进行转换）；</li>
+<li><code class="docutils literal"><span class="pre">--ps=PFX</span></code>: 输入文件用&nbsp;<code class="docutils literal"><span class="pre">PFX</span></code> 前缀重命名(<code class="docutils literal"><span class="pre">toto.txt</span></code>
+<span class="math">\(\Rightarrow\)</span> <code class="docutils literal"><span class="pre">PFXtoto.txt</span></code>)；</li>
+<li><code class="docutils literal"><span class="pre">--pd=PFX</span></code>: 目标文件用&nbsp;<code class="docutils literal"><span class="pre">PFX</span></code> 前缀重命名；</li>
+<li><code class="docutils literal"><span class="pre">--ss=SFX</span></code>: 输入文件用&nbsp;<code class="docutils literal"><span class="pre">SFX</span></code> 后缀重命名； (<code class="docutils literal"><span class="pre">toto.txt</span></code>
+<span class="math">\(\Rightarrow\)</span> <code class="docutils literal"><span class="pre">totoSFX.txt</span></code>)；</li>
+<li><code class="docutils literal"><span class="pre">--sd=SFX</span></code>: 目标文件用；<code class="docutils literal"><span class="pre">SFX</span></code> 后缀重命名。</li>
+</ul>
+<p><strong>功能 HTML:</strong></p>
+<p><code class="docutils literal"><span class="pre">Convert</span></code> 提供用于&nbsp;HTML
+文件的一些特殊的功能。您可以使用以下功能的组合:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">--dnc</span></code> (Decode Normal Chars): 字符串像&nbsp;<code class="docutils literal"><span class="pre">&amp;eacute;</span></code> <code class="docutils literal"><span class="pre">&amp;#120;</span></code>
+和 &nbsp;<code class="docutils literal"><span class="pre">&amp;#xF8;</span></code> 将被解码为单个等效&nbsp;Unicode 字符，除非它表示 一个&nbsp;HTML
+控制字符；</li>
+<li><code class="docutils literal"><span class="pre">--dcc</span></code> (Decode Control Chars): <code class="docutils literal"><span class="pre">&amp;lt;</span></code> <code class="docutils literal"><span class="pre">&amp;gt;</span></code> <code class="docutils literal"><span class="pre">&amp;amp;</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">&amp;quot;</span></code>将被解码为&nbsp;<code class="docutils literal"><span class="pre">&lt;</span></code><code class="docutils literal"><span class="pre">&gt;</span></code><code class="docutils literal"><span class="pre">&amp;</span></code>
+和引号（同为十进制和十六进制表示）；</li>
+<li><code class="docutils literal"><span class="pre">--eac</span></code> (Encode All Chars):未由输出编码支持的每个字符将被编码为像
+&nbsp;<code class="docutils literal"><span class="pre">&amp;#457;</span></code> 的字符串</li>
+<li><code class="docutils literal"><span class="pre">--ecc</span></code> (Encode Control Chars): <code class="docutils literal"><span class="pre">&lt;</span></code> ，<code class="docutils literal"><span class="pre">&gt;</span></code>， <code class="docutils literal"><span class="pre">&amp;</span></code> 和引号被
+&nbsp;<code class="docutils literal"><span class="pre">&amp;lt;</span></code> <code class="docutils literal"><span class="pre">&amp;gt;</span></code> <code class="docutils literal"><span class="pre">&amp;amp;</span></code> 和 &nbsp;<code class="docutils literal"><span class="pre">&amp;quot;</span></code>编码。</li>
+</ul>
+<p>所有的&nbsp;HTML 选项默认设置为停用。</p>
+<p><strong>其他功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-m</span></code>/<code class="docutils literal"><span class="pre">--main-names</span></code>: 打印编码主要名称的列表；</li>
+<li><code class="docutils literal"><span class="pre">-a</span></code>/<code class="docutils literal"><span class="pre">--aliases</span></code>: 打印编码别名列表；</li>
+<li><code class="docutils literal"><span class="pre">-A</span></code>/<code class="docutils literal"><span class="pre">--all-infos</span></code>: 打印所有的编码相关信息；</li>
+<li><code class="docutils literal"><span class="pre">-i</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--info=X</span></code>: 打印所有关于编码&nbsp;X 上的信息。</li>
+</ul>
+<p>该编码可以采取以下列表的值（非详尽，见下文）:</p>
+<p><code class="docutils literal"><span class="pre">FRENCH</span></code></p>
+<p><code class="docutils literal"><span class="pre">ENGLISH</span></code></p>
+<p><code class="docutils literal"><span class="pre">GREEK</span></code></p>
+<p><code class="docutils literal"><span class="pre">THAI</span></code></p>
+<p><code class="docutils literal"><span class="pre">CZECH</span></code></p>
+<p><code class="docutils literal"><span class="pre">GERMAN</span></code></p>
+<p><code class="docutils literal"><span class="pre">SPANISH</span></code></p>
+<p><code class="docutils literal"><span class="pre">PORTUGUESE</span></code></p>
+<p><code class="docutils literal"><span class="pre">ITALIAN</span></code></p>
+<p><code class="docutils literal"><span class="pre">NORWEGIAN</span></code></p>
+<p><code class="docutils literal"><span class="pre">LATIN</span></code> (default latin code page)</p>
+<p><code class="docutils literal"><span class="pre">windows-1252</span></code>: Microsoft Windows 1252 - Latin I (Western Europe &amp;
+USA)</p>
+<p><code class="docutils literal"><span class="pre">windows-1250</span></code>: Microsoft Windows 1250 - Central Europe</p>
+<p><code class="docutils literal"><span class="pre">windows-1257</span></code>: Microsoft Windows 1257 - Baltic</p>
+<p><code class="docutils literal"><span class="pre">windows-1251</span></code>: Microsoft Windows 1251 - Cyrillic</p>
+<p><code class="docutils literal"><span class="pre">windows-1254</span></code>: Microsoft Windows 1254 - Turkish</p>
+<p><code class="docutils literal"><span class="pre">windows-1258</span></code>: Microsoft Windows 1258 - Viet Nam</p>
+<p><a href="#id9"><span class="problematic" id="id10">``</span></a>iso-8859-1  <a href="#id11"><span class="problematic" id="id12">``</span></a>: ISO 8859-1 - Latin 1 (Europe de l’ouest &amp; USA)</p>
+<p><a href="#id13"><span class="problematic" id="id14">``</span></a>iso-8859-15 <a href="#id15"><span class="problematic" id="id16">``</span></a>: ISO 8859-15 - Latin 9 (Western Europe &amp; USA)</p>
+<p><a href="#id17"><span class="problematic" id="id18">``</span></a>iso-8859-2  <a href="#id19"><span class="problematic" id="id20">``</span></a>: ISO 8859-2 - Latin 2 (Eastern and Central Europe)</p>
+<p><a href="#id21"><span class="problematic" id="id22">``</span></a>iso-8859-3  <a href="#id23"><span class="problematic" id="id24">``</span></a>: ISO 8859-3 - Latin 3 (Southern Europe)</p>
+<p><a href="#id25"><span class="problematic" id="id26">``</span></a>iso-8859-4  <a href="#id27"><span class="problematic" id="id28">``</span></a>: ISO 8859-4 - Latin 4 (Northern Europe)</p>
+<p><a href="#id29"><span class="problematic" id="id30">``</span></a>iso-8859-5  <a href="#id31"><span class="problematic" id="id32">``</span></a>: ISO 8859-5 - Cyrillic</p>
+<p><a href="#id33"><span class="problematic" id="id34">``</span></a>iso-8859-7  <a href="#id35"><span class="problematic" id="id36">``</span></a>: ISO 8859-7 - Greek</p>
+<p><a href="#id37"><span class="problematic" id="id38">``</span></a>iso-8859-9  <a href="#id39"><span class="problematic" id="id40">``</span></a>: ISO 8859-9 - Latin 5 (Turkish)</p>
+<p><a href="#id41"><span class="problematic" id="id42">``</span></a>iso-8859-10 <a href="#id43"><span class="problematic" id="id44">``</span></a>: ISO 8859-10 - Latin 6 (Nordic)</p>
+<p><a href="#id45"><span class="problematic" id="id46">``</span></a>next-step   <a href="#id47"><span class="problematic" id="id48">``</span></a>: NextStep code page</p>
+<p><code class="docutils literal"><span class="pre">LITTLE-ENDIAN</span></code></p>
+<p><code class="docutils literal"><span class="pre">BIG-ENDIAN</span></code></p>
+<p><code class="docutils literal"><span class="pre">UTF8</span></code></p>
+</div>
+<div class="section" id="dico">
+<h2>Dico<a class="headerlink" href="#dico" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Dico</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;dic_1&gt;</span> <span class="pre">[&lt;dic_2&gt;</span> <span class="pre">&lt;dic_3&gt;...]</span></code></p>
+<p>该程序将应用字典于一个文本。<code class="docutils literal"><span class="pre">Tokenize</span></code>
+程序必须将文本分割成词汇单元。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--text=TXT</span></code>: <code class="docutils literal"><span class="pre">.snt</span></code> 文本文件的完整名称；</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: 使用的字母文件；</li>
+<li><code class="docutils literal"><span class="pre">-m</span> <span class="pre">DICS</span></code>/<code class="docutils literal"><span class="pre">--morpho=DICS</span></code>:该选项参数指示哪些形态学模式字典是要使用的，如果需要的话通过一些&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code>
+字典。 <code class="docutils literal"><span class="pre">DICS</span></code> 代表用分号分隔的&nbsp;<code class="docutils literal"><span class="pre">.bin</span></code> 文件（全路径）的列表；</li>
+<li><code class="docutils literal"><span class="pre">-K</span></code>/<code class="docutils literal"><span class="pre">--korean</span></code>: 指示&nbsp;<code class="docutils literal"><span class="pre">Dico</span></code> 适用于韩语；</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--semitic</span></code>:
+指示&nbsp;<code class="docutils literal"><span class="pre">Dico</span></code>，在闪族语环境下运行（在&nbsp;<code class="docutils literal"><span class="pre">Dico</span></code>
+需要压缩字典的情况下需要）；</li>
+<li><code class="docutils literal"><span class="pre">-u</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--arabic_rules=X</span></code>:规定了阿拉伯语排版规则配置文件。</li>
+<li><code class="docutils literal"><span class="pre">r</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--raw=X</span></code>: 表明&nbsp;<code class="docutils literal"><span class="pre">Dico</span></code>
+应只生产一个含有简单和复合词输出文件&nbsp;X，而不需要一个文本目录。如果&nbsp;X被忽略了，结果显示在标准输出。</li>
+</ul>
+<p><code class="docutils literal"><span class="pre">&lt;dic_i&gt;</span></code> 表示字典的路径和名称。这本字典必须是&nbsp;.<code class="docutils literal"><span class="pre">.bin</span></code>
+压缩格式（由&nbsp;<code class="docutils literal"><span class="pre">Compress</span></code> 程序获得），或&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code>
+格式的图像字典（见章节&nbsp;[section-applying-dictionaries]， 页）。
+可以给该字典优先权。详细内容请参见&nbsp;[section-dictionary-priorities]。</p>
+<p>程序&nbsp;<code class="docutils literal"><span class="pre">Dico</span></code> 生成以下文件，并在文本目录保存它们：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">dlf</span></code>: 文本中简单词汇的字典；</li>
+<li><code class="docutils literal"><span class="pre">dlc</span></code>: 文本中复合词汇的字典；</li>
+<li><code class="docutils literal"><span class="pre">err</span></code>: 文本中未知词汇的列表；</li>
+<li><code class="docutils literal"><span class="pre">tags_err</span></code>:未被文件&nbsp;<code class="docutils literal"><span class="pre">tags.ind</span></code> 识别的简单未知词汇；</li>
+<li><code class="docutils literal"><span class="pre">tags.ind</span></code> : 插入序列于自动机 （见章节
+&nbsp;[section-dictionary-graphs]， 页数 &nbsp;）；</li>
+<li><code class="docutils literal"><span class="pre">stat_dic.n</span></code>:包含文本中简单，复合词和未知词汇数量的文件。</li>
+</ul>
+<p>注：文件&nbsp;<code class="docutils literal"><span class="pre">dlf</span></code>， <code class="docutils literal"><span class="pre">dlc</span></code>， <code class="docutils literal"><span class="pre">err</span></code> 和 &nbsp;<code class="docutils literal"><span class="pre">tags_err</span></code>
+不排序。使用程序&nbsp;<code class="docutils literal"><span class="pre">SortTxt</span></code> 对它们进行排序。</p>
+</div>
+<div class="section" id="id49">
+<h2>转储偏移<a class="headerlink" href="#id49" title="永久链接至标题">¶</a></h2>
+<p>[section-DumpOffsets] <strong>用法:</strong> <code class="docutils literal"><span class="pre">DumpOffsets</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;txt&gt;:</span> <span class="pre">fichier</span> <span class="pre">d'offsets</span> <span class="pre">d'origine</span></code></p>
+<p>该程序允许学习和使用偏移量对应的文件，由一些Unitex工具操控，如&nbsp;Unxmlize，
+Normalize， Fst2Txt， Tokenize， Concord 和 GrfTest。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--old=X</span></code>: 旧文件名称</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--new=X</span></code>: 新文件名称</li>
+<li><code class="docutils literal"><span class="pre">-p</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--output=X</span></code>: 输出文件的名称</li>
+<li><code class="docutils literal"><span class="pre">-f</span></code>/<code class="docutils literal"><span class="pre">--full</span></code>: 加入常用的文本</li>
+<li><code class="docutils literal"><span class="pre">-q</span></code>/<code class="docutils literal"><span class="pre">--quiet</span></code>:不显示消息</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--no_escape_sequence</span></code>: 不要忽略文本序列</li>
+<li><code class="docutils literal"><span class="pre">-h</span></code>/<code class="docutils literal"><span class="pre">--help</span></code>: 帮助</li>
+</ul>
+<p>例子:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexToolLogger</span> <span class="n">Normalize</span> <span class="o">-</span><span class="n">r</span> <span class="o">.</span>\<span class="n">resource</span>\<span class="n">Norm</span><span class="o">.</span><span class="n">txt</span> <span class="o">.</span>\<span class="n">work</span>\<span class="n">text_file</span><span class="o">.</span><span class="n">txt</span>
+        <span class="o">--</span><span class="n">output_offsets</span> <span class="o">.</span>\<span class="n">work</span>\<span class="n">text_file_offset</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">UnitexToolLogger</span> <span class="n">DumpOffsets</span> <span class="o">-</span><span class="n">o</span> <span class="o">.</span>\<span class="n">work</span>\<span class="n">text_file_offset</span><span class="o">.</span><span class="n">txt</span> <span class="o">-</span><span class="n">n</span> <span class="o">.</span>\<span class="n">work</span>\<span class="n">text_file_offset</span><span class="o">.</span><span class="n">snt</span>
+       <span class="o">-</span><span class="n">p</span> <span class="o">.</span>\<span class="n">work</span>\<span class="n">dump</span>\<span class="n">dump_offsets</span><span class="o">.</span><span class="n">txt</span> <span class="o">.</span>\<span class="n">work</span>\<span class="n">text_file_offset</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p><strong>其他用途:</strong> <code class="docutils literal"><span class="pre">DumpOffsets</span> <span class="pre">[-m/--merge]</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;txt&gt;:</span> <span class="pre">偏移原始文件</span></code></p>
+<p>通过两个连续的文本修改而产生的两个偏移文件合并。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--old=X</span></code>: 旧文件名称</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--output=X</span></code>: 合并偏移文件名称</li>
+</ul>
+<p><strong>其他用途:</strong>
+<code class="docutils literal"><span class="pre">DumpOffsets</span> <span class="pre">[-v/--convert_modified_to_common]</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;txt&gt;:</span> <span class="pre">偏移原始文件</span></code></p>
+<p>创建偏移文件，该文件列出原始的和修改过的文件之间的共同字符串的偏移量。必须提供至少一个尺寸。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--old_size=N</span></code>: 原始文件的大小（以字符计算）</li>
+<li><code class="docutils literal"><span class="pre">-S</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--new_size=N</span></code>: 修改后的文件大小（以字符计算）</li>
+<li><code class="docutils literal"><span class="pre">-p</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--output=X</span></code>: 常用偏移文件的名称</li>
+<li><code class="docutils literal"><span class="pre">-h</span></code>/<code class="docutils literal"><span class="pre">--help</span></code>: 帮助</li>
+</ul>
+<p><strong>其他用途:</strong>
+<code class="docutils literal"><span class="pre">DumpOffsets</span> <span class="pre">[-M/--convert_modified_to_common]</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;txt&gt;:</span> <span class="pre">偏移原始文件</span></code></p>
+<p>从原来的和修改过的文件之间的共同字符串的偏移量创建一个标准的偏移编辑文件。必须提供两种大小。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--old_size=N</span></code>: 原始文件的大小（以字符计算）</li>
+<li><code class="docutils literal"><span class="pre">-S</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--new_size=N</span></code>: 修改后的文件大小（以字符计算）</li>
+<li><code class="docutils literal"><span class="pre">-p</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--output=X</span></code>: 常用偏移文件的名称</li>
+<li><code class="docutils literal"><span class="pre">-h</span></code>/<code class="docutils literal"><span class="pre">--help</span></code>: 帮助</li>
+</ul>
+<p><strong>其他用途:</strong> <code class="docutils literal"><span class="pre">DumpOffsets</span> <span class="pre">-o</span> <span class="pre">&lt;list_of_position_file_to_read.txt&gt;</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;list_of_position_file_to_read.txt&gt;</span></code>是在每行只有一个号码（一个位置）的文本文件。
+这里使用偏移文件转换一个位置列表。如果在这个位置上的字符在新文件中，所创建的文件每一行中包含后接一个&nbsp;+
+的新位置，如果该字符被删除，后接&nbsp;-。</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-p</span> <span class="pre">&lt;list_to_create&gt;</span> <span class="pre">-T</span> <span class="pre">&lt;offset_file_to_read&gt;</span></code></li>
+</ul>
+<p>使用&nbsp;<code class="docutils literal"><span class="pre">-t</span></code> 代替&nbsp;<code class="docutils literal"><span class="pre">-T</span></code> 会做反向翻译。</p>
+</div>
+<div class="section" id="id50">
+<h2>转储偏移<a class="headerlink" href="#id50" title="永久链接至标题">¶</a></h2>
+<p>[section-DumpOffsets]</p>
+<p>该程序允许学习和使用偏移量对应的文件，由一些&nbsp;Unitex
+工具操控，如&nbsp;Unxmlize， Normalize， Fst2Txt， Tokenize， Concord 和
+GrfTest。</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DumpOffsets</span> <span class="o">--</span><span class="n">merge</span> <span class="o">-</span><span class="n">o</span> <span class="o">&lt;</span><span class="n">fichier_offsets1</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">fichier_offsets2</span><span class="o">&gt;</span>
+  <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">fichier_offset12</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>起始， 文件&nbsp;offsets1 （章节&nbsp;[subsection-offsets-diff]， 页数
+&nbsp;）包含&nbsp;A，B 版本文件之间的对应偏移，文件&nbsp;offset2 包含&nbsp;B，C
+版本文件直接的对应偏移， 文件&nbsp;fichier_offset12 最终结果将是&nbsp;A，B
+版本文件之间。</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DumpOffsets</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="o">-</span><span class="n">o</span> <span class="o">&lt;</span><span class="n">fichier_version1</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="n">fichier_Version2</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">fichier_offset</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">fichier_dump</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-f/--full</span></code>: 包括更完整的信息</li>
+</ul>
+<p>起始， 文件&nbsp;fichier_offset 包含了&nbsp;fichier_version1
+和&nbsp;fichier_version2 之间的对应偏移。结尾，文本文件&nbsp;&lt;fichier_dump&gt;
+包含两个文件的序列比较并检查它们的一致性。此文件是阅读手册，以便于学习偏移文件的内容。</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DumpOffsets</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="o">--</span><span class="n">convert_modified_to_common</span>
+  <span class="o">&lt;</span><span class="n">fichier_offset_différence</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">fichier_offset_zone_commune</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N/--old_size=N</span></code>: 原始文件的大小（以字符计算）</li>
+<li><code class="docutils literal"><span class="pre">-S</span> <span class="pre">N/--new_size=N</span></code>: 修改后的文件大小（以字符计算）</li>
+</ul>
+<p>必须指定两种尺寸之一。UTF16BE_BOM
+编码格式的文件，尺寸为字节，我们先减去&nbsp;BOM 签名的两个字节，然后除以&nbsp;2
+因为每个字符占两个字节。 在&nbsp;UTF8 格式，一致性不是立即的。</p>
+<p>将指示删除的字符的偏移文件（由&nbsp;Unitex
+其他工具提供）转换为，指示相同字符的地方。
+（见章节&nbsp;[subsection-offsets-common]）。</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DumpOffsets</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="o">--</span><span class="n">convert_common_to_modified</span>
+  <span class="o">&lt;</span><span class="n">fichier_offset_zone_commune</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">p</span> <span class="o">&lt;</span><span class="n">fichier_offset_différence</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N/--old\_size=N</span></code>: 原始文件的大小（以字符计算）</li>
+<li><code class="docutils literal"><span class="pre">-S</span> <span class="pre">N/--new\_size=N</span></code>: 修改后的文件大小（以字符计算）</li>
+</ul>
+<p>必须指定两种尺寸。</p>
+<p>将指示相同字符的地方的偏移文件转换为指示删除字符的文件。</p>
+</div>
+<div class="section" id="elag">
+<h2>Elag<a class="headerlink" href="#elag" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Elag</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;tfst&gt;</span></code></p>
+<p>该程序需要使用&nbsp;<code class="docutils literal"><span class="pre">.tfst</span></code>
+文本自动&nbsp;<code class="docutils literal"><span class="pre">&lt;tfst&gt;</span></code>，并让其适用于歧义去除规则。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-l</span> <span class="pre">LANG/--language=LANG</span></code>: 文本语言配置文件&nbsp;ELAG</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">RULES/--rules=RULES</span></code>: <code class="docutils literal"><span class="pre">.rul</span></code> 格式的规则文件；</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT/--output=OUT</span></code>: 输出文本自动机。</li>
+</ul>
+</div>
+<div class="section" id="elagcomp">
+<h2>ElagComp<a class="headerlink" href="#elagcomp" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">ElagComp</span> <span class="pre">[OPTIONS]</span></code></p>
+<p>该程序编译名为&nbsp;<code class="docutils literal"><span class="pre">GRAMMAR</span></code> 的语法&nbsp;ELAG，或在&nbsp;<code class="docutils literal"><span class="pre">RULES</span></code>
+文件中指定的所有语法。其结果存储在将由&nbsp;<code class="docutils literal"><span class="pre">Elag</span></code> 程序使用的&nbsp;<code class="docutils literal"><span class="pre">OUT</span></code>
+文件。 <strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">RULES</span></code>/<code class="docutils literal"><span class="pre">--rules=RULES</span></code>: 列出&nbsp;ELAG 语法的文件；</li>
+<li><code class="docutils literal"><span class="pre">-g</span> <span class="pre">GRAMMAR</span></code>/<code class="docutils literal"><span class="pre">--grammar=GRAMMAR</span></code>: 一个给出的&nbsp;ELAG 语法；</li>
+<li><code class="docutils literal"><span class="pre">-l</span> <span class="pre">LANG</span></code>/<code class="docutils literal"><span class="pre">--language=LANG</span></code>: 对相关语言的&nbsp;ELAG 配置文件；</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>:
+输出文件。默认情况下，输出文件都遵循&nbsp;<code class="docutils literal"><span class="pre">RULES</span></code>，除了扩展名&nbsp;<code class="docutils literal"><span class="pre">.rul</span></code>。</li>
+</ul>
+</div>
+<div class="section" id="evamb">
+<h2>Evamb<a class="headerlink" href="#evamb" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Evamb</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;tfst&gt;</span></code></p>
+<p>该程序对所有的文本自动计算&nbsp;<code class="docutils literal"><span class="pre">&lt;tfst&gt;</span></code>，或者只是&nbsp;<code class="docutils literal"><span class="pre">N</span></code>
+指定的句子计算平均歧义率。计算的结果显示在标准输出。文本自动机不被该程序修改。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: 可选文件名；</li>
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--sentence=N</span></code>: 句子编号。</li>
+</ul>
+</div>
+<div class="section" id="id51">
+<h2>提取<a class="headerlink" href="#id51" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Extract</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;text&gt;</span></code></p>
+<p>该程序从文本提取所有至少含有一个一致性事件的句子。参数&nbsp;<code class="docutils literal"><span class="pre">&lt;text&gt;</span></code>
+代表了文本文件的完整路径，不省略扩展名&nbsp;<code class="docutils literal"><span class="pre">.snt</span></code>。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-y</span></code>/<code class="docutils literal"><span class="pre">--yes</span></code>: 提取包含匹配单元所有句子（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no</span></code>: 提取不包含匹配单位所有句子；</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: 输出文本文件；</li>
+<li><code class="docutils literal"><span class="pre">-i</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--index=X</span></code>:
+描写一致性文件&nbsp;<code class="docutils literal"><span class="pre">.ind</span></code>。默认条件下，<code class="docutils literal"><span class="pre">X</span></code>
+是位于文本目录下的&nbsp;<code class="docutils literal"><span class="pre">concord.ind</span></code> 文件。</li>
+</ul>
+<p>结果是包含所有提取的句子，每行一个句子的文本文件。</p>
+</div>
+<div class="section" id="id52">
+<h2>展平<a class="headerlink" href="#id52" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Flatten</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;fst2&gt;</span></code></p>
+<p>该程序需要&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code>
+语法作为它的参数，并试图将其改造成一个有限状态传感器。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-f</span></code>/<code class="docutils literal"><span class="pre">--fst</span></code>:语法是“展开”，以最大程度，而且截断如果子图调用存在。截断调用由空转变所取代。其结果是一个仅含有一个单一的有限状态换能器&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code>
+语法；</li>
+<li><code class="docutils literal"><span class="pre">-r</span></code>/<code class="docutils literal"><span class="pre">--rtn</span></code>:变换留下之后子图调用也继续存在。在有利的情况下，结果是有限状态换能器，相反情况下优化的语法严格等同于原始语法（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--depth=N</span></code>:最大深度决定了哪个图调用将被打开。默认值为&nbsp;10。</li>
+</ul>
+</div>
+<div class="section" id="fst2check">
+<h2>Fst2Check<a class="headerlink" href="#fst2check" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Fst2Check</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;fst2&gt;</span></code></p>
+<p>该程序检查文件&nbsp;.fst2 是否无本地错误。 <strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-y</span></code>/<code class="docutils literal"><span class="pre">--loop_check</span></code>:运行错误错误校验（循环检测）；</li>
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no_loop_check</span></code>: 禁用错误检查（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--tfst_check</span></code>:检查给定的图是否可以被视为有效的句子自动机；</li>
+<li><code class="docutils literal"><span class="pre">-e</span></code>/<code class="docutils literal"><span class="pre">--no_empty_graph_warning</span></code>: 当图识别空词时不出现警告。
+该功能由 &nbsp;<code class="docutils literal"><span class="pre">MultiFlex</span></code>
+使用，为了用户不被毫无意义的错误消息吓到，当他们创建了识别空词的词形变化语法。</li>
+</ul>
+<p><strong>输出功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">file</span></code>/<code class="docutils literal"><span class="pre">--output=file</span></code>: 错误信息输出文件；</li>
+<li><code class="docutils literal"><span class="pre">-a</span></code>/<code class="docutils literal"><span class="pre">--append</span></code>: 追加模式下打开一个错误信息文件；</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--statistics</span></code>: 显示文件&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code> 统计信息。</li>
+</ul>
+</div>
+<div class="section" id="fst2list">
+<h2>Fst2List<a class="headerlink" href="#fst2list" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Fst2List</span> <span class="pre">[-o</span> <span class="pre">out][-p</span> <span class="pre">s/f/d][-[a/t]</span> <span class="pre">s/m][-m][-f</span> <span class="pre">s/a][-s[0s]</span> <span class="pre">&quot;Str&quot;]</span></code></p>
+<p>``         [-r[s/l] &#8220;Str&#8221;] [-l line#] [-i subname]*``</p>
+<p>``         [-c SS=0xxxx]* fname``</p>
+<p>该程序需要一个&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code> 文件，并列出了这个语法识别的序列。参数如下：</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">fname</span></code> :语法名称， 伴随扩展名&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code>；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-o</span> <span class="pre">out</span></code> : 指定输出文件。 默认情况下，该文件名为&nbsp;<code class="docutils literal"><span class="pre">lst.txt</span></code>；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-S</span></code> : 在标准输出上的显示效果。专用&nbsp;<code class="docutils literal"><span class="pre">-o</span></code>；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-[a/t]</span> <span class="pre">s/m</span></code> : 如果程序必须考虑到(<code class="docutils literal"><span class="pre">t</span></code>)
+或不(<code class="docutils literal"><span class="pre">a</span></code>)在任何语法的输出。 <code class="docutils literal"><span class="pre">s</span></code>
+表示只存在一个初始状态，而&nbsp;<code class="docutils literal"><span class="pre">m</span></code>
+表示有几个（该模式对韩语有效）。默认情况，参数&nbsp;<code class="docutils literal"><span class="pre">-a</span> <span class="pre">s</span></code>；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-l</span> <span class="pre">line#</span></code> : 在输出文件被打印行的最大数量；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-i</span> <span class="pre">subname</span></code> : 表示当程序识别图形&nbsp;<code class="docutils literal"><span class="pre">subname</span></code>
+必须停止进入递归检查。这个参数可多次用于以指定多个停止图表；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-p</span> <span class="pre">s/f/d</span></code> : <code class="docutils literal"><span class="pre">s</span></code> 显示语法的路径图； <code class="docutils literal"><span class="pre">f</span></code>
+（默认）显示全球的路径； <code class="docutils literal"><span class="pre">d</span></code>
+可以显示全球的路径和嵌套图形调用的信息；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-c</span> <span class="pre">SS=0xXXXX</span></code>: 替换&nbsp;<code class="docutils literal"><span class="pre">SS</span></code>，当它出现在十六进制&nbsp;<code class="docutils literal"><span class="pre">0xXXXX</span></code>
+尖括号之间；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-s</span> <span class="pre">&quot;L[,R]&quot;</span></code> :
+指定包围项目的左(<code class="docutils literal"><span class="pre">L</span></code>)和右(<code class="docutils literal"><span class="pre">R</span></code>)分隔符。默认情况下，没有分隔符；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-s0</span> <span class="pre">&quot;Str&quot;</span></code>
+:如果程序必须把输出考虑在内，此参数指定将输入和输出之间插入序列&nbsp;<code class="docutils literal"><span class="pre">Str</span></code>。默认情况下，没有分隔；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-f</span> <span class="pre">a/s</span></code> : 如果程序必须把输出考虑在内，
+此参数规定了将要生成的行的格式 : <code class="docutils literal"><span class="pre">in0</span> <span class="pre">in1</span> <span class="pre">out0</span> <span class="pre">out1</span></code> (<code class="docutils literal"><span class="pre">s</span></code>) 或
+&nbsp;<code class="docutils literal"><span class="pre">in0</span> <span class="pre">out0</span> <span class="pre">in1</span> <span class="pre">out1</span></code> (<code class="docutils literal"><span class="pre">a</span></code>)。默认值为&nbsp;<code class="docutils literal"><span class="pre">s</span></code>；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-ss</span> <span class="pre">&quot;stop&quot;</span></code>: 定义 “str” 为搜索停止的标志。 默认值为 &nbsp;<code class="docutils literal"><span class="pre">null</span></code>；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-v</span></code> : 显示过程中的信息； （详细模式）；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-m</span></code> : 字母描述特殊模式；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-rx</span> <span class="pre">&quot;L,[R]&quot;</span></code>: 该参数指定了周期该如何说明设计分隔符的&nbsp;<code class="docutils literal"><span class="pre">L</span></code> 和
+&nbsp;<code class="docutils literal"><span class="pre">R</span></code>。我们可以考虑下图 &nbsp;[cycle]，
+下面是我们得出的结果&nbsp;<code class="docutils literal"><span class="pre">L</span></code>=“<code class="docutils literal"><span class="pre">[</span></code>” 和 &nbsp;<code class="docutils literal"><span class="pre">R</span></code>=“<code class="docutils literal"><span class="pre">]*</span></code>”:</p>
+<p><code class="docutils literal"><span class="pre">il</span> <span class="pre">fait</span> <span class="pre">[très</span> <span class="pre">très]*</span></code></p>
+<p><code class="docutils literal"><span class="pre">il</span> <span class="pre">fait</span> <span class="pre">très</span> <span class="pre">beau</span></code></p>
+<div class="figure" id="id66">
+<a class="reference internal image-reference" href="_images/fig10-1.png"><img alt="含有循环的图像[cycle]" src="_images/fig10-1.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">含有循环的图像[cycle]</span></p>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="fst2txt">
+<h2>Fst2Txt<a class="headerlink" href="#fst2txt" title="永久链接至标题">¶</a></h2>
+<p>[section-Fst2Txt] <code class="docutils literal"><span class="pre">Fst2Txt</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;fst2&gt;</span></code></p>
+<p>本程序将应用传感器在预处理阶段中最长的匹配模式于文本，当文本还没有被切割成词汇单位。
+<strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--text=TXT</span></code>: 可修改的文本文件，以扩展名&nbsp;.snt；</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: 文本语言的字母文件；</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--start_on_space</span></code>:该参数表示搜索将在文本中的任何位置开始，即使是空格前。该参数应仅用来进行形态学的搜索；</li>
+<li><code class="docutils literal"><span class="pre">-x</span></code>/<code class="docutils literal"><span class="pre">--dont_start_on_space</span></code>:禁止程序识别从空格开始的序列（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--char_by_char</span></code>:
+对逐个字符使用字符标记化模式。对于像泰语非常适用；</li>
+<li><code class="docutils literal"><span class="pre">-w</span></code>/<code class="docutils literal"><span class="pre">--word_by_word</span></code>:逐个词语运行 （默认）；</li>
+<li><code class="docutils literal"><span class="pre">--input_offsets=XXX</span></code>: 使用的偏移文件。</li>
+</ul>
+<p><strong>输出功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-M</span></code>/<code class="docutils literal"><span class="pre">--merge</span></code>: 合并文本输入和传感器输出 （默认）；</li>
+<li><code class="docutils literal"><span class="pre">-R</span></code>/<code class="docutils literal"><span class="pre">--replace</span></code>: 用相应的传感器输出代替文本输入。</li>
+<li><code class="docutils literal"><span class="pre">--output_offsets=XXX</span></code>: 生成的偏移文件</li>
+</ul>
+<p>该程序用于修改输入文本文件。</p>
+</div>
+<div class="section" id="grf2fst2">
+<h2>Grf2Fst2<a class="headerlink" href="#grf2fst2" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Grf2Fst2</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;grf&gt;</span></code></p>
+<p>该程序将语法编译成&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code> 文件（详见章节
+&nbsp;[section-graph-compilation]）。参数&nbsp;<code class="docutils literal"><span class="pre">&lt;grf&gt;</span></code>
+表示语法的主要图形的完整路径，不省略扩展名&nbsp;<code class="docutils literal"><span class="pre">.grf</span></code>。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-y</span></code>/<code class="docutils literal"><span class="pre">--loop_check</span></code>: 启用错误检查（循环检测）；</li>
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no_loop_check</span></code>: 禁用错误检查（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>:
+指定用于在语法箱子划分词汇单元的字母文件。</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--char_by_char</span></code>: 划分由逐个字符完成。如果没有使用&nbsp;<code class="docutils literal"><span class="pre">-c</span></code>
+也没有使用 &nbsp;<code class="docutils literal"><span class="pre">-a</span></code> 时，词汇单位将是任意&nbsp;Unicode 字母排列的。</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">DIR</span></code>/<code class="docutils literal"><span class="pre">--pkgdir=DIR</span></code>: 指定编译语法的库目录 （见章节
+&nbsp;[section-repository]， 页码 &nbsp;）。</li>
+<li><code class="docutils literal"><span class="pre">-e</span></code>/<code class="docutils literal"><span class="pre">--no_empty_graph_warning</span></code>: 当图像匹配空词时不发出警告。
+该功能由&nbsp;<code class="docutils literal"><span class="pre">MultiFlex</span></code>
+使用，为了当用户创建了识别空词的词形变化语法，不被毫无意义的错误消息吓到。</li>
+<li><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--tfst_check</span></code>: 检查给出的图形是否是有效的句子自动器；</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--silent_grf_name</span></code>: 不显示图形名称
+（日志文件需多系统兼容使用）；</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--named_repositories=XXX</span></code>:声明库的目录名。 XXX
+由一个或多个&nbsp;X=Y 序列组成，用‘;’分开，X 是由路径&nbsp;Y
+设定的库目录名称。该功能可多次使用；</li>
+<li><code class="docutils literal"><span class="pre">--debug</span></code>: 调试模式下编译图形；</li>
+<li><code class="docutils literal"><span class="pre">-v</span></code>/<code class="docutils literal"><span class="pre">check_variables</span></code>:检查输出有效性以避免格式错误变量表达式。</li>
+</ul>
+<p>结果是与作为传递给该程序作为参数的图形具有相同名称的文件，扩展名&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code>。该文件保存在同一目录&nbsp;<code class="docutils literal"><span class="pre">&lt;grf&gt;</span></code>。</p>
+</div>
+<div class="section" id="grfdiff">
+<h2>GrfDiff<a class="headerlink" href="#grfdiff" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">GrfDiff</span> <span class="pre">&lt;grf1&gt;</span> <span class="pre">&lt;grf2&gt;:</span> <span class="pre">fichier</span> <span class="pre">fichiers</span> <span class="pre">.grf</span></code> à comparer</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">--output</span> <span class="pre">X</span></code>: 保存结果于&nbsp;X 而不显示</li>
+</ul>
+<p>比较给定的&nbsp;.grf
+文件并显示他们在标准输出上的差异。如果它们有相同的模再排序框和转换，返回&nbsp;0，如果有差异返回&nbsp;1，错误的情况下返回&nbsp;2。</p>
+<p>这里是&nbsp;GrfDiff 可以发出的指示：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">P</span> <span class="pre">name</span></code>: 介绍属性已更改。名称=属性名（大小， 字体，...）</li>
+<li><code class="docutils literal"><span class="pre">M</span> <span class="pre">a</span> <span class="pre">b</span></code>: 盒子移动。a=&lt;grf1&gt; 中盒子编号， b=&lt;grf2&gt; 中盒子编号</li>
+<li><code class="docutils literal"><span class="pre">C</span> <span class="pre">a</span> <span class="pre">b</span></code>: 盒子内容已变。 a=&lt;grf1&gt; 中盒子编号， b=&lt;grf2&gt; 中盒子编号</li>
+<li><code class="docutils literal"><span class="pre">A</span> <span class="pre">x</span></code>: 已添加一个盒子。 x=&lt;grf2&gt; 中盒子编号</li>
+<li><code class="docutils literal"><span class="pre">R</span> <span class="pre">x</span></code>: 已删除一个盒子。 x=&lt;grf1&gt; 中盒子编号</li>
+<li><code class="docutils literal"><span class="pre">T</span> <span class="pre">a</span> <span class="pre">b</span> <span class="pre">x</span> <span class="pre">y</span></code>: 一个转变已被添加。 a,b=&lt;grf1&gt; 中盒子&nbsp;src 和&nbsp;dst 编号。
+x,y= &lt;grf2&gt;中盒子src和dst编号</li>
+<li><code class="docutils literal"><span class="pre">X</span> <span class="pre">a</span> <span class="pre">b</span> <span class="pre">x</span> <span class="pre">y</span></code>: 一个转变已被删除。 a,b=&lt;grf1&gt; 中盒子&nbsp;src 和&nbsp;dst 编号。
+x,y=&lt;grf2&gt; 中盒子&nbsp;src 和&nbsp;dst 编号。</li>
+</ul>
+<p>请注意有关已添加或移除框的转变修改不被报告。</p>
+</div>
+<div class="section" id="grfdiff3">
+<h2>GrfDiff3<a class="headerlink" href="#grfdiff3" title="永久链接至标题">¶</a></h2>
+<p>GrfDiff3 &lt;mine&gt; &lt;base&gt; &lt;other&gt;</p>
+<p>&lt;mine&gt;: 我的文件 &nbsp;.grf &lt;other&gt;: 产生冲突的其他文件 &nbsp;.grf &lt;base&gt;:
+共同的原始文件 &nbsp;.grf</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">--output</span></code> <code class="docutils literal"><span class="pre">X</span></code>: 保存结果于&nbsp;X，而不是在输出。</li>
+<li><code class="docutils literal"><span class="pre">--conflicts</span></code> <code class="docutils literal"><span class="pre">X</span></code>: 保存冲突的描述，如果有保存于&nbsp;X。</li>
+<li><code class="docutils literal"><span class="pre">--only-cosmetic</span></code>: 标明所有变化的冲突，不单单是表面的。</li>
+</ul>
+<p>尝试合并&nbsp;&lt;mine&gt;
+和&nbsp;&lt;other&gt;。在成功的情况下，结果被打印在标准输出并返回&nbsp;0。在冲突未解决的情况下，则返回&nbsp;1，并不打印任何内容。
+在出错的情况下返回&nbsp;2。</p>
+</div>
+<div class="section" id="implodetfst">
+<h2>ImplodeTfst<a class="headerlink" href="#implodetfst" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">ImplodeTfst</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;tfst&gt;</span></code></p>
+<p>该程序内爆特定的文本自动机，通过合并只有屈折特征不同的词目。 <strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: 输出文件。默认情况，修改文本自动机 。</li>
+</ul>
+</div>
+<div class="section" id="id53">
+<h2>定位<a class="headerlink" href="#id53" title="永久链接至标题">¶</a></h2>
+<p>[section-Locate] <code class="docutils literal"><span class="pre">Locate</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;fst2&gt;</span></code></p>
+<p>该程序使用语法于文本并构造发现事件的索引文件。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--text=TXT</span></code>:
+文本文件的完整路径，不省略扩展名&nbsp;<code class="docutils literal"><span class="pre">.snt</span></code>；</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>:字母文件的完整路径；</li>
+<li><code class="docutils literal"><span class="pre">-m</span> <span class="pre">DICS</span></code>/<code class="docutils literal"><span class="pre">--morpho=DICS</span></code>:
+此可选参数指示哪些形态学模式字典是要使用的，需要&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code> 字典。
+<code class="docutils literal"><span class="pre">DICS</span></code> 代表用分号分隔的&nbsp;<code class="docutils literal"><span class="pre">.bin</span></code> 文件列表（全路径）；</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--start_on_space</span></code>:
+该参数表示搜索将从文本中的任何位置开始，即使是空格之前。该参数应仅用来进行形态学的搜索；</li>
+<li><code class="docutils literal"><span class="pre">-x</span></code>/<code class="docutils literal"><span class="pre">--dont_start_on_space</span></code>:禁止程序识别从空格开始的序列
+（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--char_by_char</span></code>:
+此可选参数对逐个字符使用换能器在字符模式。该功能适用于亚洲语言例如泰语；</li>
+<li><code class="docutils literal"><span class="pre">-w</span></code>/<code class="docutils literal"><span class="pre">--word_by_word</span></code>: 逐词模式运行 （默认）；</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">DIR</span></code>/<code class="docutils literal"><span class="pre">--sntdir=DIR</span></code>:将成品文件置于&nbsp;<code class="docutils literal"><span class="pre">DIR</span></code>
+目录而不是文本目录。注意&nbsp;<code class="docutils literal"><span class="pre">DIR</span></code> 必须由分隔文件结束 （<code class="docutils literal"><span class="pre">\</span></code>
+或者&nbsp;<code class="docutils literal"><span class="pre">/</span></code>）；</li>
+<li><code class="docutils literal"><span class="pre">-K</span></code>/<code class="docutils literal"><span class="pre">--korean</span></code>: 表示&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code> 运行于韩语；</li>
+<li><code class="docutils literal"><span class="pre">-u</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--arabic_rules=X</span></code>: 阿拉伯语排版规则配置文件；</li>
+<li><code class="docutils literal"><span class="pre">-g</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--negation_operator=X</span></code>:
+指定否定运算符在词汇掩模的使用。<code class="docutils literal"><span class="pre">X</span></code> 的两个可能的值为&nbsp;<code class="docutils literal"><span class="pre">moins</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">tilde</span></code>（默认）。 使用&nbsp;<code class="docutils literal"><span class="pre">moins</span></code> 使&nbsp;Unitex
+与原先版本兼容。</li>
+</ul>
+<p><strong>搜索限制功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-l</span></code>/<code class="docutils literal"><span class="pre">--all</span></code>: 查找所有匹配 （默认）；</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--number_of_matches=N</span></code>: <code class="docutils literal"><span class="pre">N</span></code> 匹配之后停止。</li>
+</ul>
+<p><strong>每个标记最大迭代次数功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--stop_token_count=N</span></code>: 在一个标记上&nbsp;N 次迭代后停止；</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">N,M</span></code>/<code class="docutils literal"><span class="pre">--stop_token_count=N,M</span></code>: 发出在一个标记&nbsp;N
+次迭代后的警告，&nbsp;M 迭代后停止警告。</li>
+</ul>
+<p><strong>匹配模式功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-S</span></code>/<code class="docutils literal"><span class="pre">--shortest_matches</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">-L</span></code>/<code class="docutils literal"><span class="pre">--longest_matches</span></code> （默认）;</li>
+<li><code class="docutils literal"><span class="pre">-A</span></code>/<code class="docutils literal"><span class="pre">--all_matches</span></code>.</li>
+</ul>
+<p><strong>输出功能:</strong></p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-I</span></code>/<code class="docutils literal"><span class="pre">--ignore</span></code>: 忽略传感器输出（默认）；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-M</span></code>/<code class="docutils literal"><span class="pre">--merge</span></code>: 合并文本输入和传感器输出；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-R</span></code>/<code class="docutils literal"><span class="pre">--replace</span></code>: 用相应的传感器输出替换文本输入；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-p</span></code>/<code class="docutils literal"><span class="pre">--protect_dic_chars</span></code>: 当使用<code class="docutils literal"><span class="pre">-M</span></code> 和 <code class="docutils literal"><span class="pre">-R</span></code>模式时，
+<code class="docutils literal"><span class="pre">-p</span></code> 用反斜杠保护一些输入的字符。 当&nbsp;<code class="docutils literal"><span class="pre">Dico</span></code> 调用&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code>
+时该功能被激活， 以防止不好结果的行，例如:</p>
+<p><code class="docutils literal"><span class="pre">3,14,.PI.NUM</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-v</span> <span class="pre">X=Y</span></code>/<code class="docutils literal"><span class="pre">--variable=X=Y</span></code>:定义一个输出变量&nbsp;<code class="docutils literal"><span class="pre">X</span></code>
+和一个内容物&nbsp;<code class="docutils literal"><span class="pre">Y</span></code>。 注意&nbsp;Y 必须是&nbsp;ASCII 码。</p>
+</li>
+</ul>
+<p><strong>歧义的输出功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-b</span></code>/<code class="docutils literal"><span class="pre">--ambiguous_outputs</span></code>:
+允许匹配最终成品具有相同的输入，但不同的输出（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-z</span></code>/<code class="docutils literal"><span class="pre">--no_ambiguous_outputs</span></code>:
+禁止歧义的输出。在不明确输出的情况下，一个将被任意选择并保持，根据程序的内部状态。</li>
+</ul>
+<p><strong>变量错误功能</strong></p>
+<p>如果输出模式设置<code class="docutils literal"><span class="pre">--ignore</span></code>，该功能无效； 反之，
+当输出包含对不正确定义变量的引用时，它们定义了&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code> 程序的行动。</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-X</span></code>/<code class="docutils literal"><span class="pre">--exit_on_variable_error</span></code>: 中断程序；</li>
+<li><code class="docutils literal"><span class="pre">-Y</span></code>/<code class="docutils literal"><span class="pre">--ignore_variable_errors</span></code>: 如果变量内容为空则运行（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-Z</span></code>/<code class="docutils literal"><span class="pre">--backtrack_on_variable_errors</span></code>: 中断对语法路径的搜索。</li>
+</ul>
+<p><strong>变量注入:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-v</span> <span class="pre">X=Y</span></code>/<code class="docutils literal"><span class="pre">--variable=X=Y</span></code>:定义一个输出变量&nbsp;<code class="docutils literal"><span class="pre">X</span></code>
+和一个内容物&nbsp;<code class="docutils literal"><span class="pre">Y</span></code>。 注意&nbsp;Y 必须是&nbsp;ASCII 码。</li>
+</ul>
+<p>该程序保存一个叫&nbsp;<code class="docutils literal"><span class="pre">concord.ind</span></code> 文件中发现的事件引用。 事件的数量，
+属于这些事件的单元数量，以及文本中匹配单元百分比都保存在一个叫&nbsp;<code class="docutils literal"><span class="pre">concord.n</span></code>
+的文件里。这两个文件都保存在文本目录下。</p>
+</div>
+<div class="section" id="tfst">
+<h2>定位Tfst<a class="headerlink" href="#tfst" title="永久链接至标题">¶</a></h2>
+<p>[section-LocateTfst] <code class="docutils literal"><span class="pre">LocateTfst</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;fst2&gt;</span></code></p>
+<p>该程序使用语法于一个文本自动机，并保存匹配序列的索引于一个名为&nbsp;<code class="docutils literal"><span class="pre">concord.ind</span></code>
+的文件中，如同&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code> 的功能。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TFST</span></code>/<code class="docutils literal"><span class="pre">--text=TFST</span></code>: 文本文件的完整路径，不省略扩展名；</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: 字母文件的完整路径；</li>
+<li><code class="docutils literal"><span class="pre">-K</span></code>/<code class="docutils literal"><span class="pre">--korean</span></code>:指示 &nbsp;<code class="docutils literal"><span class="pre">LocateTfst</span></code> 在韩语环境下运行；</li>
+<li><code class="docutils literal"><span class="pre">-g</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--negation_operator=X</span></code>:
+指定否定运算符在词汇掩模的使用。<code class="docutils literal"><span class="pre">X</span></code> 的两个可能的值为&nbsp;<code class="docutils literal"><span class="pre">moins</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">tilde</span></code>（默认）。 使用&nbsp;<code class="docutils literal"><span class="pre">moins</span></code> 使&nbsp;Unitex
+与原先版本兼容。</li>
+</ul>
+<p><strong>搜索限制功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-l</span></code>/<code class="docutils literal"><span class="pre">--all</span></code>: 查找所有匹配（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--number_of_matches=N</span></code>: 第一次&nbsp;<code class="docutils literal"><span class="pre">N</span></code> 匹配之后停止。</li>
+</ul>
+<p><strong>匹配模式功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-S</span></code>/<code class="docutils literal"><span class="pre">--shortest_matches</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">-L</span></code>/<code class="docutils literal"><span class="pre">--longest_matches</span></code> （默认）;</li>
+<li><code class="docutils literal"><span class="pre">-A</span></code>/<code class="docutils literal"><span class="pre">--all_matches</span></code>.</li>
+</ul>
+<p><strong>输出功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-I</span></code>/<code class="docutils literal"><span class="pre">--ignore</span></code>: 忽略传感器输出（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-M</span></code>/<code class="docutils literal"><span class="pre">--merge</span></code>:合并文本输入和传感器输出；</li>
+<li><code class="docutils literal"><span class="pre">-R</span></code>/<code class="docutils literal"><span class="pre">--replace</span></code>: 用相应的传感器输出替换文本输入；</li>
+</ul>
+<p><strong>歧义的输出功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-b</span></code>/<code class="docutils literal"><span class="pre">--ambiguous_outputs</span></code>:
+允许匹配最终成品具有相同的输入，但不同的输出（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-z</span></code>/<code class="docutils literal"><span class="pre">--no_ambiguous_outputs</span></code>:
+禁止歧义的输出。在不明确输出的情况下，一个将被任意选择并保持，根据程序的内部状态。</li>
+</ul>
+<p><strong>变量错误功能</strong></p>
+<p>如果输出模式设置<code class="docutils literal"><span class="pre">--ignore</span></code>，该功能无效； 反之，
+当输出包含对不正确定义变量的引用时，它们定义了&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code> 程序的行动。</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-X</span></code>/<code class="docutils literal"><span class="pre">--exit_on_variable_error</span></code>: 中断程序；</li>
+<li><code class="docutils literal"><span class="pre">-Y</span></code>/<code class="docutils literal"><span class="pre">--ignore_variable_errors</span></code>: 如果变量内容为空则运行（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-Z</span></code>/<code class="docutils literal"><span class="pre">--backtrack_on_variable_errors</span></code>:中断对语法路径的搜索。</li>
+</ul>
+<p><strong>变量注入</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-v</span> <span class="pre">X=Y</span></code>/<code class="docutils literal"><span class="pre">--variable=X=Y</span></code>: 定义一个输出变量&nbsp;<code class="docutils literal"><span class="pre">X</span></code>
+和一个内容物&nbsp;<code class="docutils literal"><span class="pre">Y</span></code>。 注意&nbsp;Y 必须是&nbsp;ASCII码。</li>
+</ul>
+<p><strong>标签功能</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">--tagging</span></code>:
+指示一致性必须是标记之一，包含在每个匹配的开始和结束状态的其他信息。</li>
+</ul>
+<p>该程序保存一个叫&nbsp;<code class="docutils literal"><span class="pre">concord.ind</span></code> 文件中发现的事件引用。 事件的数量，
+和输出成品的数量都保存在一个叫&nbsp;<code class="docutils literal"><span class="pre">concord_tfst.n</span></code>
+的文件里。这两个文件都保存在文本目录下。</p>
+</div>
+<div class="section" id="multiflex">
+<h2>MultiFlex<a class="headerlink" href="#multiflex" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">MultiFlex</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;dela&gt;</span></code></p>
+<p>该程序执行DELA字典的词形变化自动，字典包括简单词原型（参见章节&nbsp;[section-DELAS-format]）和复合词（参见章节&nbsp;[chap-multiflex]）原型。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">DELAF</span></code>/<code class="docutils literal"><span class="pre">--output=DELAF</span></code>: 输出&nbsp;DELAF 文件；</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: 字母文件；</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">DIR</span></code>/<code class="docutils literal"><span class="pre">--directory=DIR</span></code>: 包含文件&nbsp;<code class="docutils literal"><span class="pre">Morphology</span></code> 和
+&nbsp;<code class="docutils literal"><span class="pre">Equivalences</span></code> 以及简单，复合词词形变化图像的目录；</li>
+<li><code class="docutils literal"><span class="pre">-K</span></code>/<code class="docutils literal"><span class="pre">--korean</span></code>: 指示 &nbsp;<code class="docutils literal"><span class="pre">MultiFlex</span></code> 在韩文的环境下运行；</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--only-simple-words</span></code>:程序会把复合词看作错误；</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--only-compound-words</span></code>: 程序会把简单词看作错误；</li>
+<li><code class="docutils literal"><span class="pre">-p</span> <span class="pre">DIR</span></code>/<code class="docutils literal"><span class="pre">--pkgdir=DIR</span></code>: 指示图形目录。</li>
+<li><code class="docutils literal"><span class="pre">-rXXX</span></code>/<code class="docutils literal"><span class="pre">--named_repositories=XXX</span></code>: 声明库的目录名。XXX
+由一个或多个&nbsp;X=Y 序列组成，用&nbsp;; 分开，X 是由路径&nbsp;Y
+设定的库目录名称。该功能可多次使用；</li>
+</ul>
+<p>需要注意的是词形变化传感器&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code> 会自动从&nbsp;<code class="docutils literal"><span class="pre">.grf</span></code>
+相应文件构建，在缺失情况或者比&nbsp;<code class="docutils literal"><span class="pre">.grf</span></code> 文件旧的情况下。</p>
+</div>
+<div class="section" id="id54">
+<h2>规范化<a class="headerlink" href="#id54" title="永久链接至标题">¶</a></h2>
+<p>[section-Normalize] <code class="docutils literal"><span class="pre">Normalize</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;text&gt;</span></code></p>
+<p>该程序进行文本分隔符的规范化。分离器可以是空格，制表符和换行符。分隔符每一个序列包含至少一个换行符，由唯一的换行符替换。分离器的所有其他序列由一个空格替换。</p>
+<p>该程序还检查文本中发现的词汇标签的句法。在大括号里的所有序列应该是句子分隔符&nbsp;<code class="docutils literal"><span class="pre">{S}</span></code>，停止标记&nbsp;<code class="docutils literal"><span class="pre">{STOP}</span></code>，或者&nbsp;DELAF
+格式的有效条目（<code class="docutils literal"><span class="pre">{aujourd'hui,.ADV}</span></code>）。</p>
+<p>参数&nbsp;<code class="docutils literal"><span class="pre">&lt;text&gt;</span></code> 表示文本文件的完整路径。该程序创建
+一个修改版本的文本，保存在扩展名为&nbsp;<code class="docutils literal"><span class="pre">.snt</span></code> 的文件中。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no_carriage_return</span></code>:
+每一个分离器序列将变成一个单一的空格；</li>
+<li><code class="docutils literal"><span class="pre">--input_offsets=XXX</span></code>: 使用的偏移文件。</li>
+<li><code class="docutils literal"><span class="pre">--output_offsets=XXX</span></code>: 产生的偏移文件。</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--replacement_rules=XXX</span></code>:
+指定要使用的规范化规则文件。请参阅有关此文件格式的详细信息&nbsp;[section-normalization-file]。默认情况下，该程序只用&nbsp;<code class="docutils literal"><span class="pre">[</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">]</span></code> 替换&nbsp;<code class="docutils literal"><span class="pre">{</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">}</span></code>。</li>
+<li><code class="docutils literal"><span class="pre">--no_separator_normalization</span></code>:仅适用指明&nbsp;-r 的替换规则。</li>
+</ul>
+<p>警告：如果您指定了规范化规则文件，它的规则将优先于之前别的。所以，你在该规则下操纵这些分离器要非常小心。</p>
+</div>
+<div class="section" id="polylex">
+<h2>PolyLex<a class="headerlink" href="#polylex" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">PolyLex</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;list&gt;</span></code></p>
+<p>该程序占用包含未知词&nbsp;<code class="docutils literal"><span class="pre">&lt;list&gt;</span></code>的文件，并试图把每个单词作为获得的复合词分析，用连接简单词的方法。从未知词汇文件中拿出具有至少一个分析数据的词，对应分析数据的字典行的被添加到&nbsp;<code class="docutils literal"><span class="pre">OUT</span></code>文件。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: 使用的字母文件；</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">BIN</span></code>/<code class="docutils literal"><span class="pre">--dictionary=BIN</span></code>: 使用的字典&nbsp;.bin；</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>:
+指定产生词典行的文件需要被记录；如果该文件已经存在，所产生的行追加在该文件的末尾；</li>
+<li><code class="docutils literal"><span class="pre">-i</span> <span class="pre">INFO</span></code>/<code class="docutils literal"><span class="pre">--info=INFO</span></code>:
+指定其中有关分析的信息已经产生的文本文件。</li>
+</ul>
+<p><strong>语言功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-D</span></code>/<code class="docutils literal"><span class="pre">--dutch</span></code></li>
+<li><code class="docutils literal"><span class="pre">-G</span></code>/<code class="docutils literal"><span class="pre">--german</span></code></li>
+<li><code class="docutils literal"><span class="pre">-N</span></code>/<code class="docutils literal"><span class="pre">--norwegian</span></code></li>
+<li><code class="docutils literal"><span class="pre">-R</span></code>/<code class="docutils literal"><span class="pre">--russian</span></code></li>
+</ul>
+<p>注：荷兰语或挪威语，程序试图读取包含禁止单词列表的文本文件。该文件应该被命名为&nbsp;<code class="docutils literal"><span class="pre">ForbiddenWords.txt</span></code>
+（参见章节&nbsp;[section-forbidden-words]），并和&nbsp;<code class="docutils literal"><span class="pre">BIN</span></code> 存储在同一目录。</p>
+</div>
+<div class="section" id="id55">
+<h2>重建Tfst<a class="headerlink" href="#id55" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">RebuildTfst</span> <span class="pre">&lt;tfst&gt;</span></code></p>
+<p>考虑到手动修改该程序重构文本自动&nbsp;<code class="docutils literal"><span class="pre">&lt;tfst&gt;</span></code>。如果程序发现和&nbsp;<code class="docutils literal"><span class="pre">&lt;tfst&gt;</span></code>
+在同一目录下的文件&nbsp;<code class="docutils literal"><span class="pre">sentenceN.grf</span></code>，它会用&nbsp;<code class="docutils literal"><span class="pre">sentenceN.grf</span></code>
+中的替换&nbsp;<code class="docutils literal"><span class="pre">N</span></code> 的句子自动机。输入的文本自动机被修改。</p>
+</div>
+<div class="section" id="reconstrucao">
+<h2>Reconstrucao<a class="headerlink" href="#reconstrucao" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Reconstrucao</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;index&gt;</span></code></p>
+<p>该程序产生一个标准化的语法，该语法设计应用于葡萄牙语文本自动机构建之前。<code class="docutils literal"><span class="pre">&lt;index&gt;</span></code>
+文件介绍说明了&nbsp;MERGE
+模式下产生的一致性，提取各种形式进行规范化的语法。此语法称为&nbsp;<code class="docutils literal"><span class="pre">V-Pro-Suf</span></code>，并存储在&nbsp;<code class="docutils literal"><span class="pre">/Portuguese/Graphs/Normalization</span></code>
+目录。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: 使用的字母文件；</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">ROOT</span></code>/<code class="docutils literal"><span class="pre">--root=ROOT</span></code>:
+<code class="docutils literal"><span class="pre">.bin</span></code>逆字典用于查找将来时态和条件式。它通过压缩伴随参数&nbsp;<code class="docutils literal"><span class="pre">--flip</span></code>
+的，将来时和条件式动词词典（见章节&nbsp;[section-compress]）；</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">BIN</span></code>/<code class="docutils literal"><span class="pre">--dictionary=BIN</span></code>: 使用的&nbsp;<code class="docutils literal"><span class="pre">.bin</span></code> 字典；</li>
+<li><code class="docutils literal"><span class="pre">-p</span> <span class="pre">PRO</span></code>/<code class="docutils literal"><span class="pre">--pronoun_rules=PRO</span></code>: 代词改写的语法&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code>；</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">PRO</span></code>/<code class="docutils literal"><span class="pre">--nasal_pronoun_rules=PRO</span></code>: 改写鼻音代词的语法
+&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code>；</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: 生成的图形&nbsp;<code class="docutils literal"><span class="pre">.grf</span></code>名称</li>
+</ul>
+</div>
+<div class="section" id="reg2grf">
+<h2>Reg2Grf<a class="headerlink" href="#reg2grf" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Reg2Grf</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p>这个程序构造一个&nbsp;<code class="docutils literal"><span class="pre">.grf</span></code>
+文件，对应的正则表达式写在文件&nbsp;<code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code>。参数&nbsp;<code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code>
+表示包含正则表达式的文件的完整路径。该文件必须是&nbsp;Unicode
+文本文件。程序考虑到了所有的字符，直到第一个换行符。结果文件名为&nbsp;<code class="docutils literal"><span class="pre">regexp.grf</span></code>
+并保存在同一目录&nbsp;<code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code>。</p>
+</div>
+<div class="section" id="seq2grf">
+<h2>Seq2Grf<a class="headerlink" href="#seq2grf" title="永久链接至标题">¶</a></h2>
+<p>[Seq2Grf] <code class="docutils literal"><span class="pre">Seq2Grf</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;snt&gt;</span></code></p>
+<p>该项目是建立一个在文件 &nbsp;<code class="docutils literal"><span class="pre">&lt;snt&gt;</span></code> 中对应序列的文件&nbsp;<code class="docutils literal"><span class="pre">.grf</span></code>。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: 使用的字母文件。</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--output=XXX</span></code>: 输出的图形文件；</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--only-stop</span></code>: 只考虑通过&nbsp;<code class="docutils literal"><span class="pre">{STOP}</span></code> 分离的序列；</li>
+<li><code class="docutils literal"><span class="pre">-b</span></code>/<code class="docutils literal"><span class="pre">--beautify</span></code>: 对图形使用美化算法；</li>
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no_beautify</span></code>: 不对图形使用美化算法；（默认）；</li>
+<li><code class="docutils literal"><span class="pre">--case-sensitive</span></code>: 区分大小写（默认）；</li>
+<li><code class="docutils literal"><span class="pre">--case-insensitive</span></code>: 不区分大小写 ；</li>
+<li><code class="docutils literal"><span class="pre">-w</span> <span class="pre">x</span></code>: 通配符数目；</li>
+<li><code class="docutils literal"><span class="pre">-i</span> <span class="pre">x</span></code>: 插入的数目；</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">x</span></code>: 替换的数目；</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">x</span></code>: 删除的数目；</li>
+</ul>
+<p>构造序列自动机：识别所有&nbsp;SNT
+的序列的一个单一自动机。该序列必须用特殊标记&nbsp;<code class="docutils literal"><span class="pre">{STOP}</span></code>
+分隔。所产生的&nbsp;<code class="docutils literal"><span class="pre">.grf</span></code>
+文件存储在用户的图形目录下。名为&nbsp;<code class="docutils literal"><span class="pre">text.tfst</span></code>， <code class="docutils literal"><span class="pre">text.tind</span></code>
+的其它文件，存储在文本目录下。</p>
+</div>
+<div class="section" id="sorttxt">
+<h2>SortTxt<a class="headerlink" href="#sorttxt" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">SortTxt</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p>该程序执行文件&nbsp;<code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code> 行的词典分类。<code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code>
+表示进行排序的文件完整路径。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no_duplicates</span></code>: 删除重复项（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-d</span></code>/<code class="docutils literal"><span class="pre">--duplicates</span></code>: 保留重复项；</li>
+<li><code class="docutils literal"><span class="pre">-r</span></code>/<code class="docutils literal"><span class="pre">--reverse</span></code>: 以递减的顺序排序；</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--sort_order=XXX</span></code>:使用文件&nbsp;<code class="docutils literal"><span class="pre">XXX</span></code>
+定义的字母顺序排序。如果该参数为&nbsp;Abscent，排序是根据&nbsp;Unicode
+字符的顺序进行的；</li>
+<li><code class="docutils literal"><span class="pre">-l</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--line_info=XXX</span></code>:
+保存结果文件的行数于文件&nbsp;<code class="docutils literal"><span class="pre">XXX</span></code>；</li>
+<li><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--thai</span></code>: 分类泰语文本的可用功能。</li>
+<li><code class="docutils literal"><span class="pre">-f</span></code>/<code class="docutils literal"><span class="pre">--factorize_inflectional_codes</span></code>: 转化两个输入
+&nbsp;XXX，YYY。ZZZ:A 和&nbsp;XXX，YYY。ZZZ:B 唯一的输入&nbsp;XXX，YYY。ZZZ:A:B</li>
+</ul>
+<p>排序操作修改文本文件。默认情况下，排序按照&nbsp;Unicode
+字符顺序进行，删除重复项。</p>
+</div>
+<div class="section" id="id56">
+<h2>统计<a class="headerlink" href="#id56" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Stats</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;ind&gt;</span></code></p>
+<p>这个程序从一致性索引文件&nbsp;<code class="docutils literal"><span class="pre">&lt;ind&gt;</span></code> 计算统计数据。 <strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-m</span> <span class="pre">MODE</span></code>/<code class="docutils literal"><span class="pre">--mode=MODE</span></code>: 指定要产出的输出：<ul>
+<li><code class="docutils literal"><span class="pre">0</span></code> = 左，右上下文匹配 + 出现次数；</li>
+<li><code class="docutils literal"><span class="pre">1</span></code> = 搭配 + 出现次数；</li>
+<li><code class="docutils literal"><span class="pre">2</span></code> = 搭配 + 出现次数 + z-score。</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: 使用的字母文件；</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: 输出文件；</li>
+<li><code class="docutils literal"><span class="pre">-l</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--left=N</span></code>: 左侧上下文标记的长度；</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--right=N</span></code>: 右侧上下文标记的长度；</li>
+<li><code class="docutils literal"><span class="pre">-c</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--case=N</span></code>: 大小写处理：<code class="docutils literal"><span class="pre">0</span></code> = 不区分大小写， <code class="docutils literal"><span class="pre">1</span></code> =
+区分大小写（默认）。</li>
+</ul>
+</div>
+<div class="section" id="table2grf">
+<h2>Table2Grf<a class="headerlink" href="#table2grf" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Table2Grf</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;table&gt;</span></code></p>
+<p>该程序从词汇语法图 &nbsp;<code class="docutils literal"><span class="pre">&lt;table&gt;</span></code> 和模板图自动生成图形。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">GRF</span></code>/<code class="docutils literal"><span class="pre">--reference_graph=GRF</span></code>: 模板图名称；</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: 主要结果图的名称；</li>
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--subgraph_pattern=XXX</span></code>:
+如果指定此可选参数，所有的生产子图将按照这个模式来命名。为了有明确的名称，我们建议参数中含有&nbsp;<code class="docutils literal"><span class="pre">&#64;%</span></code>
+（提醒&nbsp;<code class="docutils literal"><span class="pre">&#64;%</span></code>
+将由表中的条目的行号替换）。例如，如果你设置模式参数为’<code class="docutils literal"><span class="pre">subgraph-&#64;%.grf</span></code>’，子图的名字会变这样’<code class="docutils literal"><span class="pre">subgraph-0013.grf</span></code>’。默认情况下，子图名字像’<code class="docutils literal"><span class="pre">result_0013.grf</span></code>’，其中’<code class="docutils literal"><span class="pre">result.grf</span></code>’是结果主要图形。</li>
+</ul>
+</div>
+<div class="section" id="id57">
+<h2>打标签<a class="headerlink" href="#id57" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Tagger</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;tfst&gt;</span></code> [section-Tagger]</p>
+<p>该程序的输入是&nbsp;<code class="docutils literal"><span class="pre">.tfst</span></code> 指定的文本自动机。 程序使用 &nbsp;Viterbi
+算法，并产生一个线性自动机。该自动机基于二阶&nbsp;Markov
+模型概率方式精简而来。
+如果指定的标签数据文件中包含的“cat”的标签元组，标签是在语法，句法和语义的基础上精简而来。
+（举例， &nbsp;<code class="docutils literal"><span class="pre">that.DET+Ddem</span></code> 与&nbsp;<code class="docutils literal"><span class="pre">that.PRO+Pdem</span></code> 相反）。
+相反，如果指定的标签数据文件中包含的“morph”的标签元组，标签是在语法，句法和语义和词形变化的基础上精简而来(&nbsp;<code class="docutils literal"><span class="pre">the.DET+Ddef:s</span></code>
+与 &nbsp;<code class="docutils literal"><span class="pre">the.DET+Ddef:p</span></code> 相反)。
+在这种情况下，在加标记过程之前自动机需要被分解，必须用下面 &nbsp;<code class="docutils literal"><span class="pre">-t</span></code>
+选项来指定一个标记集的文件。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: 字母文件。</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: 输出文本自动机。</li>
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TAGSET</span></code>/<code class="docutils literal"><span class="pre">--tagset=TAGSET</span></code>: 标签集文件名称。</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">DATA</span></code>/<code class="docutils literal"><span class="pre">--data=DATA</span></code>:给定标签的文件&nbsp;.bin
+，包含了单字，双字母组和三字母的出现数目，以此计算概论。该文件由程序&nbsp;<code class="docutils literal"><span class="pre">TrainingTagger</span></code>
+产生（见章节 &nbsp;[section-training-dict]）。</li>
+</ul>
+</div>
+<div class="section" id="tagsetnormtfst">
+<h2>TagsetNormTfst<a class="headerlink" href="#tagsetnormtfst" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">TagsetNormTfst</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;tfst&gt;</span></code></p>
+<p>该程序根据标记集描述文件规范了指定&nbsp;<code class="docutils literal"><span class="pre">.tfst</span></code>
+文本自动机，丢弃未宣布的字典代码和不连贯的词目。屈折功能未分解，这样&nbsp;<code class="docutils literal"><span class="pre">{rouge,.A:fs:ms}</span></code>
+将被分为&nbsp;2 个标签&nbsp;<code class="docutils literal"><span class="pre">{rouge,.A:fs}</span></code> 和 &nbsp;<code class="docutils literal"><span class="pre">{rouge,.A:ms}</span></code>。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>:
+输出文本自动机。默认情况下，输入的文本自动机被修改；</li>
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TAGSET</span></code>/<code class="docutils literal"><span class="pre">--tagset=TAGSET</span></code>: 标签集描述文件的名称。</li>
+</ul>
+</div>
+<div class="section" id="tei2txt">
+<h2>TEI2Txt<a class="headerlink" href="#tei2txt" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">TEI2Txt</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;xml&gt;</span></code></p>
+<p>从给定的&nbsp;TEI &nbsp;<code class="docutils literal"><span class="pre">&lt;xml&gt;</span></code> 文件的产生一个原始文本文件。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--output=TXT</span></code>:
+输出文本文件名称。默认情况下，输出文件与输入文件具有相同的名字，用&nbsp;<code class="docutils literal"><span class="pre">.txt</span></code>
+替换&nbsp;<code class="docutils literal"><span class="pre">.xml</span></code>。</li>
+</ul>
+</div>
+<div class="section" id="tfst2grf">
+<h2>Tfst2Grf<a class="headerlink" href="#tfst2grf" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Tfst2Grf</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;tfst&gt;</span></code></p>
+<p>该程序从给定文本自动机中提取格式为&nbsp;<code class="docutils literal"><span class="pre">.grf</span></code> 的一个句子自动机。</p>
+<p><strong>功能:</strong></p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-s</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--sentence=N</span></code>: 要提取的句子的数目；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-o</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--output=XXX</span></code>: 用于命名输出文件的方法 &nbsp;<code class="docutils literal"><span class="pre">XXX.grf</span></code>，
+<code class="docutils literal"><span class="pre">XXX.txt</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">XXX.tok</span></code> （默认 =&nbsp;<code class="docutils literal"><span class="pre">cursentence</span></code>）；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-f</span> <span class="pre">FONT</span></code>/<code class="docutils literal"><span class="pre">--font=FONT</span></code>: 设置&nbsp;<code class="docutils literal"><span class="pre">.grf</span></code> 输出中使用的字体</p>
+<p>（默认=<code class="docutils literal"><span class="pre">Times</span> <span class="pre">new</span> <span class="pre">Roman</span></code>）；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-z</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--fontsize=N</span></code>: 设置字体大小（默认值 = 10）。</p>
+</li>
+</ul>
+<p>程序生成以下文件，保存于文本目录下:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">cursentence.grf</span></code>:句子自动机图形；</li>
+<li><code class="docutils literal"><span class="pre">cursentence.txt</span></code>: 包含句子的文本文件；</li>
+<li><code class="docutils literal"><span class="pre">cursentence.tok</span></code>: 包含构成该句子标记数量的文本文件；</li>
+</ul>
+</div>
+<div class="section" id="tfst2unambig">
+<h2>Tfst2Unambig<a class="headerlink" href="#tfst2unambig" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Tfst2Unambig</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;tfst&gt;</span></code></p>
+<p>该程序需要&nbsp;<code class="docutils literal"><span class="pre">.tfst</span></code> 文本自动机，并产生一个等效文本文件，如果
+自动机是线性的（即，无歧义性）。见章节&nbsp;[section-linear-text]，页码 &nbsp;。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--out=TXT</span></code>: 输出文件。</li>
+</ul>
+</div>
+<div class="section" id="id58">
+<h2>标记化<a class="headerlink" href="#id58" title="永久链接至标题">¶</a></h2>
+<p>[section-Tokenize] <code class="docutils literal"><span class="pre">Tokenize</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p>该程序将文本切分成词汇单元。<code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code>
+文本文件完整路径，不省略扩展名&nbsp;<code class="docutils literal"><span class="pre">.snt</span></code>。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: 字母文件；</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--char_by_char</span></code>:
+指示程序是否由逐个字符运行，用句分隔符&nbsp;<code class="docutils literal"><span class="pre">{S}</span></code>，停止标记&nbsp;<code class="docutils literal"><span class="pre">{STOP}</span></code>
+和词汇标签等&nbsp;<code class="docutils literal"><span class="pre">{today,.ADV}</span></code> 这被认为是单一的单位；</li>
+<li><code class="docutils literal"><span class="pre">-w</span></code>/<code class="docutils literal"><span class="pre">--word_by_word</span></code>:
+使用该选项，程序认为一个单位是字母顺序（由&nbsp;<code class="docutils literal"><span class="pre">alphabet</span></code>
+文件定义），或不是字母的字符，或句分离器&nbsp;<code class="docutils literal"><span class="pre">{S}</span></code> ，或者一个词汇标签
+&nbsp;<code class="docutils literal"><span class="pre">{aujourd'hui,.ADV}</span></code>。 这是默认模式。</li>
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TOKENS</span></code>/<code class="docutils literal"><span class="pre">--tokens=TOKENS</span></code>:
+指定可加载和修改的&nbsp;<code class="docutils literal"><span class="pre">tokens.txt</span></code>
+文件，而不是从头开始创建一个新的。</li>
+</ul>
+<p><strong>偏移功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">input_offsets</span></code>: 使用的基本偏移文件；</li>
+<li><code class="docutils literal"><span class="pre">output_offsets</span></code>: 产出的偏移文件；</li>
+</ul>
+<p>该程序将每个单元编码为一个整体。单元列表被保存在名为&nbsp;<code class="docutils literal"><span class="pre">tokens.txt</span></code>
+的文本文件里。表示单位的代码序列现在允许文本编码。该序列被保存在名为&nbsp;<code class="docutils literal"><span class="pre">text.cod</span></code>
+的二进制文件。该程序还产生以下四个文件：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">tok_by_freq.txt</span></code>: 含有按频率顺序排序的单位的文本文件；</li>
+<li><code class="docutils literal"><span class="pre">tok_by_alph.txt</span></code>: 含有按字母顺序排序的单位的文本文件；</li>
+<li><code class="docutils literal"><span class="pre">stats.n</span></code>:
+含有句分隔符的数量，单位数，简单词的数量和数字的数目的信息的文本文件；</li>
+<li><code class="docutils literal"><span class="pre">enter.pos</span></code>:
+包含文本中换行符位置列表的二进制文件。文本的编码表示不包含换行符，但包含空格。因为一个换行符计为两个字符和一个空格，有必要知道换行符出现在文本的位置，当事件被&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code>
+程序与文本文件同步。 <code class="docutils literal"><span class="pre">enter.pos</span></code> 文件由&nbsp;<code class="docutils literal"><span class="pre">Concord</span></code>
+程序用于此目的。由于这一点，当此一致性事件发生点击时，它被正确地在文本中选择。该文件是包含文本中换行符位置的列表的二进制文件。</li>
+</ul>
+<p>所有产出的文件都保存在文本目录中。</p>
+</div>
+<div class="section" id="id59">
+<h2>打标签培训<a class="headerlink" href="#id59" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">TrainingTagger</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code> [section-TrainingTagger]</p>
+<p>该程序从标记语料库文本文件自动生成两个打标签数据文件。它们被&nbsp;<code class="docutils literal"><span class="pre">Tagger</span></code>
+程序用于计算概率和线性化文本自动机。该标注语料库文件必须按照章节&nbsp;[section-corpus-file]描述的格式。这些文件包含元组（unigrams，
+bigrams 和
+&nbsp;trigrams），通过标签和文字形成的。在第一种数据文件，标签是“cat”的标签（即，语法，句法和语义码）。在第二种数据文件，标签“morph”标签（即语法，句法，语义和屈折代码）。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a/--all</span></code>: 指示程序应该产生所有数据文件（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-c/--cat</span></code>: 指示程序应该只生产出“cat”标签的数据文件；</li>
+<li><code class="docutils literal"><span class="pre">-m/--morph</span></code>: 指示程序应该只生产出“morph”标签的数据文件；</li>
+<li><code class="docutils literal"><span class="pre">-n/--no_binaries</span></code>:指示程序不应该压缩数据文件到&nbsp;<code class="docutils literal"><span class="pre">.bin</span></code>
+文件。在这种情况下，只有&nbsp;<code class="docutils literal"><span class="pre">.dic</span></code> 数据文件生成；</li>
+<li><code class="docutils literal"><span class="pre">-b/--binaries</span></code>:指示程序应该压缩数据文件到&nbsp;<code class="docutils literal"><span class="pre">.bin</span></code> 文件（默认） ；</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">XXX/--output=XXX</span></code>:用于命名输出标签数据文件&nbsp;<code class="docutils literal"><span class="pre">XXX_data_cat.bin</span></code>
+和 &nbsp;<code class="docutils literal"><span class="pre">XXX_data_morph.bin</span></code> 的模式 （默认: 语料库文件名无扩展名）；</li>
+<li><code class="docutils literal"><span class="pre">-s/--semitic</span></code>: 表示闪族语压缩算法应该被使用。</li>
+</ul>
+</div>
+<div class="section" id="txt2tfst">
+<h2>Txt2Tfst<a class="headerlink" href="#txt2tfst" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Txt2Tfst</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code>
+该程序构建一个文本的自动机。参数&nbsp;<code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code>
+表示文本文件完整路，径不省略扩展名&nbsp;<code class="docutils literal"><span class="pre">.snt</span></code>。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: 字母文件；</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--clean</span></code>: 指示保存最佳路径的规则 （见章节
+&nbsp;[section-keeping-best-paths]） 应被使用 ；</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--normalization_grammar=XXX</span></code>:
+运用于文本自动机的标准化语法名称；</li>
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">TAGSET</span></code>/<code class="docutils literal"><span class="pre">--tagset=TAGSET</span></code>:用于标准化字典条目的 &nbsp;Elag
+标记集文件；</li>
+<li><code class="docutils literal"><span class="pre">-K</span></code>/<code class="docutils literal"><span class="pre">--korean</span></code>: 指示 &nbsp;<code class="docutils literal"><span class="pre">Txt2Tfst</span></code> 适用于韩语。</li>
+</ul>
+<p>如果文本被分为句子，程序为每个句子构建了一个自动机。如果不是这种情况，该程序任意地切断文本成为&nbsp;2000
+个标记的序列，并对每个序列产生一个自动机。</p>
+<p>其结果是一个名为&nbsp;<code class="docutils literal"><span class="pre">text.tfst</span></code>
+的文件，其保存在文本目录下。也会生成另一个名为&nbsp;<code class="docutils literal"><span class="pre">text.tind</span></code> 的文件。</p>
+<p>注：该程序还将尝试使用&nbsp;<code class="docutils literal"><span class="pre">tags.ind</span></code>
+文件，如果有的话（见章节&nbsp;[section-tags-ind]）。</p>
+</div>
+<div class="section" id="id60">
+<h2>解压缩<a class="headerlink" href="#id60" title="永久链接至标题">¶</a></h2>
+<p>[section-Uncompress] <code class="docutils literal"><span class="pre">Uncompress</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;bin&gt;</span></code></p>
+<p>该程序将字典&nbsp;<code class="docutils literal"><span class="pre">.bin</span></code> 解压缩成一个文本文件 &nbsp;<code class="docutils literal"><span class="pre">.dic</span></code>。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>: 可选的输出文件名 （默认: <code class="docutils literal"><span class="pre">file.bin</span></code> &gt;
+<code class="docutils literal"><span class="pre">file.dic</span></code>）。</li>
+</ul>
+</div>
+<div class="section" id="id61">
+<h2>去标记化<a class="headerlink" href="#id61" title="永久链接至标题">¶</a></h2>
+<p>[section-Untokenize] <code class="docutils literal"><span class="pre">Untokenize</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p>去标记化和重建原始文本。标记列表存储于文件&nbsp;<code class="docutils literal"><span class="pre">tokens.txt</span></code>，编码文本存储于&nbsp;<code class="docutils literal"><span class="pre">text.cod</span></code>。该文件&nbsp;<code class="docutils literal"><span class="pre">enter.pos</span></code>
+包含标记中所有回车序列的位置。这些文件位于 &nbsp;XXX_snt 目录，其中&nbsp;XXX
+无扩展名。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--sntdir=X</span></code>: 使用&nbsp;X 目录，而不是文本目录；请注意，&nbsp;X
+必须以反斜杠结尾</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--number_token=N</span></code>: 给每个&nbsp;N 标记加入编号；</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--range=N</span></code>: 发出从编号&nbsp;N 开始到最后的标记；</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">N,M</span></code>/<code class="docutils literal"><span class="pre">--range=N,M</span></code>: 发出从编号&nbsp;N 开始到&nbsp;M 的标记。</li>
+</ul>
+</div>
+<div class="section" id="unitex">
+<h2>Unitex工具<a class="headerlink" href="#unitex" title="永久链接至标题">¶</a></h2>
+<p>[section-UnitexTool] <code class="docutils literal"><span class="pre">UnitexTool</span> <span class="pre">&lt;utilities&gt;</span></code></p>
+<p>该程序是个超级程序，使您可以调用所有&nbsp;Unitex
+外部程序。有了它，你可以控制命令，使他们可以在同一系统进程中调用，从而加快处理速度。这可以通过调用嵌套圆括号，来完成命令：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexTool</span> <span class="p">{</span> <span class="n">SelectOutput</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="p">}</span>
+                <span class="p">{</span> <span class="n">cmd</span> <span class="c1">#1+args }</span>
+                <span class="p">{</span> <span class="n">cmd</span> <span class="c1">#2+args }</span>
+                <span class="n">etc</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>例如，如果你想加入一个定位操作和建立匹配，可以使用下面的命令：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexTool</span> <span class="p">{</span> <span class="n">Locate</span> <span class="s2">&quot;-tD:\My Unitex\English\Corpus\ivanhoe.snt&quot;</span>
+<span class="s2">&quot;D:\My Unitex\English</span><span class="se">\r</span><span class="s2">egexp.fst2&quot;</span>
+<span class="s2">&quot;-aD:\My Unitex\English\Alphabet.txt&quot;</span> <span class="o">-</span><span class="n">L</span> <span class="o">-</span><span class="n">I</span> <span class="o">-</span><span class="n">n200</span>
+<span class="s2">&quot;--morpho=D:\Unitex2.0\English\Dela\dela-en-public.bin&quot;</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">Y</span> <span class="p">}</span>
+<span class="p">{</span> <span class="n">Concord</span> <span class="s2">&quot;D:\My Unitex\English\Corpus\ivanhoe_snt\concord.ind&quot;</span>
+<span class="s2">&quot;-fCourier new&quot;</span> <span class="o">-</span><span class="n">s12</span> <span class="o">-</span><span class="n">l40</span> <span class="o">-</span><span class="n">r55</span> <span class="o">--</span><span class="n">CL</span> <span class="o">--</span><span class="n">html</span>
+<span class="s2">&quot;-aD:\My Unitex\English\Alphabet_sort.txt&quot;</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">[on/off]</span></code>/<code class="docutils literal"><span class="pre">--output=[on/off]</span></code>:
+激活（ON）或关闭（OFF）标准输出</li>
+<li><code class="docutils literal"><span class="pre">-e</span> <span class="pre">[on/off]</span></code>/<code class="docutils literal"><span class="pre">--error=[on/off]</span></code>:
+激活（ON）或禁用（OFF）的标准错误输出</li>
+</ul>
+<p>例如:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexTool</span> <span class="p">{</span> <span class="n">SelectOutput</span> <span class="o">-</span><span class="n">o</span> <span class="n">off</span> <span class="o">-</span><span class="n">e</span> <span class="n">off</span> <span class="p">}</span> <span class="p">{</span> <span class="n">Normalize</span>
+<span class="n">Unitex</span>\<span class="n">English</span>\<span class="n">Corpus</span>\<span class="n">ivanhoe</span><span class="o">.</span><span class="n">txt</span> <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id62">
+<h2>Unitex日志记录工具<a class="headerlink" href="#id62" title="永久链接至标题">¶</a></h2>
+<p>[section-UnitexToolLogger] <code class="docutils literal"><span class="pre">UnitexToolLogger</span> <span class="pre">&lt;utilities&gt;</span></code></p>
+<p>该程序是&nbsp;UnitexTool 的扩展集。它可以重新运行&nbsp;.ulp
+日志文件。它还可以记录&nbsp;UnitexTool 的运行会话，并创建一个&nbsp;.ulp
+日志文件。如果&nbsp;UnitexToolLogger 运行如同&nbsp;UnitexTool（对&nbsp;Unitex
+外部程序只用命令行参数），如果一个名为&nbsp;unitex_logging_parameters_count.txt
+的文件（在当前目录下）包含路径，那么正在运行会话的日志文件&nbsp;.ulp
+将被创建。该&nbsp;.ulp 文件是一个压缩文件（带解压缩兼容），它可用于调试。</p>
+<p><code class="docutils literal"><span class="pre">UnitexToolLogger</span> <span class="pre">RunLog</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;ulp&gt;</span></code></p>
+<p><strong>运行日志后的功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-m</span></code>/<code class="docutils literal"><span class="pre">--quiet</span></code>: 运行时不发出消息；</li>
+<li><code class="docutils literal"><span class="pre">-v</span></code>/<code class="docutils literal"><span class="pre">--verbose</span></code>: 运行时发出消息；</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">DIR</span></code>/<code class="docutils literal"><span class="pre">--rundir=DIR</span></code>: 执行日志文件的路径；</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">newfile.ulp</span></code>/<code class="docutils literal"><span class="pre">--result=newfile.ulp</span></code>: 创建的结果文件&nbsp;ulp；</li>
+<li><code class="docutils literal"><span class="pre">-c</span></code>/<code class="docutils literal"><span class="pre">--clean</span></code>: 运行开始后删除工作文件；</li>
+<li><code class="docutils literal"><span class="pre">-k</span></code>/<code class="docutils literal"><span class="pre">--keep</span></code>: 运行开始后保存工作文件；</li>
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">file.txt</span></code>/<code class="docutils literal"><span class="pre">--summary；=file.txt</span></code>: 日志比较结果摘要文件</li>
+<li><code class="docutils literal"><span class="pre">-e</span> <span class="pre">file.txt</span></code>/<code class="docutils literal"><span class="pre">--summary-error=file.txt</span></code>: 错误比较结果摘要文件；</li>
+<li><code class="docutils literal"><span class="pre">-b</span></code>/<code class="docutils literal"><span class="pre">--no-benchmark</span></code>: 不记录在日志文件的执行时间；</li>
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--cleanlog</span></code>: 不保存执行时间于结果日志；</li>
+<li><code class="docutils literal"><span class="pre">-l</span></code>/<code class="docutils literal"><span class="pre">--keeplog</span></code>: 删除执行后的结果ulp；</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">NameTool</span></code>/<code class="docutils literal"><span class="pre">--tool=NameTool</span></code>: 对&nbsp;<code class="docutils literal"><span class="pre">NameTool</span></code> 只启动日志；</li>
+<li><code class="docutils literal"><span class="pre">-i</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--increment=N</span></code>: 从&nbsp;0 到 &nbsp;N 递增文件名&nbsp;&lt;ulp&gt;；</li>
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--thread=N</span></code>: 创建一个线程；</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--random=N</span></code>: 在列表中选择&nbsp;N
+次随机日志文件（在每个线程）；</li>
+<li><code class="docutils literal"><span class="pre">-f</span> <span class="pre">N</span></code>/<code class="docutils literal"><span class="pre">--break-after=N</span></code>: &nbsp;N 次运行后取消用户（只使用一个线程）；</li>
+<li><code class="docutils literal"><span class="pre">-u</span> <span class="pre">PATH</span></code>/<code class="docutils literal"><span class="pre">--unfound-location=PATH</span></code>: 如果缺少日志文件，从&nbsp;PATH
+提取字典和&nbsp;FST2；</li>
+</ul>
+<p>UnitexToolLogger 的另一个用途是使用&nbsp;MzRepairUlp 来修复损坏的&nbsp;ulp
+文件（通常情况下，崩溃日志）：</p>
+<p><code class="docutils literal"><span class="pre">UnitexToolLogger</span> <span class="pre">MzRepairUlp</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;ulpfile&gt;</span></code></p>
+<p><strong>MzRepairUlp之后的功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-t</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--temp=X</span></code>: 把&nbsp;X 用作临时文件名（&lt;ulpfile&gt;. 默认建立）；</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">X</span></code>/<code class="docutils literal"><span class="pre">--output=X</span></code>: 把&nbsp;X 用作 &nbsp;.ulp
+文件名（&lt;ulpfile&gt;.默认修复）；</li>
+<li><code class="docutils literal"><span class="pre">-m</span></code>/<code class="docutils literal"><span class="pre">--quiet</span></code>: 运行时不发送消息；</li>
+<li><code class="docutils literal"><span class="pre">-v</span></code>/<code class="docutils literal"><span class="pre">--verbose</span></code>: 运行时发送消息；</li>
+</ul>
+<p>UnitexToolLogger 的另一个用途是使用&nbsp;CreateLog
+功能（用大括号），创建&nbsp;Unitex 程序的运行日志文件，如：</p>
+<p><code class="docutils literal"><span class="pre">UnitexToolLogger</span> <span class="pre">{</span> <span class="pre">CreateLog</span> <span class="pre">[OPTIONS]</span> <span class="pre">}</span> <span class="pre">cmd</span> <span class="pre">args</span></code></p>
+<p><code class="docutils literal"><span class="pre">UnitexToolLogger</span> <span class="pre">{</span> <span class="pre">CreateLog</span> <span class="pre">[OPTIONS]</span> <span class="pre">}</span> <span class="pre">{</span> <span class="pre">cmd</span> <span class="pre">#1+args</span> <span class="pre">}</span> <span class="pre">{</span> <span class="pre">cmd</span> <span class="pre">#2+args</span> <span class="pre">}</span> <span class="pre">etc.</span></code></p>
+<p>例如，</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexToolLogger</span> <span class="p">{</span> <span class="n">CreateLog</span> <span class="o">--</span><span class="n">log_file</span><span class="o">=</span><span class="n">my_run_normalize</span><span class="o">.</span><span class="n">ulp</span> <span class="p">}</span>
+             <span class="n">Normalize</span> <span class="s2">&quot;C:\My Unitex\French\Corpus\80jours.txt&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexToolLogger</span> <span class="p">{</span> <span class="n">CreateLog</span> <span class="o">--</span><span class="n">directory</span><span class="o">=</span><span class="n">c</span><span class="p">:</span>\<span class="n">logs</span> <span class="p">}</span>
+                  <span class="p">{</span> <span class="n">Compress</span> <span class="n">c</span><span class="p">:</span>\<span class="n">dela</span>\<span class="n">mydela</span><span class="o">.</span><span class="n">dic</span> <span class="p">}</span>
+                  <span class="p">{</span> <span class="n">CheckDic</span> <span class="o">--</span><span class="n">delaf</span> <span class="n">c</span><span class="p">:</span>\<span class="n">dela</span>\<span class="n">mydela</span><span class="o">.</span><span class="n">inf</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>创建日志后的功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-g</span></code>/<code class="docutils literal"><span class="pre">--no_create_log</span></code>: 不创建日志文件。不兼容所有其他功能；</li>
+<li><code class="docutils literal"><span class="pre">-p</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--param_file=XXX</span></code>:
+加载设置文件为&nbsp;unitex_logging_parameters.txt。不兼容所有其他功能；</li>
+<li><code class="docutils literal"><span class="pre">-d</span> <span class="pre">XXX/--directory=XXX</span></code>: 创建日志文件的目录位置；</li>
+<li><code class="docutils literal"><span class="pre">-l</span> <span class="pre">XXX/--log_file=XXX</span></code>: 创建的日志文件名；</li>
+<li><code class="docutils literal"><span class="pre">-i</span></code>/<code class="docutils literal"><span class="pre">--store_input_file</span></code>:保存输入文件于日志中（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-n</span></code>/<code class="docutils literal"><span class="pre">--no_store_input_file</span></code>: 不保存输入文件于日志中
+（阻止恢复日志文件）；</li>
+<li><code class="docutils literal"><span class="pre">-o</span></code>/<code class="docutils literal"><span class="pre">--store_output_file</span></code>: 保存输出文件于日志；</li>
+<li><code class="docutils literal"><span class="pre">-u</span></code>/<code class="docutils literal"><span class="pre">--no_store_output_file</span></code>: 不保存输出文件于日志（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-s</span></code>/<code class="docutils literal"><span class="pre">--store_list_input_file</span></code>: 保存输入文件列表于日志（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--no_store_list_input_file</span></code>: 不保存输入文件列表于日志；</li>
+<li><code class="docutils literal"><span class="pre">-r</span></code>/<code class="docutils literal"><span class="pre">--store_list_output_file</span></code>: 保存输出文件列表于日志（默认）；</li>
+<li><code class="docutils literal"><span class="pre">-f</span></code>/<code class="docutils literal"><span class="pre">--no_store_list_output_file</span></code>: 不保存输出文件列表于日志；</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexToolLogger</span> <span class="p">{</span> <span class="n">SelectOutput</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="p">}</span>
+                <span class="p">{</span> <span class="n">cmd</span> <span class="c1">#1+args }</span>
+                <span class="p">{</span> <span class="n">cmd</span> <span class="c1">#2+args }</span>
+                <span class="n">etc</span><span class="o">.</span>
+</pre></div>
+</div>
+<p><strong>选择输出后功能 :</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">[on/off]</span></code>/<code class="docutils literal"><span class="pre">--output=[on/off]</span></code>:
+激活（ON）或关闭（OFF）标准输出</li>
+<li><code class="docutils literal"><span class="pre">-e</span> <span class="pre">[on/off]</span></code>/<code class="docutils literal"><span class="pre">--error=[on/off]</span></code>:
+激活（ON）或关闭（OFF）标准错误输出</li>
+</ul>
+<p>例如:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">UnitexToolLogger</span> <span class="p">{</span> <span class="n">SelectOutput</span> <span class="o">-</span><span class="n">o</span> <span class="n">off</span> <span class="o">-</span><span class="n">e</span> <span class="n">off</span> <span class="p">}</span> <span class="p">{</span> <span class="n">Normalize</span>
+<span class="n">Unitex</span>\<span class="n">English</span>\<span class="n">Corpus</span>\<span class="n">ivanhoe</span><span class="o">.</span><span class="n">txt</span> <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="unxmlize">
+<h2>Unxmlize<a class="headerlink" href="#unxmlize" title="永久链接至标题">¶</a></h2>
+<p>[section-Unxmlize]</p>
+<p>该程序将从给定的.xml或.html文件移除所有的xml标签，产生一个由Unitex处理的文本文件。
+<code class="docutils literal"><span class="pre">Unxmlize</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;file&gt;</span></code></p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">TXT</span></code>/<code class="docutils literal"><span class="pre">--output=TXT</span></code>: 输出文件。 默认情况下， foo.xml =&gt;
+foo.txt</li>
+<li><code class="docutils literal"><span class="pre">--output_offsets=XXX</span></code>: 产生的偏移文件</li>
+<li><code class="docutils literal"><span class="pre">--PRLG=XXX</span></code>: 在古希腊语提取用于&nbsp;PRLG 项目的信息于&nbsp;XXX 文件（要求
+&nbsp;<code class="docutils literal"><span class="pre">--output_offsets</span></code>）</li>
+<li><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--html</span></code>: 将文件视作&nbsp;html 文件（不考虑扩展名）</li>
+<li><code class="docutils literal"><span class="pre">-x</span></code>/<code class="docutils literal"><span class="pre">--xml</span></code>: 将文件视作&nbsp;xml 文件（不考虑扩展名）</li>
+<li><code class="docutils literal"><span class="pre">-l</span></code>/<code class="docutils literal"><span class="pre">--tolerate</span></code>: 尽量容忍一些标记语言畸形</li>
+<li><code class="docutils literal"><span class="pre">--comments=IGNORE</span></code>: 每一个评论被删除（默认）</li>
+<li><code class="docutils literal"><span class="pre">--comments=SPACE</span></code>: 每条注释是由一个空格替换</li>
+<li><code class="docutils literal"><span class="pre">--scripts=IGNORE</span></code>:删除每一个脚本块</li>
+<li><code class="docutils literal"><span class="pre">--scripts=SPACE</span></code>: 每条注释由单个空格代替（默认情况&nbsp;.html）</li>
+</ul>
+<p>注意：默认情况下，脚本标记作为一般的标签处理（默认情况&nbsp;.xml）。</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">--normal_tags=IGNORE</span></code>:所有其他标记将被删除（默认情况&nbsp;.xml）</li>
+<li><code class="docutils literal"><span class="pre">--normal_tags=SPACE</span></code>: 所有其他标记由单个空格代替（默认情况&nbsp;.html）</li>
+</ul>
+</div>
+<div class="section" id="xmlizer">
+<h2>XMLizer<a class="headerlink" href="#xmlizer" title="永久链接至标题">¶</a></h2>
+<p>[section-XMLizer] <code class="docutils literal"><span class="pre">XMLizer</span> <span class="pre">[OPTIONS]</span> <span class="pre">&lt;txt&gt;</span></code></p>
+<p>该程序需要一个原始文本文件&nbsp;<code class="docutils literal"><span class="pre">&lt;txt&gt;</span></code> 并产生对应&nbsp;TEI 或&nbsp;XML
+基本文件。TEI 和&nbsp;XML 之间的区别在于，TEI 文件将包含一个&nbsp;TEI 标题。</p>
+<p><strong>功能:</strong></p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-x</span></code>/<code class="docutils literal"><span class="pre">--xml</span></code>: 产生一个&nbsp;XML 文件；</li>
+<li><code class="docutils literal"><span class="pre">-t</span></code>/<code class="docutils literal"><span class="pre">--tei</span></code>: 产生一个&nbsp;TEI 文件 （默认）；</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">XXX</span></code>/<code class="docutils literal"><span class="pre">--normalization=XXX</span></code>: 指定使用的规范化规则文件（见章节
+&nbsp;[section-normalization-file]）；</li>
+<li><code class="docutils literal"><span class="pre">-o</span> <span class="pre">OUT</span></code>/<code class="docutils literal"><span class="pre">--output=OUT</span></code>:可选的输出文件名 （默认情况: <code class="docutils literal"><span class="pre">file.txt</span></code>
+&gt; <code class="docutils literal"><span class="pre">file.xml</span></code>)；</li>
+<li><code class="docutils literal"><span class="pre">-a</span> <span class="pre">ALPH</span></code>/<code class="docutils literal"><span class="pre">--alphabet=ALPH</span></code>: 字母文件；</li>
+<li><code class="docutils literal"><span class="pre">-s</span> <span class="pre">SEG</span></code>/<code class="docutils literal"><span class="pre">--segmentation_grammar=SEG</span></code>:
+要使用的句子划定语法。该语法应该像在预处理阶段时使用于语料库的&nbsp;<code class="docutils literal"><span class="pre">Sentence.grf</span></code>
+，但它可以包括特殊标记&nbsp;<code class="docutils literal"><span class="pre">{P}</span></code> ，以此指示段落边界。</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-zh.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">使用外部程序</a><ul>
+<li><a class="reference internal" href="#id2">创建日志文件</a></li>
+<li><a class="reference internal" href="#id3">控制台</a></li>
+<li><a class="reference internal" href="#unitex-jni">Unitex JNI</a></li>
+<li><a class="reference internal" href="#id4">文本文件编码设置</a></li>
+<li><a class="reference internal" href="#krawu">构建KrAwu字典</a></li>
+<li><a class="reference internal" href="#cassys">Cassys</a></li>
+<li><a class="reference internal" href="#id5">检查字典</a></li>
+<li><a class="reference internal" href="#id6">压缩</a></li>
+<li><a class="reference internal" href="#id7">一致性</a></li>
+<li><a class="reference internal" href="#concordiff">ConcorDiff</a></li>
+<li><a class="reference internal" href="#id8">转换</a></li>
+<li><a class="reference internal" href="#dico">Dico</a></li>
+<li><a class="reference internal" href="#id49">转储偏移</a></li>
+<li><a class="reference internal" href="#id50">转储偏移</a></li>
+<li><a class="reference internal" href="#elag">Elag</a></li>
+<li><a class="reference internal" href="#elagcomp">ElagComp</a></li>
+<li><a class="reference internal" href="#evamb">Evamb</a></li>
+<li><a class="reference internal" href="#id51">提取</a></li>
+<li><a class="reference internal" href="#id52">展平</a></li>
+<li><a class="reference internal" href="#fst2check">Fst2Check</a></li>
+<li><a class="reference internal" href="#fst2list">Fst2List</a></li>
+<li><a class="reference internal" href="#fst2txt">Fst2Txt</a></li>
+<li><a class="reference internal" href="#grf2fst2">Grf2Fst2</a></li>
+<li><a class="reference internal" href="#grfdiff">GrfDiff</a></li>
+<li><a class="reference internal" href="#grfdiff3">GrfDiff3</a></li>
+<li><a class="reference internal" href="#implodetfst">ImplodeTfst</a></li>
+<li><a class="reference internal" href="#id53">定位</a></li>
+<li><a class="reference internal" href="#tfst">定位Tfst</a></li>
+<li><a class="reference internal" href="#multiflex">MultiFlex</a></li>
+<li><a class="reference internal" href="#id54">规范化</a></li>
+<li><a class="reference internal" href="#polylex">PolyLex</a></li>
+<li><a class="reference internal" href="#id55">重建Tfst</a></li>
+<li><a class="reference internal" href="#reconstrucao">Reconstrucao</a></li>
+<li><a class="reference internal" href="#reg2grf">Reg2Grf</a></li>
+<li><a class="reference internal" href="#seq2grf">Seq2Grf</a></li>
+<li><a class="reference internal" href="#sorttxt">SortTxt</a></li>
+<li><a class="reference internal" href="#id56">统计</a></li>
+<li><a class="reference internal" href="#table2grf">Table2Grf</a></li>
+<li><a class="reference internal" href="#id57">打标签</a></li>
+<li><a class="reference internal" href="#tagsetnormtfst">TagsetNormTfst</a></li>
+<li><a class="reference internal" href="#tei2txt">TEI2Txt</a></li>
+<li><a class="reference internal" href="#tfst2grf">Tfst2Grf</a></li>
+<li><a class="reference internal" href="#tfst2unambig">Tfst2Unambig</a></li>
+<li><a class="reference internal" href="#id58">标记化</a></li>
+<li><a class="reference internal" href="#id59">打标签培训</a></li>
+<li><a class="reference internal" href="#txt2tfst">Txt2Tfst</a></li>
+<li><a class="reference internal" href="#id60">解压缩</a></li>
+<li><a class="reference internal" href="#id61">去标记化</a></li>
+<li><a class="reference internal" href="#unitex">Unitex工具</a></li>
+<li><a class="reference internal" href="#id62">Unitex日志记录工具</a></li>
+<li><a class="reference internal" href="#unxmlize">Unxmlize</a></li>
+<li><a class="reference internal" href="#xmlizer">XMLizer</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-zh.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/13-programs_ZH_utf8.txt"
+            rel="nofollow">显示源代码</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>快速搜索</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/13-programs_ZH_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
