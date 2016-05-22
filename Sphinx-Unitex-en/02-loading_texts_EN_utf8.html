@@ -1,0 +1,611 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="EN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Loading a text &mdash; Unitex-en 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-en 1.0.1 documentation" href="Unitex-en.html" />
+    <link rel="next" title="Dictionaries" href="03-dictionaries_EN_utf8.html" />
+    <link rel="prev" title="Installation of Unitex" href="01-installation_EN_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="loading-a-text">
+<h1>Loading a text<a class="headerlink" href="#loading-a-text" title="Permalink to this headline">¶</a></h1>
+<p>One of the main functionalities of Unitex is to search a text for
+expressions. To do that, texts have to undergo a set of preprocessing
+steps that normalize non-ambiguous forms and split the text in
+sentences. Once these operations are performed, the electronic
+dictionaries are applied to the texts. Then one can search more
+effectively in the texts by using grammars.</p>
+<p>This chapter describes the different steps for text preprocessing.</p>
+<div class="section" id="selecting-a-language">
+<h2>Selecting a language<a class="headerlink" href="#selecting-a-language" title="Permalink to this headline">¶</a></h2>
+<p>When starting Unitex, the program asks you to choose the language in
+which you want to work (see figure&nbsp;[fig-language-selection]). The
+languages displayed are the ones that are present in the Unitex system
+directory and those that are installed in your personal working
+directory. If you use a language for the first time, Unitex copies the
+system directory for this language to your working directory, except for
+the dictionaries in order to save disk space.</p>
+<p>WARNING: If you already have a working directory for a given language,
+Unitex won’t try to copy system data into it. So, if an update has
+modified a resource file other than a dictionary, you will have to copy
+by yourself this file, or to delete your working directory for this
+language, and let Unitex rebuild it properly.</p>
+<p>Choosing the language allows Unitex to find certain files, for example
+the alphabet file. You can change the language at any time by choosing
+“Change Language...” in the “Text” menu. If you change the language, the
+program will close all windows related to the current text, if there are
+any. The active language is indicated in the title bar of the graphical
+interface.</p>
+<div class="figure" id="id11">
+<a class="reference internal image-reference" href="resources/img/fig2-1.png"><img alt="[fig-language-selection]Language selection when starting Unitex" src="resources/img/fig2-1.png" style="width: 6.20000cm;" /></a>
+<p class="caption"><span class="caption-text">[fig-language-selection]Language selection when starting Unitex</span></p>
+</div>
+</div>
+<div class="section" id="text-formats">
+<h2>Text formats<a class="headerlink" href="#text-formats" title="Permalink to this headline">¶</a></h2>
+<p>Unitex works with Unicode texts. Unicode is a standard that describes a
+universal character code. Each character is given a unique number, which
+allows for representing texts without having to take into account the
+proprietary codes on different machines and/or operating systems. Unitex
+uses a two-byte representation of the Unicode 3.0 standard, called
+Unicode Little-Endian (for more details, see
+<a href="#id1"><span class="problematic" id="id2">:raw-latex:`\cite{UNICODE}`</span></a>).</p>
+<p>Texts that come with Unitex are already in Unicode format. If you try to
+open a text that is not in Unicode, the program proposes to convert it
+(see figure&nbsp;[auto-transcoding]). This conversion is based on the current
+language: if you are working in French, Unitex proposes to convert your
+text <a class="footnote-reference" href="#id9" id="id3">[1]</a> assuming that it is coded using a French code page. By
+default, Unitex proposes to either replace the original text or to
+rename the original file by inserting <code class="docutils literal"><span class="pre">.old</span></code> at the beginning of its
+extension. For example, if one has an ASCII file named <code class="docutils literal"><span class="pre">biniou.txt</span></code>,
+the conversion process will create a copy of this ASCII file named
+<code class="docutils literal"><span class="pre">biniou.old.txt</span></code>, and will replace the contents of <code class="docutils literal"><span class="pre">biniou.txt</span></code> with
+its equivalent in Unicode.</p>
+<div class="figure" id="id12">
+<a class="reference internal image-reference" href="resources/img/fig2-2.png"><img alt="[auto-transcoding]Automatic conversion of a non-Unicode text" src="resources/img/fig2-2.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">[auto-transcoding]Automatic conversion of a non-Unicode text</span></p>
+</div>
+<p>If the encoding suggested by default is not correct or if you want to
+rename the file differently than with the suffix <code class="docutils literal"><span class="pre">.old</span></code>, you must use
+the “More options...” button. This allows you to choose source and
+target encodings of the documents to be converted (see
+figure&nbsp;[transcoding]). By default, the selected source encoding is that
+which corresponds to the current language and the destination encoding
+is Unicode Little-Endian. You can modify these choices by selecting any
+source and target encodings. Thus, if you wish, you can convert your
+data into other encodings, as for example UTF-8 in order for instance to
+create web pages. The button “Add Files” enables you to select the files
+to be converted. The button “Remove Files” makes it possible to remove a
+list of files erroneously selected. The button “Transcode” will start
+the conversion of all the selected files. If an error occurs with a file
+is processed (for example, a file which is already in Unicode), the
+conversion continues with the next file.</p>
+<div class="figure" id="id13">
+<a class="reference internal image-reference" href="resources/img/fig2-3.png"><img alt="[transcoding]Transcoding files" src="resources/img/fig2-3.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">[transcoding]Transcoding files</span></p>
+</div>
+<p>To obtain a text in the right format, you can also use a text processor
+like the free software from OpenOffice.org
+(<a href="#id4"><span class="problematic" id="id5">:raw-latex:`\cite{OpenOffice}`</span></a>) or Microsoft Word, and save your
+document with the format “Unicode text”. In OpenOffice Writer, you have
+to choose the “Coded Text (*.txt)” format and then select the “Unicode”
+encoding in the configuration window as shown on figure [OfficeWriter].</p>
+<div class="figure" id="id14">
+<a class="reference internal image-reference" href="resources/img/fig2-4.png"><img alt="[OfficeWriter]Saving in Unicode with OpenOffice Writer" src="resources/img/fig2-4.png" style="width: 12.50000cm;" /></a>
+<p class="caption"><span class="caption-text">[OfficeWriter]Saving in Unicode with OpenOffice Writer</span></p>
+</div>
+<p>By default, the encoding proposed on a PC is always Unicode
+Little-Endian. The texts thus obtained do not contain any formatting
+information anymore (fonts, colors , etc.) and are ready to be used with
+Unitex.</p>
+<p>You can change the default encoding to UTF16LE, UTF16BE or UTF8 in the
+’Encoding’ tab via the Preference command in the Info menu. This
+encoding is valid for the current language only.</p>
+<div class="figure" id="id15">
+<a class="reference internal image-reference" href="resources/img/fig2-5.png"><img alt="[OfficeWriter]Setting the default encoding for current language" src="resources/img/fig2-5.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">[OfficeWriter]Setting the default encoding for current language</span></p>
+</div>
+</div>
+<div class="section" id="editing-text-files">
+<h2>Editing text files<a class="headerlink" href="#editing-text-files" title="Permalink to this headline">¶</a></h2>
+<p>For small texts, you also have the possibility of using the text editor
+integrated into Unitex, accessible via the “Open...” command in the
+“File Edition” menu. This editor offers search and replace
+functionalities for the texts and dictionaries handled by Unitex. To use
+it, click on the “Find” icon. You will then see a window divided into
+three parts. The “Find” part corresponds to the usual search operations.
+If you open a text split into sentences, you can base your search on
+sentence numbers in the “Find Sentence” part. Lastly, the “Search
+Dictionary” part, visible in figure&nbsp;[dictionary-search], enables you to
+carry out operations concerning the electronic dictionaries. In
+particular, you can search by specifying if it concerns inflected forms,
+lemmas, grammatical and semantic and/or inflectional codes. Thus, if you
+want to search for all the verbs which have the semantic feature <code class="docutils literal"><span class="pre">t</span></code>,
+which indicates transitivity, you just have to search for <code class="docutils literal"><span class="pre">t</span></code> by
+clicking on “Grammatical code”. You will get the matching entries
+without confusion with all the other occurrences of the letter <code class="docutils literal"><span class="pre">t</span></code>.</p>
+</div>
+<div class="section" id="opening-a-text">
+<h2>Opening a text<a class="headerlink" href="#opening-a-text" title="Permalink to this headline">¶</a></h2>
+<p>Unitex deals with several types of documents. The files with the
+extension <code class="docutils literal"><span class="pre">.snt</span></code> are text files preprocessed by Unitex which are ready
+to be manipulated by the different system functions. You can also load
+raw files ending with <code class="docutils literal"><span class="pre">.txt</span></code>, or XML and HTML files. To open any of
+these files, click on “Open...” in the “Text” menu. You can there choose
+the file type (“Raw Unicode Texts”, “XML files”, “HTML files”, “Unitex
+Texts”). If you open XML or HTML files, foo.xml for example, it will be
+preprocessed in order to remove non textual content. This will produce a
+foo.xml.txt file containing only the textual content of the original
+file. The resulting <code class="docutils literal"><span class="pre">.txt</span></code> file will be processed to produce a
+<code class="docutils literal"><span class="pre">.snt</span></code> file</p>
+<div class="figure" id="id16">
+<a class="reference internal image-reference" href="resources/img/fig2-7.png"><img alt="Text Menu" src="resources/img/fig2-7.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Text Menu</span></p>
+</div>
+<div class="figure" id="id17">
+<a class="reference internal image-reference" href="resources/img/fig2-8.png"><img alt="Opening a Unicode text" src="resources/img/fig2-8.png" style="width: 13.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Opening a Unicode text</span></p>
+</div>
+</div>
+<div class="section" id="preprocessing-a-text">
+<h2>Preprocessing a text<a class="headerlink" href="#preprocessing-a-text" title="Permalink to this headline">¶</a></h2>
+<p>After a text is selected, Unitex offers to preprocess it. Text
+preprocessing consists of performing the following operations:
+normalization of separators, splitting into sentences, normalization of
+non-ambiguous forms, tokenization and application of dictionaries. If
+you choose not to preprocess the text, it will nevertheless be
+normalized and tokenized, since these operations are necessary for all
+further Unitex operations. It is always possible to carry out the
+preprocessing later by clicking on “Preprocess Text...” in the “Text”
+menu.</p>
+<div class="figure" id="id18">
+<a class="reference internal image-reference" href="resources/img/fig2-9.png"><img alt="Preprocessing Window[fig-preprocessing-frame]" src="resources/img/fig2-9.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Preprocessing Window[fig-preprocessing-frame]</span></p>
+</div>
+<p>If you choose to preprocess the text, Unitex proposes to parameterize it
+as in the window shown in figure&nbsp;[fig-preprocessing-frame]. The option
+“Apply FST2 in MERGE mode” is used to split the text into sentences. The
+option “Apply FST2 in REPLACE mode” is used to make replacements in the
+text, especially for the normalization of non-ambiguous forms. With the
+option “Apply All default Dictionaries” you can apply dictionaries in
+the DELA format (Dictionnaires Electroniques du LADL). The option
+“Analyze unknown words as free compound words” is used in Norwegian for
+correctly analyzing compound words constructed via concatenation of
+simple forms. Finally, the option “Construct Text Automaton” is used to
+build the text automaton. This option is deactivated by default, because
+it consumes a large amount of memory and disk space if the text is too
+large. The construction of the text automaton is described in
+chapter&nbsp;[chap-text-automaton].</p>
+<p>NOTE: If you click on “Cancel but tokenize text”, the program will carry
+out the normalization of separators and split the text into tokens.
+Click on “Cancel and close text” to cancel the operation.</p>
+<div class="section" id="normalization-of-separators">
+<h3>Normalization of separators<a class="headerlink" href="#normalization-of-separators" title="Permalink to this headline">¶</a></h3>
+<p>The standard separators are the space, the tab and the newline
+characters. There can be several separators following each other, but
+since this isn’t useful for linguistic analyses, separators are
+normalized according to the following rules:</p>
+<ul class="simple">
+<li>a sequence of separators that contains at least one newline is
+replaced by a single newline</li>
+<li>all other sequences of separators are replaced by a single space.</li>
+</ul>
+<p>The distinction between space and newline is maintained at this point
+because the presence of newlines may have an effect on the process of
+splitting the text into sentences. The result of the normalization of a
+text named <code class="docutils literal"><span class="pre">my_text.txt</span></code> is a file in the same directory as the
+<code class="docutils literal"><span class="pre">.txt</span></code> file and is named <code class="docutils literal"><span class="pre">my_text.snt</span></code>.</p>
+<p>NOTE: When the text is preprocessed using the graphical interface, a
+directory named</p>
+<p><code class="docutils literal"><span class="pre">my_text_snt</span></code> is created immediately after normalization. This
+directory, called text directory, contains all the data associated with
+this text.</p>
+</div>
+<div class="section" id="splitting-into-sentences">
+<h3>Splitting into sentences<a class="headerlink" href="#splitting-into-sentences" title="Permalink to this headline">¶</a></h3>
+<p>Splitting texts into sentences is an important preprocessing step since
+this helps in determining the units for linguistic processing. The
+splitting is used by the text automaton construction program. In
+contrast to what one might think, detecting sentence boundaries is not a
+trivial problem. Consider the following text:</p>
+<p><em>The family has urgently called Dr. Martin.</em></p>
+<p>The full stop that follows <em>Dr</em> is followed by a word beginning with a
+capital letter. Thus it may be considered as the end of the sentence,
+which would be wrong. To avoid the kind of problems caused by the
+ambiguous use of punctuation, grammars are used to describe the
+different contexts for the end of a sentence.
+Figure&nbsp;[fig-example-sentence-splitting] shows an example grammar for
+sentence splitting (for French sentences).</p>
+<p>When a path of the grammar recognizes a sequence in the text and when
+this path produces the sentence delimiter symbol <code class="docutils literal"><span class="pre">{S}</span></code> , this symbol
+is inserted into the text. For example, one of the paths shown in
+figure&nbsp;[fig-example-sentence-splitting] recognizes the sequence
+consisting of a question mark and a word beginning with a capital letter
+and inserts the symbol <code class="docutils literal"><span class="pre">{S}</span></code> between the question mark and the
+following word. The following text:</p>
+<p><em>What time is it? Eight o’ clock.</em></p>
+<p>will be converted to:</p>
+<p><em>What time is it ?{S} Eight o’ clock.</em></p>
+<p>A grammar for end-of-sentence detection may use the following special
+symbols, or meta-symbols:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;E&gt;</span></code>: empty word, or epsilon. Recognizes the empty sequence;</li>
+<li><code class="docutils literal"><span class="pre">&lt;WORD&gt;</span></code>: recognizes any sequence of letters;</li>
+<li><code class="docutils literal"><span class="pre">&lt;LOWER&gt;</span></code>: recognizes any sequence of letters in lower case;</li>
+<li><code class="docutils literal"><span class="pre">&lt;UPPER&gt;</span></code>: recognizes any sequence of letters in upper case;</li>
+<li><code class="docutils literal"><span class="pre">&lt;FIRST&gt;</span></code>: recognizes any sequence of letters that begins with an
+upper case letter;</li>
+<li><code class="docutils literal"><span class="pre">&lt;NB&gt;</span></code>: recognizes any sequence of digits (1234 is recognized but
+not 1 234);</li>
+<li><code class="docutils literal"><span class="pre">&lt;PNC&gt;</span></code>: recognizes the punctuation symbols `` ; , ! ? :`` and the
+inverted exclamation points and question marks in Spanish and some
+Asian punctuation letters;</li>
+<li><code class="docutils literal"><span class="pre">&lt;^&gt;</span></code>: recognizes a newline;</li>
+<li><code class="docutils literal"><span class="pre">#</span></code>: prohibits the presence of a space.</li>
+</ul>
+<p>Earlier codes for <code class="docutils literal"><span class="pre">&lt;WORD&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;LOWER&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;UPPER&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;FIRST&gt;</span></code>
+were respectively <code class="docutils literal"><span class="pre">&lt;MOT&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;MIN&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;MAJ&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;PRE&gt;</span></code>. They
+can still be used for backward compatibility of the system with existing
+graphs. Though there are no current plans to remove this codes, it is
+recommended to avoid them in graphs designed to be used with more recent
+versions, <a class="footnote-reference" href="#id10" id="id6">[2]</a> so that the number of lexical masks in use does not
+increase uselessly.</p>
+<p>By default, the space is optional between two boxes. If you want to
+prohibit the presence of the space you have to use the special character
+<code class="docutils literal"><span class="pre">#</span></code>. At the opposite, if you want to force the presence of the space,
+you must use the sequence <code class="docutils literal"><span class="pre">&quot;</span> <span class="pre">&quot;</span></code>. Lower and upper case letters are
+defined by an alphabet file (see chapter&nbsp;[chap-file-formats]). For more
+details on grammars, see chapter&nbsp;[chap-grammars]. For more information
+about sentence boundary detection, see
+<a href="#id7"><span class="problematic" id="id8">:raw-latex:`\cite{ameliorer-decoupage-en-phrases}`</span></a>. The grammar used
+here is named <code class="docutils literal"><span class="pre">Sentence.fst2</span></code> and can be found in the following
+directory:</p>
+<p><code class="docutils literal"><span class="pre">/(working</span> <span class="pre">directory)/(language)/Graphs/Preprocessing/Sentence</span></code></p>
+<p>This grammar is applied to a text with the <code class="docutils literal"><span class="pre">Fst2Txt</span></code> program in MERGE
+mode. This has the effect that the output produced by the grammar, in
+this case the symbol <code class="docutils literal"><span class="pre">{S}</span></code>, is inserted into the text. This program
+takes a <code class="docutils literal"><span class="pre">.snt</span></code> file and modifies it.</p>
+</div>
+<div class="section" id="normalization-of-non-ambiguous-forms">
+<h3>Normalization of non-ambiguous forms<a class="headerlink" href="#normalization-of-non-ambiguous-forms" title="Permalink to this headline">¶</a></h3>
+<p>Certain forms present in texts can be normalized (for example, the
+English sequence “<em>I’m</em>” is equivalent to “<em>I am</em>”). You may want to
+replace these forms according to your own needs. However, you have to be
+careful that the forms normalized are unambiguous or that the removal of
+ambiguity has no undesirable consequences.</p>
+<p>For instance, if you want to normalize “<em>O’clock</em>” to “<em>on the clock</em>”,
+it would be a bad idea to replace “<em>O’</em>” by “<em>on the</em> ”, because a
+sentence like:</p>
+<p><em>John O’Connor said: “it’s 8 O’clock”</em></p>
+<p>would be replaced by the following incorrect sentence:</p>
+<p><em>John on the Connor said: “it’s 8 on the clock”</em></p>
+<p>Thus, one needs to be very careful when using the normalization grammar.
+One needs to pay attention to spaces as well. For example, if one
+replaces “’re” by “are”, the sentence:</p>
+<p><em>You’re stronger than him.</em></p>
+<p>will be replaced by:</p>
+<p><em>Youare stronger than him.</em></p>
+<p>To avoid this problem, one should explicitly insert a space, <em>i.e.</em>
+replace “<em>’re</em>” by “ <em>are</em>”.</p>
+<p>The accepted symbols for the normalization grammar are the same as the
+ones allowed for the sentence splitting grammar. The normalization
+grammar is called <code class="docutils literal"><span class="pre">Replace.fst2</span></code> and can be found in the following
+directory:</p>
+<p><code class="docutils literal"><span class="pre">/(working</span> <span class="pre">directory)/(language)/Graphs/Preprocessing/Replace</span></code></p>
+<p>As in the case of sentence splitting, this grammar is applied using the
+<code class="docutils literal"><span class="pre">Fst2Txt</span></code> program, but in REPLACE mode, which means that input
+sequences recognized by the grammar are replaced by the output sequences
+that are produced. Figure&nbsp;[fig-normalization-grammar] shows a grammar
+that normalizes verbal contractions in English.</p>
+</div>
+<div class="section" id="splitting-a-text-into-tokens">
+<h3>Splitting a text into tokens<a class="headerlink" href="#splitting-a-text-into-tokens" title="Permalink to this headline">¶</a></h3>
+<p>[tokenization] Some languages, in particular Asian languages, use
+separators that are different from the ones used in western languages.
+Spaces can be forbidden, optional, or mandatory. In order to better cope
+with these particularities, Unitex splits texts in a language dependent
+way. Thus, languages like English are treated as follows:</p>
+<p>A token can be:</p>
+<ul class="simple">
+<li>the sentence delimiter <code class="docutils literal"><span class="pre">{S}</span></code>;</li>
+<li>the stop marker <code class="docutils literal"><span class="pre">{STOP}</span></code>. This token is a special one that can
+NEVER be matched in any way by a grammar. It can be used to bound
+elements in a corpus. For instance, if a corpus is made of news
+separated by <code class="docutils literal"><span class="pre">{STOP}</span></code>, it will be impossible that a grammar matches
+a sequence that overlaps the end of a news and the beginning of the
+following news;</li>
+<li>a lexical tag <code class="docutils literal"><span class="pre">{aujourd'hui,.ADV}</span></code>;</li>
+<li>a contiguous sequence of letters (the letters are defined in the
+language alphabet file);</li>
+<li>one (and only one) non-letter character, i.e. all characters not
+defined in the alphabet file of the current language; if it is a
+newline, it is replaced by a space.</li>
+</ul>
+<p>For other languages, tokenization is done on a character by character
+basis, except for the sentence delimiter <code class="docutils literal"><span class="pre">{S}</span></code>, the <code class="docutils literal"><span class="pre">{STOP}</span></code> marker
+and lexical tags. This simple tokenization is fundamental for the use of
+Unitex, but limits the optimization of search operations for patterns.</p>
+<p>Regardless of the tokenization mode, newlines in a text are replaced by
+spaces. Tokenization is done by the <code class="docutils literal"><span class="pre">Tokenize</span></code> program. This program
+creates several files that are saved in the text directory:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">tokens.txt</span></code> contains the list of tokens in the order in which they
+are found in the text;</li>
+<li><code class="docutils literal"><span class="pre">text.cod</span></code> contains an integer array; every integer corresponds to
+the index of a token in the file <code class="docutils literal"><span class="pre">tokens.txt</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">tok_by_freq.txt</span></code> contains the list of tokens sorted by frequency;</li>
+<li><code class="docutils literal"><span class="pre">tok_by_alph.txt</span></code> contains the list of tokens in alphabetical
+order;</li>
+<li><code class="docutils literal"><span class="pre">stats.n</span></code> contains some statistics about the text.</li>
+</ul>
+<p>Tokenizing the text:</p>
+<p><em>A cat is a cat.</em></p>
+<p>returns the following list of tokens: <em>A</em> SPACE <em>cat is a .</em></p>
+<p>You will observe that tokenization is case sensitive (<em>A</em> and <em>a</em> are
+two distinct tokens), and that each token is listed only once. Numbering
+these tokens from 0 to 5, the text can be represented by a sequence of
+numbers (integers) as described in the following table:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="7%" />
+<col width="5%" />
+<col width="9%" />
+<col width="5%" />
+<col width="8%" />
+<col width="5%" />
+<col width="7%" />
+<col width="5%" />
+<col width="9%" />
+<col width="7%" />
+<col width="4%" />
+<col width="4%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Token number</th>
+<th class="head">0</th>
+<th class="head">1</th>
+<th class="head">2</th>
+<th class="head">1</th>
+<th class="head">3</th>
+<th class="head">1</th>
+<th class="head">4</th>
+<th class="head">1</th>
+<th class="head">2</th>
+<th class="head">5</th>
+<th class="head">&nbsp;</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Corresponding token</td>
+<td><em>A</em></td>
+<td>&nbsp;</td>
+<td><em>cat</em></td>
+<td>&nbsp;</td>
+<td><em>is</em></td>
+<td>&nbsp;</td>
+<td><em>a</em></td>
+<td>&nbsp;</td>
+<td><em>cat</em></td>
+<td><em>.</em></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>Table: Representation of the text <em>A cat is a cat.</em></p>
+<p>For more details, see chapter&nbsp;[chap-file-formats].</p>
+<div class="figure" id="id19">
+<a class="reference internal image-reference" href="resources/img/fig2-12.png"><img alt="Tokens of an English text sorted by frequency" src="resources/img/fig2-12.png" style="height: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Tokens of an English text sorted by frequency</span></p>
+</div>
+</div>
+<div class="section" id="applying-dictionaries">
+<h3>Applying dictionaries<a class="headerlink" href="#applying-dictionaries" title="Permalink to this headline">¶</a></h3>
+<p>Applying dictionaries consists of building the subset of dictionaries
+consisting only of forms that are present in the text. Thus, the result
+of applying a English dictionary to the text <em>Igor’s father in law is
+ill</em> produces a dictionary of the following simple words:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">father</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">Hum</span><span class="p">:</span><span class="n">s</span>
+<span class="n">father</span><span class="p">,</span><span class="o">.</span><span class="n">V</span><span class="p">:</span><span class="n">W</span><span class="p">:</span><span class="n">P1s</span><span class="p">:</span><span class="n">P2s</span><span class="p">:</span><span class="n">P1p</span><span class="p">:</span><span class="n">P2p</span><span class="p">:</span><span class="n">P3p</span>
+<span class="n">ill</span><span class="p">,</span><span class="o">.</span><span class="n">A</span>
+<span class="n">ill</span><span class="p">,</span><span class="o">.</span><span class="n">ADV</span>
+<span class="n">ill</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="p">:</span><span class="n">s</span>
+<span class="ow">in</span><span class="p">,</span><span class="o">.</span><span class="n">A</span>
+<span class="ow">in</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="p">:</span><span class="n">s</span>
+<span class="ow">in</span><span class="p">,</span><span class="o">.</span><span class="n">PART</span>
+<span class="ow">in</span><span class="p">,</span><span class="o">.</span><span class="n">PREP</span>
+<span class="ow">is</span><span class="p">,</span><span class="n">be</span><span class="o">.</span><span class="n">V</span><span class="p">:</span><span class="n">P3s</span>
+<span class="ow">is</span><span class="p">,</span><span class="n">i</span><span class="o">.</span><span class="n">N</span><span class="p">:</span><span class="n">p</span>
+<span class="n">law</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="p">:</span><span class="n">s</span>
+<span class="n">law</span><span class="p">,</span><span class="o">.</span><span class="n">V</span><span class="p">:</span><span class="n">W</span><span class="p">:</span><span class="n">P1s</span><span class="p">:</span><span class="n">P2s</span><span class="p">:</span><span class="n">P1p</span><span class="p">:</span><span class="n">P2p</span><span class="p">:</span><span class="n">P3p</span>
+<span class="n">s</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="p">:</span><span class="n">s</span>
+</pre></div>
+</div>
+<p>as well as a dictionary of compound words consisting of a single entry:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">father</span> <span class="ow">in</span> <span class="n">law</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">NPN</span><span class="o">+</span><span class="n">Hum</span><span class="o">+</span><span class="n">z1</span><span class="p">:</span><span class="n">s</span>
+</pre></div>
+</div>
+<p>Since the sequence <em>Igor</em> is neither a simple English word nor a part of
+a compound word, it is treated as an unknown word. The application of
+dictionaries is done through the program <code class="docutils literal"><span class="pre">Dico</span></code>. The three files
+produced (<code class="docutils literal"><span class="pre">dlf</span></code> for simple words, <code class="docutils literal"><span class="pre">dlc</span></code> for compound words and
+<code class="docutils literal"><span class="pre">err</span></code> for unknown words) are placed in the text directory. The <code class="docutils literal"><span class="pre">dlf</span></code>
+and <code class="docutils literal"><span class="pre">dlc</span></code> files are called text dictionaries.</p>
+<p>As soon as the dictionary look-up is finished, Unitex displays the
+sorted lists of simple, compound and unknown words found in a new
+window. Figure&nbsp;[fig-Dico-application-results] shows the result for an
+English text.</p>
+<p>It is also possible to apply dictionaries without preprocessing the
+text. In order to do this, click on “Apply Lexical Resources...” in the
+“Text” menu. Unitex then opens a window (see
+figure&nbsp;[fig-Dico-configuration]) in which you can select the list of
+dictionaries to apply.</p>
+<p>The list “User resources” lists all dictionaries present in the
+directory</p>
+<p><code class="docutils literal"><span class="pre">(current</span> <span class="pre">language)/Dela</span></code> of the user. The dictionaries installed in
+the system are listed in the scroll list named “System resources”. Use
+the &lt;Ctrl+click&gt; combination to select several dictionaries. System
+dictionaries will be applied prior to user dictionaries. Within the
+system or user list, you can fix the order of dictionaries using the up
+and down arrows, as shown on figure [fig-Dico-configuration]. The button
+“Set Default” allows you to define the current selection of dictionaries
+as the default. This default selection will then be used during
+preprocessing if you activate the option “Apply All default
+Dictionaries”. If you right-click on a dictionary name, the associated
+documentation, if any, will be displayed in the lower frame of the
+window.</p>
+</div>
+<div class="section" id="analysis-of-compound-words-in-dutch-german-norwegian-and-russian">
+<h3>Analysis of compound words in Dutch, German, Norwegian and Russian<a class="headerlink" href="#analysis-of-compound-words-in-dutch-german-norwegian-and-russian" title="Permalink to this headline">¶</a></h3>
+<p>[section-Norwegian-compound-words] In certain languages like Norwegian,
+German and others, it is possible to form new compound words by
+concatenating together other words. For example, the word <em>aftenblad</em>
+meaning <em>evening journal</em> is obtained by combining the words <em>aften</em>
+(<em>evening</em>) et <em>blad</em> (<em>journal</em>). The <code class="docutils literal"><span class="pre">PolyLex</span></code> program parses the
+list of unknown words after the application of dictionaries and tries to
+analyze each of these words as a compound word. If a word has at least
+one analysis as a compound word, it is removed from the list of unknown
+words and the lines produced for this word are appended to the simple
+word text dictionary.</p>
+</div>
+</div>
+<div class="section" id="opening-a-tagged-text">
+<h2>Opening a tagged text<a class="headerlink" href="#opening-a-tagged-text" title="Permalink to this headline">¶</a></h2>
+<p>A tagged text is a text containing words with lexical tags enclosed in
+braces:</p>
+<p><em>I do not like the {square bracket,.N} sign! {S}</em></p>
+<p>Such tags can be used to avoid ambiguities. In the previous example, it
+will be impossible to match <em>square bracket</em> as the combination of two
+simple words.</p>
+<p>However, the presence of these tags can alter the application of
+preprocessing graphs. To avoid complications, you can use the “Open
+Tagged Text...” command in the “Text” menu. With it, you can open a
+tagged text and skip the application of preprocessing graphs, as shown
+on Figure [preprocess-tagged-text].</p>
+<div class="figure" id="id20">
+<a class="reference internal image-reference" href="resources/img/fig2-15.png"><img alt="Preprocessing a tagged text[preprocess-tagged-text]" src="resources/img/fig2-15.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Preprocessing a tagged text[preprocess-tagged-text]</span></p>
+</div>
+<table class="docutils footnote" frame="void" id="id9" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[1]</a></td><td>Unitex also proposes to automatically convert graphs and dictionaries
+that are not in Unicode Little-Endian.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id10" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[2]</a></td><td>From version 3.1beta, revision 4072, October 2, 2015.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-en.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Loading a text</a><ul>
+<li><a class="reference internal" href="#selecting-a-language">Selecting a language</a></li>
+<li><a class="reference internal" href="#text-formats">Text formats</a></li>
+<li><a class="reference internal" href="#editing-text-files">Editing text files</a></li>
+<li><a class="reference internal" href="#opening-a-text">Opening a text</a></li>
+<li><a class="reference internal" href="#preprocessing-a-text">Preprocessing a text</a><ul>
+<li><a class="reference internal" href="#normalization-of-separators">Normalization of separators</a></li>
+<li><a class="reference internal" href="#splitting-into-sentences">Splitting into sentences</a></li>
+<li><a class="reference internal" href="#normalization-of-non-ambiguous-forms">Normalization of non-ambiguous forms</a></li>
+<li><a class="reference internal" href="#splitting-a-text-into-tokens">Splitting a text into tokens</a></li>
+<li><a class="reference internal" href="#applying-dictionaries">Applying dictionaries</a></li>
+<li><a class="reference internal" href="#analysis-of-compound-words-in-dutch-german-norwegian-and-russian">Analysis of compound words in Dutch, German, Norwegian and Russian</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#opening-a-tagged-text">Opening a tagged text</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-en.html">Documentation overview</a><ul>
+      <li>Previous: <a href="01-installation_EN_utf8.html" title="previous chapter">Installation of Unitex</a></li>
+      <li>Next: <a href="03-dictionaries_EN_utf8.html" title="next chapter">Dictionaries</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/02-loading_texts_EN_utf8.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/02-loading_texts_EN_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,1485 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="EN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Dictionaries &mdash; Unitex-en 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-en 1.0.1 documentation" href="Unitex-en.html" />
+    <link rel="next" title="Searching with regular expressions" href="04-pattern_matching_EN_utf8.html" />
+    <link rel="prev" title="Loading a text" href="02-loading_texts_EN_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dictionaries">
+<h1>Dictionaries<a class="headerlink" href="#dictionaries" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-dela-dictionaries">
+<h2>The DELA dictionaries<a class="headerlink" href="#the-dela-dictionaries" title="Permalink to this headline">¶</a></h2>
+<p>The electronic dictionaries distributed with Unitex use the DELA syntax
+(Dictionnaires Electroniques du LADL, LADL electronic dictionaries).
+This syntax describes the simple and compound lexical entries of a
+language with their grammatical, semantic and inflectional information.
+We distinguish two kinds of electronic dictionaries. The one that is
+used most often is the dictionary of inflected forms DELAF (DELA de
+formes Fléchies, DELA of inflected forms) or DELACF (DELA de formes
+Composées Fléchies, DELA of compound inflected forms) in the case of
+compound forms. The second type is a dictionary of non-inflected forms
+called DELAS (DELA de formes simples, simple forms DELA) or DELAC (DELA
+de formes composées, compound forms DELA).</p>
+<p>Unitex programs make no distinction between simple and compound form
+dictionaries. We will use the terms DELAF and DELAS to distinguish the
+inflected and non-inflected dictionaries, no matter they contain simple
+word, compound words or both.</p>
+<div class="section" id="the-delaf-format">
+<h3>The DELAF format<a class="headerlink" href="#the-delaf-format" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="entry-syntax">
+<h4>Entry syntax<a class="headerlink" href="#entry-syntax" title="Permalink to this headline">¶</a></h4>
+<p>An entry of a DELAF is a line of text terminated by a newline that
+conforms to the following syntax:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">apples</span><span class="p">,</span><span class="n">apple</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">conc</span><span class="p">:</span><span class="n">p</span><span class="o">/</span><span class="n">this</span> <span class="ow">is</span> <span class="n">an</span> <span class="n">example</span>
+</pre></div>
+</div>
+<p>The different elements of this line are:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">apples</span></code> is the inflected form of the entry; it is mandatory;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">apple</span></code> is the canonical form (lemma) of the entry. For nouns and
+adjectives (in French), it is usually the masculine singular form;
+for verbs, it is the infinitive. This information may be left out as
+in the following example:</p>
+<p><code class="docutils literal"><span class="pre">apple,.N+Conc:s</span></code></p>
+<p>This means that the canonical form is the same as the inflected form.
+The canonical form is separated from the inflected form by a comma.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">N+Conc</span></code> is the sequence of grammatical and semantic information.
+In our example, <code class="docutils literal"><span class="pre">N</span></code> designates a noun, and <code class="docutils literal"><span class="pre">Conc</span></code> indicates that
+this noun designates a concrete object (see
+table&nbsp;[tab-semantic-codes]).</p>
+<p>Each entry must have at least one grammatical or semantic code,
+separated from the canonical form by a period. If there are more
+codes, these are separated by the <code class="docutils literal"><span class="pre">+</span></code> character.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">:p</span></code> is an inflectional code which indicates that the noun is
+plural. Inflectional codes are used to describe gender, number,
+declension, and conjugation. This information is optional. An
+inflectional code is made up of one or more characters that represent
+one information each. Inflectional codes have to be separated by the
+&#8220;<code class="docutils literal"><span class="pre">:</span></code>” character, for instance in an entry like the following:</p>
+<p><code class="docutils literal"><span class="pre">hang,.V:W:P1s:P2s:P1p:P2p:P3p</span></code></p>
+<p>The <code class="docutils literal"><span class="pre">:</span></code> character is interpreted in OR semantics. Thus,
+<code class="docutils literal"><span class="pre">:W:P1s:P2s:P1p:P2p:P3p</span></code> means “infinitive”, or “1st person
+singular present”, or “2nd person singular present”, etc. (see
+table&nbsp;[tab-inflectional-codes]) Since each character represents one
+information, you must not use the same character more than once. In
+this way, encoding the past participle using the code <code class="docutils literal"><span class="pre">:PP</span></code> would
+be exactly equivalent to using <code class="docutils literal"><span class="pre">:P</span></code> alone;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">/this</span> <span class="pre">is</span> <span class="pre">an</span> <span class="pre">example</span></code> is a comment. Comments are optional and are
+introduced by the <code class="docutils literal"><span class="pre">/</span></code> character. These comments are left out when
+the dictionaries are compressed.</p>
+</li>
+</ul>
+<p>IMPORTANT REMARK: It is possible to use the full stop and the comma
+within a dictionary entry. In order to do this they have to be escaped
+using the <code class="docutils literal"><span class="pre">\</span></code> character:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">1</span>\<span class="p">,</span><span class="mi">000</span><span class="p">,</span><span class="n">one</span> <span class="n">thousand</span><span class="o">.</span><span class="n">NUMBER</span>
+<span class="n">United</span> <span class="n">Nations</span><span class="p">,</span><span class="n">U</span>\<span class="o">.</span><span class="n">N</span>\<span class="o">..</span><span class="n">ACRONYM</span>
+</pre></div>
+</div>
+<p>WARNING: Each character is taken into account within a dictionary line.
+For example, if you insert spaces, they are considered to be a part of
+the information. In the following line:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">hath</span><span class="p">,</span><span class="n">have</span><span class="o">.</span><span class="n">V</span><span class="p">:</span><span class="n">P3s</span> <span class="o">/</span><span class="n">old</span> <span class="n">form</span> <span class="n">of</span> <span class="s1">&#39;has&#39;</span>
+</pre></div>
+</div>
+<p>The space that precedes the <code class="docutils literal"><span class="pre">/</span></code> character will be considered to be
+part of a 4-character inflectional code.</p>
+<p>It is possible to insert comments into a DELAF or DELAS dictionary by
+starting the line with a <span class="math">\(/\)</span> character. Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span> <span class="s1">&#39;English&#39;</span> <span class="n">designates</span> <span class="n">a</span> <span class="n">pool</span> <span class="n">spin</span>
+<span class="n">English</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">z3</span><span class="p">:</span><span class="n">s</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="compound-words-with-spaces-or-dashes">
+<h4>Compound words with spaces or dashes<a class="headerlink" href="#compound-words-with-spaces-or-dashes" title="Permalink to this headline">¶</a></h4>
+<p>Certain compound words like <em>acorn-shell</em> can be written using spaces or
+dashes. In order to avoid duplicating the entries, it is possible to use
+the <code class="docutils literal"><span class="pre">=</span></code> character. At the time when the dictionary is compressed, the
+<code class="docutils literal"><span class="pre">Compress</span></code> program checks for each line if the inflected or canonical
+form contains a non-escaped <code class="docutils literal"><span class="pre">=</span></code> character. If this is the case, the
+program replaces this by two entries: one where the <code class="docutils literal"><span class="pre">=</span></code> character is
+replaced by a space, and one where it is replaced by a dash. Thus, the
+following entry:</p>
+<p><code class="docutils literal"><span class="pre">acorn=shells,acorn=shell.N:p</span></code></p>
+<p>is replaced by the following entries:</p>
+<p><code class="docutils literal"><span class="pre">acorn</span> <span class="pre">shells,acorn</span> <span class="pre">shell.N:p</span></code></p>
+<p><code class="docutils literal"><span class="pre">acorn-shells,acorn-shell.N:p</span></code></p>
+<p>NOTE: If you want to keep an entry that includes the <code class="docutils literal"><span class="pre">=</span></code> character,
+escape it using <code class="docutils literal"><span class="pre">\</span></code> as in the following example:</p>
+<p><code class="docutils literal"><span class="pre">E\=mc2,.FORMULA</span></code></p>
+<p>This replacement is done when the dictionary is compressed. In the
+compressed dictionary, the escaped <code class="docutils literal"><span class="pre">=</span></code> characters are replaced by
+simple <code class="docutils literal"><span class="pre">=</span></code>. As such, if a dictionary containing the following lines is
+compressed:</p>
+<p><code class="docutils literal"><span class="pre">E\=mc2,.FORMULA</span></code></p>
+<p><code class="docutils literal"><span class="pre">acorn=shell,.N:s</span></code></p>
+<p>and if the dictionary is applied to the following text:</p>
+<p><em>Formulas like E=mc2 have nothing to do with acorn-shells.</em></p>
+<p>you will get the following lines in the dictionary of compound words of
+the text:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">E</span><span class="o">=</span><span class="n">mc2</span><span class="p">,</span><span class="o">.</span><span class="n">FORMULA</span>
+
+<span class="n">acorn</span><span class="o">-</span><span class="n">shells</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="p">:</span><span class="n">p</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="entry-factorization">
+<h4>Entry Factorization<a class="headerlink" href="#entry-factorization" title="Permalink to this headline">¶</a></h4>
+<p>Several entries containing the same inflected and canonical forms can be
+combined into a single one if they also share the same grammatical and
+semantic codes. Among other things this allows us to combine identical
+conjugations for a verb:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bottle</span><span class="p">,</span><span class="o">.</span><span class="n">V</span><span class="p">:</span><span class="n">W</span><span class="p">:</span><span class="n">P1s</span><span class="p">:</span><span class="n">P2s</span><span class="p">:</span><span class="n">P1p</span><span class="p">:</span><span class="n">P2p</span><span class="p">:</span><span class="n">P3p</span>
+</pre></div>
+</div>
+<p>If the grammatical and semantic information differ, one has to create
+distinct entries:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bottle</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">Conc</span><span class="p">:</span><span class="n">s</span>
+<span class="n">bottle</span><span class="p">,</span><span class="o">.</span><span class="n">V</span><span class="p">:</span><span class="n">W</span><span class="p">:</span><span class="n">P1s</span><span class="p">:</span><span class="n">P2s</span><span class="p">:</span><span class="n">P1p</span><span class="p">:</span><span class="n">P2p</span><span class="p">:</span><span class="n">P3p</span>
+</pre></div>
+</div>
+<p>Some entries that have the same grammatical and semantic entries can
+have different meanings, as it is the case for the French word <em>poêle</em>
+that describes a stove or a type of sheet in the masculine sense and a
+kitchen instrument in the feminine sense. You can thus distinguish the
+entries in this case:</p>
+<p><code class="docutils literal"><span class="pre">poêle,.N+z1:fs/</span> <span class="pre">poêle</span> <span class="pre">à</span> <span class="pre">frire</span></code></p>
+<p><code class="docutils literal"><span class="pre">poêle,.N+z1:ms/</span> <span class="pre">voile,</span> <span class="pre">linceul;</span> <span class="pre">appareil</span> <span class="pre">de</span> <span class="pre">chauffage</span></code></p>
+<p>NOTE: In practice, this distinction has the only consequence that the
+number of entries in the dictionary increases.</p>
+<p>For the different programs that make up Unitex these entries are
+equivalent to:</p>
+<p><code class="docutils literal"><span class="pre">poêle,.N+z1:fs:ms</span></code></p>
+<p>Whether this distinction is made is thus left to the maintainers of the
+dictionaries.</p>
+</div>
+</div>
+<div class="section" id="the-delas-format">
+<h3>The DELAS Format<a class="headerlink" href="#the-delas-format" title="Permalink to this headline">¶</a></h3>
+<p>The DELAS format is very similar to the one used in the DELAF. The only
+difference is that there is only a canonical form followed by
+grammatical and/or semantic codes. The canonical form is separated from
+the different codes by a comma. There is an example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">horse</span><span class="p">,</span><span class="n">N4</span><span class="o">+</span><span class="n">Anl</span>
+</pre></div>
+</div>
+<p>The first grammatical or semantic code will be interpreted by the
+inflection program as the name of the grammar used to inflect the entry.
+The entry of the example above indicates that the word <em>horse</em> has to be
+inflected using the grammar named <code class="docutils literal"><span class="pre">N4</span></code>. It is possible to add
+inflectional codes to the entries, but the nature of the inflection
+operation limits the usefulness of this possibility. For more details
+see below in section&nbsp;[section-automatic-inflection].</p>
+</div>
+<div class="section" id="dictionary-contents">
+<h3>Dictionary Contents<a class="headerlink" href="#dictionary-contents" title="Permalink to this headline">¶</a></h3>
+<p>The dictionaries provided with Unitex contain descriptions of simple and
+compound words. These descriptions indicate the grammatical category of
+each entry, optionally their inflectional codes, and various semantic
+information. The following tables give an overview of some of the
+different codes used in the Unitex dictionaries. These codes are the
+same for almost all languages, though some of them are special for
+certain languages (<em>i.e.</em> code for neuter nouns, etc.).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="43%" />
+<col width="38%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Code</strong></th>
+<th class="head"><strong>Description</strong></th>
+<th class="head"><strong>Examples</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">A</span></code></td>
+<td>adjective</td>
+<td>fabulous, broken-down</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ADV</span></code></td>
+<td>adverb</td>
+<td>actually, years ago</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">CONJC</span></code></td>
+<td>coordinating conjunction</td>
+<td>but</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">CONJS</span></code></td>
+<td>subordinating conjunction</td>
+<td>because</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">DET</span></code></td>
+<td>determiner</td>
+<td>each</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">INTJ</span></code></td>
+<td>interjection</td>
+<td>eureka</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">N</span></code></td>
+<td>noun</td>
+<td>evidence, group theory</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">PREP</span></code></td>
+<td>preposition</td>
+<td>without</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">PRO</span></code></td>
+<td>pronoun</td>
+<td>you</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">V</span></code></td>
+<td>verb</td>
+<td>overeat, plug-and-play</td>
+</tr>
+</tbody>
+</table>
+<p>Table: Frequent grammatical codes[tab-grammatical-codes]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="47%" />
+<col width="27%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Code</strong></th>
+<th class="head"><strong>Description</strong></th>
+<th class="head"><strong>Example</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">z1</span></code></td>
+<td>general language</td>
+<td>joke</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">z2</span></code></td>
+<td>specialized language</td>
+<td>floppy disk</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">z3</span></code></td>
+<td>very specialized language</td>
+<td>serialization</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">Abst</span></code></td>
+<td>abstract</td>
+<td>patricide</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Anl</span></code></td>
+<td>animal</td>
+<td>horse</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">AnlColl</span></code></td>
+<td>collective animal</td>
+<td>flock</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Conc</span></code></td>
+<td>concrete</td>
+<td>chair</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ConcColl</span></code></td>
+<td>collective concrete</td>
+<td>rubble</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Hum</span></code></td>
+<td>human</td>
+<td>teacher</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">HumColl</span></code></td>
+<td>collective human</td>
+<td>parliament</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">t</span></code></td>
+<td>transitive verb</td>
+<td>kill</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">i</span></code></td>
+<td>intransitive verb</td>
+<td>agree</td>
+</tr>
+</tbody>
+</table>
+<p>Table: Some semantic codes[tab-semantic-codes]</p>
+<p>NOTE: The descriptions of tense in table&nbsp;[tab-inflectional-codes]
+correspond to French. Nontheless, the majority of these definitions can
+be found in other languages (infinitive, present, past participle,
+etc.).</p>
+<p>In spite of a common base in the majority of languages, the dictionaries
+contain encoding particularities that are specific for each language.
+Thus, as inflectional codes vary a lot between different languages, they
+are not described here. For a complete description of all codes used
+within a dictionary, we recommend that you contact the author of the
+dictionary directly.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="47%" />
+<col width="53%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Code</strong></th>
+<th class="head"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">m</span></code></td>
+<td>masculine</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">f</span></code></td>
+<td>feminin</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">n</span></code></td>
+<td>neuter</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td>singular</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">p</span></code></td>
+<td>plural</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">1</span></code>, <code class="docutils literal"><span class="pre">2</span></code>, <code class="docutils literal"><span class="pre">3</span></code></td>
+<td>1st, 2nd, 3rd person</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">P</span></code></td>
+<td>present indicative</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">I</span></code></td>
+<td>imperfect indicative</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">S</span></code></td>
+<td>present subjunctive</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">T</span></code></td>
+<td>imperfect subjunctive</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Y</span></code></td>
+<td>present imperative</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">C</span></code></td>
+<td>present conditional</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">J</span></code></td>
+<td>simple past indicative</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">W</span></code></td>
+<td>infinitive</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">G</span></code></td>
+<td>present participle</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">K</span></code></td>
+<td>past participle</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">F</span></code></td>
+<td>future indicative</td>
+</tr>
+</tbody>
+</table>
+<p>Table: Common inflectional codes[tab-inflectional-codes]</p>
+<p>However, these codes are not exclusive. A user can introduce his own
+codes and create his own dictionaries. For example, for educational
+purposes one could use a marker “faux-ami” (<em>false friend</em>) in a French
+dictionary:</p>
+<p><code class="docutils literal"><span class="pre">blesser,.V+faux-ami/injure</span></code></p>
+<p><code class="docutils literal"><span class="pre">casque,.N+faux-ami/helmet</span></code></p>
+<p><code class="docutils literal"><span class="pre">journée,.N+faux-ami/day</span></code></p>
+<p>It is equally possible to use dictionaries to add extra information.
+Thus, you can use the inflected form of an entry to describe an
+abbreviation and the canonical form to provide the complete form:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DNA</span><span class="p">,</span><span class="n">DeoxyriboNucleic</span> <span class="n">Acid</span><span class="o">.</span><span class="n">ACRONYM</span>
+<span class="n">LADL</span><span class="p">,</span><span class="n">Laboratoire</span> <span class="n">d</span><span class="s1">&#39;Automatique Documentaire et Linguistique.ACRONYM</span>
+<span class="n">UN</span><span class="p">,</span><span class="n">United</span> <span class="n">Nations</span><span class="o">.</span><span class="n">ACRONYM</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="looking-up-a-word-in-a-dictionary">
+<h2>Looking up a word in a dictionary<a class="headerlink" href="#looking-up-a-word-in-a-dictionary" title="Permalink to this headline">¶</a></h2>
+<p>[section-dictionary-lookup] You can look up a word in one or several
+dictionaries by two means :</p>
+<div class="figure" id="id67">
+<a class="reference internal image-reference" href="resources/img/fig3-1.png"><img alt="“DELA” Menu" src="resources/img/fig3-1.png" style="width: 13.00000cm;" /></a>
+<p class="caption"><span class="caption-text">“DELA” Menu</span></p>
+</div>
+<p>If you have opend a dictionary, the displayed window contains a field
+where you can enter a word to search. If the word appears in the
+dictionary, the Find Button will highlight the first entry that matches
+it. If there is several entries for this word, you can browse all
+matches by clicking on the two arrow buttons.</p>
+<div class="figure" id="id68">
+<a class="reference internal image-reference" href="resources/img/fig3-2.png"><img alt="Looking up for a word in a dictionnary" src="resources/img/fig3-2.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Looking up for a word in a dictionnary</span></p>
+</div>
+<p>You can also look up a word in several dictionnaries by clicking on the
+Lookup button of the DELA menu. You can then select the dictionaries in
+which you want to look up the word you have entered.</p>
+<div class="figure" id="id69">
+<a class="reference internal image-reference" href="resources/img/fig3-3.png"><img alt="Looking up for a word in several dictionnaries" src="resources/img/fig3-3.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Looking up for a word in several dictionnaries</span></p>
+</div>
+</div>
+<div class="section" id="checking-dictionary-format">
+<h2>Checking dictionary format<a class="headerlink" href="#checking-dictionary-format" title="Permalink to this headline">¶</a></h2>
+<p>When dictionaries become large, it becomes tiresome to check them by
+hand. Unitex contains the program <code class="docutils literal"><span class="pre">CheckDic</span></code> that automatically checks
+the format of DELAF and DELAS dictionaries.</p>
+<p>This program verifies the syntax of the entries. For each malformed
+entry the program outputs the line number, the content of the line and
+an error message. Results are saved in the file <code class="docutils literal"><span class="pre">CHECK_DIC.TXT</span></code> which
+is displayed when the verification is finished. In addition to eventual
+error messages, the file also contains the list of all characters used
+in the inflectional and canonical forms, the list of grammatical and
+semantic codes, and the list of inflectional codes that appear in the
+dictionary. The character list makes it possible to verify that the
+characters used in the dictionary are consistent with those in the
+alphabet file of the language. Each character is followed by its value
+in hexadecimal notation.</p>
+<p>The code lists can be used to check that there are no typing errors in
+the codes of the dictionary.</p>
+<p>The <code class="docutils literal"><span class="pre">CheckDic</span></code> program works with non-compressed dictionaries, <em>i.e.</em>
+the files in text format. The general convention is to use the <code class="docutils literal"><span class="pre">.dic</span></code>
+extension for these dictionaries. In order to check the format of a
+dictionary, you first open it by choosing “Open...” in the “DELA” menu.</p>
+<div class="figure" id="id70">
+<a class="reference internal image-reference" href="resources/img/fig3-4.png"><img alt="Dictionary example[fig-dictionary-example]" src="resources/img/fig3-4.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Dictionary example[fig-dictionary-example]</span></p>
+</div>
+<p>Let’s load the dictionary as in figure&nbsp;[fig-dictionary-example]. Then,
+click on “Check Format...” in the “DELA” menu. A window like in
+figure&nbsp;[fig-dictionary-checking] is opened. You must select the type of
+dictionary you want to check. After checking the dictionary in
+Figure&nbsp;[fig-dictionary-example], results are presented as shown in
+Figure&nbsp;[fig-dictionary-checking-results].</p>
+<div class="figure" id="id71">
+<a class="reference internal image-reference" href="resources/img/fig3-5.png"><img alt="Checking a dictionary[fig-dictionary-checking]" src="resources/img/fig3-5.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Checking a dictionary[fig-dictionary-checking]</span></p>
+</div>
+<div class="figure" id="id72">
+<a class="reference internal image-reference" href="resources/img/fig3-6.png"><img alt="Results of checking[fig-dictionary-checking-results]" src="resources/img/fig3-6.png" style="height: 19.40000cm;" /></a>
+<p class="caption"><span class="caption-text">Results of checking[fig-dictionary-checking-results]</span></p>
+</div>
+<p>The first error is caused by a missing period. The second, by the fact
+that no comma was found after the end of an inflected form. The third
+error indicates that the program didn’t find any grammatical or semantic
+codes.</p>
+</div>
+<div class="section" id="sorting">
+<h2>Sorting<a class="headerlink" href="#sorting" title="Permalink to this headline">¶</a></h2>
+<p>Unitex uses the dictionaries without having to worry about the order of
+the entries. When displaying them it is sometimes preferable to sort the
+dictionaries. The sorting depends on a number of criteria, first of all
+on the language of the text. Therefore the sorting of a Thai dictionary
+is done according to an order different from the alphabetical order. So
+different in fact that Unitex uses a sorting procedure developed
+specifically for Thai (see chapter [chap-external-programs]).</p>
+<p>For European languages the sorting is usually done according to the
+lexicographical order, although there are some variants. Certain
+languages like French treat some characters as equivalent. For example,
+the difference between the characters <code class="docutils literal"><span class="pre">e</span></code> and <code class="docutils literal"><span class="pre">é</span></code> is ignored if one
+wants to compare the words <code class="docutils literal"><span class="pre">manger</span></code> et <code class="docutils literal"><span class="pre">mangés</span></code> because the contexts
+<code class="docutils literal"><span class="pre">r</span></code> and <code class="docutils literal"><span class="pre">s</span></code> allow to decide the order. The difference is only taken
+into account when the contexts are identical, as they are when comparing
+<code class="docutils literal"><span class="pre">pêche</span></code> and <code class="docutils literal"><span class="pre">pèche</span></code>.</p>
+<p>To allow for such effect, the <code class="docutils literal"><span class="pre">SortTxt</span></code> program uses a file which
+defines the equivalence of characters. This file is named
+<code class="docutils literal"><span class="pre">Alphabet_sort.txt</span></code> and can be found in the user directory for the
+current language. By default the first lines of this file for French
+look like this:</p>
+<p><code class="docutils literal"><span class="pre">AÀÂÄaàâä</span></code></p>
+<p><code class="docutils literal"><span class="pre">Bb</span></code></p>
+<p><code class="docutils literal"><span class="pre">CÇcç</span></code></p>
+<p><code class="docutils literal"><span class="pre">Dd</span></code></p>
+<p><code class="docutils literal"><span class="pre">EÉÈÊËeéèêë</span></code></p>
+<p>Characters in the same line are considered equivalent if the context
+permits. If two equivalent characters must be compared, they are sorted
+in the order they appear in from left to right. As can be seen from the
+extract above, there is no difference between lower and upper case.
+Accents and the cédille character are ignored as well.</p>
+<p>To sort a dictionary, open it and then click on “Sort Dictionary” in the
+“DELA” menu. By default, the program always looks for the file
+<code class="docutils literal"><span class="pre">Alphabet_sort.txt</span></code>. If that file doesn’t exist, the sorting is done
+according to the character indices in the Unicode encoding. By modifying
+that file, you can define your own sorting order.</p>
+<p>NOTE: After applying the dictionaries to a text, the files <code class="docutils literal"><span class="pre">dlf</span></code>,
+<code class="docutils literal"><span class="pre">dlc</span></code> and <code class="docutils literal"><span class="pre">err</span></code> are automatically sorted using this program.</p>
+</div>
+<div class="section" id="automatic-inflection">
+<h2>Automatic inflection<a class="headerlink" href="#automatic-inflection" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="inflection-of-simple-words">
+<h3>Inflection of simple words<a class="headerlink" href="#inflection-of-simple-words" title="Permalink to this headline">¶</a></h3>
+<p>As described in section&nbsp;[section-DELAS-format], a line in a DELAS
+consists of a canonical form and a sequence of grammatical or semantic
+codes:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">aviatrix</span><span class="p">,</span><span class="n">N4</span><span class="o">+</span><span class="n">Hum</span>
+<span class="n">matrix</span><span class="p">,</span><span class="n">N4</span><span class="o">+</span><span class="n">Math</span>
+<span class="n">radix</span><span class="p">,</span><span class="n">N4</span>
+</pre></div>
+</div>
+<p>The first code is used to determine the grammatical code of the entry as
+well as the name of the grammar used to inflect the canonical form.
+There are two possible forms:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">N4</span></code>: grammar name=<code class="docutils literal"><span class="pre">N4.fst2</span></code>, grammatical code=<code class="docutils literal"><span class="pre">N</span></code> (longest
+letter prefix)</li>
+<li><code class="docutils literal"><span class="pre">N(NC_XXX)</span></code>: grammar name=<code class="docutils literal"><span class="pre">NC_XXX.fst2</span></code>, grammatical
+code=<code class="docutils literal"><span class="pre">N</span></code></li>
+</ul>
+<p>These inflectional grammars will automatically be compiled if needed. In
+the example above, all entries will be inflected by a grammar named
+<code class="docutils literal"><span class="pre">N4</span></code>.</p>
+<p>In order to inflect a dictionary, click on “Inflect...” in the “DELA”
+menu. The window in figure&nbsp;[fig-inflection-configuration] allows you to
+specify the directory in which inflectional grammars are found. By
+default, the subdirectory <code class="docutils literal"><span class="pre">Inflection</span></code> of the directory for the
+current language is used. You can also specify the kind of words your
+DELAS is supposed to contain. If an entry is found that does not
+correspond to your choice, an error message will be displayed.</p>
+<div class="figure" id="id73">
+<a class="reference internal image-reference" href="resources/img/fig3-8.png"><img alt="Inflectional grammar ``N4``\ [fig-example-inflectional-grammar]" src="resources/img/fig3-8.png" style="width: 4.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Inflectional grammar <code class="docutils literal"><span class="pre">N4</span></code>[fig-example-inflectional-grammar]</span></p>
+</div>
+<p>Figure&nbsp;[fig-example-inflectional-grammar] shows an example of an
+inflectional grammar. The paths describe the suffixes to add or to
+remove to get to an inflected form from a canonical form, and the
+outputs (text in bold under the boxes) are the inflectional codes to add
+to a dictionary entry.</p>
+<p>In our example, two paths are possible. The first does not modify the
+canonical form and adds the inflectional code <code class="docutils literal"><span class="pre">:s</span></code>. The second deletes
+a letter with the <code class="docutils literal"><span class="pre">L</span></code> operator, then adds the <code class="docutils literal"><span class="pre">ces</span></code> suffix and adds
+the inflectional code <code class="docutils literal"><span class="pre">:mp</span></code>. Here are the operators that can be used:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">L</span></code> (left) removes a letter from the entry.</li>
+<li><code class="docutils literal"><span class="pre">R</span></code> (right) restores a letter to the entry. In French, many verbs
+of the first group are conjugated in the present singular of the
+third person form by removing the <code class="docutils literal"><span class="pre">r</span></code> of the infinitive and
+changing the 4<span class="math">\(^{th}\)</span> letter from the end to <code class="docutils literal"><span class="pre">è</span></code>: <code class="docutils literal"><span class="pre">peler</span></code>
+<span class="math">\(\rightarrow\)</span> <code class="docutils literal"><span class="pre">pèle</span></code>, <code class="docutils literal"><span class="pre">acheter</span></code> <span class="math">\(\rightarrow\)</span>
+<code class="docutils literal"><span class="pre">achète</span></code>, <code class="docutils literal"><span class="pre">gérer</span></code> <span class="math">\(\rightarrow\)</span> <code class="docutils literal"><span class="pre">gère</span></code>, etc. Instead of
+describing an inflectional suffix for each verb (<code class="docutils literal"><span class="pre">LLLLèle</span></code>,
+<code class="docutils literal"><span class="pre">LLLLète</span></code> and <code class="docutils literal"><span class="pre">LLLLère</span></code>), the <code class="docutils literal"><span class="pre">R</span></code> operator can be used to
+describe it in one way: <code class="docutils literal"><span class="pre">LLLLèRR</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">C</span></code> (copy) duplicates a letter in the entry and moves everything on
+its right by one position. In cases like <code class="docutils literal"><span class="pre">permitted</span></code> or <code class="docutils literal"><span class="pre">hopped</span></code>,
+we see a duplication of the final consonant of the verb. To avoid
+writing an inflectional graph for every possible final consonant, one
+can use the <code class="docutils literal"><span class="pre">C</span></code> operator to duplicate any final consonant.</li>
+<li><code class="docutils literal"><span class="pre">D</span></code> (delete) deletes a letter, shifting anything located on the
+right of this letter. For instance, if you want to inflect the
+Romanian word <code class="docutils literal"><span class="pre">european</span></code> into <code class="docutils literal"><span class="pre">europeni</span></code>, you must use the
+sequence <code class="docutils literal"><span class="pre">LDRi</span></code>. <code class="docutils literal"><span class="pre">L</span></code> will move the cursor on the <code class="docutils literal"><span class="pre">a</span></code>, <code class="docutils literal"><span class="pre">D</span></code>
+will delete the <code class="docutils literal"><span class="pre">a</span></code>, shifting the <code class="docutils literal"><span class="pre">n</span></code> on the left, and then
+<code class="docutils literal"><span class="pre">Ri</span></code> will restore the <code class="docutils literal"><span class="pre">n</span></code> and add an <code class="docutils literal"><span class="pre">i</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">U</span></code> (unaccent) removes the accent of the current character, if any.
+For instance the sequence <code class="docutils literal"><span class="pre">LLUx</span></code> applied to the word <code class="docutils literal"><span class="pre">mangés</span></code>
+produces the inflected form <code class="docutils literal"><span class="pre">mangex</span></code>, since <code class="docutils literal"><span class="pre">U</span></code> has turn the
+<code class="docutils literal"><span class="pre">é</span></code> into a <code class="docutils literal"><span class="pre">e</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">P</span></code> (uppercase) uppercases the initial letter of the stack. For
+instance, the sequence <code class="docutils literal"><span class="pre">Px</span></code> will turn <code class="docutils literal"><span class="pre">foo</span></code> into <code class="docutils literal"><span class="pre">Foox</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">W</span></code> (lowercase) lowercases the initial letter of the stack.</li>
+<li><code class="docutils literal"><span class="pre">&lt;R=?&gt;</span></code> replaces the initial letter of the stack by the letter
+<code class="docutils literal"><span class="pre">?</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">&lt;I=?&gt;</span></code> inserts the letter <code class="docutils literal"><span class="pre">?</span></code> before the initial letter of the
+stack.</li>
+<li><code class="docutils literal"><span class="pre">&lt;X=n&gt;</span></code> removes the first <span class="math">\(n\)</span> letters of the stack.</li>
+</ul>
+<p>There are also two operators dedicated to Korean:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">J</span></code> removes a Jamo letter. If the current character is a Hangul
+syllab character, this character is first replaced by the equivalent
+Jamo sequence, and then, the last Jamo letter is removed. If the
+current character is neither a Jamo nor a Hangul, and error is
+raised.</li>
+<li><code class="docutils literal"><span class="pre">.</span></code> (latin dot) inserts a syllab bound. As a side effect, if the
+top of the stack contains Jamo letters, they are first recombined
+into a Hangul character.</li>
+</ul>
+<p>In the example below, the inflection of <code class="docutils literal"><span class="pre">choose</span></code> is shown. The
+sequence <code class="docutils literal"><span class="pre">LLDRRn</span></code> describes the form <code class="docutils literal"><span class="pre">chosen</span></code>:</p>
+<ul>
+<li><p class="first">Step 0: the canonical form is copied on the stack, and the cursor is
+set behind the last letter:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="6%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">c</span></code></td>
+<td><code class="docutils literal"><span class="pre">h</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td><code class="docutils literal"><span class="pre">e</span></code></td>
+<td>`` ``</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Step 1: the cursor is moved one position to the left:</p>
+<p><code class="docutils literal"><span class="pre">LLDRRn</span></code></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="6%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">c</span></code></td>
+<td><code class="docutils literal"><span class="pre">h</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td><code class="docutils literal"><span class="pre">e</span></code></td>
+<td>`` ``</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Step 2: the cursor is moved one position to the left again:</p>
+<p><code class="docutils literal"><span class="pre">LLDRRn</span></code></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="6%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">c</span></code></td>
+<td><code class="docutils literal"><span class="pre">h</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td><code class="docutils literal"><span class="pre">e</span></code></td>
+<td>`` ``</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Step 3: one character is deleted; everything to the right of the
+cursor is shifted one position to the left:</p>
+<p><code class="docutils literal"><span class="pre">LLDRRn</span></code></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="6%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">c</span></code></td>
+<td><code class="docutils literal"><span class="pre">h</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td><code class="docutils literal"><span class="pre">e</span></code></td>
+<td>`` ``</td>
+<td>`` ``</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Step 4: the cursor is moved to the right:</p>
+<p><code class="docutils literal"><span class="pre">LLDRRn</span></code></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="6%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">c</span></code></td>
+<td><code class="docutils literal"><span class="pre">h</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td><code class="docutils literal"><span class="pre">e</span></code></td>
+<td>`` ``</td>
+<td>`` ``</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Step 5: and to the right again:</p>
+<p><code class="docutils literal"><span class="pre">LLDRRn</span></code></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="6%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">c</span></code></td>
+<td><code class="docutils literal"><span class="pre">h</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td><code class="docutils literal"><span class="pre">e</span></code></td>
+<td>`` ``</td>
+<td>`` ``</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Step 6: the character <code class="docutils literal"><span class="pre">n</span></code> is pushed on the stack:</p>
+<p><code class="docutils literal"><span class="pre">LLDRRn</span></code></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="6%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">c</span></code></td>
+<td><code class="docutils literal"><span class="pre">h</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td><code class="docutils literal"><span class="pre">e</span></code></td>
+<td><code class="docutils literal"><span class="pre">n</span></code></td>
+<td>`` ``</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<p>When all operations have been fulfilled, the inflected form consists of
+all letters before the cursor (here <code class="docutils literal"><span class="pre">chosen</span></code>).</p>
+<p>The inflection program explores all paths of the inflectional grammar
+and tries all possible forms. In order to avoid having to replace the
+names of inflectional grammars by the actual grammatical codes to be
+used in the dictionary, the program replaces these names by the longest
+prefixes made of letters. Thus, <code class="docutils literal"><span class="pre">N4</span></code> is replaced by <code class="docutils literal"><span class="pre">N</span></code>. By choosing
+the inflectional grammar names carefully, one can construct a
+ready-to-use dictionary.</p>
+<p>Figure [fig-inflection-result] shows the dictionary we get after the
+inflection of our DELAS example.</p>
+<div class="figure" id="id74">
+<a class="reference internal image-reference" href="resources/img/fig3-9.png"><img alt="Result of automatic inflection[fig-inflection-result]" src="resources/img/fig3-9.png" style="width: 9.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Result of automatic inflection[fig-inflection-result]</span></p>
+</div>
+</div>
+<div class="section" id="advanced-inflection-operators">
+<h3>Advanced inflection operators<a class="headerlink" href="#advanced-inflection-operators" title="Permalink to this headline">¶</a></h3>
+<p>In some languages the inflection process can modify the root of the
+word. Several operators have been developped in order to facilitate this
+type of treatment. They allow to find and remove a suffix of the word
+<code class="docutils literal"><span class="pre">W</span></code> to be inflected. It is also possible to store a factor of this
+suffix by using a special variable ($ or <span class="math">\({\pounds}\)</span>). These
+operators can take the following forms:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;X$Y&gt;</span></code>: Starting from the end of the word <code class="docutils literal"><span class="pre">W</span></code> we are looking for
+the suffix <code class="docutils literal"><span class="pre">Y</span></code>. Then, we search for the <strong>rightmost</strong> occurrence of
+<code class="docutils literal"><span class="pre">X</span></code> which strictly precedes that of <code class="docutils literal"><span class="pre">Y</span></code> . The $ variable then
+contains the <strong>shortest factor</strong> (<strong>$</strong>hortest) of <code class="docutils literal"><span class="pre">W</span></code> strictly
+between <code class="docutils literal"><span class="pre">X</span></code> and <code class="docutils literal"><span class="pre">Y</span></code> (<code class="docutils literal"><span class="pre">W</span> <span class="pre">=</span> <span class="pre">U.X.$.Y</span></code>) <a class="footnote-reference" href="#id65" id="id1">[1]</a>. The <code class="docutils literal"><span class="pre">&lt;X$Y&gt;</span></code>
+operator strips <code class="docutils literal"><span class="pre">X.$.Y</span></code> from <code class="docutils literal"><span class="pre">W</span></code> and sets $. After it has been
+applied, the string left in the stack is <code class="docutils literal"><span class="pre">U</span></code>, and the $ variable
+can be used in the rest of the path.</li>
+<li><code class="docutils literal"><span class="pre">&lt;X</span></code><span class="math">\({\pounds}\)</span><code class="docutils literal"><span class="pre">Y&gt;</span></code>: Starting from the end of the word
+<code class="docutils literal"><span class="pre">W</span></code> we are looking for the suffix <code class="docutils literal"><span class="pre">Y</span></code>. Then, we search for the
+<strong>leftmost</strong> occurrence of <code class="docutils literal"><span class="pre">X</span></code> which strictly precedes that of
+<code class="docutils literal"><span class="pre">Y</span></code>. The £ variable then contains the <strong>longest factor</strong>
+(<strong>:math:`{pounds}`</strong>ongest) of <code class="docutils literal"><span class="pre">W</span></code> strictly between <code class="docutils literal"><span class="pre">X</span></code> and
+<code class="docutils literal"><span class="pre">Y</span></code> (<code class="docutils literal"><span class="pre">W</span> <span class="pre">=</span> <span class="pre">U.X.</span></code><span class="math">\({\pounds}\)</span><code class="docutils literal"><span class="pre">.Y</span></code>).</li>
+<li><code class="docutils literal"><span class="pre">&lt;X&gt;</span></code>: If there is no variable, we search for <code class="docutils literal"><span class="pre">X</span></code> as a suffix of
+<code class="docutils literal"><span class="pre">W</span></code> (<code class="docutils literal"><span class="pre">W</span> <span class="pre">=</span> <span class="pre">U.X</span></code>).</li>
+<li><code class="docutils literal"><span class="pre">&lt;$Y&gt;</span></code>: If the <code class="docutils literal"><span class="pre">X</span></code> factor is absent, the <strong>shortest factor
+``$``</strong> is the first letter which strictly precedes <code class="docutils literal"><span class="pre">Y</span></code> .</li>
+<li><code class="docutils literal"><span class="pre">&lt;</span></code><span class="math">\({\pounds}\)</span><code class="docutils literal"><span class="pre">Y&gt;</span></code>: If the <code class="docutils literal"><span class="pre">X</span></code> factor is absent, the
+<strong>longest factor :math:`{pounds}`</strong> is the prefix of <code class="docutils literal"><span class="pre">W</span></code> so that
+<code class="docutils literal"><span class="pre">W</span> <span class="pre">=</span> <span class="pre">``\</span> <span class="pre">:math:`{\pounds}`</span> <span class="pre">``.Y</span></code>.</li>
+</ul>
+<p>To illustrate the use of these operators, let us consider the French
+verb <em>reprendre</em>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="16%" />
+<col width="36%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Word</th>
+<th class="head">Operator</th>
+<th class="head">Variable</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>reprendre</td>
+<td>&lt;re&gt;</td>
+<td>&nbsp;</td>
+<td>reprend</td>
+</tr>
+<tr class="row-odd"><td>reprendre</td>
+<td>&lt;$&gt;</td>
+<td>$ = e</td>
+<td>reprendr</td>
+</tr>
+<tr class="row-even"><td>reprendre</td>
+<td>&lt;£&gt;</td>
+<td>£= reprendre</td>
+<td><span class="math">\(\varepsilon\)</span></td>
+</tr>
+<tr class="row-odd"><td>reprendre</td>
+<td>&lt;re$re&gt;</td>
+<td>$ = nd</td>
+<td>rep</td>
+</tr>
+<tr class="row-even"><td>reprendre</td>
+<td>&lt;re£re&gt;</td>
+<td>£ = prend</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>reprendre</td>
+<td>&lt;$re&gt;</td>
+<td>$ = d</td>
+<td>repren</td>
+</tr>
+<tr class="row-even"><td>reprendre</td>
+<td>&lt;re$&gt;</td>
+<td>$ = <span class="math">\(\varepsilon\)</span></td>
+<td>reprendre</td>
+</tr>
+<tr class="row-odd"><td>reprendre</td>
+<td>&lt;£re&gt;</td>
+<td>£ = reprend</td>
+<td><span class="math">\(\varepsilon\)</span></td>
+</tr>
+<tr class="row-even"><td>reprendre</td>
+<td>&lt;re£&gt;</td>
+<td>£ = prendre</td>
+<td>re</td>
+</tr>
+</tbody>
+</table>
+<p>The MultiFlex program allows you to use ten variables of type $ whose
+names are $,$1,...,$9 and ten variables of type £ whose names are
+£,£1,...,£9. Morever, both types of variables can be mixed in a same
+operator. Thus the operator &lt;£3re$7re&gt; applied to the french verb
+<em>reprendre</em> gives back&nbsp;: £3 = rep et $7 = <code class="docutils literal"><span class="pre">nd</span></code>.</p>
+<p>In the verbs <code class="docutils literal"><span class="pre">accélérer</span></code>, <code class="docutils literal"><span class="pre">sécher</span></code>, the second person of the present
+tense can be generated by the operation &lt;é$er&gt;è$es&nbsp;:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="8%" />
+<col width="19%" />
+<col width="7%" />
+<col width="8%" />
+<col width="4%" />
+<col width="7%" />
+<col width="19%" />
+<col width="14%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">accélérer</span></code></td>
+<td>&lt;é$er&gt;</td>
+<td><span class="math">\(\rightarrow\)</span></td>
+<td>accél</td>
+<td>$ = r</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>è$es</td>
+<td><span class="math">\(\rightarrow\)</span></td>
+<td><code class="docutils literal"><span class="pre">accélères</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">sécher</span></code></td>
+<td>&lt;é$er&gt;</td>
+<td><span class="math">\(\rightarrow\)</span></td>
+<td>s</td>
+<td>$ = ch</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>è$es</td>
+<td><span class="math">\(\rightarrow\)</span></td>
+<td><code class="docutils literal"><span class="pre">sèches</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Note that the factor <code class="docutils literal"><span class="pre">$</span></code> which remains in the inflected form is of
+variable length (<code class="docutils literal"><span class="pre">r</span></code>, <code class="docutils literal"><span class="pre">ch</span></code>). The inflection of the verbs
+<code class="docutils literal"><span class="pre">accélérer</span></code> and <code class="docutils literal"><span class="pre">sécher</span></code> cannot be done with classical stack
+operators within the same operation. Two different operations
+(<code class="docutils literal"><span class="pre">-4RèCes</span></code>, <code class="docutils literal"><span class="pre">-5RèCes</span></code>) are needed. The graph shown in
+figure&nbsp;[fig-inflection-secher] inflects verbs like <code class="docutils literal"><span class="pre">accélérer</span></code> and
+<code class="docutils literal"><span class="pre">sécher</span></code> in the present tense.</p>
+<p>The inflected forms of the verbs <code class="docutils literal"><span class="pre">accélérer</span></code> and <code class="docutils literal"><span class="pre">sécher</span></code> are&nbsp;:</p>
+<p><a class="reference internal" href="resources/img/fig3-flexion_aussprechen2.png"><img alt="image" src="resources/img/fig3-flexion_aussprechen2.png" style="width: 5.00000cm;" /></a></p>
+<p>The doubling of some letters during the inflection process can be done
+with the operator $. For example the adjective <em>tranquil</em> has two forms
+in the comparative and two in the superlative. The graph in figure
+&nbsp;[fig-inflection-tranquil] can produce these forms.</p>
+<p>Below are the inflected forms for the adjective <a href="#id2"><span class="problematic" id="id3">``</span></a>tranquil``&nbsp;:</p>
+<p><a class="reference internal" href="resources/img/fig3-flexion_aussprechen2.png"><img alt="image" src="resources/img/fig3-flexion_aussprechen2.png" style="width: 5.00000cm;" /></a></p>
+<p>In some languages, some inflected forms have a prefix added before the
+root like the formation of the past participle in German. The joint use
+of operators <span class="math">\({\pounds}\)</span> et <code class="docutils literal"><span class="pre">$</span></code> allows to inflect the german
+verb <code class="docutils literal"><span class="pre">sprechen</span></code> (to speak) in the present tense and the past
+participle as shown in the graph in figure&nbsp;[fig-inflection-sprechen].</p>
+<p>The inflection forms of the verb <a href="#id4"><span class="problematic" id="id5">``</span></a>sprechen``&nbsp;:</p>
+<p><a class="reference internal" href="resources/img/fig3-flexion_aussprechen2.png"><img alt="image" src="resources/img/fig3-flexion_aussprechen2.png" style="width: 5.00000cm;" /></a></p>
+<p>In order to inflect the phrasal verb <code class="docutils literal"><span class="pre">aussprechen</span></code> two variables of
+type $ should be used. Figure &nbsp;[fig-inflection-aussprechen] shows a
+graph with two variables <code class="docutils literal"><span class="pre">$1</span></code> and <code class="docutils literal"><span class="pre">$2</span></code>.</p>
+<p>Here are the inflection forms of the verb <a href="#id6"><span class="problematic" id="id7">``</span></a>aussprechen``&nbsp;:</p>
+<p><a class="reference internal" href="resources/img/fig3-flexion_aussprechen2.png"><img alt="image" src="resources/img/fig3-flexion_aussprechen2.png" style="width: 5.00000cm;" /></a></p>
+<p><strong>Semantic codes</strong></p>
+<p>In some languages, there are inflectional features that actually
+correspond to semantic ones, like for instance markers for the passive
+form. Such codes may not appear as inflectional ones, but rather as
+semantic ones. To do that and produce semantic codes, you have to insert
+a plus sign at the beginning of the output of a box. The box must only
+contain the semantic code preceeded by a plus, as shown on Figure
+[fig-inflection-sem].</p>
+<div class="figure" id="id75">
+<a class="reference internal image-reference" href="resources/img/fig3-9sem.png"><img alt="An inflection grammar with a semantic code[fig-inflection-sem]" src="resources/img/fig3-9sem.png" style="width: 6.00000cm;" /></a>
+<p class="caption"><span class="caption-text">An inflection grammar with a semantic code[fig-inflection-sem]</span></p>
+</div>
+</div>
+<div class="section" id="inflection-of-compound-words">
+<h3>Inflection of compound words<a class="headerlink" href="#inflection-of-compound-words" title="Permalink to this headline">¶</a></h3>
+<p>See chapter [chap-multiflex].</p>
+</div>
+<div class="section" id="inflection-of-semitic-languages">
+<h3>Inflection of Semitic languages<a class="headerlink" href="#inflection-of-semitic-languages" title="Permalink to this headline">¶</a></h3>
+<p>Semitic languages like Arabic or Hebrew are inflected in a way not
+easily representable with the inflection operators described above.
+Their morphology obeys a different logic: words are inflected according
+to <em>consonant skeletons</em>. The inflection process combines this skeleton
+with vowels. Specific operators have been implemented for Semitic
+languages, and some of them may be useful also for languages outside the
+Semitic family, such as Tagalog.</p>
+<p>First, let us see a case where we encode only the consonants in the
+lemma field of the DELAS entry:</p>
+<p><code class="docutils literal"><span class="pre">ktb,$V31-123</span></code></p>
+<p>The <code class="docutils literal"><span class="pre">$</span></code> sign before the grammatical code indicates that the inflection
+grammar is in the Semitic mode, and the form <code class="docutils literal"><span class="pre">ktb</span></code> in the lemma field
+is the consonant skeleton. Figure&nbsp;[semitic-grammar] shows the toy
+grammar <code class="docutils literal"><span class="pre">V31-123.grf</span></code> that illustrates how the Semitic mode works. The
+inflection grammars use the Buckwalter++ transliteration of the Arabic
+script (cf.&nbsp;Section&nbsp;[transliteration-Arabic]).</p>
+<div class="figure" id="id76">
+<a class="reference internal image-reference" href="resources/img/fig3-15.png"><img alt="A toy inflection grammar[semitic-grammar] in the Semitic mode" src="resources/img/fig3-15.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">A toy inflection grammar[semitic-grammar] in the Semitic mode</span></p>
+</div>
+<p>The Semitic mode obeys the following rules:</p>
+<ol class="arabic simple">
+<li>All standard inflection operators can be used (<code class="docutils literal"><span class="pre">L</span></code>, <code class="docutils literal"><span class="pre">R</span></code>, etc.).</li>
+<li>A digit stands for a letter in the lemma field (<code class="docutils literal"><span class="pre">1</span></code> for the first,
+<code class="docutils literal"><span class="pre">2</span></code> for the second, etc.). In our example, <code class="docutils literal"><span class="pre">1</span></code>, <code class="docutils literal"><span class="pre">2</span></code> and <code class="docutils literal"><span class="pre">3</span></code>
+will respectively stand for <code class="docutils literal"><span class="pre">k</span></code>, <code class="docutils literal"><span class="pre">t</span></code> and <code class="docutils literal"><span class="pre">b</span></code>. If you want to
+access to a letter after the ninth one, you must protect its index
+with angles like <code class="docutils literal"><span class="pre">&lt;10&gt;</span></code>.</li>
+</ol>
+<p>The DELAF output for this grammar is:</p>
+<p><code class="docutils literal"><span class="pre">yakotubu,ktb.V:aI3ms</span></code></p>
+<p>If we encode only the consonants in the lemma field and two entries have
+the same consonants but differ in the vowels, we must encode the vowels
+in the inflection grammars:</p>
+<p><code class="docutils literal"><span class="pre">Hsb,$V3au</span> <span class="pre">//</span> <span class="pre">to</span> <span class="pre">count,</span> <span class="pre">Hasaba,</span> <span class="pre">yaHosubu</span></code></p>
+<p><code class="docutils literal"><span class="pre">Hsb,$V3ii</span> <span class="pre">//</span> <span class="pre">to</span> <span class="pre">think,</span> <span class="pre">Hasiba,</span> <span class="pre">yaHosibu</span></code></p>
+<p>In order to copy the complete lemma field, use the &lt;LEMMA&gt; operator. A
+box with this operator retrieves the complete lemma field but does not
+depend on the number of letters in the field. This operator is useful
+for Arabic nouns and adjectives where masculine forms are generated by
+inserting vowels in the consonantal skeleton, whereas feminine forms are
+obtained by appending suffixes (Figure&nbsp;[LEMMA-operator]). In this
+example, both consonants and vowels are encoded in the lemma field.</p>
+<p>The &lt;n.LEMMA&gt; operator copies the lemma from the <span class="math">\(n\)</span>th position
+to the end. For example, in some Arabic nouns, the short vowel of the
+first syllable alternates: <code class="docutils literal"><span class="pre">a/u</span></code>, <code class="docutils literal"><span class="pre">a/i</span></code> or <code class="docutils literal"><span class="pre">u/i</span></code>, as in
+<code class="docutils literal"><span class="pre">nufaAyap</span></code>/<code class="docutils literal"><span class="pre">nifaAyap</span></code> ”rubbish”. The inflection grammar of
+Fig.&nbsp;[n.LEMMA-operator] produces both variants with <code class="docutils literal"><span class="pre">u</span></code> and with <code class="docutils literal"><span class="pre">i</span></code>
+as inflected forms of <code class="docutils literal"><span class="pre">nufaAyap</span></code>.</p>
+<p>In Tagalog, an Austronesian language spoken in the Philippines and that
+uses commonly infixes and reduplication for inflection, &lt;LEMMA&gt; and
+&lt;n.LEMMA&gt; may be used to produce verb tenses. The toy inflection grammar
+of Fig.&nbsp;[tagalog] produces the perfect <code class="docutils literal"><span class="pre">kumain</span></code>, future <code class="docutils literal"><span class="pre">kakain</span></code> and
+imperfect <code class="docutils literal"><span class="pre">kumakain</span></code> of the verb <code class="docutils literal"><span class="pre">kain</span></code> ”eat”.</p>
+</div>
+</div>
+<div class="section" id="transliterating-arabic-dictionaries">
+<h2>Transliterating Arabic dictionaries<a class="headerlink" href="#transliterating-arabic-dictionaries" title="Permalink to this headline">¶</a></h2>
+<p>When Arabic linguists analyse dictionaries in order to spot errors,
+reading in the Arabic script is simple and efficient. However, when they
+create inflectional grammars (Section&nbsp;[section-automatic-inflection]),
+parts of Arabic words occur in the same box as morphosyntactic
+information encoded in the Latin alphabet, and in this context,
+switching from right-to-left Arabic script to left-to-right Latin
+alphabet is a real hassle. With Unitex, you can encode your inflectional
+grammars entirely in the Latin alphabet, by using the Buckwalter++
+transliteration, a one-to-one mapping between a Unicode encoding of
+Arabic script and Latin letters (cf.&nbsp;<a href="#id8"><span class="problematic" id="id9">:raw-latex:`\cite{neme2011}`</span></a>,
+Section&nbsp;3.2, pages&nbsp;4–6). The Buckwalter++ transliteration is defined by
+the table of Fig.&nbsp;[buckwalter1] and [buckwalter2]. Unitex provides a
+tool to internally transliterate DELAS and DELAF Arabic dictionaries to
+and from Buckwalter++ encoding (Fig.&nbsp;[Arabic-transliteration]). This
+tool is accessible through the DELA menu.</p>
+<div class="figure" id="id77">
+<a class="reference internal image-reference" href="resources/img/buckwalter1.pdf"><img alt="Buckwalter++ transliteration table, first half[buckwalter1]" src="resources/img/buckwalter1.pdf" style="height: 23.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Buckwalter++ transliteration table, first half[buckwalter1]</span></p>
+</div>
+<div class="figure" id="id78">
+<a class="reference internal image-reference" href="resources/img/buckwalter2.pdf"><img alt="Buckwalter++ transliteration table, second half[buckwalter2]" src="resources/img/buckwalter2.pdf" style="height: 23.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Buckwalter++ transliteration table, second half[buckwalter2]</span></p>
+</div>
+</div>
+<div class="section" id="compression">
+<h2>Compression<a class="headerlink" href="#compression" title="Permalink to this headline">¶</a></h2>
+<p>Unitex applies compressed dictionaries to the text. The compression
+reduces the size of the dictionaries and speeds up the lookup. This
+operation is done by the <code class="docutils literal"><span class="pre">Compress</span></code> program. This program takes a
+dictionary in text form as input (for example <code class="docutils literal"><span class="pre">my_dico.dic</span></code>) and
+produces two files:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">my_dico.bin</span></code> contains the minimal automaton of the inflected forms
+of the dictionaries;</li>
+<li><code class="docutils literal"><span class="pre">my_dico.inf</span></code> contains the codes extracted from the original
+dictionary.</li>
+</ul>
+<p>The minimal automaton in the <code class="docutils literal"><span class="pre">my_dico.bin</span></code> file is a representation of
+inflected forms in which all common prefixes and suffixes are
+factorized. For example, the minimal automaton of the words <code class="docutils literal"><span class="pre">me</span></code>,
+<code class="docutils literal"><span class="pre">te</span></code>, <code class="docutils literal"><span class="pre">se</span></code>, <code class="docutils literal"><span class="pre">ma</span></code>, <code class="docutils literal"><span class="pre">ta</span></code> et <code class="docutils literal"><span class="pre">sa</span></code> can be represented by the graph
+shown in Figure&nbsp;[fig-example-minimal-automaton].</p>
+<p>To compress a dictionary, open it and click on “Compress into FST” in
+the “DELA” menu. The compression is independent from the language and
+from the content of the dictionary. The messages produced by the program
+are displayed in a window that is not closed automatically. You can see
+the size of the resulting <code class="docutils literal"><span class="pre">.bin</span></code> file, the number of lines read and
+the number of inflectional codes created.
+Figure&nbsp;[fig-compression-result] shows the result of the compression of a
+dictionary of simple words.</p>
+<div class="figure" id="id79">
+<a class="reference internal image-reference" href="resources/img/fig3-11.png"><img alt="Results of a compression[fig-compression-result]" src="resources/img/fig3-11.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Results of a compression[fig-compression-result]</span></p>
+</div>
+<p>The resulting files are compressed to about 95% for dictionaries
+containing simple words and 50% for those with compound words.</p>
+<p>When the Semitic mode ([subsection-semitic-inflection]) has been heavily
+used to inflect a dictionary, a specific variant of the compression
+algorithm may reduce the size of the resulting <code class="docutils literal"><span class="pre">.bin</span></code> and <code class="docutils literal"><span class="pre">.inf</span></code>
+files. In order to use it, either declare the language as being a
+Semitic one in the global preferences by checking the ”Semitic language”
+option in ”Preferences &gt; Language and Presentation”, or use the Compress
+program in command line with the <code class="docutils literal"><span class="pre">--semitic</span></code> option.</p>
+</div>
+<div class="section" id="applying-dictionaries">
+<h2>Applying dictionaries<a class="headerlink" href="#applying-dictionaries" title="Permalink to this headline">¶</a></h2>
+<p>Dictionaries can be applied (1) after pre-processing or (2) by
+explicitly clicking on “Apply Lexical Resources” in the “Text” menu (see
+section&nbsp;[text-applying-dictionaries]).</p>
+<p>Unitex can manipulate compressed dictionaries (<code class="docutils literal"><span class="pre">.bin</span></code>) and dictionary
+graphs (<code class="docutils literal"><span class="pre">.fst2</span></code>). We will now describe the rules for applying
+dictionaries in detail. Dictionary graphs will be described in
+section&nbsp;[section-dictionary-graphs].</p>
+<div class="section" id="priorities">
+<h3>Priorities<a class="headerlink" href="#priorities" title="Permalink to this headline">¶</a></h3>
+<p>The priority rule says that if a word in a text is found in a
+dictionary, this word will not be taken into account by dictionaries
+with lower priority.</p>
+<p>This allows for eliminating a part of ambiguity when applying
+dictionaries. For example, the French word <em>par</em> has a nominal
+interpretation in the golf domain. If you don’t want to use this
+meaning, it is sufficient to create a filter dictionary containing only
+the entry <code class="docutils literal"><span class="pre">par,.PREP</span></code> and to apply this with highest priority. This
+way, even if simple word dictionaries contain different entries, they
+will be ignored given the priority rule.</p>
+<p>There are three priority levels. The dictionaries whose names without
+extension end with&nbsp;<code class="docutils literal"><span class="pre">-</span></code> have the highest priority; those that end
+with&nbsp;<code class="docutils literal"><span class="pre">+</span></code> have the lowest one. All other dictionaries are applied
+with medium priority. The order in which dictionaries with the same
+priority are applied does not matter. On the command line, the command:</p>
+<p><code class="docutils literal"><span class="pre">Dico</span> <span class="pre">ex.snt</span> <span class="pre">alph.txt</span> <span class="pre">ctr+.bin</span> <span class="pre">cities-.bin</span> <span class="pre">rivers.bin</span> <span class="pre">regions-.bin</span></code></p>
+<p>will apply the dictionaries in the following order (<code class="docutils literal"><span class="pre">ex.snt</span></code> is the
+text to which the dictionaries are applied, and <code class="docutils literal"><span class="pre">alph.txt</span></code> is the
+alphabet file used):</p>
+<ol class="arabic simple">
+<li><code class="docutils literal"><span class="pre">cities-.bin</span></code></li>
+<li><code class="docutils literal"><span class="pre">regions-.bin</span></code></li>
+<li><code class="docutils literal"><span class="pre">rivers.bin</span></code></li>
+<li><code class="docutils literal"><span class="pre">ctr+.bin</span></code></li>
+</ol>
+</div>
+<div class="section" id="application-rules-for-dictionaries">
+<h3>Application rules for dictionaries<a class="headerlink" href="#application-rules-for-dictionaries" title="Permalink to this headline">¶</a></h3>
+<p>Besides the priority rule, the application of dictionaries respects
+upper case letters and spaces. The upper case rule is as follows:</p>
+<ul class="simple">
+<li>if there is an upper case letter in the dictionary, then an upper
+case letter has to be in the text;</li>
+<li>if a lower case letter is in the dictionary, there can be either an
+upper or lower case letter in the text.</li>
+</ul>
+<p>Thus, the entry <code class="docutils literal"><span class="pre">peter,.N:fs</span></code> will match the words <code class="docutils literal"><span class="pre">peter</span></code>,
+<code class="docutils literal"><span class="pre">Peter</span></code> et <code class="docutils literal"><span class="pre">PETER</span></code>, while</p>
+<p><code class="docutils literal"><span class="pre">Peter,.N+firstName</span></code> only recognizes <code class="docutils literal"><span class="pre">Peter</span></code> and <code class="docutils literal"><span class="pre">PETER</span></code>. Lower
+and upper case letters are defined in the alphabet file passed to the
+<code class="docutils literal"><span class="pre">Dico</span></code> program as a parameter.</p>
+<p>Respecting white space is a very simple rule: For each sequence in the
+text to be recognized by a dictionary entry, it has to have exactly the
+same number of spaces. For example, if the dictionary contains
+<code class="docutils literal"><span class="pre">aujourd'hui,.ADV</span></code>, the sequence <code class="docutils literal"><span class="pre">Aujourd'</span> <span class="pre">hui</span></code> will not be
+recognized because of the space that follows the apostrophe.</p>
+</div>
+<div class="section" id="dictionary-graphs">
+<h3>Dictionary graphs<a class="headerlink" href="#dictionary-graphs" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">Dico</span></code> program can also apply dictionary graphs. Dictionary
+graphs, by default, <a class="footnote-reference" href="#id66" id="id10">[2]</a> conform to the following rule: if applied by
+<code class="docutils literal"><span class="pre">Locate</span></code> in MERGE mode, they must produce output sequences that are
+valid DELAF lines. When they are applied to a text, they attach the
+DELAF lexical labels to the sequences.</p>
+<div class="figure" id="id80">
+<a class="reference internal image-reference" href="resources/img/fig3-12.png"><img alt="Dictionary graph of chemical elements[elements]" src="resources/img/fig3-12.png" style="height: 24.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Dictionary graph of chemical elements[elements]</span></p>
+</div>
+<p>Figure [elements] shows a graph that recognizes chemical elements. We
+can observe a first advantage of graphs over usual dictionaries: we can
+force case with double quotes. Thus, this graph will correctly match
+<code class="docutils literal"><span class="pre">Fe</span></code> but not <code class="docutils literal"><span class="pre">FE</span></code>, while this restriction cannot be specified in a
+normal DELAF.</p>
+<p>Another advantage of dictionary graphs is that they can use results
+given by previous dictionaries. Thus, it is possible to apply the
+standard dictionary, and then tag as proper names all the unknown words
+that begin with an uppercase letter, thanks to graph <code class="docutils literal"><span class="pre">NPr+</span></code> shown in
+figure&nbsp;[graph-NPr]. The <code class="docutils literal"><span class="pre">+</span></code> in the graph name gives to it a low
+priority, so that it will be applied after the standard dictionary. This
+graph works with words that are still unknown after the application of
+the standard dictionary. Square brackets stand for a context definition.
+For more information about contexts, see section [section-contexts].</p>
+<p>Since dictionary graphs are applied using the engine of <code class="docutils literal"><span class="pre">Locate</span></code>, they
+have exactly the same properties than syntactic graphs. So, you can use
+morphological filters (section&nbsp;[section-filters]) and/or the
+morphological mode (section&nbsp;[section-morphological-mode]). For instance,
+the graph shown on Figure [graph-CR] uses morphological filters to
+recognize roman numerals. Note that it also uses contexts in order to
+avoid recognizing uppercase letters in some contexts.</p>
+<div class="figure" id="id81">
+<a class="reference internal image-reference" href="resources/img/fig3-14.png"><img alt="Dictionary graph of roman numerals[graph-CR]" src="resources/img/fig3-14.png" style="height: 24.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Dictionary graph of roman numerals[graph-CR]</span></p>
+</div>
+<p>By default, dictionary graphs are applied in MERGE mode. If you want to
+apply them in REPLACE mode, you must suffix graph names with <code class="docutils literal"><span class="pre">-r</span></code>.
+This can be combined with the <code class="docutils literal"><span class="pre">+</span></code> and <code class="docutils literal"><span class="pre">-</span></code> priority marks:</p>
+<p><code class="docutils literal"><span class="pre">bagpipe-r.fst2</span>&nbsp; <span class="pre">McAdam-r-.fst2</span>&nbsp; <span class="pre">phtirius-r+.fst2</span></code></p>
+<div class="section" id="exporting-produced-entries-as-a-morphological-mode-dictionary">
+<h4>Exporting produced entries as a morphological-mode dictionary<a class="headerlink" href="#exporting-produced-entries-as-a-morphological-mode-dictionary" title="Permalink to this headline">¶</a></h4>
+<p>Dictionary entries produced by dictionary graphs are looked up by the
+<code class="docutils literal"><span class="pre">Locate</span></code> program when it comes across lexical masks involving
+dictionary lookup.</p>
+<p>However, this functionality is restricted when the lexical mask is in
+morphological mode (section&nbsp;[section-morphological-mode]). Dictionary
+graphs cannot be declared as being morphological-mode dictionaries in
+the usual way (section&nbsp;[morph-mode-dic]), because they are not <code class="docutils literal"><span class="pre">.bin</span></code>
+files. When in morphological mode, lexical masks involving dictionary
+lookup do not trigger lookup of dictionary graphs. To compensate for
+this, there are several solutions.</p>
+<ul class="simple">
+<li>Consider invoking the dictionary graph from the part of the graph
+which is in morphological mode.</li>
+<li>Unitex internally generates a dictionary of the forms recognized in
+the text by a dictionary graph. If the name of the dictionary graph
+contains the <code class="docutils literal"><span class="pre">b</span></code> switch (see Naming conventions below), Unitex
+includes this internal dictionary among morphological-mode
+dictionaries, so that it is looked up when the <code class="docutils literal"><span class="pre">Locate</span></code> program
+comes across lexical masks in morphological mode. But this solution
+works only for forms recognised in the text by the dictionary graph
+during initial application of dictionaries
+(section&nbsp;[section-applying-dictionaries]), and not for forms that
+appear in the text only as token parts.</li>
+</ul>
+<p>If you add <code class="docutils literal"><span class="pre">z</span></code> instead of <code class="docutils literal"><span class="pre">b</span></code>, then the dictionary internally
+generated for the text is compressed immediately, and can be looked up
+when other dictionary graphs are applied later.</p>
+</div>
+<div class="section" id="naming-conventions">
+<h4>Naming conventions<a class="headerlink" href="#naming-conventions" title="Permalink to this headline">¶</a></h4>
+<p>The whole naming scheme for dictionary graphs is as follows:</p>
+<p><code class="docutils literal"><span class="pre">name(-XYZ)([-+]).fst2</span></code></p>
+<p>where:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">X</span></code> is in <code class="docutils literal"><span class="pre">[rRmM]</span></code>: <code class="docutils literal"><span class="pre">r</span></code> means REPLACE mode; <code class="docutils literal"><span class="pre">M</span></code> means MERGE
+mode (default);</li>
+<li><code class="docutils literal"><span class="pre">Y</span></code> is in <code class="docutils literal"><span class="pre">[bBzZ]</span></code>: option that rules the production of a
+morphological-mode dictionary (see above Exporting produced entries
+as a morphological-mode dictionary);</li>
+<li><code class="docutils literal"><span class="pre">Z</span></code> is in <code class="docutils literal"><span class="pre">[aAlLsS]</span></code>: <code class="docutils literal"><span class="pre">a</span></code> means that the graph will be applied
+in “All matches” mode; <code class="docutils literal"><span class="pre">l</span></code> means “Longest matches” mode (default);
+<code class="docutils literal"><span class="pre">s</span></code> means “Shortest matches” mode.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="morphological-dictionary-graphs">
+<h3>Morphological dictionary-graphs<a class="headerlink" href="#morphological-dictionary-graphs" title="Permalink to this headline">¶</a></h3>
+<p>In a dictionary graph, by default, each path must output a lexical entry
+to be added in the text dictionaries. In a morphological
+dictionary-graph, each path must output a sequence of one or more tags
+enclosed in braces and conforming to the syntax of a DELAF line
+(section&nbsp;[section-DELAF-entry-syntax]). The output of such graphs will
+be used as special input for the construction of the text automaton. We
+call them ‘morphological dictionary-graphs’ because their main utility
+is to introduce new morphological analyses in the text automaton, using
+the morphological mode (see section [section-morphological-mode]). This
+functionality is helpful for agglutinative languages like Korean. To
+allow the use of a graph as a morphological dictionary-graph, declare it
+with a slash (/) as the first character of its output, as in Figure
+[morphoA].</p>
+<div class="figure" id="id82">
+<a class="reference internal image-reference" href="resources/img/fig3-14a.png"><img alt="Example of a morphological dictionary-graph[morphoA]" src="resources/img/fig3-14a.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Example of a morphological dictionary-graph[morphoA]</span></p>
+</div>
+<p>The rule is simple: any output of a dictionary graph that begins with a
+slash will be added to the file <code class="docutils literal"><span class="pre">tags.ind</span></code>, located in the text
+directory. This file is used by the <code class="docutils literal"><span class="pre">Txt2Fst2</span></code> program in order to add
+interpretations into the text automaton. The grammar of Figure [morphoA]
+matches words made of the prefix <code class="docutils literal"><span class="pre">un</span></code> followed by an adjective. If we
+apply it as a dictionary graph, we obtain new paths in the text
+automaton, as shown on Figure [morphoB]. Note that when two tags
+correspond to analyses within the same token, the link between them is
+displayed with a dashed line.</p>
+<div class="figure" id="id83">
+<a class="reference internal image-reference" href="resources/img/fig3-14b.png"><img alt="Path added by a morphological dictionary-graph[morphoB]" src="resources/img/fig3-14b.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Path added by a morphological dictionary-graph[morphoB]</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line">Table&nbsp;[ref-dicos] gives some references for electronic dictionaries
+with simple and compound words. For more details, see the references
+page on the Unitex website:</div>
+<div class="line"><a class="reference external" href="http://www-igm.univ-mlv.fr/~unitex">http://www-igm.univ-mlv.fr/~unitex</a></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="47%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Language</strong></th>
+<th class="head"><strong>Simple words</strong></th>
+<th class="head"><strong>Compound words</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>English</td>
+<td><a href="#id11"><span class="problematic" id="id12">:raw-latex:`\cite{klarsfeld}`</span></a>, <a href="#id13"><span class="problematic" id="id14">:raw-latex:`\cite{monceaux-1995}`</span></a></td>
+<td><a href="#id15"><span class="problematic" id="id16">:raw-latex:`\cite{delac-anglais}`</span></a>, <a href="#id17"><span class="problematic" id="id18">:raw-latex:`\cite{these-Savary}`</span></a></td>
+</tr>
+<tr class="row-odd"><td>French</td>
+<td><a href="#id19"><span class="problematic" id="id20">:raw-latex:`\cite{formes-ambigues}`</span></a>, <a href="#id21"><span class="problematic" id="id22">:raw-latex:`\cite{dicos-francais}`</span></a>, <a href="#id23"><span class="problematic" id="id24">:raw-latex:`\cite{jacques-1995}`</span></a></td>
+<td><a href="#id25"><span class="problematic" id="id26">:raw-latex:`\cite{dicos-francais}`</span></a>, <a href="#id27"><span class="problematic" id="id28">:raw-latex:`\cite{Gross96}`</span></a>, <a href="#id29"><span class="problematic" id="id30">:raw-latex:`\cite{max-1993}`</span></a>, <a href="#id31"><span class="problematic" id="id32">:raw-latex:`\cite{syntaxe-de-ladverbe}`</span></a></td>
+</tr>
+<tr class="row-even"><td>Modern Greek</td>
+<td><a href="#id33"><span class="problematic" id="id34">:raw-latex:`\cite{modern-greek}`</span></a>, <a href="#id35"><span class="problematic" id="id36">:raw-latex:`\cite{matthieu-anastasia}`</span></a>, <a href="#id37"><span class="problematic" id="id38">:raw-latex:`\cite{these-tita}`</span></a></td>
+<td><a href="#id39"><span class="problematic" id="id40">:raw-latex:`\cite{tita-2002}`</span></a>, <a href="#id41"><span class="problematic" id="id42">:raw-latex:`\cite{anastasia-2002}`</span></a></td>
+</tr>
+<tr class="row-odd"><td>Italian</td>
+<td><a href="#id43"><span class="problematic" id="id44">:raw-latex:`\cite{delaf-italien}`</span></a>, <a href="#id45"><span class="problematic" id="id46">:raw-latex:`\cite{delaf-italien-book}`</span></a></td>
+<td><a href="#id47"><span class="problematic" id="id48">:raw-latex:`\cite{composes-italien}`</span></a></td>
+</tr>
+<tr class="row-even"><td>Spanish</td>
+<td><a href="#id49"><span class="problematic" id="id50">:raw-latex:`\cite{blanco-2000}`</span></a></td>
+<td><a href="#id51"><span class="problematic" id="id52">:raw-latex:`\cite{blanco-1997}`</span></a></td>
+</tr>
+<tr class="row-odd"><td>Portuguese</td>
+<td><a href="#id53"><span class="problematic" id="id54">:raw-latex:`\cite{eleuterio1995}`</span></a>, <a href="#id55"><span class="problematic" id="id56">:raw-latex:`\cite{ranchhod1996b}`</span></a>, <a href="#id57"><span class="problematic" id="id58">:raw-latex:`\cite{ranchhodd1998}`</span></a>, <a href="#id59"><span class="problematic" id="id60">:raw-latex:`\cite{muniz2005}`</span></a></td>
+<td><a href="#id61"><span class="problematic" id="id62">:raw-latex:`\cite{ranchhod1991}`</span></a>, <a href="#id63"><span class="problematic" id="id64">:raw-latex:`\cite{ranchhodd1998}`</span></a></td>
+</tr>
+</tbody>
+</table>
+<p>Table: Some bibliographical references for electronic
+dictionaries[ref-dicos]</p>
+<table class="docutils footnote" frame="void" id="id65" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>The point represents here the concatenation operation.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id66" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id10">[2]</a></td><td>Morphological dictionary-graphs are an exception (section
+[section-morphological-dictionary-graphs]) .</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-en.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Dictionaries</a><ul>
+<li><a class="reference internal" href="#the-dela-dictionaries">The DELA dictionaries</a><ul>
+<li><a class="reference internal" href="#the-delaf-format">The DELAF format</a><ul>
+<li><a class="reference internal" href="#entry-syntax">Entry syntax</a></li>
+<li><a class="reference internal" href="#compound-words-with-spaces-or-dashes">Compound words with spaces or dashes</a></li>
+<li><a class="reference internal" href="#entry-factorization">Entry Factorization</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-delas-format">The DELAS Format</a></li>
+<li><a class="reference internal" href="#dictionary-contents">Dictionary Contents</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#looking-up-a-word-in-a-dictionary">Looking up a word in a dictionary</a></li>
+<li><a class="reference internal" href="#checking-dictionary-format">Checking dictionary format</a></li>
+<li><a class="reference internal" href="#sorting">Sorting</a></li>
+<li><a class="reference internal" href="#automatic-inflection">Automatic inflection</a><ul>
+<li><a class="reference internal" href="#inflection-of-simple-words">Inflection of simple words</a></li>
+<li><a class="reference internal" href="#advanced-inflection-operators">Advanced inflection operators</a></li>
+<li><a class="reference internal" href="#inflection-of-compound-words">Inflection of compound words</a></li>
+<li><a class="reference internal" href="#inflection-of-semitic-languages">Inflection of Semitic languages</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#transliterating-arabic-dictionaries">Transliterating Arabic dictionaries</a></li>
+<li><a class="reference internal" href="#compression">Compression</a></li>
+<li><a class="reference internal" href="#applying-dictionaries">Applying dictionaries</a><ul>
+<li><a class="reference internal" href="#priorities">Priorities</a></li>
+<li><a class="reference internal" href="#application-rules-for-dictionaries">Application rules for dictionaries</a></li>
+<li><a class="reference internal" href="#dictionary-graphs">Dictionary graphs</a><ul>
+<li><a class="reference internal" href="#exporting-produced-entries-as-a-morphological-mode-dictionary">Exporting produced entries as a morphological-mode dictionary</a></li>
+<li><a class="reference internal" href="#naming-conventions">Naming conventions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#morphological-dictionary-graphs">Morphological dictionary-graphs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bibliography">Bibliography</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-en.html">Documentation overview</a><ul>
+      <li>Previous: <a href="02-loading_texts_EN_utf8.html" title="previous chapter">Loading a text</a></li>
+      <li>Next: <a href="04-pattern_matching_EN_utf8.html" title="next chapter">Searching with regular expressions</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/03-dictionaries_EN_utf8.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/03-dictionaries_EN_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

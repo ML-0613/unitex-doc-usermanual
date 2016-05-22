@@ -1,0 +1,674 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="EN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Searching with regular expressions &mdash; Unitex-en 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-en 1.0.1 documentation" href="Unitex-en.html" />
+    <link rel="next" title="Local grammars" href="05-grammars_EN_utf8.html" />
+    <link rel="prev" title="Dictionaries" href="03-dictionaries_EN_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="searching-with-regular-expressions">
+<h1>Searching with regular expressions<a class="headerlink" href="#searching-with-regular-expressions" title="Permalink to this headline">¶</a></h1>
+<p>This chapter describes how to search a text for simple patterns by using
+regular expressions.</p>
+<div class="section" id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline">¶</a></h2>
+<p>The goal of this chapter is not to give an introduction on formal
+languages but to show how to use regular expressions in Unitex in order
+to search for simple patterns. Readers who are interested in a more
+formal presentation can consult the many works that discuss regular
+expression patterns.</p>
+<p>A regular expression can be:</p>
+<ul class="simple">
+<li>a token (<code class="docutils literal"><span class="pre">book</span></code>) or a lexical mask (<code class="docutils literal"><span class="pre">&lt;smoke.V&gt;</span></code>);</li>
+<li>a particular position in the text : the beginning <code class="docutils literal"><span class="pre">{^}</span></code> or the end
+<code class="docutils literal"><span class="pre">{$}</span></code></li>
+<li>the concatenation of two regular expressions (<code class="docutils literal"><span class="pre">he</span> <span class="pre">smokes</span></code>);</li>
+<li>the union of two regular expressions (<code class="docutils literal"><span class="pre">Pierre+Paul</span></code>);</li>
+<li>the Kleene star of a regular expression (<code class="docutils literal"><span class="pre">bye*</span></code>).</li>
+</ul>
+</div>
+<div class="section" id="tokens">
+<h2>Tokens<a class="headerlink" href="#tokens" title="Permalink to this headline">¶</a></h2>
+<p>In a regular expression, a token is defined as in [tokenization] (page
+). Note that the symbols dot, plus, star, less than, opening and closing
+parentheses and double quotes have a special meaning. It is therefore
+necessary to precede them with an escape character <code class="docutils literal"><span class="pre">\</span></code> if you want to
+search for them. Here are some examples of valid tokens:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cat</span>
+\<span class="o">.</span>
+<span class="o">&lt;</span><span class="n">N</span><span class="p">:</span><span class="n">ms</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="n">S</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>By default, Unitex is set up to let lower case patterns also find
+upper-case matches. It is possibe to enforce case-sensitive matching
+using quotation marks. Thus, <code class="docutils literal"><span class="pre">&quot;peter&quot;</span></code> recognizes only the form
+<code class="docutils literal"><span class="pre">peter</span></code> and not <code class="docutils literal"><span class="pre">Peter</span></code> or <code class="docutils literal"><span class="pre">PETER</span></code>.</p>
+<p>NOTE: in order to make a space obligatory, it needs to be enclosed in
+quotation marks.</p>
+</div>
+<div class="section" id="lexical-masks">
+<h2>Lexical masks<a class="headerlink" href="#lexical-masks" title="Permalink to this headline">¶</a></h2>
+<p>A lexical mask is a search query that matches tokens or sequences of
+tokens.</p>
+<div class="section" id="special-symbols">
+<h3>Special symbols<a class="headerlink" href="#special-symbols" title="Permalink to this headline">¶</a></h3>
+<p>There are two kinds of lexical masks. The first category contains the
+special symbols or meta-symbols introduced in
+section&nbsp;[section-sentence-splitting] except for <code class="docutils literal"><span class="pre">&lt;PNC&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;^&gt;</span></code>.
+(The symbol <code class="docutils literal"><span class="pre">&lt;PNC&gt;</span></code>, which matches punctuation signs, is valid only
+during preprocessing; <code class="docutils literal"><span class="pre">&lt;^&gt;</span></code> matches a line feed, but since all line
+feeds have been replaced by spaces, this symbol cannot be useful anymore
+when searching for lexical masks.) The meta-symbols that can be used to
+search a text for patterns are the following:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;E&gt;</span></code>: the empty word or epsilon. Matches the empty string;</li>
+<li><code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code>: matches any token, except the space; used by default for
+morphological filters</li>
+<li><code class="docutils literal"><span class="pre">&lt;WORD&gt;</span></code>: matches any token that consists of letters;</li>
+<li><code class="docutils literal"><span class="pre">&lt;LOWER&gt;</span></code>: matches any lower-case token;</li>
+<li><code class="docutils literal"><span class="pre">&lt;UPPER&gt;</span></code>: matches any upper-case token;</li>
+<li><code class="docutils literal"><span class="pre">&lt;FIRST&gt;</span></code>: matches any token that consists of letters and starts
+with a capital lette;</li>
+<li><code class="docutils literal"><span class="pre">&lt;DIC&gt;</span></code>: matches any word that is present in the dictionaries of
+the text;</li>
+<li><code class="docutils literal"><span class="pre">&lt;SDIC&gt;</span></code>: matches any simple word in the text dictionaries;</li>
+<li><code class="docutils literal"><span class="pre">&lt;CDIC&gt;</span></code>: matches any composed word in the dictionaries of the
+text;</li>
+<li><code class="docutils literal"><span class="pre">&lt;TDIC&gt;</span></code>: matches any tagged token like <code class="docutils literal"><span class="pre">{XXX,XXX.XXX}</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">&lt;NB&gt;</span></code>: matches any contiguous sequence of digit (1234 is matched
+but not 1 234);</li>
+<li><code class="docutils literal"><span class="pre">#</span></code>: prohibits the presence of space.</li>
+</ul>
+<p>Earlier codes for <code class="docutils literal"><span class="pre">&lt;WORD&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;LOWER&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;UPPER&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;FIRST&gt;</span></code>
+were respectively <code class="docutils literal"><span class="pre">&lt;MOT&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;MIN&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;MAJ&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;PRE&gt;</span></code>. They
+can still be used for backward compatibility of the system with existing
+graphs. Though there are no current plans to remove this codes, it is
+recommended to avoid them in graphs designed to be used with more recent
+versions, <a class="footnote-reference" href="#id11" id="id1">[1]</a> so that the number of lexical masks in use does not
+increase uselessly.</p>
+<p>NOTE: as described in section [tokenization], NO meta can be used to
+match the <code class="docutils literal"><span class="pre">{STOP}</span></code> marker, not even <code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code>.</p>
+</div>
+<div class="section" id="references-to-information-in-the-dictionaries">
+<h3>References to information in the dictionaries<a class="headerlink" href="#references-to-information-in-the-dictionaries" title="Permalink to this headline">¶</a></h3>
+<p>The second kind of lexical masks refers to the information in the text
+dictionaries. The four possible forms are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;be&gt;</span></code>: matches all the entries that have <code class="docutils literal"><span class="pre">be</span></code> as canonical form.
+Note that this pattern is ambiguous if <code class="docutils literal"><span class="pre">be</span></code> is also a grammatical
+or semantic code;</li>
+<li><code class="docutils literal"><span class="pre">&lt;be.&gt;</span></code>: matches all the entries that have <code class="docutils literal"><span class="pre">be</span></code> as canonical
+form. This pattern is not ambiguous as the previous one;</li>
+<li><code class="docutils literal"><span class="pre">&lt;be.V&gt;</span></code>: matches all entries having <code class="docutils literal"><span class="pre">be</span></code> as canonical form and
+the grammatical code <code class="docutils literal"><span class="pre">V</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">&lt;V&gt;</span></code>: matches all entries having the grammatical code <code class="docutils literal"><span class="pre">V</span></code>. This
+pattern is as ambiguous as the first one. To remove the ambiguity,
+you can use either <code class="docutils literal"><span class="pre">&lt;.V&gt;</span></code> or <code class="docutils literal"><span class="pre">&lt;+V&gt;</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">{am,be.V}</span> <span class="pre">or</span> <span class="pre">&lt;am,be.V&gt;</span></code>: matches all the entries having <code class="docutils literal"><span class="pre">am</span></code> as
+inflected form, <code class="docutils literal"><span class="pre">be</span></code> as canonical form and the grammatical code
+<code class="docutils literal"><span class="pre">V</span></code>. This kind of lexical mask is only of interest if applied to
+the text automaton where all the ambiguity of the words is explicit.
+While executing a search on the text, that lexical mask matches the
+same as the simple token <code class="docutils literal"><span class="pre">am</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="grammatical-and-semantic-constraints">
+<h3>Grammatical and semantic constraints<a class="headerlink" href="#grammatical-and-semantic-constraints" title="Permalink to this headline">¶</a></h3>
+<p>The references to dictionary information (<code class="docutils literal"><span class="pre">be</span></code>, <code class="docutils literal"><span class="pre">V</span></code>) in these
+examples are basic. It is possible to express more complex lexical masks
+by using several grammatical or semantic codes separated by the
+character <code class="docutils literal"><span class="pre">+</span></code>. If several codes are present, the character <code class="docutils literal"><span class="pre">+</span></code> means
+‘’and’’: an entry of the dictionary is only found if it has all the
+codes that are present in the mask. The mask <code class="docutils literal"><span class="pre">&lt;N+z1&gt;</span></code> thus recognizes
+the entries:</p>
+<p><code class="docutils literal"><span class="pre">broderies,broderie.N+z1:fp</span></code></p>
+<p><code class="docutils literal"><span class="pre">capitales</span> <span class="pre">européennes,capitale</span> <span class="pre">européenne.N+NA+Conc+HumColl+z1:fp</span></code></p>
+<p>but not:</p>
+<p><code class="docutils literal"><span class="pre">Descartes,René</span> <span class="pre">Descartes.N+Hum+NPropre:ms</span></code></p>
+<p><code class="docutils literal"><span class="pre">habitué,.A+z1:ms</span></code></p>
+<p>It is possible to exclude codes by preceding them with the character
+<code class="docutils literal"><span class="pre">~</span></code> instead of <code class="docutils literal"><span class="pre">+</span></code>. In order to be recognized, an entry has to
+contain all the codes required by the lexical mask and none of the
+prohibited ones. For instance, <code class="docutils literal"><span class="pre">&lt;A~z3&gt;</span></code> matches the entries that have
+the code <code class="docutils literal"><span class="pre">A</span></code> without the code <code class="docutils literal"><span class="pre">z3</span></code> (cf.
+table&nbsp;[tab-semantic-codes]). <a class="footnote-reference" href="#id12" id="id2">[2]</a> If you want to refer to a code
+containing the character <code class="docutils literal"><span class="pre">~</span></code> you have to escape this character by
+preceding it with a <code class="docutils literal"><span class="pre">\</span></code>.</p>
+<p>CHANGE NOTE: before version 2.1, the negation operator was the minus. If
+you want to preserve backward compatibility without modifying your
+graphs, you have to call <code class="docutils literal"><span class="pre">Locate</span></code> by hand with the <code class="docutils literal"><span class="pre">-g</span> <span class="pre">minus</span></code>
+option.</p>
+<p>The syntax of lexical masks does not make any difference between
+grammatical codes (table&nbsp;[tab-grammatical-codes]) and semantic codes
+(table&nbsp;[tab-semantic-codes]). In the DELAF dictionary format,
+grammatical codes are those that appear first and encode the part of
+speech, but in Unitex lexical masks, the order in which grammatical and
+semantic codes appear does not matter. The three following patterns are
+equivalent:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">N</span><span class="o">~</span><span class="n">Hum</span><span class="o">+</span><span class="n">z1</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">z1</span><span class="o">+</span><span class="n">N</span><span class="o">~</span><span class="n">Hum</span><span class="o">&gt;</span>
+<span class="o">&lt;~</span><span class="n">Hum</span><span class="o">+</span><span class="n">z1</span><span class="o">+</span><span class="n">N</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>A lexical mask can contain a semantic code without a part-of-speech
+code.</p>
+<p>NOTE: it is not possible to use a lexical mask that only has prohibited
+codes. <code class="docutils literal"><span class="pre">&lt;~N&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;~A~z1&gt;</span></code> are thus incorrect masks. However, you
+can express such constraints using contexts (see
+section&nbsp;[section-contexts]).</p>
+</div>
+<div class="section" id="inflectional-constraints">
+<h3>Inflectional constraints<a class="headerlink" href="#inflectional-constraints" title="Permalink to this headline">¶</a></h3>
+<p>It is also possible to specify constraints about inflectional codes.
+These constraints have to be preceded by at least one grammatical or
+semantic code. They are represented in the same format as the
+inflectional codes in the dictionaries. Here are some French examples of
+lexical masks using inflectional constraints:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;A:m&gt;</span></code> recognizes a adjective in the masculine;</li>
+<li><code class="docutils literal"><span class="pre">&lt;A:mp&gt;</span></code> recognizes an adjective in the masculine plural.</li>
+</ul>
+<p>An inflectional code is introduced by the <code class="docutils literal"><span class="pre">:</span></code> character and is made up
+of one or more characters, each of which represents one piece of
+information. Let us consider first the simple case of dictionary entries
+and masks which have exactly one inflectional code. In order to let a
+dictionary entry <span class="math">\(E\)</span> be recognized by a mask <span class="math">\(M\)</span>, it is
+necessary that the inflectional code of <span class="math">\(E\)</span> contains all the
+characters of the inflectional code of <span class="math">\(M\)</span>:</p>
+<p><span class="math">\(E\)</span>=<code class="docutils literal"><span class="pre">pretext,.V:P3p</span></code></p>
+<p><span class="math">\(M\)</span>=<code class="docutils literal"><span class="pre">&lt;V:P3&gt;</span></code></p>
+<p>The inflectional code <code class="docutils literal"><span class="pre">P3p</span></code> of <span class="math">\(E\)</span> contains both characters
+<code class="docutils literal"><span class="pre">P</span></code> and <code class="docutils literal"><span class="pre">3</span></code>. The code <code class="docutils literal"><span class="pre">P3</span></code> is included in the code of <span class="math">\(E\)</span>.
+Therefore, mask <span class="math">\(M\)</span> recognizes entry <span class="math">\(E\)</span>.</p>
+<p>The order of the characters inside an inflectional code is without
+importance. All the grammatical and semantic codes must precede the
+inflectional codes.</p>
+<p>If several inflectional codes are present in a lexical mask, the <code class="docutils literal"><span class="pre">:</span></code>
+character means ‘’or’’:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;A:mp:f&gt;</span></code> matches both <code class="docutils literal"><span class="pre">&lt;A:mp&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;A:f&gt;</span></code>; it recognizes
+adjectives in the masculine plural or in the feminine;</li>
+<li><code class="docutils literal"><span class="pre">&lt;V:2:3&gt;</span></code> recognizes a verb in the 2nd or 3rd person; that excludes
+all tenses that have neither a 2nd or 3rd person (infinitive, past
+participle and present participle) as well as the tenses that are
+conjugated in the first person.</li>
+</ul>
+<p>In order to let a dictionary entry <span class="math">\(E\)</span> be recognized by a mask
+<span class="math">\(M\)</span>, it is necessary that at least one inflectional code of
+<span class="math">\(E\)</span> contains all the characters of at least one inflectional code
+of <span class="math">\(M\)</span>. Consider the following example:</p>
+<p><span class="math">\(E\)</span>=<code class="docutils literal"><span class="pre">pretext,.V:W:P1s:P2s:P1p:P2p:P3p</span></code></p>
+<p><span class="math">\(M\)</span>=<code class="docutils literal"><span class="pre">&lt;V:P3s:P3&gt;</span></code></p>
+<p>No inflectional code of <span class="math">\(E\)</span> contains the characters <code class="docutils literal"><span class="pre">P</span></code>, <code class="docutils literal"><span class="pre">3</span></code>
+and <code class="docutils literal"><span class="pre">s</span></code> at the same time. However, the code <code class="docutils literal"><span class="pre">P3p</span></code> of <span class="math">\(E\)</span> does
+contain both characters <code class="docutils literal"><span class="pre">P</span></code> and <code class="docutils literal"><span class="pre">3</span></code>. The code <code class="docutils literal"><span class="pre">P3</span></code> is included in
+at least one code of <span class="math">\(E\)</span>. Therefore, mask <span class="math">\(M\)</span> recognizes
+entry <span class="math">\(E\)</span>.</p>
+</div>
+<div class="section" id="negation-of-a-lexical-mask">
+<h3>Negation of a lexical mask<a class="headerlink" href="#negation-of-a-lexical-mask" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to negate a lexical mask by placing the character&nbsp;<code class="docutils literal"><span class="pre">!</span></code>
+immediately after the character&nbsp;<code class="docutils literal"><span class="pre">&lt;</span></code>. Negation is possible with the
+masks <code class="docutils literal"><span class="pre">&lt;WORD&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;LOWER&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;UPPER&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;FIRST&gt;</span></code>, <a class="footnote-reference" href="#id13" id="id3">[3]</a> <code class="docutils literal"><span class="pre">&lt;DIC&gt;</span></code>
+as well as with the masks that carry grammatical, semantic of
+inflectional codes (<em>i.e.</em> <code class="docutils literal"><span class="pre">&lt;!V~z3:P3&gt;</span></code>). The masks <code class="docutils literal"><span class="pre">#</span></code> and <code class="docutils literal"><span class="pre">&quot;</span> <span class="pre">&quot;</span></code>
+are the negation of each other. The mask <code class="docutils literal"><span class="pre">&lt;!WORD&gt;</span></code> recognizes all
+tokens that do not consist of letters except for the sentence delimiter
+<code class="docutils literal"><span class="pre">{S}</span></code> and the <code class="docutils literal"><span class="pre">{STOP}</span></code> marker. Negation has no effect on <code class="docutils literal"><span class="pre">&lt;NB&gt;</span></code>,
+<code class="docutils literal"><span class="pre">&lt;SDIC&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;CDIC&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;TDIC&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code>.</p>
+<p>The negation is interpreted in a special way in the masks <code class="docutils literal"><span class="pre">&lt;!DIC&gt;</span></code>,
+<code class="docutils literal"><span class="pre">&lt;!LOWER&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;!UPPER&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;!FIRST&gt;</span></code>. <a class="footnote-reference" href="#id14" id="id4">[4]</a> Instead of recognizing
+all forms that are not recognized by the mask without negation, these
+masks find only forms that are sequences of letters. Thus, the mask
+<code class="docutils literal"><span class="pre">&lt;!DIC&gt;</span></code> allows you to find all unknown words in a text. These unknown
+forms are mostly proper names, neologisms and spelling errors (cf.
+Figure&nbsp;[fig-search-&lt;!DIC&gt;]).</p>
+<div class="figure" id="id15">
+<a class="reference internal image-reference" href="resources/img/fig4-1.png"><img alt="Result of the search for ``&lt;!DIC&gt;``\ [fig-search-&lt;!DIC&gt;]" src="resources/img/fig4-1.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Result of the search for <code class="docutils literal"><span class="pre">&lt;!DIC&gt;</span></code>[fig-search-&lt;!DIC&gt;]</span></p>
+</div>
+<p>The negation of a dictionary mask like <code class="docutils literal"><span class="pre">&lt;V:G&gt;</span></code> will match any word,
+except for those that are matched by this mask. For instance, <code class="docutils literal"><span class="pre">&lt;!V:G&gt;</span></code>
+will not match the word <code class="docutils literal"><span class="pre">being</span></code>, even if there are homonymic
+non-verbal entries in the dictionaries:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">being</span><span class="p">,</span><span class="o">.</span><span class="n">A</span>
+<span class="n">being</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">Abst</span><span class="p">:</span><span class="n">s</span>
+<span class="n">being</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">Hum</span><span class="p">:</span><span class="n">s</span>
+</pre></div>
+</div>
+<p>Here are some examples of lexical masks with the different types of
+constraints:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;A~Hum:fs&gt;</span></code>: a non-human adjective in the feminine singular;</li>
+<li><code class="docutils literal"><span class="pre">&lt;lire.V:P:F&gt;</span></code>: the verb <em>lire</em> in the present or future tense;</li>
+<li><code class="docutils literal"><span class="pre">&lt;suis,suivre.V&gt;</span></code>: the word <em>suis</em> as inflected form of the verb
+<em>suivre</em> (as opposed to the form of the verb <em>être</em>);</li>
+<li><code class="docutils literal"><span class="pre">&lt;facteur.N~Hum&gt;</span></code>: all nominal entries that have <em>facteur</em> as
+canonical form and that do not have the semantic code <code class="docutils literal"><span class="pre">Hum</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">&lt;!ADV&gt;</span></code>: all words that are not adverbs;</li>
+<li><code class="docutils literal"><span class="pre">&lt;!WORD&gt;</span></code>: all tokens that are not made of letters (cf.
+figure&nbsp;[fig-search-&lt;!WORD&gt;]). This mask does not recognize the
+sentence delimiter <code class="docutils literal"><span class="pre">{S}</span></code> and the special tag <code class="docutils literal"><span class="pre">{STOP}</span></code>.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="concatenation">
+<h2>Concatenation<a class="headerlink" href="#concatenation" title="Permalink to this headline">¶</a></h2>
+<p>There are three ways to concatenate regular expressions. The first
+consists in using the concatenation operator which is represented by the
+dot. Thus, the expression:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">DET</span><span class="o">&gt;.&lt;</span><span class="n">N</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>recognizes a determiner followed by a noun. The space can also be used
+for concatenation, as well as the empty string. The following
+expressions:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">the</span> <span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="n">cat</span>
+<span class="n">the</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="n">cat</span>
+</pre></div>
+</div>
+<p>recognizes the token <em>the</em>, followed by an adjective and the token
+<em>cat</em>. The parenthesis are used as delimiters of a regular expression.
+All of the following expressions are equivalent:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">the</span> <span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="n">cat</span>
+<span class="p">(</span><span class="n">the</span> <span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="p">)</span><span class="n">cat</span>
+<span class="n">the</span><span class="o">.&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="n">cat</span>
+<span class="p">(</span><span class="n">the</span><span class="p">)</span><span class="o">.&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="n">cat</span>
+<span class="p">(</span><span class="n">the</span><span class="o">.</span><span class="p">(</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="p">))</span> <span class="p">(</span><span class="n">cat</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="union">
+<h2>Union<a class="headerlink" href="#union" title="Permalink to this headline">¶</a></h2>
+<p>The union of regular expressions is expressed by typing the character
+<code class="docutils literal"><span class="pre">+</span></code> between them. The expression</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">I</span><span class="o">+</span><span class="n">you</span><span class="o">+</span><span class="n">he</span><span class="o">+</span><span class="n">she</span><span class="o">+</span><span class="n">it</span><span class="o">+</span><span class="n">we</span><span class="o">+</span><span class="n">they</span><span class="p">)</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>recognizes a pronoun followed by a verb. If an element in an expression
+is optional, it is sufficient to use the union of this element and the
+empty word epsilon. Examples:</p>
+<p><code class="docutils literal"><span class="pre">the</span> <span class="pre">(little+&lt;E&gt;)</span> <span class="pre">cat</span></code> recognizes the sequences <em>the cat</em> and <em>the
+little cat</em></p>
+<p><code class="docutils literal"><span class="pre">(&lt;E&gt;+Anglo-).(French+Indian)</span></code> recognizes <em>French</em>, <em>Indian</em>,
+<em>Anglo-French</em> and <em>Anglo-Indian</em></p>
+</div>
+<div class="section" id="kleene-star">
+<h2>Kleene star<a class="headerlink" href="#kleene-star" title="Permalink to this headline">¶</a></h2>
+<p>The Kleene star, represented by the character <code class="docutils literal"><span class="pre">*</span></code>, allows you to
+recognize zero, one or several occurrences of an expression. The star
+must be placed on the right hand side of the element in question. The
+expression:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">this</span> <span class="ow">is</span> <span class="n">very</span><span class="o">*</span> <span class="n">cold</span>
+</pre></div>
+</div>
+<p>recognizes <em>this is cold</em>, <em>this is very cold</em>, <em>this is very very
+cold</em>, etc. The star has a higher priority than the other operators. You
+have to use brackets in order to apply the star to a complex expression.
+The expression:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">0</span><span class="p">,(</span><span class="mi">0</span><span class="o">+</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">+</span><span class="mi">3</span><span class="o">+</span><span class="mi">4</span><span class="o">+</span><span class="mi">5</span><span class="o">+</span><span class="mi">6</span><span class="o">+</span><span class="mi">7</span><span class="o">+</span><span class="mi">8</span><span class="o">+</span><span class="mi">9</span><span class="p">)</span><span class="o">*</span>
+</pre></div>
+</div>
+<p>recognizes a zero followed by a comma and by a possibly empty sequence
+of digits.</p>
+<p>WARNING: It is prohibited to search for the empty word with a regular
+expression. If you try to search for <code class="docutils literal"><span class="pre">(0+1+2+3+4+5+6+7+8+9)*</span></code>, the
+program will raise an error as shown in figure&nbsp;[fig-epsilon-error].</p>
+</div>
+<div class="section" id="morphological-filters">
+<h2>Morphological filters<a class="headerlink" href="#morphological-filters" title="Permalink to this headline">¶</a></h2>
+<p>It is possible to apply morphological filters to the lexemes found. For
+that, it is necessary to immediately follow the lexeme found by a filter
+in double angle brackets:</p>
+<div class="line-block">
+<div class="line"><em>lexical mask</em><code class="docutils literal"><span class="pre">&lt;&lt;</span></code><em>morphological pattern</em><code class="docutils literal"><span class="pre">&gt;&gt;</span></code></div>
+<div class="line">The morphological filters are expressed as regular expressions in
+POSIX format (see <a href="#id5"><span class="problematic" id="id6">:raw-latex:`\cite{TRE}`</span></a> for the detailed syntax).
+Here are some examples of elementary filters:</div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;&lt;ss&gt;&gt;</span></code>: contains <code class="docutils literal"><span class="pre">ss</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;^a&gt;&gt;</span></code>: begins with <code class="docutils literal"><span class="pre">a</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;ez$&gt;&gt;</span></code>: ends with <code class="docutils literal"><span class="pre">ez</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;a.s&gt;&gt;</span></code>: contains <code class="docutils literal"><span class="pre">a</span></code> followed by any character, followed by
+<code class="docutils literal"><span class="pre">s</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;a.*s&gt;&gt;</span></code>: contains <code class="docutils literal"><span class="pre">a</span></code> followed by a sequence of any character,
+followed by <code class="docutils literal"><span class="pre">s</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;ss|tt&gt;&gt;</span></code>: contains <code class="docutils literal"><span class="pre">ss</span></code> or <code class="docutils literal"><span class="pre">tt</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;[aeiouy]&gt;&gt;</span></code>: contains a non accentuated vowel</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;[aeiouy]{3,5}&gt;&gt;</span></code>: contains a sequence of non-accentuated vowels
+whose length is between 3 and 5</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;es?&gt;&gt;</span></code>: contains <code class="docutils literal"><span class="pre">e</span></code> followed by an optional <code class="docutils literal"><span class="pre">s</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;ss[^e]?&gt;&gt;</span></code>: contains <code class="docutils literal"><span class="pre">ss</span></code> followed by an optional character
+which is not <code class="docutils literal"><span class="pre">e</span></code></li>
+</ul>
+<p>It is possible to combine these elementary filters to form more complex
+filters:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;&lt;[ai]ble$&gt;&gt;</span></code>: ends with <code class="docutils literal"><span class="pre">able</span></code> or <code class="docutils literal"><span class="pre">ible</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;^(anti|pro)-?&gt;&gt;</span></code>: begins with <code class="docutils literal"><span class="pre">anti</span></code> or <code class="docutils literal"><span class="pre">pro</span></code>, followed by
+an optional dash</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;^([rst][aeiouy]){2,}$&gt;&gt;</span></code>: a word formed by 2 or more sequences
+beginning with <code class="docutils literal"><span class="pre">r</span></code>, <code class="docutils literal"><span class="pre">s</span></code> or <code class="docutils literal"><span class="pre">t</span></code> followed by a non-accentuated
+vowel</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;^([^l]|l[^e])&gt;&gt;</span></code>: does not begin with <code class="docutils literal"><span class="pre">l</span></code> unless the second
+letter is an <code class="docutils literal"><span class="pre">e</span></code>, in other words, any word except the ones starting
+with <code class="docutils literal"><span class="pre">le</span></code>. Such constraints are better described using contexts
+(see section&nbsp;[section-contexts]).</li>
+</ul>
+<p>By default, a morphological filter alone is regarded as applying it to
+the lexical mask <code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code>, that means any token except space and
+<code class="docutils literal"><span class="pre">{STOP}</span></code>. On the other hand, when a filter follows a lexical mask
+immediately, it applies to what was recognized by the lexical mask. Here
+are some examples of such combinations:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;V:K&gt;&lt;&lt;i$&gt;&gt;</span></code>: Past participle ending with <code class="docutils literal"><span class="pre">i</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;CDIC&gt;&lt;&lt;-&gt;&gt;</span></code>: A compound word containing a dash</li>
+<li><code class="docutils literal"><span class="pre">&lt;CDIC&gt;&lt;&lt;</span> <span class="pre">.*</span> <span class="pre">&gt;&gt;</span></code>: a compound word containing at least two spaces</li>
+<li><code class="docutils literal"><span class="pre">&lt;A:fs&gt;&lt;&lt;^pro&gt;&gt;</span></code>: a feminine singular adjective beginning with
+<code class="docutils literal"><span class="pre">pro</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;DET&gt;&lt;&lt;^([^u]|(u[^n])|(un.+))&gt;&gt;</span></code>: a (French) determiner different
+from <code class="docutils literal"><span class="pre">un</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;!DIC&gt;&lt;&lt;es$&gt;&gt;</span></code>: a word which is not in the dictionary and which
+ends with <code class="docutils literal"><span class="pre">es</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;V:S:T&gt;&lt;&lt;uiss&gt;&gt;</span></code>: a verb in the past or present subjunctive, and
+containing <code class="docutils literal"><span class="pre">uiss</span></code></li>
+</ul>
+<p>NOTE: By default, morphological filters are subject to the same
+variations of case as lexical masks. Thus, the filter <code class="docutils literal"><span class="pre">&lt;&lt;^b&gt;&gt;</span></code> will
+recognize all the words starting with <code class="docutils literal"><span class="pre">b</span></code>, but also those which start
+with <code class="docutils literal"><span class="pre">B</span></code>. To force the matcher to respect case, add <code class="docutils literal"><span class="pre">_f_</span></code>
+immediately after the filter, <em>e.g.</em>: <code class="docutils literal"><span class="pre">&lt;&lt;^b&gt;&gt;_f_</span></code>.</p>
+</div>
+<div class="section" id="search">
+<h2>Search<a class="headerlink" href="#search" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="search-configuration">
+<h3>Search configuration<a class="headerlink" href="#search-configuration" title="Permalink to this headline">¶</a></h3>
+<p>In order to search for an expression, first open a text (cf.
+chapter&nbsp;[chap-text]). Then click on “Locate Pattern...” in the “Text”
+menu. The window of figure&nbsp;[fig-regexp-search-configuration] appears.</p>
+<div class="figure" id="id16">
+<a class="reference internal image-reference" href="resources/img/fig4-4.png"><img alt="“Locate pattern” window[fig-regexp-search-configuration]" src="resources/img/fig4-4.png" style="width: 8.80000cm;" /></a>
+<p class="caption"><span class="caption-text">“Locate pattern” window[fig-regexp-search-configuration]</span></p>
+</div>
+<p>The “Locate pattern in the form of” box allows you to select regular
+expression or grammar. Click on “Regular expression”.</p>
+<p>The “Index” box allows you to select the recognition mode:</p>
+<ul class="simple">
+<li>“Shortest matches” : prefers shortest matches in case of nested
+sequences. For instance, if your grammar can recognize the sequences
+<em>a very hot chili</em> and <em>very hot</em>, the first one will be discarded;</li>
+<li>“Longest matches” : prefers longest matches (<em>a very hot chili</em> in
+our example). This is the default;</li>
+<li>“All matches” : outputs all recognized sequences.</li>
+</ul>
+<p>The “Search limitation” box is used to limit the number of results to a
+certain number of occurrences. By default, the search is limited to the
+first 200 occurrences.</p>
+<p>The options of the “Grammar outputs” box do not concern regular
+expressions. They are described in
+section&nbsp;[section-applying-graphs-to-text]. The same for options of tab
+“Advanced options” (see section [section-advanced-search-options]).</p>
+<p>In the “Search algorithm” frame, you can specify wether you want to
+perform the locate operation on the text using the <code class="docutils literal"><span class="pre">Locate</span></code> program or
+on the text automaton with <code class="docutils literal"><span class="pre">LocateTfst</span></code>. By default, search is done
+with the <code class="docutils literal"><span class="pre">Locate</span></code> program, as Unitex always did until now. If you want
+to use <code class="docutils literal"><span class="pre">LocateTfst</span></code>, please read dedicated section
+[section-locate-tfst].</p>
+<p>Enter an expression and click on “Search” in order to start the search.
+Unitex will transform the expression into a grammar in the <code class="docutils literal"><span class="pre">.grf</span></code>
+format. This grammar will then be compiled into a grammar of the
+<code class="docutils literal"><span class="pre">.fst2</span></code> format that will be used for the search.</p>
+</div>
+<div class="section" id="presentation-of-the-results">
+<h3>Presentation of the results<a class="headerlink" href="#presentation-of-the-results" title="Permalink to this headline">¶</a></h3>
+<p>When the search is finished, the window of figure&nbsp;[fig-search-results]
+appears showing the number of matched occurrences, the number of
+recognized tokens and the ratio between this number and the total number
+of tokens in the text.</p>
+<div class="figure" id="id17">
+<a class="reference internal image-reference" href="resources/img/fig4-5.png"><img alt="Search results [fig-search-results]" src="resources/img/fig4-5.png" style="width: 6.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Search results [fig-search-results]</span></p>
+</div>
+<p>After clicking on “OK” you will see
+window&nbsp;[fig-configuration-concordance] appear, which allows you to
+configure the presentation of the matched occurrences. You can also open
+this window by clicking on “Located Sequences...” in the “Text” menu.
+The list of occurrences is called a <em>concordance</em>.</p>
+<div class="figure" id="id18">
+<a class="reference internal image-reference" href="resources/img/fig4-6.png"><img alt="Result display configuration[fig-configuration-concordance]" src="resources/img/fig4-6.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Result display configuration[fig-configuration-concordance]</span></p>
+</div>
+<p>The “Modify text” box offers the possibility to replace the matched
+occurrences with the generated outputs. This possibility will be
+examined in chapter&nbsp;[chap-advanced-grammars].</p>
+<p>The “Extract units” box allows you to create a text file with all the
+sentences that do or do not contain matched units. With the button “Set
+File”, you can select the output file. Then click on “Extract matching
+units” or “Extract unmatching units” depending on whether you are
+interested in sentences with or without matching units.</p>
+<p>In the “Show matching sequences in context” box, you can select the
+length in characters of the left and right contexts of the occurrences
+that will be presented in the concordance. If an occurrence has less
+characters than its right context, the line will be completed with the
+necessary number of characters. If an occurrence has a length greater
+than that of the right context, it will be displayed completely.</p>
+<p>NOTE: in Thai, the size of the contexts is measured in displayable
+characters and not in real characters. This makes it possible to keep
+the line alignment in the concordance despite the presence of diacritics
+that combine with other letters instead of being displayed as normal
+characters.</p>
+<p>You can choose the sort order in the list “Sort According to”. The mode
+“Text Order” displays the occurrences in the order of their appearance
+in the text. The other six modes allow you to sort in columns. The three
+zones of a line are the left context, the occurrence and the right
+context. The occurrences and the right contexts are sorted from left to
+right. The left contexts are sorted from right to left. The default mode
+is “Center, Left Col.”. The concordance is generated in the form of an
+HTML file.</p>
+<p>If a concordance reaches several thousands of occurrences, it is
+advisable to display it in a web browser (Firefox
+<a href="#id7"><span class="problematic" id="id8">:raw-latex:`\cite{Firefox}`</span></a>, Netscape <a href="#id9"><span class="problematic" id="id10">:raw-latex:`\cite{Netscape}`</span></a>,
+Internet Explorer, etc.) instead. Check “Use a web browser to view the
+concordance” (cf. figure&nbsp;[fig-configuration-concordance]). This option
+is activated by default if the number of occurrences is greater than
+2000. You can configure which web browser to use by clicking on
+“Preferences...” in the menu “Info”. Click on the tab “Language &amp;
+Presentation” and select the program to use in the field “Html Viewer”
+(cf. figure&nbsp;[fig-browser-selection]).</p>
+<p>If you choose to open the concordance in Unitex, you will see a window
+as shown on Figure [fig-example-concordance]. Occurrences react as
+hyperlinks. If you click on an occurrence, the text frame is opened and
+the corresponding sequence is highlighted. Moreover, if the text
+automaton is available and if this window is not iconified, the sentence
+automaton that contains the occurrence will be shown.</p>
+<div class="figure" id="id19">
+<a class="reference internal image-reference" href="resources/img/fig4-8.png"><img alt="Example concordance[fig-example-concordance]" src="resources/img/fig4-8.png" style="height: 18.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Example concordance[fig-example-concordance]</span></p>
+</div>
+</div>
+<div class="section" id="statistics">
+<h3>Statistics<a class="headerlink" href="#statistics" title="Permalink to this headline">¶</a></h3>
+<p>If you select the “Statistics” tab in the “Located sequences..” frame,
+you will see the panel shown on figure&nbsp;[fig-statistics]. This panel
+allows you to get some statistics from the previously indexed sequences.</p>
+<div class="figure" id="id20">
+<a class="reference internal image-reference" href="resources/img/fig4-9.png"><img alt="Statistics panel[fig-statistics]" src="resources/img/fig4-9.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Statistics panel[fig-statistics]</span></p>
+</div>
+<p>In the “Mode” panel, you can select the kind of statistics you want:</p>
+<ul class="simple">
+<li>collocates by z-score: the previous one, plus some additionnal
+information (number of occurrences of the collocate in the match
+context and in the whole corpus, z-score of the collocate)</li>
+<li>collocates by frequency: shows the tokens that cooccur in the match
+context</li>
+<li>contexts by frequency: shows matches with left and right contexts
+(see below). “count” is the number of occurrences of a given
+match+context</li>
+</ul>
+<p>In the second panel, you can set the lenght of left and right contexts
+to be used, in non space tokens. NOTE: this notion of context has
+nothing to do with contexts in grammars.</p>
+<p>In the last panel, you can allow or not case variations. If you allow
+case variations, <code class="docutils literal"><span class="pre">the</span></code> and <code class="docutils literal"><span class="pre">THE</span></code> will be considered as a same token,
+and the count will be the sum of the counts of <code class="docutils literal"><span class="pre">the</span></code> and <code class="docutils literal"><span class="pre">THE</span></code>.</p>
+<p>The following figures show the statistics computed in each mode for the
+query <code class="docutils literal"><span class="pre">&lt;have&gt;</span></code> on <code class="docutils literal"><span class="pre">ivanhoe.snt</span></code>.</p>
+<div class="figure" id="id21">
+<a class="reference internal image-reference" href="resources/img/fig4-10.png"><img alt="left+match+right count[fig-statistics-mode0]" src="resources/img/fig4-10.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">left+match+right count[fig-statistics-mode0]</span></p>
+</div>
+<div class="figure" id="id22">
+<a class="reference internal image-reference" href="resources/img/fig4-11.png"><img alt="collocate count[fig-statistics-mode1]" src="resources/img/fig4-11.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">collocate count[fig-statistics-mode1]</span></p>
+</div>
+<div class="figure" id="id23">
+<a class="reference internal image-reference" href="resources/img/fig4-12.png"><img alt="collocate, count and other information[fig-statistics-mode2]" src="resources/img/fig4-12.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">collocate, count and other information[fig-statistics-mode2]</span></p>
+</div>
+<table class="docutils footnote" frame="void" id="id11" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>From version 3.1beta, revision 4072, October 2, 2015.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id12" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>If a word is described in the dictionaries by an entry with <code class="docutils literal"><span class="pre">A+z3</span></code>
+and another with only <code class="docutils literal"><span class="pre">A</span></code>, the word is matched by <code class="docutils literal"><span class="pre">&lt;A+z3&gt;</span></code>
+because of the former entry and by <code class="docutils literal"><span class="pre">&lt;A~z3&gt;</span></code> because of the latter.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id13" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>And with their legacy counterparts &lt;MOT&gt;,&lt;MIN&gt;, &lt;MAJ&gt;, &lt;PRE&gt;. See
+Section&nbsp;[section-special-symbols].</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id14" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td>And with their legacy counterparts &lt;!MIN&gt;, &lt;!MAJ&gt;, &lt;!PRE&gt;. See
+Section&nbsp;[section-special-symbols].</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-en.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Searching with regular expressions</a><ul>
+<li><a class="reference internal" href="#definition">Definition</a></li>
+<li><a class="reference internal" href="#tokens">Tokens</a></li>
+<li><a class="reference internal" href="#lexical-masks">Lexical masks</a><ul>
+<li><a class="reference internal" href="#special-symbols">Special symbols</a></li>
+<li><a class="reference internal" href="#references-to-information-in-the-dictionaries">References to information in the dictionaries</a></li>
+<li><a class="reference internal" href="#grammatical-and-semantic-constraints">Grammatical and semantic constraints</a></li>
+<li><a class="reference internal" href="#inflectional-constraints">Inflectional constraints</a></li>
+<li><a class="reference internal" href="#negation-of-a-lexical-mask">Negation of a lexical mask</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#concatenation">Concatenation</a></li>
+<li><a class="reference internal" href="#union">Union</a></li>
+<li><a class="reference internal" href="#kleene-star">Kleene star</a></li>
+<li><a class="reference internal" href="#morphological-filters">Morphological filters</a></li>
+<li><a class="reference internal" href="#search">Search</a><ul>
+<li><a class="reference internal" href="#search-configuration">Search configuration</a></li>
+<li><a class="reference internal" href="#presentation-of-the-results">Presentation of the results</a></li>
+<li><a class="reference internal" href="#statistics">Statistics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-en.html">Documentation overview</a><ul>
+      <li>Previous: <a href="03-dictionaries_EN_utf8.html" title="previous chapter">Dictionaries</a></li>
+      <li>Next: <a href="05-grammars_EN_utf8.html" title="next chapter">Local grammars</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/04-pattern_matching_EN_utf8.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/04-pattern_matching_EN_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="EN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Text alignment &mdash; Unitex-en 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-en 1.0.1 documentation" href="Unitex-en.html" />
+    <link rel="next" title="Compound word inflection" href="11-multiflex_EN_utf8.html" />
+    <link rel="prev" title="Lexicon-grammar" href="09-lexicon-grammar_EN_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="text-alignment">
+<h1>Text alignment<a class="headerlink" href="#text-alignment" title="Permalink to this headline">¶</a></h1>
+<p>The principle of text alignment is simple: aligning two (or more) texts,
+one supposed to be the source, and the other(s) supposed to be its
+translation(s). The alignment is made at the sentence level, because
+word alignment is not possible yet, and certainly not relevant. Then,
+one can look for an expression <span class="math">\(A\)</span> in one of the texts and look
+for its translations in the sentences aligned with those containing
+occurrences of <span class="math">\(A\)</span>.</p>
+<p>To include such a functionality into Unitex, Patrick Watrin integrated
+the Open Source text alignment tool XAlign, developed at the LORIA
+(<a href="#id1"><span class="problematic" id="id2">:raw-latex:`\cite{XAlign}`</span></a>). In this chapter, we will explain how to
+use the alignment module. The reader interested in details about the
+integration of XAlign can consult <a href="#id3"><span class="problematic" id="id4">:raw-latex:`\cite{IGML_DumPau08}`</span></a> or
+<a href="#id5"><span class="problematic" id="id6">:raw-latex:`\cite{IGML_PauDum08}`</span></a>, and <a href="#id7"><span class="problematic" id="id8">:raw-latex:`\cite{dusko_xalign}`</span></a>
+for an illustration of what can be done with this module.</p>
+<div class="section" id="loading-texts">
+<h2>Loading texts<a class="headerlink" href="#loading-texts" title="Permalink to this headline">¶</a></h2>
+<p>First, you need to select your 2 texts. To do that, go into “XAlign&gt;Open
+files…”, and you will see the frame shown on Figure
+[fig-x-text-selection]. You provide texts under two formats: raw unicode
+text (as you do for your corpus) or TEI-encoded texts (an XML format;
+see <a href="#id9"><span class="problematic" id="id10">:raw-latex:`\cite{TEI}`</span></a>). In the last text field, you can select a
+XML alignment file, if you have already built one. If you select a raw
+text, Unitex will need to build a basic TEI version of it (for more
+details, see section [section-XMLizer] about the <code class="docutils literal"><span class="pre">XMLizer</span></code> program).
+So, when you click on “OK”, you will be asked to provide a XML file name
+as shown on Figure [fig-x-tei-name]. Then, Unitex builds the XML
+versions of your texts, if needed, and displays the frame shown on
+Figure [fig-x-frame]. As you can see, each text is presented as a list,
+each cell representing a sentence.</p>
+<div class="figure" id="id13">
+<a class="reference internal image-reference" href="resources/img/figX-1.png"><img alt="Text alignment selection frame[fig-x-text-selection]" src="resources/img/figX-1.png" style="width: 9.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Text alignment selection frame[fig-x-text-selection]</span></p>
+</div>
+<div class="figure" id="id14">
+<a class="reference internal image-reference" href="resources/img/figX-2.png"><img alt="Warning about raw texts[fig-x-tei-name]" src="resources/img/figX-2.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Warning about raw texts[fig-x-tei-name]</span></p>
+</div>
+<div class="figure" id="id15">
+<a class="reference internal image-reference" href="resources/img/figX-3.png"><img alt="Text alignment frame[fig-x-frame]" src="resources/img/figX-3.png" style="width: 15.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Text alignment frame[fig-x-frame]</span></p>
+</div>
+</div>
+<div class="section" id="aligning-texts">
+<h2>Aligning texts<a class="headerlink" href="#aligning-texts" title="Permalink to this headline">¶</a></h2>
+<p>Once you have loaded your texts, you can align them by clicking on the
+“Align” button. You will be asked to provide the name of the XML file
+that will contain all the information about the alignment. Then, Unitex
+launches the <code class="docutils literal"><span class="pre">XAlign</span></code> program and you will visualize the alignment
+under the form of red links between aligned sentences, as shown on
+Figure [fig-x-links].</p>
+<div class="figure" id="id16">
+<a class="reference internal image-reference" href="resources/img/figX-4.png"><img alt="Aligned sentences[fig-x-links]" src="resources/img/figX-4.png" style="width: 15.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Aligned sentences[fig-x-links]</span></p>
+</div>
+<p>You can edit the alignment links with the mouse. Clicking on a link
+removes it. To add a link (or remove it, if it already exists), click on
+one sentence (in the text you want, source or destination), and then
+move your mouse over the corresponding sentence in the other text. The
+link about to be added will appear in yellow, as shown on Figure
+[fig-x-adding-a-link]. When you click, the link is actually added and
+becomes red. When you have made all your corrections, you can save your
+modified alignment using the “Save alignment” and “Save alignment as…”
+buttons.</p>
+<div class="figure" id="id17">
+<a class="reference internal image-reference" href="resources/img/figX-5.png"><img alt="Adding a link[fig-x-adding-a-link]" src="resources/img/figX-5.png" style="width: 15.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Adding a link[fig-x-adding-a-link]</span></p>
+</div>
+<p>An interesting feature of XAlign is that it is <em>reentrant</em>. It means
+that you can take an existing alignment as a set of mandatory links in
+input of the alignment process. This can be useful if you want to work
+with <em>cognates</em>. For more details about cognates and XAlign, see
+discussion in <a href="#id11"><span class="problematic" id="id12">:raw-latex:`\cite{IGML_PauDum08}`</span></a>.</p>
+</div>
+<div class="section" id="pattern-matching">
+<h2>Pattern matching<a class="headerlink" href="#pattern-matching" title="Permalink to this headline">¶</a></h2>
+<p>You can perform pattern matching queries on any of your texts, by
+clicking on its “Locate” button. The first time you click, Unitex will
+ask you to build a working version of your text, as shown on Figure
+[fig-x-fig6]. This text version will be preprocessed according to the
+text language (in particular, the default dictionaries will be applied).</p>
+<p>WARNING: the text language is determined on the basis of the path name.
+For instance, if your text file is located in
+<code class="docutils literal"><span class="pre">.../MyUnitex/Klingon/Corpus</span></code>, the language will be considered to be
+<code class="docutils literal"><span class="pre">Klingon</span></code>. So, if your text is not in a subdirectory of your personal
+working directory, its language will not be identified.</p>
+<div class="figure" id="id18">
+<a class="reference internal image-reference" href="resources/img/figX-7.png"><img alt="Pattern matching frame for aligned texts[fig-x-locate-frame]" src="resources/img/figX-7.png" style="width: 7.80000cm;" /></a>
+<p class="caption"><span class="caption-text">Pattern matching frame for aligned texts[fig-x-locate-frame]</span></p>
+</div>
+<p>Once Unitex has created and preprocessed the working version of the
+text, you can perform your query using the frame shown on Figure
+[fig-x-locate-frame]. As the matching operation is performed by the
+<code class="docutils literal"><span class="pre">Locate</span></code> program, you can perform the same queries than you would
+perform on a normal corpus. The only restriction is that you cannot
+exploit the outputs of your grammars, if any.</p>
+<p>For instance, let us lookup for the pattern <code class="docutils literal"><span class="pre">&lt;manger&gt;</span></code> (<em>to eat</em>) in
+the French text of our example. First, we see no result, because we have
+not changed yet the display mode for the French text, which by default
+is “All sentences/Plain text”. Clicking on “Matched sentences”, we only
+see sentences that contain occurrences, highlighted as usual in blue, as
+shown on Figure [fig-x-concord]. Clicking on “All sentences/HTML” will
+display all sentences, highlighting occurrences in blue.</p>
+<div class="figure" id="id19">
+<a class="reference internal image-reference" href="resources/img/figX-8.png"><img alt="Displaying matched sentences[fig-x-concord]" src="resources/img/figX-8.png" style="width: 15.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Displaying matched sentences[fig-x-concord]</span></p>
+</div>
+<p>To exploit parallel texts, it is then interesting to retrieve sentences
+aligned with matched sentences. This can be done by selecting <em>for the
+other text</em>, the display mode “Aligned with source concordance”. In this
+mode, Unitex filters sentences that are not linked to matched sentences
+in the source text. So, it is easy to lookup for an expression in one
+text and to find the corresponding sentences in the other, as shown on
+Figure [fig-x-concord-aligned].</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-en.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Text alignment</a><ul>
+<li><a class="reference internal" href="#loading-texts">Loading texts</a></li>
+<li><a class="reference internal" href="#aligning-texts">Aligning texts</a></li>
+<li><a class="reference internal" href="#pattern-matching">Pattern matching</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-en.html">Documentation overview</a><ul>
+      <li>Previous: <a href="09-lexicon-grammar_EN_utf8.html" title="previous chapter">Lexicon-grammar</a></li>
+      <li>Next: <a href="11-multiflex_EN_utf8.html" title="next chapter">Compound word inflection</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/10-alignment_EN_utf8.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/10-alignment_EN_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

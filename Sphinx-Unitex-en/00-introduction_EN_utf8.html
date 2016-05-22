@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="EN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; Unitex-en 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-en 1.0.1 documentation" href="Unitex-en.html" />
+    <link rel="next" title="Installation of Unitex" href="01-installation_EN_utf8.html" />
+    <link rel="prev" title="Welcome to Unitex-en’s documentation!" href="Unitex-en.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <p>Introduction ============</p>
+<p>Unitex is a collection of programs developed for the analysis of texts
+in natural language by using linguistic resources and tools. These
+resources consist of electronic dictionaries, grammars and
+lexicon-grammar tables, initially developed for French by Maurice Gross
+and his students at the Laboratoire d’Automatique Documentaire et
+Linguistique (LADL). Similar resources have been developed for other
+languages in the context of the RELEX laboratory network.</p>
+<p>The electronic dictionaries specify the simple and compound words of a
+language together with their lemmas and a set of grammatical (semantic
+and inflectional) codes. The availability of these dictionaries is a
+major advantage compared to the usual utilities for pattern searching as
+the information they contain can be used for searching and matching,
+thus describing large classes of words using very simple patterns. The
+dictionaries are presented in the DELA formalism and were constructed by
+teams of linguists for several languages (French, English, Greek,
+Italian, Spanish, German, Thai, Korean, Polish, Norwegian, Portuguese,
+etc.)</p>
+<p>The grammars used here are representations of linguistic phenomena on
+the basis of recursive transition networks (RTN), a formalism closely
+related to finite state automata. Numerous studies have shown the
+adequacy of automata for linguistic problems at all descriptive levels
+from morphology and syntax to phonetic issues. Grammars created with
+Unitex carry this approach further by using a formalism even more
+powerful than automata. These grammars are represented as graphs that
+the user can easily create and update.</p>
+<p>Lexicon-grammar tables are matrices describing properties of some words.
+Many such tables have been constructed for all simple verbs in French as
+a way of describing their relevant syntactic properties. Experience has
+shown that every word has a quasi-unique behavior, and these tables are
+a way to present the grammar of every element in the lexicon, hence the
+name lexicon-grammar for this linguistic theory. Unitex offers a way to
+automatically build grammars from lexicon-grammar tables.</p>
+<p>Unitex can be viewed as a tool in which one can put linguistic resources
+and use them. Its technical characteristics are its portability,
+modularity, the possibility of dealing with languages that use special
+writing systems (e.g. many Asian languages), and its openness, thanks to
+its open source distribution. Its linguistic characteristics are the
+ones that have motivated the elaboration of these resources: precision,
+completeness, and the taking into account of frozen expressions, most
+notably those which concern the enumeration of compound words.</p>
+<p>What’s new from version 3.0 ? —————————–</p>
+<p>Here are the main new features:</p>
+<ul class="simple">
+<li>Faster engine that uses less stack.</li>
+<li>Enhanced version of “CasSys“: new “csc“ files, suppression of the</li>
+</ul>
+<p>“Share“ directory, open cascade also by the “FSGraph“ menu, apply graph
+until fixed point, generic graphs, last file may be denormalized
+(Chapter [chap-cassys]).</p>
+<ul class="simple">
+<li>Introduction of Malagasy.</li>
+<li>Publication of “main_UnitexTool_C“ as public API.</li>
+<li>Enhanced version of the graph editor: box selection, box editing,</li>
+</ul>
+<p>open, save, export as image ([section-editing-graphs],
+[exporting-graphs]).</p>
+<ul class="simple">
+<li>Non-applicable menu items are now grayed out.</li>
+<li>Introduction of the “&lt;n.LEMMA&gt;“ operator for inflection in Semitic</li>
+</ul>
+<p>mode (yet undocumented).</p>
+<ul class="simple">
+<li>Introduction of list of recently opened graphs and corpora.</li>
+<li>Introduction of list of open windows.</li>
+<li>Enhanced compatibility with Ruby.</li>
+<li>Introduction of “InstallLingResourcePackage“, a tool that installs a</li>
+</ul>
+<p>package of resources and scripts into a target environment (yet
+undocumented).</p>
+<ul class="simple">
+<li>Introduction of “RunScript“, a tool that runs in the target</li>
+</ul>
+<p>environment scripts installed there by “InstallLingResourcePackage“ (yet
+undocumented). With these two tools, users can implement Unitex
+operations in an environment and deploy them in another.</p>
+<ul class="simple">
+<li>Introduction of the “match word boundaries” option in the</li>
+</ul>
+<p>automaton-intersection search algorithm ([section-locate-tfst]), so that
+e.g. *nowhere* and *now here* don’t match (or match, if user wants).
+Yet undocumented.</p>
+<ul class="simple">
+<li>Enhanced tracking of the offset between the addresses of a given</li>
+</ul>
+<p>position in a corpus in different versions of the corpus
+([section-DumpOffsets]).</p>
+<ul class="simple">
+<li>Daily compilation of binaries for Windows (32-bit, 64-bit), GNU/Linux</li>
+</ul>
+<p>(Intel, Intel 64-bit) and 0S X (10.7+).</p>
+<ul class="simple">
+<li>Setup installers are provided for all target platforms.</li>
+</ul>
+<p>IMPORTANT: as some file formats changed and some new files were
+introduced, we recommend that you repreprocess your existing text files,
+especially if you work with text automata.</p>
+<p>Content ——-</p>
+<p>Chapter [chap-install] describes how to install and run Unitex.</p>
+<p>Chapter [chap-text] presents the different steps in the analysis of a
+text.</p>
+<p>Chapter [chap-dictionaries] describes the formalism of the DELA
+electronic dictionaries and the different operations that can be applied
+to them.</p>
+<p>Chapters [chap-regexp] and [chap-grammars] present different means for
+making text searches more effective. Chapter [chap-grammars] describes
+in detail how to use the graph editor.</p>
+<p>Chapter [chap-advanced-grammars] is concerned with the different
+possible applications of grammars. The particularities of each type of
+grammar are presented.</p>
+<p>Chapter [chap-text-automaton] introduces the concept of text automaton
+and describes the properties of this notion. This chapter also describes
+operations on this object, in particular, how to disambiguate lexical
+items with the ELAG program.</p>
+<p>Chapter [chap-sequence-automaton] describes the sequence automaton
+module, the file formats that are accepted as input, the user interface
+and introduces the search by approximation.</p>
+<p>Chapter [chap-lexicon-grammar] contains an introduction to
+lexicon-grammar tables, followed by a description of the method of
+constructing grammars based on these tables.</p>
+<p>Chapter [chap-alignment] describes the text alignment module, based on
+the XAlign tool.</p>
+<p>Chapter [chap-multiflex] describes the compound word inflection module,
+as a complement of the simple word inflection mechanism presented in
+chapter [chap-dictionaries].</p>
+<p>Chapter [chap-cassys] describes the CasSys cascade of transducer system.</p>
+<p>Chapter [chap-external-programs] contains a detailed description of the
+external programs that make up the Unitex system.</p>
+<p>Chapter [chap-file-formats] contains descriptions of all file formats
+used in the system.</p>
+<p>The reader will find in appendix the LGPL license under which the Unitex
+source code is released, as well as the LGPLLR license which applies for
+the linguistic data distributed with Unitex. There is also the 2-clause
+BSD licence that applies to the TRE library, used by Unitex for
+morphological filters.</p>
+<p>Unitex contributors ——————-</p>
+<p>Unitex was born as a bet on the power of Open Source philosophy in the
+academic world (see <a class="reference external" href="http://igm.univ-mlv.fr/">http://igm.univ-mlv.fr/</a>&nbsp;unitex/why_unitex.html),
+relying on the assumption that people would be interested in sharing
+their knowledge and skill into such an open project. The following list
+sounds like Open Source is good for science:</p>
+<ul class="simple">
+<li>Olivier Blanc: has integrated the ELAG system into Unitex, originally</li>
+</ul>
+<p>designed by Eric Laporte, Anne Monceaux and some of their students, has
+also written “RebuildTfst“ (previously known as “MergeTextAutomaton“)</p>
+<ul class="simple">
+<li>Matthieu Constant: author of “Grf2Fst2“</li>
+<li>Julien Decreton: author of the text editor integrated in Unitex, has</li>
+</ul>
+<p>also designed the undo functionality in the graph editor</p>
+<ul class="simple">
+<li>Claude Devis: introduction of morphological filters, based on the TRE</li>
+</ul>
+<p>library</p>
+<ul class="simple">
+<li>Nathalie Friburger: author of “CasSys“</li>
+<li>Hyun-Gue Huh: author of the tools used to generate Korean dictionaries</li>
+<li>Claude Martineau: had worked on the simple word inflection part of</li>
+</ul>
+<p>“MultiFlex“</p>
+<ul class="simple">
+<li>Sebastian Nagel: has optimized many parts of the code, has also</li>
+</ul>
+<p>adapted “PolyLex“ for German and Russian</p>
+<ul class="simple">
+<li>Alexis Neme: has optimized “Dico“ and “Tokenize“, has also merged</li>
+</ul>
+<p>“Locate“ into “Dico“ in order to allow dictionary graphs</p>
+<ul class="simple">
+<li>Aljosa Obuljen: author of “Stats“</li>
+<li>Sébastien Paumier: main developer</li>
+<li>Agata Savary: author of “MultiFlex“</li>
+<li>Anthony Sigogne: author of “Tagger“ and “TrainingTagger“</li>
+<li>Gilles Vollant: author of “UnitexTool“, has optimized many aspects of</li>
+</ul>
+<p>Unitex code (memory, speed, multi-compiler compliance, etc)</p>
+<ul class="simple">
+<li>Patrick Watrin: author of “XMLizer“, has worked on the integration of</li>
+</ul>
+<p>“XAlign“</p>
+<p>Moreover, Unitex would be useless without all the precious linguistic
+resources it contains. All those resources are the result of hard work
+done by people that shall not be forgotten. Some are mentionned in
+disclaimers that come with dictionaries, and complete information is
+available on:</p>
+<p><a class="reference external" href="http://igm.univ-mlv.fr/">http://igm.univ-mlv.fr/</a>&nbsp;unitex/linguistic_data_bib.html</p>
+<p>If you use Unitex in research projects... —————————————–</p>
+<p>Unitex has been used in several research projects. Some are listed in
+the “Related works” section of Unitex home page. If you did some work
+with Unitex (resources, project, paper, thesis, ...) and if you want it
+to be referenced in the web site, just send a mail to
+‘<a class="reference external" href="mailto:unitex-devel&#37;&#52;&#48;univ-mlv&#46;fr">unitex-devel<span>&#64;</span>univ-mlv<span>&#46;</span>fr</a> &lt;<a class="reference external" href="mailto:unitex-devel&#37;&#52;&#48;univ-mlv&#46;fr">unitex-devel<span>&#64;</span>univ-mlv<span>&#46;</span>fr</a>&gt;‘__. The more
+visible, the more cited!</p>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-en.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Unitex-en.html" title="previous chapter">Welcome to Unitex-en&#8217;s documentation!</a></li>
+      <li>Next: <a href="01-installation_EN_utf8.html" title="next chapter">Installation of Unitex</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/00-introduction_EN_utf8.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/00-introduction_EN_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
