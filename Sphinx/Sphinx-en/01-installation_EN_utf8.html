@@ -1,0 +1,400 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="EN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation of Unitex &mdash; Unitex-en 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-en 1.0.1 documentation" href="Unitex-en.html" />
+    <link rel="next" title="Loading a text" href="02-loading_texts_EN_utf8.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="00-introduction_EN_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation-of-unitex">
+<h1>Installation of Unitex<a class="headerlink" href="#installation-of-unitex" title="Permalink to this headline">¶</a></h1>
+<p>Unitex is a multi-platform system that runs on Windows as well as on
+Linux or OS X. This chapter describes how to install and how to launch
+Unitex on any of these systems. It also presents the procedures used to
+add new languages and to uninstall Unitex.</p>
+<div class="section" id="licenses">
+<h2>Licenses<a class="headerlink" href="#licenses" title="Permalink to this headline">¶</a></h2>
+<p>Unitex is free software. This means that the source of the programs is
+distributed with the software, and that anyone can modify and
+redistribute it. The code of the Unitex programs is under the LGPL
+licence (<a href="#id1"><span class="problematic" id="id2">:raw-latex:`\cite{LGPL}`</span></a>), except for:</p>
+<ol class="arabic simple">
+<li>the TRE library for dealing with regular expressions by Ville
+Laurikari (<a href="#id3"><span class="problematic" id="id4">:raw-latex:`\cite{TRE}`</span></a>), which is under a 2-clause
+BSD-style license;</li>
+<li>the wingetopt library, by Todd Miller and the NetBSD Foundation, also
+under a 2-clause BSD-style license, more permissive than the LGPL;</li>
+<li>the pstdin library, a cross platform source code header for precisely
+sized integers on all platforms, by Paul Hsieh, which is under a
+3-clause BSD-style license;</li>
+<li>the Xerces2-j XML Parser, by the Apache Software Foundation, which is
+under the Apache Software License version 2.0;</li>
+<li>the LibYAML library by Kirill Simonov, under MIT license, which is
+also more permissive than LGPL;</li>
+<li>the SVNKit library by TMate Software, which is under TMate license.</li>
+</ol>
+<p>The LGPL license is more permissive than the GPL, because it makes it
+possible to use LGPL code in nonfree software. In both cases, the
+software can be freely used and distributed.</p>
+<p>All the language resources that go with Unitex are distributed under the
+LGPLLR license (<a href="#id5"><span class="problematic" id="id6">:raw-latex:`\cite{LGPLLR}`</span></a>).</p>
+<p>Full text versions of LGPL, 2-clause BSD, Apache, MIT, TMate and LGPLLR
+can be found in the appendices of this manual.</p>
+</div>
+<div class="section" id="java-runtime-environment">
+<h2>Java runtime environment<a class="headerlink" href="#java-runtime-environment" title="Permalink to this headline">¶</a></h2>
+<p>Unitex consists of a graphical interface written in Java and external
+programs written in <em>C/C-.05em-.1em</em>. This mixture of programming
+languages is responsible for a fast and portable application that runs
+on different operating systems.</p>
+<p>Before you can use the graphical interface, you first have to install
+the runtime environment, usually called Java virtual machine or JRE
+(Java Runtime Environment).</p>
+<p>For the graphical mode, Unitex needs Java version 1.6 (or newer). If you
+have an older version of Java, Unitex will stop after you have chosen
+the working language.</p>
+<p>You can download the virtual machine for your operating system for free
+from the Sun Microsystems web site (<a href="#id7"><span class="problematic" id="id8">:raw-latex:`\cite{site-java}`</span></a>) at
+the following address: <a class="reference external" href="http://java.sun.com">http://java.sun.com</a>.</p>
+<p>If you are working under Linux or OS X, or if you are using a Windows
+version with personal user accounts, you have to ask your system
+administrator to install Java.</p>
+</div>
+<div class="section" id="installers">
+<h2>Installers<a class="headerlink" href="#installers" title="Permalink to this headline">¶</a></h2>
+<p>The Unitex/GramLab installers can be downloaded from:</p>
+<p><a href="#id15"><span class="problematic" id="id16">`\\UnitexURLLatestReleases &lt;\UnitexURLLatestReleases&gt;`__</span></a></p>
+<div class="section" id="installer-for-windows">
+<h3>Installer for Windows<a class="headerlink" href="#installer-for-windows" title="Permalink to this headline">¶</a></h3>
+<p>The downloaded file will be named something like:</p>
+<p>Then, double-click on this file and follow the instructions
+(Fig.&nbsp;[fig-installer]). It is recommended to uninstall any existing
+versions before installing a new one. Unitex/GramLab will be installed
+in a directory (folder) which should preferably be located in the
+<code class="docutils literal"><span class="pre">Program</span> <span class="pre">Files</span></code> directory, and which will be called in this manual the
+Unitex system directory.</p>
+<div class="figure" id="id11">
+<a class="reference internal image-reference" href="resources/img/installer.png"><img alt="The Windows installer[fig-installer]" src="resources/img/installer.png" style="width: 13.00000cm;" /></a>
+<p class="caption"><span class="caption-text">The Windows installer[fig-installer]</span></p>
+</div>
+<p>When the installation is finished, a Unitex icon and a GramLab icon
+should appear on the desktop: double-click on them to start Unitex or
+GramLab (see&nbsp;[section-first-use]). (If the installer did not create
+these icons, open the Unitex system directory: it contains several
+subdirectories, one of which is named <code class="docutils literal"><span class="pre">App</span></code>. This directory contains
+two files named <code class="docutils literal"><span class="pre">Unitex.jar</span></code> and <code class="docutils literal"><span class="pre">GramLab.jar</span></code>. They are the Java
+files that launch the graphical interfaces. Double-click on one of them
+to start Unitex or GramLab (see&nbsp;[section-first-use]). To facilitate
+launching the interface, you may want to add shortcuts to these files on
+the desktop.)</p>
+<p>If Unitex is to be installed on a multi-user Windows machine, it is
+recommended that the system administrator performs the installation. If
+you are the only user on your machine, you can perform the installation
+yourself.</p>
+<p>The Windows installer can also be launched in command line and accepts
+several optional command line parameters. Some of them are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="44%" />
+<col width="56%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">/AllUsers</span></code></td>
+<td>Sets default to a per-machine install</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">/CurrentUser</span></code></td>
+<td>Sets default to a per-user install</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">/D</span> <span class="pre">C:\path\without</span> <span class="pre">quotes\</span></code></td>
+<td>Sets the default installation directory</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">/NCRC</span></code></td>
+<td>Skip the cyclic redundancy check</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">/S</span></code></td>
+<td>Runs the installer silently</td>
+</tr>
+</tbody>
+</table>
+<p>If you run Unitex under Windows 7, you may experience trouble with your
+Unitex configuration file, because Unitex tries to write it in the
+<code class="docutils literal"><span class="pre">Users</span></code> subdirectory, and Windows 7 forbids it.</p>
+</div>
+<div class="section" id="installer-for-gnu-linux-and-os-x">
+<h3>Installer for GNU/Linux and OS X<a class="headerlink" href="#installer-for-gnu-linux-and-os-x" title="Permalink to this headline">¶</a></h3>
+<p>The downloaded file will be named something like:</p>
+<p>Then, give it executable permissions, by typing, for example
+(Fig.&nbsp;[fig-installer-linux]):</p>
+<p>chmod a+x</p>
+<p>The <code class="docutils literal"><span class="pre">.run</span></code> file is a self-extracting archive. Execute it with:</p>
+<p>./</p>
+<div class="figure" id="id12">
+<a class="reference internal image-reference" href="resources/img/installer-linux.png"><img alt="The GNU/Linux and OS X installer[fig-installer-linux]" src="resources/img/installer-linux.png" style="width: 13.00000cm;" /></a>
+<p class="caption"><span class="caption-text">The GNU/Linux and OS X installer[fig-installer-linux]</span></p>
+</div>
+<p>The GNU/Linux and OS X installer accepts several optional command line
+parameters. Some of them are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">--confirm</span></code></td>
+<td>Ask before running the embedded installation script</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">--quiet</span></code></td>
+<td>Do not print anything except error messages</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">--noexec</span></code></td>
+<td>Do not run the embedded installation script</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">--target</span> <span class="pre">dir</span></code></td>
+<td>Sets the default installation directory</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="manual-installation">
+<h2>Manual installation<a class="headerlink" href="#manual-installation" title="Permalink to this headline">¶</a></h2>
+<p>You can also install Unitex/GramLab manually from the source
+distribution package. Download it from:</p>
+<p><a href="#id15"><span class="problematic" id="id17">`\\UnitexURLLatestReleases/source &lt;\UnitexURLLatestReleases/source&gt;`__</span></a></p>
+<p>The downloaded file will be named something like:</p>
+<p>Decompress it into a directory called for example Unitex, which should
+preferably be created in the <code class="docutils literal"><span class="pre">Program</span> <span class="pre">Files</span></code> directory, and which will
+be the Unitex system directory.</p>
+<p>If your computer runs one of the following operating systems, the
+installation is finished: Windows (32-bit, 64-bit), GNU/Linux (i686,
+x86_64) and OS X (10.7+). (If it runs another Unix-like OS, like
+FreeBSD, or has another processor architecture, like ARM, go into the
+<code class="docutils literal"><span class="pre">App/install</span></code> directory and type:</p>
+<p><code class="docutils literal"><span class="pre">sh</span> <span class="pre">setup</span></code></p>
+<p>This script checks if Java is installed, compiles the C++ core sources,
+sets up the Unitex and GramLab personal working directories and creates
+some desktop shortcuts. <a class="footnote-reference" href="#id10" id="id9">[1]</a>)</p>
+<p>When the installation is finished, the Unitex system directory contains
+several subdirectories, one of which is called <code class="docutils literal"><span class="pre">App</span></code>.</p>
+<ul class="simple">
+<li>On Windows: the <code class="docutils literal"><span class="pre">App</span></code> directory contains files named <code class="docutils literal"><span class="pre">Unitex.jar</span></code>
+and <code class="docutils literal"><span class="pre">GramLab.jar</span></code>. They are the Java files that launch the
+graphical interfaces. Double-click on one of them to start Unitex or
+GramLab (see&nbsp;[section-first-use]). To facilitate launching the
+interfaces, you may want to add shortcuts to these files on the
+desktop.</li>
+<li>On Linux or OS X: the <code class="docutils literal"><span class="pre">App</span></code> directory contains two shell scripts
+named <code class="docutils literal"><span class="pre">Unitex</span></code> and <code class="docutils literal"><span class="pre">GramLab</span></code>. Launch one of them to start Unitex
+or GramLab (see&nbsp;[section-first-use]). If you have run the setup
+script, it should have added shortcuts to these files on the desktop.</li>
+</ul>
+</div>
+<div class="section" id="first-use">
+<h2>First use<a class="headerlink" href="#first-use" title="Permalink to this headline">¶</a></h2>
+<p>If you work on Windows, the program will ask you to choose a personal
+working directory, which you can change later in
+“Info&gt;Preferences...&gt;Directories”. To create a directory, click on the
+icon showing a file (see figure&nbsp;[fig-creation-personal-directory]).</p>
+<p>If you are using Linux or OS X, the program will automatically create a
+personal working directory called <code class="docutils literal"><span class="pre">/unitex</span></code> in your <code class="docutils literal"><span class="pre">$HOME</span></code>
+directory.</p>
+<p>The personal working directory, or user’s directory, allows you to save
+your personal Unitex data. For each language that you will be using, the
+program will copy the root directory of that language to your working
+directory, except the dictionaries. You can then modify your copy of the
+files without risking to damage the system files stored in the Unitex
+system directory.</p>
+<div class="figure" id="id13">
+<a class="reference internal image-reference" href="resources/img/fig1-1.png"><img alt="First use under Windows" src="resources/img/fig1-1.png" style="width: 6.30000cm;" /></a>
+<p class="caption"><span class="caption-text">First use under Windows</span></p>
+</div>
+<div class="figure" id="id14">
+<a class="reference internal image-reference" href="resources/img/fig1-2.png"><img alt="First use under Linux" src="resources/img/fig1-2.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">First use under Linux</span></p>
+</div>
+</div>
+<div class="section" id="adding-new-languages">
+<h2>Adding new languages<a class="headerlink" href="#adding-new-languages" title="Permalink to this headline">¶</a></h2>
+<p>There are two different ways to add languages. If you want to add a
+language that is to be accessible by all users, you have to copy the
+corresponding directory to the Unitex system directory, for which you
+will need to have the access rights (this might mean that you need to
+ask your system administrator to do it). On the other hand, if you are
+the only user working with the language, you can also copy the directory
+to your working directory. You can work with this language without it
+being shown to other users.</p>
+</div>
+<div class="section" id="uninstalling-unitex">
+<h2>Uninstalling Unitex<a class="headerlink" href="#uninstalling-unitex" title="Permalink to this headline">¶</a></h2>
+<p>No matter which operating system you are working with, it is sufficient
+to delete the Unitex system directory to completely delete all the
+program files. Under Windows you may have to delete the shortcut to
+<code class="docutils literal"><span class="pre">Unitex.jar</span></code> if you have created one on your desktop. The same has to
+be done on Linux, if you have created an alias.</p>
+</div>
+<div class="section" id="unitex-for-developers">
+<h2>Unitex for developers<a class="headerlink" href="#unitex-for-developers" title="Permalink to this headline">¶</a></h2>
+<p>If you are a programmer, you may be interested in linking your code to
+the C++ core of Unitex. To facilitate such operation, you can compile
+Unitex as a dynamic library that contains all Unitex functions, except
+<code class="docutils literal"><span class="pre">main</span></code>s, of course. The page
+<a class="reference external" href="http://docs.unitexgramlab.org/projects/unitex-library/en/latest/">http://docs.unitexgramlab.org/projects/unitex-library/en/latest/</a>
+contains documentation about the library. The C++ core of Unitex
+contains source code for Java JNI, Ruby and Microsoft .NET bindings. The
+page <a class="reference external" href="https://github.com/patwat/python-unitex">https://github.com/patwat/python-unitex</a> contains Python bindings.</p>
+<p>Under Linux/OS X, type:</p>
+<p><code class="docutils literal"><span class="pre">make</span> <span class="pre">LIBRARY=yes</span></code></p>
+<p>and you will obtain a library named <code class="docutils literal"><span class="pre">libunitex.so</span></code>. If you want to
+produce a Windows DLL named <code class="docutils literal"><span class="pre">unitex.dll</span></code>, use the following commands:</p>
+<p>Windows: <code class="docutils literal"><span class="pre">make</span> <span class="pre">SYSTEM=windows</span> <span class="pre">LIBRARY=yes</span></code></p>
+<p>Cross-compiling with mingw32: <code class="docutils literal"><span class="pre">make</span> <span class="pre">SYSTEM=mingw32</span> <span class="pre">LIBRARY=yes</span></code></p>
+<p>In all cases, you will also obtain a program named
+<code class="docutils literal"><span class="pre">Test_lib</span></code>(<code class="docutils literal"><span class="pre">.exe</span></code>). If everything worked fine, this program should
+display the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Expression</span> <span class="n">converted</span><span class="o">.</span>
+<span class="n">Reg2Grf</span> <span class="n">exit</span> <span class="n">code</span><span class="p">:</span> <span class="mi">0</span>
+
+<span class="c1">#Unigraph</span>
+<span class="n">SIZE</span> <span class="mi">1313</span> <span class="mi">950</span>
+<span class="n">FONT</span> <span class="n">Times</span> <span class="n">New</span> <span class="n">Roman</span><span class="p">:</span>  <span class="mi">12</span>
+<span class="n">OFONT</span> <span class="n">Times</span> <span class="n">New</span> <span class="n">Roman</span><span class="p">:</span><span class="n">B</span> <span class="mi">12</span>
+<span class="n">BCOLOR</span> <span class="mi">16777215</span>
+<span class="n">FCOLOR</span> <span class="mi">0</span>
+<span class="n">ACOLOR</span> <span class="mi">12632256</span>
+<span class="n">SCOLOR</span> <span class="mi">16711680</span>
+<span class="n">CCOLOR</span> <span class="mi">255</span>
+<span class="n">DBOXES</span> <span class="n">y</span>
+<span class="n">DFRAME</span> <span class="n">y</span>
+<span class="n">DDATE</span> <span class="n">y</span>
+<span class="n">DFILE</span> <span class="n">y</span>
+<span class="n">DDIR</span> <span class="n">y</span>
+<span class="n">DRIG</span> <span class="n">n</span>
+<span class="n">DRST</span> <span class="n">n</span>
+<span class="n">FITS</span> <span class="mi">100</span>
+<span class="n">PORIENT</span> <span class="n">L</span>
+<span class="c1">#</span>
+<span class="mi">7</span>
+<span class="s2">&quot;&lt;E&gt;&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">1</span> <span class="mi">5</span>
+<span class="s2">&quot;&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">0</span>
+<span class="s2">&quot;a&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">1</span> <span class="mi">6</span>
+<span class="s2">&quot;b&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">1</span> <span class="mi">4</span>
+<span class="s2">&quot;c&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">1</span> <span class="mi">6</span>
+<span class="s2">&quot;&lt;E&gt;&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span>
+<span class="s2">&quot;&lt;E&gt;&quot;</span> <span class="mi">100</span> <span class="mi">100</span> <span class="mi">1</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<table class="docutils footnote" frame="void" id="id10" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id9">[1]</a></td><td>If you want to compile only the C++ core sources, extract the files
+from the source distribution package, go into the Src/C++/build
+directory and type make install.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-en.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation of Unitex</a><ul>
+<li><a class="reference internal" href="#licenses">Licenses</a></li>
+<li><a class="reference internal" href="#java-runtime-environment">Java runtime environment</a></li>
+<li><a class="reference internal" href="#installers">Installers</a><ul>
+<li><a class="reference internal" href="#installer-for-windows">Installer for Windows</a></li>
+<li><a class="reference internal" href="#installer-for-gnu-linux-and-os-x">Installer for GNU/Linux and OS X</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#manual-installation">Manual installation</a></li>
+<li><a class="reference internal" href="#first-use">First use</a></li>
+<li><a class="reference internal" href="#adding-new-languages">Adding new languages</a></li>
+<li><a class="reference internal" href="#uninstalling-unitex">Uninstalling Unitex</a></li>
+<li><a class="reference internal" href="#unitex-for-developers">Unitex for developers</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-en.html">Documentation overview</a><ul>
+      <li>Previous: <a href="00-introduction_EN_utf8.html" title="previous chapter">&lt;no title&gt;</a></li>
+      <li>Next: <a href="02-loading_texts_EN_utf8.html" title="next chapter">Loading a text</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/01-installation_EN_utf8.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/01-installation_EN_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
