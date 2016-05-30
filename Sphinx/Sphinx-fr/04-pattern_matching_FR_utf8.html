@@ -1,0 +1,688 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Recherche d’expressions rationnelles &mdash; documentation Unitex-fr 1.0.1</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Unitex-fr 1.0.1" href="Unitex-fr.html" />
+    <link rel="next" title="Grammaires locales" href="05-grammars_FR_utf8.html" />
+    <link rel="prev" title="Dictionnaires" href="03-dictionaries_FR_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="recherche-dexpressions-rationnelles">
+<h1>Recherche d’expressions rationnelles<a class="headerlink" href="#recherche-dexpressions-rationnelles" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Nous allons voir dans ce chapitre comment rechercher des motifs simples
+dans un texte au moyen des expressions rationnelles.</p>
+<div class="section" id="definition">
+<h2>Définition<a class="headerlink" href="#definition" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Le but de ce chapitre n’est pas de faire une introduction aux langages
+formels, mais de montrer comment utiliser les expressions rationnelles
+dans Unitex pour rechercher des motifs simples. Le lecteur intéressé par
+une présentation plus formelle pourra se reporter aux nombreux ouvrages
+qui traitent du sujet.</p>
+<p>Une expression rationnelle, ou expression régulière, peut-être:</p>
+<ul class="simple">
+<li>une unité lexicale (<code class="docutils literal"><span class="pre">livre</span></code>) ou un masque lexical (<code class="docutils literal"><span class="pre">&lt;manger.V&gt;</span></code>);</li>
+<li>une position particulière du texte : le début <code class="docutils literal"><span class="pre">{^}</span></code>ou la fin
+<code class="docutils literal"><span class="pre">{$}</span></code></li>
+<li>la concaténation de deux expressions rationnelles (<code class="docutils literal"><span class="pre">je</span> <span class="pre">mange</span></code>);</li>
+<li>l’union de deux expressions rationnelles (<code class="docutils literal"><span class="pre">Pierre+Paul</span></code>);</li>
+<li>l’étoile de Kleene d’une expression rationnelle (<code class="docutils literal"><span class="pre">très*</span></code>).</li>
+</ul>
+</div>
+<div class="section" id="unites-lexicales">
+<h2>Unités lexicales<a class="headerlink" href="#unites-lexicales" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Dans une expression rationnelle, l’unité lexicale a la même définition
+qu’en [tokenization] (page ). Notons que les symboles point, plus,
+étoile, inférieur ainsi que les parenthèses ouvrantes et fermantes ont
+une signification particulière, il faut donc les déspécialiser avec le
+caractère <code class="docutils literal"><span class="pre">\</span></code> si l’on souhaite les rechercher. Voici quelques exemples
+d’unités lexicales valides:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">chat</span>
+\<span class="o">.</span>
+<span class="o">&lt;</span><span class="n">N</span><span class="p">:</span><span class="n">ms</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="n">S</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Par défaut, Unitex tolère que des mots avec des minuscules reconnaissent
+des mots écrits avec des majuscules. Il est possible de forcer le
+respect de la casse en utilisant les guillemets. Ainsi, <code class="docutils literal"><span class="pre">&quot;pierre&quot;</span></code> ne
+reconnaît que la forme <code class="docutils literal"><span class="pre">pierre</span></code> et non pas <code class="docutils literal"><span class="pre">Pierre</span></code> ou <code class="docutils literal"><span class="pre">PIERRE</span></code>.</p>
+<p>NOTE: si l’on souhaite rendre la présence d’un espace obligatoire, il
+faut le mettre entre guillemets.</p>
+</div>
+<div class="section" id="masques-lexicaux">
+<h2>Masques lexicaux<a class="headerlink" href="#masques-lexicaux" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Un masque lexical est une requête qui reconnaît une unité lexicale ou
+une suite d’unités lexicales.</p>
+<div class="section" id="symboles-speciaux">
+<h3>Symboles spéciaux<a class="headerlink" href="#symboles-speciaux" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Il y a deux sortes de masques lexicaux. La première catégorie regroupe
+les symboles spéciaux ou méta-symboles présentés dans la
+section&nbsp;[section-sentence-splitting], sauf <code class="docutils literal"><span class="pre">&lt;PNC&gt;</span></code> et <code class="docutils literal"><span class="pre">&lt;^&gt;</span></code>. (Le
+symbole <code class="docutils literal"><span class="pre">&lt;PNC&gt;</span></code>, qui reconnaît des signes de ponctuation, n’est valide
+que pendant le prétraitement&nbsp;; <code class="docutils literal"><span class="pre">&lt;^&gt;</span></code> reconnaît un retour à ligne, mais
+tous les retours à la ligne ayant été remplacés par des espaces, ce
+symbole n’a plus aucune utilité lors de la recherche de motifs.) Les
+méta-symboles utilisables pour rechercher des motifs dans un texte sont
+les suivants&nbsp;:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;E&gt;</span></code> : mot vide, ou epsilon. Reconnaît la séquence vide;</li>
+<li><code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code> : reconnaît n’importe quelle unité lexicale sauf l’espace
+utilisé par défaut pour les filtres morphologiques;</li>
+<li><code class="docutils literal"><span class="pre">&lt;WORD&gt;</span></code> : reconnaît n’importe quelle unité lexicale formée de
+lettres;</li>
+<li><code class="docutils literal"><span class="pre">&lt;LOWER&gt;</span></code> : reconnaît n’importe quelle unité lexicale formée de
+lettres minuscules;</li>
+<li><code class="docutils literal"><span class="pre">&lt;UPPER&gt;</span></code> : reconnaît n’importe quelle unité lexicale formée de
+lettres majuscules;</li>
+<li><code class="docutils literal"><span class="pre">&lt;FIRST&gt;</span></code> : reconnaît n’importe quelle unité lexicale formée de
+lettres et commençant par une majuscule;</li>
+<li><code class="docutils literal"><span class="pre">&lt;DIC&gt;</span></code> : reconnaît n’importe quel mot figurant dans les
+dictionnaires du texte;</li>
+<li><code class="docutils literal"><span class="pre">&lt;SDIC&gt;</span></code> : reconnaît n’importe quel mot simple figurant dans les
+dictionnaires du texte;</li>
+<li><code class="docutils literal"><span class="pre">&lt;CDIC&gt;</span></code> : reconnaît n’importe quel mot composé figurant dans les
+dictionnaires du texte;</li>
+<li><code class="docutils literal"><span class="pre">&lt;TDIC&gt;</span></code> : reconnaît n’importe quelle unité lexicale tagguée comme
+<code class="docutils literal"><span class="pre">{XXX,XXX.XXX}</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">&lt;NB&gt;</span></code> : reconnaît n’importe quelle suite de chiffres contigus
+(1234 est reconnue mais pas 1 234) ;</li>
+<li><code class="docutils literal"><span class="pre">#</span></code> : interdit la présence de l’espace.</li>
+</ul>
+<p>Les anciens codes correspondant à <code class="docutils literal"><span class="pre">&lt;WORD&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;LOWER&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;UPPER&gt;</span></code>
+et <code class="docutils literal"><span class="pre">&lt;FIRST&gt;</span></code> étaient respectivement <code class="docutils literal"><span class="pre">&lt;MOT&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;MIN&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;MAJ&gt;</span></code> et
+<code class="docutils literal"><span class="pre">&lt;PRE&gt;</span></code>. Ils restent opérationnels afin de conserver la compatibilité
+descendante du système avec les graphes existants. Même s’il n’est pas
+prévu de supprimer ces codes, on recommande de les éviter dans les
+graphes conçus pour fonctionner avec les versions plus récentes <a class="footnote-reference" href="#id13" id="id1">[1]</a>,
+pour ne pas faire augmenter inutilement le nombre de masques lexicaux en
+usage.</p>
+<p>NOTE : comme il a été dit en section [tokenization], AUCUN des métas ne
+peut être utilisé pour reconnaître le marqueur <code class="docutils literal"><span class="pre">{STOP}</span></code>, pas même
+<code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code>.</p>
+</div>
+<div class="section" id="reference-aux-informations-fournies-par-les-dictionnaires">
+<h3>Référence aux informations fournies par les dictionnaires<a class="headerlink" href="#reference-aux-informations-fournies-par-les-dictionnaires" title="Lien permanent vers ce titre">¶</a></h3>
+<p>La seconde sorte de masques lexicaux regroupe ceux qui font appel aux
+informations contenues dans les dictionnaires du texte. Les quatre
+formes possibles sont&nbsp;:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;lire&gt;</span></code>: reconnaît toutes les entrées qui ont <code class="docutils literal"><span class="pre">lire</span></code> comme forme
+canonique. On remarque que cette forme est ambiguë si <code class="docutils literal"><span class="pre">lire</span></code> est
+aussi un code grammatical ou sémantique;</li>
+<li><code class="docutils literal"><span class="pre">&lt;lire.&gt;</span></code>: reconnaît toutes les entrées qui ont <code class="docutils literal"><span class="pre">lire</span></code> comme
+forme canonique. Ce masque lexical n’est pas ambigu avec le
+précédent;</li>
+<li><code class="docutils literal"><span class="pre">&lt;lire.V&gt;</span></code>: reconnaît toutes les entrées qui ont <code class="docutils literal"><span class="pre">lire</span></code> comme
+forme canonique et qui ont le code grammatical <code class="docutils literal"><span class="pre">V</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">&lt;V&gt;</span></code>: reconnaît toutes les entrées qui ont le code grammatical
+<code class="docutils literal"><span class="pre">V</span></code>. Ce masque lexical est ambigu comme le premier. Pour lever
+l’ambiguïté, on peut utiliser <code class="docutils literal"><span class="pre">&lt;.V&gt;</span></code> ou <code class="docutils literal"><span class="pre">&lt;+V&gt;</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">{lirons,lire.V}</span></code> ou <code class="docutils literal"><span class="pre">&lt;lirons,lire.V&gt;</span></code>: reconnaît toutes les
+entrées qui ont <code class="docutils literal"><span class="pre">li-</span></code><code class="docutils literal"><span class="pre">rons</span></code> comme forme fléchie, <code class="docutils literal"><span class="pre">lire</span></code> comme
+forme canonique et qui ont le code grammatical <code class="docutils literal"><span class="pre">V</span></code>. Ce type de
+masque n’a d’intérêt que si l’on travaille sur l’automate du texte où
+sont explicitées les ambiguïtés des mots. Lorsque l’on effectue une
+recherche sur le texte, ce masque reconnaît la même chose que la
+simple unité lexicale <code class="docutils literal"><span class="pre">lirons</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="contraintes-grammaticales-et-semantiques">
+<h3>Contraintes grammaticales et sémantiques<a class="headerlink" href="#contraintes-grammaticales-et-semantiques" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les masques lexicaux des exemples précédents sont simples. Il est
+possible d’exprimer des motifs plus complexes en indiquant plusieurs
+codes grammaticaux ou sémantiques, séparés par le caractère <code class="docutils literal"><span class="pre">+</span></code>. Si
+plusieurs codes sont présents, le caractère <code class="docutils literal"><span class="pre">+</span></code> est interprété comme
+‘’et’’&nbsp;: une entrée de dictionnaire ne sera alors reconnue que si elle
+possède tous les codes présents dans le masque. Le masque <code class="docutils literal"><span class="pre">&lt;N+z1&gt;</span></code>
+reconnaît ainsi les entrées :</p>
+<p><code class="docutils literal"><span class="pre">broderies,broderie.N+z1:fp</span></code></p>
+<p><code class="docutils literal"><span class="pre">capitales</span> <span class="pre">européennes,capitale</span> <span class="pre">européenne.N+NA+Conc+HumColl+z1:fp</span></code></p>
+<p>mais pas:</p>
+<p><code class="docutils literal"><span class="pre">Descartes,René</span> <span class="pre">Descartes.N+Hum+NPropre:ms</span></code></p>
+<p><code class="docutils literal"><span class="pre">habitué,.A+z1:ms</span></code></p>
+<p>On peut exclure des codes en les faisant précéder du caractère <code class="docutils literal"><span class="pre">~</span></code> au
+lieu de <code class="docutils literal"><span class="pre">+</span></code>. Pour être reconnue, une entrée doit contenir tous les
+codes exigés par le masque, sans aucun des codes qu’il interdit. Par
+exemple, <code class="docutils literal"><span class="pre">&lt;A~z3&gt;</span></code> reconnaît toutes les entrées qui ont le code <code class="docutils literal"><span class="pre">A</span></code>
+sans le code <code class="docutils literal"><span class="pre">z3</span></code> (cf. table&nbsp;[tab-semantic-codes]) <a class="footnote-reference" href="#id14" id="id2">[2]</a>. Si on veut
+faire référence à un code contenant le caractère <code class="docutils literal"><span class="pre">~</span></code>, on doit le
+déspécialiser en le faisant précéder d’un <code class="docutils literal"><span class="pre">\</span></code>.</p>
+<p>REMARQUE: Avant la version 2.1, l’opérateur de négation était le signe
+moins. Si l’on veut utiliser d’anciens graphes sans les modifier, il
+faut appeler <code class="docutils literal"><span class="pre">Locate</span></code> en ligne de commande avec l’option <code class="docutils literal"><span class="pre">-g</span> <span class="pre">minus</span></code>.</p>
+<p>La syntaxe des masques lexicaux ne fait aucune différence entre les
+codes grammaticaux (table&nbsp;[tab-grammatical-codes]) et sémantiques
+(table&nbsp;[tab-semantic-codes]). Dans le format de dictionnaires
+électroniques DELAF, les codes grammaticaux sont ceux qui apparaissent
+en premier et codent la catégorie grammaticale, mais dans les masques
+lexicaux d’Unitex, l’ordre dans lequel apparaissent les codes
+grammaticaux et sémantiques n’a pas d’importance. Les trois masques
+lexicaux suivants sont équivalents :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">N</span><span class="o">~</span><span class="n">Hum</span><span class="o">+</span><span class="n">z1</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">z1</span><span class="o">+</span><span class="n">N</span><span class="o">~</span><span class="n">Hum</span><span class="o">&gt;</span>
+<span class="o">&lt;~</span><span class="n">Hum</span><span class="o">+</span><span class="n">z1</span><span class="o">+</span><span class="n">N</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Un masque lexical peut contenir un code sémantique sans code de
+catégorie grammaticale.</p>
+<p>NOTE: il n’est pas possible d’utiliser un masque n’ayant que des codes
+d’interdiction. <code class="docutils literal"><span class="pre">&lt;~N&gt;</span></code> et <code class="docutils literal"><span class="pre">&lt;~A~z1&gt;</span></code> sont donc des masques
+incorrects. Il est toutefois possible d’exprimer de telles contraintes
+en utilisant des contextes (voir section &nbsp;[section-contexts]).</p>
+</div>
+<div class="section" id="contraintes-flexionnelles">
+<h3>Contraintes flexionnelles<a class="headerlink" href="#contraintes-flexionnelles" title="Lien permanent vers ce titre">¶</a></h3>
+<p>On peut également spécifier des contraintes portant sur les codes
+flexionnels. Ces contraintes doivent obligatoirement être précédées par
+au moins un code grammatical ou sémantique. Elles suivent les mêmes
+conventions de format que les codes flexionnels présents dans les
+dictionnaires. Voici quelques exemples de masques lexicaux utilisant des
+contraintes flexionnelles&nbsp;:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;A:m&gt;</span></code> reconnaît un adjectif au masculin&nbsp;;</li>
+<li><code class="docutils literal"><span class="pre">&lt;A:mp&gt;</span></code> reconnaît un adjectif au masculin pluriel.</li>
+</ul>
+<p>Un code flexionnel est introduit par le caractère <code class="docutils literal"><span class="pre">:</span></code> et constitué
+d’un ou plusieurs caractères, qui représentent une information chacun.
+Commençons par le cas simple d’entrées lexicales et de masques qui ont
+un seul code flexionnel. Pour qu’une entrée lexicale <span class="math">\(E\)</span> soit
+reconnue par un masque <span class="math">\(M\)</span>, il faut que le code flexionnel de
+<span class="math">\(E\)</span> contienne tous les caractères du code flexionnel de
+<span class="math">\(M\)</span>&nbsp;:</p>
+<p><span class="math">\(E\)</span>=<code class="docutils literal"><span class="pre">sépare,séparer.V:Y2s</span></code></p>
+<p><span class="math">\(M\)</span>=<code class="docutils literal"><span class="pre">&lt;V:Y2&gt;</span></code></p>
+<p>Le code <code class="docutils literal"><span class="pre">Y2s</span></code> de <span class="math">\(E\)</span> contient les caractères <code class="docutils literal"><span class="pre">Y</span></code> et <code class="docutils literal"><span class="pre">2</span></code>. Le
+code <code class="docutils literal"><span class="pre">Y2</span></code> est inclus dans au moins un code de <span class="math">\(E\)</span>, le masque
+lexical <span class="math">\(M\)</span> reconnaît donc l’entrée <span class="math">\(E\)</span>.</p>
+<p>L’ordre des caractères à l’intérieur d’un code flexionnel est sans
+importance. Tous les codes grammaticaux et sémantiques doivent précéder
+les codes flexionnels.</p>
+<p>Si plusieurs codes flexionnels sont présents dans un masque lexical, le
+caractère <code class="docutils literal"><span class="pre">:</span></code> est interprété comme ‘’ou’’&nbsp;:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;A:mp:f&gt;</span></code> correspond à la fois à <code class="docutils literal"><span class="pre">&lt;A:mp&gt;</span></code>et à <a href="#id3"><span class="problematic" id="id4">``</span></a>&lt;A:f&gt;``&nbsp;; il
+reconnaît un adjectif qui est soit au masculin pluriel, soit au
+féminin&nbsp;;</li>
+<li><code class="docutils literal"><span class="pre">&lt;V:2:3&gt;</span></code> reconnaît un verbe à la 2 ou à la 3 personne ; cela
+exclut tous les temps qui n’ont ni 2 ni 3 personne (infinitif,
+participe passé et participe présent) ainsi que les temps conjugués à
+la première personne.</li>
+</ul>
+<p>Pour qu’une entrée de dictionnaire <span class="math">\(E\)</span> soit reconnue par un masque
+<span class="math">\(M\)</span>, il faut qu’au moins un code flexionnel de <span class="math">\(E\)</span> contienne
+tous les caractères d’au moins un code flexionnel de <span class="math">\(M\)</span>.
+Considérons l’exemple suivant :</p>
+<p><span class="math">\(E\)</span>=<code class="docutils literal"><span class="pre">sépare,séparer.V:W:P1s:P3s:S1s:S3s:Y2s</span></code></p>
+<p><span class="math">\(M\)</span>=<code class="docutils literal"><span class="pre">&lt;V:P2s:Y2&gt;</span></code></p>
+<p>Aucun code flexionnel de <span class="math">\(E\)</span> ne contient à la fois les caractères
+<code class="docutils literal"><span class="pre">P</span></code>, <code class="docutils literal"><span class="pre">2</span></code> et <code class="docutils literal"><span class="pre">s</span></code>. Cependant, le code <code class="docutils literal"><span class="pre">Y2s</span></code> de <span class="math">\(E\)</span> contient
+bien les caractères <code class="docutils literal"><span class="pre">Y</span></code> et <code class="docutils literal"><span class="pre">2</span></code>. Le code <code class="docutils literal"><span class="pre">Y2</span></code> est inclus dans au
+moins un code de <span class="math">\(E\)</span>, le masque lexical <span class="math">\(M\)</span> reconnaît donc
+l’entrée <span class="math">\(E\)</span>.</p>
+</div>
+<div class="section" id="negation-dun-masque-lexical">
+<h3>Négation d’un masque lexical<a class="headerlink" href="#negation-dun-masque-lexical" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Il est possible de faire la négation d’un motif au moyen du
+caractère&nbsp;<code class="docutils literal"><span class="pre">!</span></code> placé immédiatement après le caractère &nbsp;<code class="docutils literal"><span class="pre">&lt;</span></code>. La
+négation est possible sur les métas <code class="docutils literal"><span class="pre">&lt;WORD&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;LOWER&gt;</span></code>,
+<code class="docutils literal"><span class="pre">&lt;UPPER&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;FIRST&gt;</span></code> <a class="footnote-reference" href="#id15" id="id5">[3]</a>, <code class="docutils literal"><span class="pre">&lt;DIC&gt;</span></code> ainsi que sur les masques
+lexicaux ne comportant que des codes grammaticaux, sémantiques ou
+flexionnels (<em>i.e.</em> <code class="docutils literal"><span class="pre">&lt;!V~z3:P3&gt;</span></code>). Les motifs <code class="docutils literal"><span class="pre">#</span></code> et <code class="docutils literal"><span class="pre">&quot;</span> <span class="pre">&quot;</span></code> sont la
+négation l’un de l’autre. Le méta <code class="docutils literal"><span class="pre">&lt;!WORD&gt;</span></code> peut reconnaître toutes
+les unités lexicales qui ne sont pas formées de lettres, sauf le
+séparateur de phrases <code class="docutils literal"><span class="pre">{S}</span></code> et, bien sûr, le marqueur <code class="docutils literal"><span class="pre">{STOP}</span></code>. La
+négation est sans effet sur <code class="docutils literal"><span class="pre">&lt;NB&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;SDIC&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;CDIC&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;TDIC&gt;</span></code>
+et <code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code>.</p>
+<p>La négation est interprétée d’une façon particulière dans les métas
+<code class="docutils literal"><span class="pre">&lt;!DIC&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;!LOWER&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;!UPPER&gt;</span></code> et <code class="docutils literal"><span class="pre">&lt;!FIRST&gt;</span></code> <a class="footnote-reference" href="#id16" id="id6">[4]</a>. Au lieu
+de reconnaître toutes les formes qui ne sont pas reconnues par le méta
+sans la négation, ces motifs ne donnent que des formes qui sont des
+séquences de lettres. Ainsi, le méta <code class="docutils literal"><span class="pre">&lt;!DIC&gt;</span></code> permet d’obtenir les
+mots inconnus du texte (cf. figure&nbsp;[fig-search-&lt;!DIC&gt;]). Ces formes
+inconnues sont le plus souvent des noms propres, des néologismes et des
+fautes d’orthographe.</p>
+<p>La négation d’un masque lexical comme <code class="docutils literal"><span class="pre">&lt;V:G&gt;</span></code> reconnaît tous les mots
+sauf ceux qui peuvent être reconnus par ce masque. Ainsi, le masque
+<code class="docutils literal"><span class="pre">&lt;!V:G&gt;</span></code> ne reconnaîtra pas la forme anglaise <em>being</em>, même s’il
+existe dans les dictionnaires du texte des entrées non verbales pour ce
+mot:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">being</span><span class="p">,</span><span class="o">.</span><span class="n">A</span>
+<span class="n">being</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">Abst</span><span class="p">:</span><span class="n">s</span>
+<span class="n">being</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">Hum</span><span class="p">:</span><span class="n">s</span>
+</pre></div>
+</div>
+<p>Voici plusieurs exemples de motifs mélangeant les différentes sortes de
+contraintes:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;A~Hum:fs&gt;</span></code> : adjectif non humain au féminin singulier;</li>
+<li><code class="docutils literal"><span class="pre">&lt;lire.V:P:F&gt;</span></code> : le verbe <em>lire</em> au présent ou au futur;</li>
+<li><code class="docutils literal"><span class="pre">&lt;suis,suivre.V&gt;</span></code> : le mot <em>suis</em> en tant que forme conjuguée du
+verbe <em>suivre</em> (par opposition à la forme du verbe <em>être</em>);</li>
+<li><code class="docutils literal"><span class="pre">&lt;facteur.N~Hum&gt;</span></code> : toutes les entrées nominales ayant <em>facteur</em>
+comme forme canonique et ne possédant pas le code sémantique <code class="docutils literal"><span class="pre">Hum</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">&lt;!ADV&gt;</span></code> : tous les mots qui ne sont pas des adverbes;</li>
+<li><code class="docutils literal"><span class="pre">&lt;!WORD&gt;</span></code> : tous les caractères qui ne sont pas des lettres, sauf
+le séparateur de phrases (voir figure&nbsp;[fig-search-&lt;!WORD&gt;]). Ce
+masque ne reconnait pas le séparateur de phrase <code class="docutils literal"><span class="pre">{S}</span></code> ni le tag
+<code class="docutils literal"><span class="pre">{STOP}</span></code>.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="concatenation">
+<h2>Concaténation<a class="headerlink" href="#concatenation" title="Lien permanent vers ce titre">¶</a></h2>
+<p>On peut concaténer des expressions rationnelles de trois façons. La
+première consiste à utiliser l’opérateur de concaténation représenté par
+le point. Ainsi, l’expression:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">DET</span><span class="o">&gt;.&lt;</span><span class="n">N</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>reconnaît un déterminant suivi par un nom. L’espace peut également
+servir à concaténer. L’expression de l’exemple suivant:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">le</span> <span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="n">chat</span>
+<span class="n">le</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="n">chat</span>
+</pre></div>
+</div>
+<p>reconnaît l’unité lexicale <em>le</em>, suivie d’un adjectif et de l’unité
+lexicale <em>chat</em>. Les parenthèses servent à délimiter une expression
+rationnelle. Toutes les expressions suivantes sont équivalentes:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">le</span> <span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="n">chat</span>
+<span class="p">(</span><span class="n">le</span> <span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="p">)</span><span class="n">chat</span>
+<span class="n">le</span><span class="o">.&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="n">chat</span>
+<span class="p">(</span><span class="n">le</span><span class="p">)</span><span class="o">.&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="n">chat</span>
+<span class="p">(</span><span class="n">le</span><span class="o">.</span><span class="p">(</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="p">))</span> <span class="p">(</span><span class="n">chat</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="union">
+<h2>Union<a class="headerlink" href="#union" title="Lien permanent vers ce titre">¶</a></h2>
+<p>L’union d’expressions rationnelles se fait en les séparant par le
+caractère <code class="docutils literal"><span class="pre">+</span></code>. L’expression:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">je</span><span class="o">+</span><span class="n">tu</span><span class="o">+</span><span class="n">il</span><span class="o">+</span><span class="n">elle</span><span class="o">+</span><span class="n">on</span><span class="o">+</span><span class="n">nous</span><span class="o">+</span><span class="n">vous</span><span class="o">+</span><span class="n">ils</span><span class="o">+</span><span class="n">elles</span><span class="p">)</span> <span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>reconnaît un pronom suivi par un verbe. Si l’on veut rendre un élément
+facultatif dans une expression, il suffit de faire l’union de cet
+élément avec le mot vide epsilon. Exemples:</p>
+<p><code class="docutils literal"><span class="pre">le(petit+&lt;E&gt;)chat</span></code> reconnaît les séquences <em>le chat</em> et <em>le petit
+chat</em></p>
+<p><code class="docutils literal"><span class="pre">(&lt;E&gt;+franco-)(anglais+belge)</span></code> reconnaît <em>anglais</em>, <em>belge</em>,
+<em>franco-anglais</em> et <em>franco-belge</em></p>
+</div>
+<div class="section" id="etoile-de-kleene">
+<h2>Étoile de Kleene<a class="headerlink" href="#etoile-de-kleene" title="Lien permanent vers ce titre">¶</a></h2>
+<p>L’étoile de Kleene, représentée par le caractère <code class="docutils literal"><span class="pre">*</span></code>,permet de
+reconnaître zéro, une ou plusieurs occurrences d’une expression.
+L’étoile doit être placée à droite de l’élément concerné. L’expression :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">il</span> <span class="n">fait</span> <span class="n">très</span><span class="o">*</span> <span class="n">froid</span>
+</pre></div>
+</div>
+<p>reconnaît <em>il fait froid</em>, <em>il fait très froid</em>, <em>il fait très très
+froid</em>, etc. L’étoile est prioritaire sur les autres opérateurs. Il faut
+utiliser les parenthèses pour appliquer l’étoile à une expression
+complexe. L’expression :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">0</span><span class="p">,(</span><span class="mi">0</span><span class="o">+</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="o">+</span><span class="mi">3</span><span class="o">+</span><span class="mi">4</span><span class="o">+</span><span class="mi">5</span><span class="o">+</span><span class="mi">6</span><span class="o">+</span><span class="mi">7</span><span class="o">+</span><span class="mi">8</span><span class="o">+</span><span class="mi">9</span><span class="p">)</span><span class="o">*</span>
+</pre></div>
+</div>
+<p>reconnaît un zéro, suivie d’une virgule et d’une suite éventuellement
+vide de chiffres.</p>
+<p>ATTENTION : il est interdit de rechercher le mot vide avec une
+expression rationnelle. Si l’on essaye de chercher
+<code class="docutils literal"><span class="pre">(0+1+2+3+4+5+6+7+8+9)*</span></code>, le programme signalera une erreur comme le
+montre la figure&nbsp;[fig-epsilon-error].</p>
+</div>
+<div class="section" id="filtres-morphologiques">
+<h2>Filtres morphologiques<a class="headerlink" href="#filtres-morphologiques" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Il est possible d’appliquer des filtres morphologiques aux unités
+lexicales recherchées. Pour cela, il faut faire suivre immédiatement
+l’unité lexicale considérée par un filtre entre doubles angles:</p>
+<div class="line-block">
+<div class="line"><em>motif</em><code class="docutils literal"><span class="pre">&lt;&lt;</span></code><em>motif morphologique</em><code class="docutils literal"><span class="pre">&gt;&gt;</span></code></div>
+<div class="line">Les filtres morphologiques s’expriment sous la forme d’expressions
+régulières au format POSIX (voir <a href="#id7"><span class="problematic" id="id8">:raw-latex:`\cite{TRE}`</span></a> pour une
+syntaxe détaillée). Voici quelques exemples de filtres élémentaires:</div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;&lt;ss&gt;&gt;</span></code>: contient <code class="docutils literal"><span class="pre">ss</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;^a&gt;&gt;</span></code>: commence par <code class="docutils literal"><span class="pre">a</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;ez$&gt;&gt;</span></code>: finit par <code class="docutils literal"><span class="pre">ez</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;a.s&gt;&gt;</span></code>: contient <code class="docutils literal"><span class="pre">a</span></code> suivi par un caractère quelconque, suivi
+par <code class="docutils literal"><span class="pre">s</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;a.*s&gt;&gt;</span></code>: contient <code class="docutils literal"><span class="pre">a</span></code> suivi par un nombre de caractères
+quelconque, suivi par <code class="docutils literal"><span class="pre">s</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;ss|tt&gt;&gt;</span></code>: contient <code class="docutils literal"><span class="pre">ss</span></code> ou <code class="docutils literal"><span class="pre">tt</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;[aeiouy]&gt;&gt;</span></code>: contient une voyelle non accentuée</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;[aeiouy]{3,5}&gt;&gt;</span></code>: contient une séquence de voyelles non
+accentuées, de longueur comprise entre 3 et 5</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;es?&gt;&gt;</span></code>: contient <code class="docutils literal"><span class="pre">e</span></code> fsuivi par un <code class="docutils literal"><span class="pre">s</span></code> facultatif</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;ss[^e]?&gt;&gt;</span></code>: contient <code class="docutils literal"><span class="pre">ss</span></code> suivi par un caractère qui n’est pas
+une voyelle <code class="docutils literal"><span class="pre">e</span></code></li>
+</ul>
+<p>Il est possible de combiner ces filtres élémentaires pour former des
+filtres plus complexes:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;&lt;[ai]ble$&gt;&gt;</span></code>: finit par <code class="docutils literal"><span class="pre">able</span></code> ou <code class="docutils literal"><span class="pre">ible</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;^(anti|pro)-?&gt;&gt;</span></code>: commence par <code class="docutils literal"><span class="pre">anti</span></code> ou <code class="docutils literal"><span class="pre">pro</span></code>, suivi par un
+tiret facultatif</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;^([rst][aeiouy]){2,}$&gt;&gt;</span></code>: mot formé de 2 ou plus séquences
+commençant par un <code class="docutils literal"><span class="pre">r</span></code>, <code class="docutils literal"><span class="pre">s</span></code> ou <code class="docutils literal"><span class="pre">t</span></code> suivi d’une voyelle non
+accentuée</li>
+<li><code class="docutils literal"><span class="pre">&lt;&lt;^([^l]|l[^e])&gt;&gt;</span></code>: ne commence pas par <code class="docutils literal"><span class="pre">l</span></code> ou alors la deuxième
+lettre n’est pas un <code class="docutils literal"><span class="pre">e</span></code>, c’est-à-dire n’importe quel mot sauf ceux
+qui commencent par <code class="docutils literal"><span class="pre">le</span></code>. De telles contraintes peuvent être
+exprimées plus simplement en utilisant des contextes
+(voir&nbsp;[section-contexts]).</li>
+</ul>
+<p>Par défaut, un filtre morphologique tout seul est considéré comme
+s’appliquant au méta <code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code>, c’est-à-dire à n’importe quelle unité
+lexicale sauf l’espace et le marqueur <code class="docutils literal"><span class="pre">{STOP}</span></code>. En revanche, lorsqu’un
+filtre suit immédiatement un motif, il s’applique à ce qui est reconnu
+par le motif. Voici quelques exemples de telles combinaisons:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;V:K&gt;&lt;&lt;i$&gt;&gt;</span></code>: participe passé finissant par <code class="docutils literal"><span class="pre">i</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;CDIC&gt;&lt;&lt;-&gt;&gt;</span></code>: mot composé contenant un tiret</li>
+<li><code class="docutils literal"><span class="pre">&lt;CDIC&gt;&lt;&lt;</span> <span class="pre">.*</span> <span class="pre">&gt;&gt;</span></code>: mot composé contenant deux espaces</li>
+<li><code class="docutils literal"><span class="pre">&lt;A:fs&gt;&lt;&lt;^pro&gt;&gt;</span></code>: adjectif féminin singulier commençant par <code class="docutils literal"><span class="pre">pro</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;DET&gt;&lt;&lt;^([^u]|(u[^n])|(un.+))&gt;&gt;</span></code>: déterminant différent de <code class="docutils literal"><span class="pre">un</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;!DIC&gt;&lt;&lt;es$&gt;&gt;</span></code>: mot qui n’est pas dans le dictionnaire et qui se
+termine par <code class="docutils literal"><span class="pre">es</span></code></li>
+<li><code class="docutils literal"><span class="pre">&lt;V:S:T&gt;&lt;&lt;uiss&gt;&gt;</span></code>: verbe au subjonctif passé ou présent, contenant
+<code class="docutils literal"><span class="pre">uiss</span></code></li>
+</ul>
+<p>NOTE : par défaut, les filtres morphologiques sont soumis aux même
+variations de casse que les masques lexicaux. Ainsi, le filtre
+<code class="docutils literal"><span class="pre">&lt;&lt;^é&gt;&gt;</span></code> va reconnaître tous les mots commençant par <code class="docutils literal"><span class="pre">é,</span></code>, mais
+également ceux qui commencent par <code class="docutils literal"><span class="pre">E</span></code> ou <code class="docutils literal"><span class="pre">É</span></code>. Pour forcer le respect
+exact de la casse du filtre, il faut ajouter <code class="docutils literal"><span class="pre">_f_</span></code> immédiatement après
+celui-ci. Exemple : <code class="docutils literal"><span class="pre">&lt;A&gt;&lt;&lt;^é&gt;&gt;_f_</span></code>.</p>
+</div>
+<div class="section" id="recherche">
+<h2>Recherche<a class="headerlink" href="#recherche" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="configuration-de-la-recherche">
+<h3>Configuration de la recherche<a class="headerlink" href="#configuration-de-la-recherche" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Pour pouvoir rechercher une expression, il faut tout d’abord ouvrir un
+texte (voir chapitre &nbsp;[chap-text]). Cliquez ensuite sur “Locate
+Pattern...” dans le menu “Text”. La fenêtre de la
+figure&nbsp;[fig-regexp-search-configuration] apparaît alors.</p>
+<p>Le cadre “Locate Pattern” permet de choisir entre une expression
+rationnelle et une grammaire. Cliquez sur “Regular expression”.</p>
+<p>Le cadre “Index” permet de sélectionner le mode de reconnaissance:</p>
+<ul class="simple">
+<li>“Shortest matches” : donne la priorité aux séquences les plus courtes
+For instance, if your grammar can recognize the sequences <em>very hot
+chili</em> and <em>very hot</em>, the first one will be discarded;</li>
+<li>“Longest matches” : donne la priorité aux séquences les plus longues.
+C’est le mode utilisé par défaut;</li>
+<li>“All matches” : donne toutes les séquences reconnues.</li>
+</ul>
+<p>Le cadre “Search limitation” permet de limiter ou non la recherche à un
+certain nombre d’occurrences. Par défaut, la recherche est limitée aux
+200 premières occurrences.</p>
+<p>Les options du cadre “Grammar outputs” ne concernent pas les expressions
+rationnelles. Elles sont décrites à la section
+&nbsp;[section-applying-graphs-to-text]. De même pour les options de l’onglet
+“Advanced options” (voir section [section-advanced-search-options]).</p>
+<p>Dans le cadre “Search algorithm”, on définit si l’on veut effectuer la
+recherche dans le texte avec le programme <code class="docutils literal"><span class="pre">Locate</span></code> ou dans l’automate
+du texte avec le programme <code class="docutils literal"><span class="pre">LocateTfst</span></code>. Par défaut la recherche est
+effectuée avec le programme <code class="docutils literal"><span class="pre">Locate</span></code>. Pour utiliser <code class="docutils literal"><span class="pre">LocateTfst</span></code>, il
+est utile de se référer à la section [section-locate-tfst].</p>
+<p>Entrez une expression et cliquez sur “Search” pour lancer la recherche.
+Unitex va transformer l’expression en une grammaire au format <code class="docutils literal"><span class="pre">.grf</span></code>.
+Cette grammaire va ensuite être compilée en une grammaire au format
+<code class="docutils literal"><span class="pre">.fst2</span></code> qui sera utilisée par le programme de recherche.</p>
+</div>
+<div class="section" id="affichage-des-resultats">
+<h3>Affichage des résultats<a class="headerlink" href="#affichage-des-resultats" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Une fois la recherche terminée, la fenêtre de la
+figure&nbsp;[fig-search-results] apparaît, indiquant le nombre d’occurrences
+trouvées, le nombre d’unités lexicales reconnues, ainsi que le rapport
+entre ce nombre et le nombre total d’unités lexicales du texte.</p>
+<div class="figure" id="id17">
+<a class="reference internal image-reference" href="resources/img/fig4-5.png"><img alt="Résultats de la recherche [fig-search-results]" src="resources/img/fig4-5.png" style="width: 6.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Résultats de la recherche [fig-search-results]</span></p>
+</div>
+<p>Après avoir cliqué sur “OK”, vous verrez apparaître la fenêtre de la
+figure&nbsp;[fig-configuration-concordance] permettant de configurer
+l’affichage de la liste des occurrences trouvées. Vous pouvez également
+faire apparaître cette fenêtre en cliquant sur “Display Located
+Sequences...” dans le menu “Text”. On appelle <em>concordance</em> la liste
+d’occurrences.</p>
+<p>Le cadre “Modify text” offre la possibilité de remplacer les occurrences
+trouvées par les sorties produites. Cette possibilité sera examinée au
+chapitre &nbsp;[chap-advanced-grammars].</p>
+<p>Le cadre “Extract units” vous permet de construire un fichier texte avec
+toutes les phrases contenant ou non des occurrences. Le bouton “Set
+File” vous permet de sélectionner le fichier de sortie. Cliquez ensuite
+sur “Extract matching units” ou “Extract unmatching units” selon que
+vous voulez extraire les phrases contenant les occurrences ou non.</p>
+<p>Dans le cadre “Show Matching Sequences in Context”, vous pouvez
+sélectionner la longueur en caractères des contextes gauche et droit des
+occurrences qui seront affichées dans la concordance. Si une occurrence
+a une longueur inférieure à la taille du contexte droit, la ligne de
+concordance sera complétée avec le nombre de caractères nécessaire. Si
+une occurrence a une longueur supérieure à la taille du contexte droit,
+elle est affichée en entier.</p>
+<p>NOTE: en thaï, la taille des contextes est mesurée en caractères
+affichables et non en caractères réels. Cela permet de conserver
+l’alignement des lignes de concordance malgré la présence de caractères
+diacritiques qui se combinent à d’autres lettres au lieu de s’afficher
+comme des caractères normaux.</p>
+<p>Vous pouvez sélectionner le mode de tri à appliquer dans la liste “Sort
+According to”. Le mode “Text Order” affiche les occurrences dans l’ordre
+où elles apparaissent dans le texte. Les six autres modes permettent de
+trier en colonnes. Les trois zones d’une ligne sont le contexte gauche,
+l’occurrence et le contexte droit. Les occurrences et les contextes
+droits sont triés de gauche à droite. Les contextes gauches sont triés
+de droite à gauche. Le mode utilisé par défaut est “Center, Left Col.”.
+La concordance est produite sous la forme d’un fichier HTML.</p>
+<p>Lorsque les concordances atteignent plusieurs milliers d’occurrences, il
+est préférable de les afficher avec un navigateur web (Firefox
+<a href="#id9"><span class="problematic" id="id10">:raw-latex:`\cite{Firefox}`</span></a>, Netscape <a href="#id11"><span class="problematic" id="id12">:raw-latex:`\cite{Netscape}`</span></a>,
+Internet Explorer, etc.). Pour cela, cochez la case “Use a web browser
+to view the concordance” (voir figure &nbsp;[fig-configuration-concordance]).
+Cette option est activée par défaut lorsque le nombre d’occurrences est
+supérieur à 3000. Pour définir le navigateur qui sera utilisé, cliquez
+sur “Preferences...” dans le menu “Info”. Cliquez sur l’onglet “Text
+Presentation” et sélectionnez le programme à utiliser dans le cadre
+“Html Viewer” (voir figure&nbsp;[fig-browser-selection]).</p>
+<p>Si vous choisissez d’ouvrir la concordance à l’intérieur d’Unitex, vous
+verrez une fenêtre comme celle de la figure [fig-example-concordance].
+L’option “Enable links” activée par défaut permet de considérer les
+occurrences comme des liens hypertextes. Ainsi, quand on clique sur une
+occurrence, cela ouvre la fenêtre du texte et y sélectionne la séquence
+reconnue. De plus, si l’automate du texte est construit et que cette
+fenêtre n’est pas réduite sous forme d’icône, l’automate de la phrase
+contenant l’occurrence cliquée est chargé. Si l’on sélectionne l’option
+“Allow concordance edition”, on ne peut pas cliquer ainsi sur les
+occurrences, mais on peut éditer la concordance comme du texte. Cela
+permet entre autres de s’y déplacer avec un curseur, ce qui peut être
+pratique si l’on travaille sur une concordance avec de grands contextes.</p>
+<div class="figure" id="id18">
+<a class="reference internal image-reference" href="resources/img/fig4-8.png"><img alt="Exemple de concordance[fig-example-concordance]" src="resources/img/fig4-8.png" style="height: 18.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple de concordance[fig-example-concordance]</span></p>
+</div>
+</div>
+<div class="section" id="statistiques">
+<h3>Statistiques<a class="headerlink" href="#statistiques" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Si l’on sélectionne l’onglet “Statistics” dans le cadre “Located
+sequences..”, le panneau de la figure&nbsp;[fig-statistics] apparaît. Ce
+panneau permet d’effectuer des calculs statistiques sur les séquences
+préalablement indexées.</p>
+<div class="figure" id="id19">
+<a class="reference internal image-reference" href="resources/img/fig4-9.png"><img alt="Panneau statistiques [fig-statistics]" src="resources/img/fig4-9.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Panneau statistiques [fig-statistics]</span></p>
+</div>
+<p>Dans le panneau “Mode” il est possible de choisir le type de
+statistiques désiré:</p>
+<ul class="simple">
+<li>collocates by frequency: montre les unités lexicales présentes dans
+le contexte de la séquence reconnu.</li>
+<li>collocates by z-score: le me mêmes informations avec, en plus (number
+of occurrences of the collocate in the match context and in the whole
+corpus, z-score of the collocate)</li>
+<li>contexts by frequency: montre les unités lexicales avec les contextes
+gauche et droit (voir au dessous). “count” est le nombre
+d’occurrences d’une séquence reconnue donnée (munie de contexte)</li>
+</ul>
+<p>Dans le second panneau, on choisit la longueur des contextes gauche et
+droit à utiliser en tokens sans espace. NOTE: Cette notion de contexte
+n’a rien à voir avec celle utilisée dans les grammaires.</p>
+<p>Dans le dernier panneau, on peut permettre ou non la variation de casse.
+Si cette variation est permise, <code class="docutils literal"><span class="pre">the</span></code> et <code class="docutils literal"><span class="pre">THE</span></code> sont considérées
+comme la même unité lexicale, et le résultat est la somme de ceux
+obtenus pour <code class="docutils literal"><span class="pre">the</span></code> et <code class="docutils literal"><span class="pre">THE</span></code>.</p>
+<p>Les figures suivantes montrent les statistiques calculées pour chaque
+mode pour la requête <code class="docutils literal"><span class="pre">&lt;have&gt;</span></code> sur <code class="docutils literal"><span class="pre">ivanhoe.snt</span></code>.</p>
+<div class="figure" id="id20">
+<a class="reference internal image-reference" href="resources/img/fig4-11.png"><img alt="collocate count[fig-statistics-mode1]" src="resources/img/fig4-11.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">collocate count[fig-statistics-mode1]</span></p>
+</div>
+<div class="figure" id="id21">
+<a class="reference internal image-reference" href="resources/img/fig4-12.png"><img alt="collocate, count et d’autres informations[fig-statistics-mode2]" src="resources/img/fig4-12.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">collocate, count et d’autres informations[fig-statistics-mode2]</span></p>
+</div>
+<table class="docutils footnote" frame="void" id="id13" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>À partir de la version 3.1bêta, révision 4072 du 2 octobre 2015.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id14" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Si les dictionnaires décrivent un mot par deux entrées dont une avec
+<code class="docutils literal"><span class="pre">A+z3</span></code> et l’autre avec seulement <code class="docutils literal"><span class="pre">A</span></code>, ce mot est reconnu par
+<code class="docutils literal"><span class="pre">&lt;A+z3&gt;</span></code> à cause de la première entrée et par <code class="docutils literal"><span class="pre">&lt;A~z3&gt;</span></code> à cause de
+l’autre.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id15" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[3]</a></td><td>Et sur leurs équivalents anciens &lt;MOT&gt;,&lt;MIN&gt;, &lt;MAJ&gt;, &lt;PRE&gt;. Voir
+section&nbsp;[section-special-symbols].</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id16" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[4]</a></td><td>Et dans leurs équivalents anciens &lt;MIN&gt;, &lt;MAJ&gt; et &lt;PRE&gt;. Voir
+section&nbsp;[section-special-symbols].</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-fr.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Recherche d’expressions rationnelles</a><ul>
+<li><a class="reference internal" href="#definition">Définition</a></li>
+<li><a class="reference internal" href="#unites-lexicales">Unités lexicales</a></li>
+<li><a class="reference internal" href="#masques-lexicaux">Masques lexicaux</a><ul>
+<li><a class="reference internal" href="#symboles-speciaux">Symboles spéciaux</a></li>
+<li><a class="reference internal" href="#reference-aux-informations-fournies-par-les-dictionnaires">Référence aux informations fournies par les dictionnaires</a></li>
+<li><a class="reference internal" href="#contraintes-grammaticales-et-semantiques">Contraintes grammaticales et sémantiques</a></li>
+<li><a class="reference internal" href="#contraintes-flexionnelles">Contraintes flexionnelles</a></li>
+<li><a class="reference internal" href="#negation-dun-masque-lexical">Négation d’un masque lexical</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#concatenation">Concaténation</a></li>
+<li><a class="reference internal" href="#union">Union</a></li>
+<li><a class="reference internal" href="#etoile-de-kleene">Étoile de Kleene</a></li>
+<li><a class="reference internal" href="#filtres-morphologiques">Filtres morphologiques</a></li>
+<li><a class="reference internal" href="#recherche">Recherche</a><ul>
+<li><a class="reference internal" href="#configuration-de-la-recherche">Configuration de la recherche</a></li>
+<li><a class="reference internal" href="#affichage-des-resultats">Affichage des résultats</a></li>
+<li><a class="reference internal" href="#statistiques">Statistiques</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-fr.html">Documentation overview</a><ul>
+      <li>Previous: <a href="03-dictionaries_FR_utf8.html" title="Chapitre précédent">Dictionnaires</a></li>
+      <li>Next: <a href="05-grammars_FR_utf8.html" title="Chapitre suivant">Grammaires locales</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/04-pattern_matching_FR_utf8.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, SCTB.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/04-pattern_matching_FR_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

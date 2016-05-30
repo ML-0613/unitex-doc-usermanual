@@ -1,0 +1,1304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Utilisation avancée des graphes &mdash; documentation Unitex-fr 1.0.1</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Unitex-fr 1.0.1" href="Unitex-fr.html" />
+    <link rel="next" title="Automate du texte" href="07-text_automaton_FR_utf8.html" />
+    <link rel="prev" title="Grammaires locales" href="05-grammars_FR_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="utilisation-avancee-des-graphes">
+<h1>Utilisation avancée des graphes<a class="headerlink" href="#utilisation-avancee-des-graphes" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="section" id="les-types-de-graphes">
+<h2>Les types de graphes<a class="headerlink" href="#les-types-de-graphes" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Unitex peut manipuler plusieurs types de graphes qui correspondent aux
+utilisations suivantes : flexion automatique de dictionnaires,
+prétraitement des textes, normalisation des automates de textes, graphes
+dictionnaires, recherche de motifs, levée d’ambiguïtés et génération
+automatique de graphes. Ces différents types de graphes ne sont pas
+interprétés de la même façon par Unitex. Certaines choses comme les
+sorties sont permises pour certains types et interdites pour d’autres.
+De plus, les symboles spéciaux ne sont pas les mêmes en fonction du type
+de graphe. Cette section présente donc chacun des types de graphes en
+détaillant leurs particularités.</p>
+<div class="section" id="graphes-de-flexion">
+<h3>Graphes de flexion<a class="headerlink" href="#graphes-de-flexion" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Un graphe de flexion décrit les variations morphologiques associées à
+une classe de mots, en associant à chaque variante des codes
+flexionnels. Les chemins d’un tel graphe décrivent les modifications à
+appliquer aux formes canoniques tandis que les sorties contiennent les
+informations flexionnelles qui seront produites.</p>
+<div class="figure" id="id9">
+<a class="reference internal image-reference" href="resources/img/fig6-1.png"><img alt="Exemple de grammaire de flexion" src="resources/img/fig6-1.png" style="width: 4.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple de grammaire de flexion</span></p>
+</div>
+<p>Les chemins peuvent contenir des opérateurs et des lettres. Les
+opérateurs possibles sont représentés par les caractères <code class="docutils literal"><span class="pre">L</span></code>, <code class="docutils literal"><span class="pre">R</span></code>,
+<code class="docutils literal"><span class="pre">C</span></code>, <code class="docutils literal"><span class="pre">D</span></code>, <code class="docutils literal"><span class="pre">U</span></code>, <code class="docutils literal"><span class="pre">P</span></code> et <code class="docutils literal"><span class="pre">W</span></code>. Les lettres qui ne sont pas des
+opérateurs sont des caractères. Le seul symbole spécial autorisé est le
+mot vide <code class="docutils literal"><span class="pre">&lt;E&gt;</span></code>. Il n’est pas possible de faire référence aux
+dictionnaires dans un graphe de flexion. Il est cependant possible de
+faire appel à des sous-graphes.</p>
+<p>Les sorties sont concaténées pour produire une chaîne de caractères.
+Cette chaîne est ensuite concaténée à la ligne de dictionnaire produite.
+Les sorties à variables n’ont pas de sens dans un graphe de flexion.</p>
+<p>Le contenu d’un graphe de flexion est manipulé sans aucune variante de
+casse: les lettres minuscules restent minuscules, idem pour les
+majuscules. En outre, la liaison de deux boîtes est strictement
+équivalente à la concaténation de leurs contenus munie de la
+concaténation de leurs sorties (voir
+figure&nbsp;[fig-equivalent-inflection-paths]).</p>
+<p>Les graphes de flexion doivent être compilés avant de pouvoir être
+utilisés par le pro- gramme de flexion.</p>
+<p>Pour plus de détails, voir section [section-automatic-inflection].</p>
+</div>
+<div class="section" id="graphes-de-pretraitement">
+<h3>Graphes de prétraitement<a class="headerlink" href="#graphes-de-pretraitement" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les graphes de prétraitement sont destinés à être appliqués aux textes
+avant que ceux-ci soient découpés en unités lexicales. Ces graphes
+peuvent être utilisés pour insérer ou remplacer des séquences dans les
+textes. Les deux utilisations usuelles de ces graphes sont la
+normalisation de formes non ambiguës et le découpage en phrases.</p>
+<p>L’interprétation de ces graphes dans Unitex est très proche de celle des
+graphes syntaxiques utilisés pour la recherche de motifs. Les
+différences sont les suivantes:</p>
+<ul class="simple">
+<li>on peut utiliser le symbole spécial <code class="docutils literal"><span class="pre">&lt;^&gt;</span></code> qui reconnaît un retour à
+la ligne;</li>
+<li>si l’on travaille en mode caractère par caractère, il est possible
+d’utiliser le symbole spécial <code class="docutils literal"><span class="pre">&lt;L&gt;</span></code> qui reconnaît une lettre, telle
+que définie dans le fichier alphabet;</li>
+<li>il est impossible de faire référence aux dictionnaires;</li>
+<li>il est impossible d’utiliser les filtres morphologiques;</li>
+<li>il est impossible d’utiliser le mode morphologique;</li>
+<li>il est impossible d’utiliser des contextes.</li>
+</ul>
+<p>Les figures&nbsp;[fig-example-sentence-splitting] (page )
+et&nbsp;[fig-normalization-grammar] (page ) montrent des exemples de graphes
+de prétraitement.</p>
+</div>
+<div class="section" id="graphes-de-normalisation-de-lautomate-du-texte">
+<h3>Graphes de normalisation de l’automate du texte<a class="headerlink" href="#graphes-de-normalisation-de-lautomate-du-texte" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les graphes de normalisation de l’automate du texte permettent de
+normaliser des formes ambiguës. En effet, ils peuvent décrire plusieurs
+étiquettes pour une même forme. Ces étiquettes sont ensuite insérées
+dans l’automate du texte, explicitant ainsi les ambiguïtés. La
+figure&nbsp;[fig-tfst-normalization-grammar] montre un extrait du graphe de
+normalisation utilisé pour le français.</p>
+<p>Les chemins décrivent les formes qui doivent être normalisées. Les
+variantes minuscules et majuscules sont prises en compte selon le
+principe suivant : les lettres majuscules dans le graphe ne
+reconnaissent que les lettres majuscules dans l’automate du texte ; les
+lettres minuscules peuvent reconnaître les lettres minuscules et
+majuscules.</p>
+<p>Les sorties représentent les séquences d’étiquettes qui seront insérées
+dans l’automate du texte. Ces étiquettes peuvent être des entrées de
+dictionnaires ou de simples chaînes de caractères. Les étiquettes
+représentant des entrées de dictionnaire doivent respecter le format des
+entrées d’un DELAF et être encadrées par les symboles <code class="docutils literal"><span class="pre">{</span></code> et <code class="docutils literal"><span class="pre">}</span></code>.
+Les sorties à variables n’ont pas de sens dans ce type de graphe.</p>
+<p>Il est possible de faire appel à des sous-graphes. Il n’est pas possible
+de faire référence aux dictionnaires pour décrire les formes à
+normaliser. L’unique symbole spécial reconnu dans ce type de graphe est
+le mot vide <code class="docutils literal"><span class="pre">&lt;E&gt;</span></code>. Les graphes de normalisation de formes ambiguës
+doivent être compilés avant de pouvoir être utilisés.</p>
+</div>
+<div class="section" id="graphes-syntaxiques">
+<h3>Graphes syntaxiques<a class="headerlink" href="#graphes-syntaxiques" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les graphes syntaxiques, également appelés grammaires locales,
+permettent de décrire des motifs syntaxiques qui pourront ensuite être
+recherchés dans des textes. De tous les types de graphe, ceux-ci
+possèdent la plus grande puissance d’expressions, car ils permettent de
+faire référence aux dictionnaires.</p>
+<p>Les variantes minuscules/majuscules sont autorisées selon le principe
+décrit plus haut. Il est toutefois possible de forcer le respect de la
+casse en encadrant une expression avec des guillemets. L’emploi des
+guillemets permet également de forcer le respect des espacements. En
+effet, Unitex considère, par défaut, qu’un espace est possible entre
+deux boîtes. Pour forcer la présence d’un espace, il faut le mettre
+entre guillemets. Pour interdire la présence d’un espace, il faut
+utiliser le symbole spécial <code class="docutils literal"><span class="pre">#</span></code>.</p>
+<p>Les graphes syntaxiques peuvent faire appel à des sous-graphes (voir
+section &nbsp;[section-subgraphs]). Ils gèrent également les sorties, y
+compris les sorties à variables. Les séquences produites sont
+interprétées comme des chaînes de caractères qui seront insérées dans
+les concordances ou dans le texte si vous voulez modifier celui-ci (voir
+section &nbsp;[section-modifying-text]).</p>
+<p>Les graphes syntaxiques peuvent utiliser des contextes (voir
+section&nbsp;[section-contexts]).</p>
+<p>Les graphes syntaxiques peuvent utiliser des filtres morphologiques
+(voir section [section-filters]).</p>
+<p>Les graphes syntaxiques peuvent utiliser le mode morphologique (voir
+section [section-morphological-mode]).</p>
+<p>Les symboles spéciaux supportés par les graphes syntaxiques sont les
+mêmes que ceux utilisables dans les expressions rationnelles (voir
+section&nbsp;[section-special-symbols]).</p>
+<p>Il n’est pas obligatoire de compiler les graphes syntaxiques avant de
+les utiliser pour la recherche de motifs. Si un graphe n’est pas
+compilé, le système le compilera automatiquement.</p>
+</div>
+<div class="section" id="grammaires-elag">
+<h3>Grammaires ELAG<a class="headerlink" href="#grammaires-elag" title="Lien permanent vers ce titre">¶</a></h3>
+<p>La syntaxe des grammaires de levée d’ambiguïtés est présentée à la
+section [section-elag-grammars], page .</p>
+</div>
+<div class="section" id="graphes-parametres">
+<h3>Graphes paramétrés<a class="headerlink" href="#graphes-parametres" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les graphes paramétrés sont des méta-graphes permettant de générer une
+famille de graphes à partir d’une table de lexique-grammaire. Il est
+possible de construire des graphes paramétrés pour n’importe quel type
+de graphe. La construction et l’utilisation des graphes paramétrés
+seront développées dans le chapitre &nbsp;[chap-lexicon-grammar].</p>
+</div>
+</div>
+<div class="section" id="compilation-dune-grammaire">
+<h2>Compilation d’une grammaire<a class="headerlink" href="#compilation-dune-grammaire" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="compilation-dun-graphe">
+<h3>Compilation d’un graphe<a class="headerlink" href="#compilation-dun-graphe" title="Lien permanent vers ce titre">¶</a></h3>
+<p>La compilation est l’opération qui permet de passer du format <code class="docutils literal"><span class="pre">.grf</span></code> à
+un format plus facile à manipuler par les programmes d’Unitex. Pour
+compiler un graphe, vous devez l’ouvrir, puis cliquer sur “Compile FST2”
+dans le sous-menu “Tools” du menu “FSGraph”. Unitex lance alors le
+programme <code class="docutils literal"><span class="pre">Grf2Fst2</span></code> dont vous pouvez suivre l’exécution dans une
+fenêtre (voir figure&nbsp;[fig-compilation-frame]).</p>
+<div class="figure" id="id10">
+<a class="reference internal image-reference" href="resources/img/fig6-4.png"><img alt="Fenêtre de compilation[fig-compilation-frame]" src="resources/img/fig6-4.png" style="width: 14.70000cm;" /></a>
+<p class="caption"><span class="caption-text">Fenêtre de compilation[fig-compilation-frame]</span></p>
+</div>
+<p>Si le graphe fait appel à des sous-graphes, ceux-ci sont automatiquement
+compilés. Le résultat est un fichier <code class="docutils literal"><span class="pre">.fst2</span></code> fichier qui rassemble
+tous les graphes qui composent la grammaire. La grammaire est alors
+prête à être utilisée par les différents programmes d’Unitex.</p>
+</div>
+<div class="section" id="approximation-par-un-transducteur-fini">
+<h3>Approximation par un transducteur fini<a class="headerlink" href="#approximation-par-un-transducteur-fini" title="Lien permanent vers ce titre">¶</a></h3>
+<p>[flatten-section] Le format FST2 conserve l’architecture en sous-graphes
+des grammaires, ce qui les différencie des stricts transducteurs à états
+finis. Le programme <code class="docutils literal"><span class="pre">Flatten</span></code> permet de transformer une grammaire FST2
+en un transducteur à états finis quand cela est possible, et d’en
+construire une approximation dans le cas contraire. Cette fonction
+permet ainsi d’obtenir des objets plus simples à manipuler et sur
+lesquels peuvent s’appliquer tous les algorithmes classiques sur les
+automates.</p>
+<p>Pour compiler et transformer ainsi une grammaire, sélectionnez la
+commande “Compile Flatten FST2” dans le sous-menu “Tools” du menu
+“FSGraph”. La fenêtre de la figure&nbsp;[fig-flatten-configuration] vous
+permet de configurer l’opération d’approximation.</p>
+<p>Le cadre “Flattening depth” permet de préciser le niveau d’imbrication
+des sous-graphes. Cette valeur représente la profondeur maximale au-delà
+de laquelle les appels à des sous- graphes ne seront plus remplacés par
+les sous-graphes eux-mêmes.</p>
+<p>Le cadre “Expected result grammar format” permet de déterminer le
+comportement du programme au-delà de la limite indiquée. Si vous
+sélectionnez l’option “Finite State Transducer”, les appels aux
+sous-graphes seront ignorés (remplacé par <code class="docutils literal"><span class="pre">&lt;E&gt;</span></code>) au-delà de la
+profondeur maximale. Cette option garantit ainsi l’obtention d’un
+transducteur à états finis, éventuellement non équivalent à la grammaire
+de départ. En revanche, l’option “equivalent FST2” indique au programme
+de laisser tels quels les appels aux sous-graphes au-delà de la
+profondeur limite. Cette option garantit la stricte équivalence du
+résultat avec la grammaire d’origine, mais ne produit pas forcément un
+transducteur à états finis. Cette option peut être utilisée pour
+optimiser certaines grammaires.</p>
+<p>Un message indique à la fin du processus d’approximation si le résultat
+est un transducteur à états finis ou une grammaire FST2, et dans le cas
+d’un transducteur, s’il est équivalent à la grammaire d’origine (voir
+figure&nbsp;[fig-flatten-result]).</p>
+<div class="figure" id="id11">
+<a class="reference internal image-reference" href="resources/img/fig6-6.png"><img alt="Résultat de l’approximation d’une grammaire[fig-flatten-result]" src="resources/img/fig6-6.png" style="width: 14.70000cm;" /></a>
+<p class="caption"><span class="caption-text">Résultat de l’approximation d’une grammaire[fig-flatten-result]</span></p>
+</div>
+</div>
+<div class="section" id="contraintes-sur-les-grammaires">
+<h3>Contraintes sur les grammaires<a class="headerlink" href="#contraintes-sur-les-grammaires" title="Lien permanent vers ce titre">¶</a></h3>
+<p>À l’exception des grammaires de flexion, une grammaire ne peut pas avoir
+de chemin vide. Cela signifie que le graphe principal d’une grammaire ne
+doit pas pouvoir reconnaître le mot vide, mais cela n’empêche pas un
+sous-graphe de cette grammaire de reconnaître epsilon.</p>
+<p>Il n’est pas possible d’associer une sortie à un appel à un sous-graphe.
+De telles sorties sont ignorées par Unitex. Il faut donc utiliser une
+boîte vide située immédiatement à gauche de l’appel au sous-graphe pour
+porter la sortie (voir figure&nbsp;[fig-subgraph-output]).</p>
+<p>Les grammaires ne doivent pas non plus comporter de boucles infinies,
+car les programmes d’Unitex ne pourraient jamais terminer l’exploration
+de telles grammaires. Ces boucles peuvent être dues à des transitions
+étiquetées par le mot vide epsilon ou à des appels de sous-graphes
+récursifs.</p>
+<p>Les boucles dues à des transitions par le mot vide peuvent avoir deux
+origines dont la première est illustrée par la
+figure&nbsp;[fig-epsilon-output-loop]. Ce type de boucle est dû au fait
+qu’une transition par le mot vide ne peut pas être éliminée
+automatiquement par Unitex lorsqu’elle est munie d’une sortie. Ainsi, la
+transition par le mot vide de la figure&nbsp;[fig-epsilon-output-loop] ne
+sera pas supprimée et provoquera une boucle infinie.</p>
+<p>La seconde catégorie de boucle par epsilon concerne les appels à des
+sous-graphes pouvant reconnaître le mot vide. Ce cas de figure est
+illustré par la figure&nbsp;[fig-epsilon-subgraph-loop]: si le sous-graphe
+<code class="docutils literal"><span class="pre">Adj</span></code> reconnait epsilon, on a une boucle infinie qu’Unitex ne peut pas
+éliminer.</p>
+<p>La troisième possibilité de boucle infinie concerne les appels récursifs
+à des sous-graphes. Considérons les graphes <code class="docutils literal"><span class="pre">Det</span></code> et <code class="docutils literal"><span class="pre">DetCompose</span></code> de
+la figure&nbsp;[fig-recursive-calls-loop]. Chacun de ces graphes peut appeler
+l’autre <em>sans rien lire dans le texte</em>. Le fait qu’aucun des deux
+graphes ne comporte d’étiquette entre l’état initial et l’appel à
+l’autre graphe est capital. En effet, s’il y avait au moins une
+étiquette différente d’epsilon entre le début du graphe <code class="docutils literal"><span class="pre">Det</span></code> et
+l’appel à <code class="docutils literal"><span class="pre">DetCompose</span></code>, cela signifierait que les programmes d’Unitex
+explorant le graphe <code class="docutils literal"><span class="pre">Det</span></code> devraient lire le motif décrit par cette
+étiquette dans le texte avant d’appeler récursivement <code class="docutils literal"><span class="pre">DetCompose</span></code>
+Dans ce cas, les programmes ne pourraient boucler indéfiniment que s’ils
+rencontraient une infinité de fois le motif dans le texte, ce qui ne
+peut pas arriver.</p>
+</div>
+<div class="section" id="intervalle-pour-le-nombre-de-repetitions">
+<h3>Intervalle pour le nombre de répétitions<a class="headerlink" href="#intervalle-pour-le-nombre-de-repetitions" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Pour reconnaître des séquences de tokens dans laquelle un motif apparaît
+une fois, plusieurs fois ou jamais, on peut associer un intervalle
+d’entiers à une boîte. Cela fixe les limites du nombre de fois que le
+motif apparait. Le motif doit être décrit dans une boite unique. Si on
+associe un intervalle [m,M] à une boîte contenant &lt;A&gt;
+(figure&nbsp;[intervals]), le chemin reconnaitra des séquences avec au moins
+<span class="math">\(m\)</span> adjectifs consécutifs et pas plus de <span class="math">\(M\)</span>.</p>
+<p>On attache un intervalle en insérant <code class="docutils literal"><span class="pre">$[m,M]$</span></code> dans la sortie de la
+boite, juste après le caractère “/”, et selon les règles :</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">[m,M]</span></code> = au moins <span class="math">\(m\)</span> motifs consécutifs et pas de plus de
+<span class="math">\(M\)</span></li>
+<li><code class="docutils literal"><span class="pre">[,M]</span></code> = de 0 à <span class="math">\(M\)</span></li>
+<li><code class="docutils literal"><span class="pre">[m,]</span></code> = au moins <span class="math">\(m\)</span></li>
+</ul>
+<p>La boite ne doit pas être connectée à elle-même par une boucle directe.
+Un intervalle est compatible avec une sortie au sens habituel. Par
+exemple, pour insérer sous la boite de la figure&nbsp;[intervals] la sortie
+<code class="docutils literal"><span class="pre">&lt;ADJ</span> <span class="pre">position='antéposé'&gt;</span></code>, saisissez dans le champ texte&nbsp;:
+<code class="docutils literal"><span class="pre">&lt;A&gt;/$[1,4]$/&lt;ADJ</span> <span class="pre">position='antéposé'&gt;</span></code>.</p>
+</div>
+<div class="section" id="detection-derreurs">
+<h3>Détection d’erreurs<a class="headerlink" href="#detection-derreurs" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Pour éviter aux programmes de se bloquer ou de planter, Unitex effectue
+automatique- ment une détection d’erreurs lors de la compilation des
+graphes. Le compilateur de graphes vérifie que le graphe principal ne
+reconnaît pas le mot vide et recherche toutes les formes de boucles
+infinies. Si une erreur est trouvée, un message d’erreur apparaît dans
+la fenêtre de compilation. La figure &nbsp;[fig-error-message] montre le
+message obtenu lorsqu’on tente de compiler le graphe <code class="docutils literal"><span class="pre">Det</span></code> de la
+figure&nbsp;[fig-recursive-calls-loop].</p>
+<p>Si vous avez lancé une recherche de motifs en sélectionnant un graphe au
+format <code class="docutils literal"><span class="pre">.grf</span></code> , et qu’Unitex y décèle une erreur, l’opération de
+recherche sera automatiquement interrompue.</p>
+</div>
+</div>
+<div class="section" id="contextes">
+<h2>Contextes<a class="headerlink" href="#contextes" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-contexts]</p>
+<p>Les graphes d’Unitex sont des grammaires algébriques. Elles sont
+également appelées grammaires hors-contexte, car lorsque l’on souhaite
+reconnaître une séquence <span class="math">\(A\)</span>, on ne tient pas compte du contexte
+dans lequel <span class="math">\(A\)</span> apparaît. Par exemple, il est impossible de
+rechercher avec un graphe normal toutes les occurrences du mot
+<code class="docutils literal"><span class="pre">president</span></code>, sauf celles qui sont suivies par <code class="docutils literal"><span class="pre">of</span> <span class="pre">the</span> <span class="pre">republic</span></code>.</p>
+<p>Il est toutefois possible de tenir compte du contexte dans les graphes
+syntaxiques. Dans ce cas, les graphes ne sont plus des grammaires
+algébriques, mais des grammaires contex- tuelles qui n’ont pas les mêmes
+propriétés théoriques. .</p>
+<div class="section" id="contextes-droits">
+<h3>Contextes droits<a class="headerlink" href="#contextes-droits" title="Lien permanent vers ce titre">¶</a></h3>
+<p>On définit un contexte droit en délimitant une zone du graphe avec des
+boîtes contenant <code class="docutils literal"><span class="pre">$[</span></code> and <code class="docutils literal"><span class="pre">$]</span></code>, représentant respectivement les
+début et fin de contexte qui sont représentés dans le graphe par des
+crochets verts. Le début et la fin d’un contexte doivent apparaître dans
+le même graphe.</p>
+<div class="figure" id="id12">
+<a class="reference internal image-reference" href="resources/img/fig6-12.png"><img alt="Utilisation d’un contexte droit[fig-context1]" src="resources/img/fig6-12.png" style="width: 7.40000cm;" /></a>
+<p class="caption"><span class="caption-text">Utilisation d’un contexte droit[fig-context1]</span></p>
+</div>
+<p>La figure&nbsp;[fig-context1] montre un exemple simple de contexte. Ce graphe
+reconnaît tous les nombres qui sont suivis par l’euro, la livre ou le
+dollar, mais sans que le symbole d’unité n’apparaisse dans les
+occurrences trouvées, c’est-à-dire dans la concordance.</p>
+<p>Les contextes s’interprètent de la façon suivante. Supposons que l’on
+rencontre un début de contexte lors de l’application d’une grammaire à
+un texte, et notons <span class="math">\(pos\)</span> la position courante dans le texte à cet
+instant. Le programme <code class="docutils literal"><span class="pre">Locate</span></code> va ensuite chercher à reconnaître
+l’expression décrite dans le contexte. S’il échoue, il n’y aura pas de
+match. S’il réussit, c’est- à-dire s’il peut atteindre la fin du
+contexte, le programme reviendra à la position <span class="math">\(pos\)</span> dans le texte
+et continuera l’exploration de la grammaire à partir de la fin du
+contexte.</p>
+<p>Les poids (section&nbsp;[Transducers]) dans les contextes droits sont
+ignorés.</p>
+<p>On peut également définir des contextes droits négatifs, en utilisant
+<code class="docutils literal"><span class="pre">$![</span></code> comme début de contexte. La figure&nbsp;[fig-context2] montre un
+graphe reconnaissant des nombres qui ne sont pas suivis par <code class="docutils literal"><span class="pre">th</span></code>. La
+différence avec les contextes positifs est que lorsque <code class="docutils literal"><span class="pre">Locate</span></code> essaie
+de reconnaître l’expression décrite dans le contexte, le fait
+d’atteindre la fin du contexte est considéré comme un échec, car cela
+signifie que l’on a reconnu une séquence interdite. À l’inverse, si la
+fin de contexte ne peut être atteinte, le programme <code class="docutils literal"><span class="pre">Locate</span></code> reviendra
+à la position <span class="math">\(pos\)</span> dans le texte et continuera l’exploration de
+la grammaire à partir de la fin du contexte.</p>
+<div class="figure" id="id13">
+<a class="reference internal image-reference" href="resources/img/fig6-13.png"><img alt="Utilisation d’un contexte négatif[fig-context2]" src="resources/img/fig6-13.png" style="width: 7.30000cm;" /></a>
+<p class="caption"><span class="caption-text">Utilisation d’un contexte négatif[fig-context2]</span></p>
+</div>
+<p>Les contextes peuvent être placés n’importe où dans le graphe, y compris
+au début. La figure&nbsp;[fig-context3] montre ainsi un graphe qui reconnaît
+un adjectif dans le contexte de quelque chose qui n’est pas un participe
+passé. Autrement dit, ce graphe reconnaît tous les adjectifs qui ne sont
+pas ambigus avec des participes passés.</p>
+<p>Dans les graphes tels que celui de la figure&nbsp;[fig-context3], le contexte
+droit négatif ne vérifie pas nécessairement le même nombre de tokens que
+la boite qui le suit. Par exemple, avant que le graphe de la
+figure&nbsp;[too-also] ne reconnaisse <code class="docutils literal"><span class="pre">too</span></code>, le contexte droit négatif
+vérifie s’il apparait dans une expression telle que <code class="docutils literal"><span class="pre">too</span> <span class="pre">early</span></code> ou
+<code class="docutils literal"><span class="pre">too</span> <span class="pre">many</span></code>.</p>
+<p>On peut formuler des requêtes complexes avec les contextes droits
+négatifs. Ainsi, la figure &nbsp;[fig-context4] montre un graphe qui
+reconnaît toutes les séquences de deux noms simples qui ne sont pas
+ambiguës avec des mots composés. En effet, le motif
+<code class="docutils literal"><span class="pre">&lt;CDIC&gt;&lt;&lt;^([^</span> <span class="pre">]+</span> <span class="pre">[^</span> <span class="pre">]+)$&gt;&gt;</span></code> reconnaît un mot composé contenant
+exactement un espace, et le motif <code class="docutils literal"><span class="pre">&lt;N&gt;&lt;&lt;^([^</span> <span class="pre">]+)$&gt;&gt;</span></code> reconnaît un nom
+sans espace, c’est-à-dire un nom simple. Ainsi, dans la phrase <em>Black
+cats should like the town hall</em>, ce graphe reconnaîtra <em>Black cats</em>,
+mais pas <em>town hall</em>, qui est un mot composé.</p>
+<div class="figure" id="id14">
+<a class="reference internal image-reference" href="resources/img/fig6-15.png"><img alt="Utilisation avancée des contextes[fig-context4]" src="resources/img/fig6-15.png" style="width: 8.90000cm;" /></a>
+<p class="caption"><span class="caption-text">Utilisation avancée des contextes[fig-context4]</span></p>
+</div>
+<p>Il est possible d’imbriquer des contextes. Par exemple, le graphe de la
+figure&nbsp;[fig-context5] reconnaît un nombre qui n’est pas suivi par un
+point, sauf si ce point est suivi par un nombre. Ainsi, dans le texte
+<em>5.0+7.=12</em>, ce graphe reconnaîtra <em>5</em>, <em>0</em> et <em>12</em>.</p>
+<div class="figure" id="id15">
+<a class="reference internal image-reference" href="resources/img/fig6-16.png"><img alt="Imbrication de contextes[fig-context5]" src="resources/img/fig6-16.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Imbrication de contextes[fig-context5]</span></p>
+</div>
+<p>Les sorties qui se trouvent dans des boîtes à l’intérieur d’un contexte
+sont ignorées. En revanche, il est possible d’utiliser une variable qui
+a été définie dans un contexte, comme c’est le cas sur la figure
+&nbsp;[fig-context6]). Si l’on applique ce graphe en mode MERGE au texte <em>the
+cat is white</em>, on obtient en sortie :</p>
+<p><code class="docutils literal"><span class="pre">the</span> <span class="pre">is</span> <span class="pre">white</span></code></p>
+<div class="figure" id="id16">
+<a class="reference internal image-reference" href="resources/img/fig6-17.png"><img alt="Variable définie dans un contexte[fig-context6]" src="resources/img/fig6-17.png" style="width: 12.20000cm;" /></a>
+<p class="caption"><span class="caption-text">Variable définie dans un contexte[fig-context6]</span></p>
+</div>
+</div>
+<div class="section" id="contextes-gauches">
+<h3>Contextes gauches<a class="headerlink" href="#contextes-gauches" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Il est également possible de rechercher une expression <span class="math">\(X\)</span> si elle
+se trouve seulement après une expression <span class="math">\(Y\)</span>. Évidemment, il était
+déjà possible de le faire avec une grammaire semblable à celle de la
+figure [fig-left-context1]. Cependant, avec ce type de grammaire, le
+contexte gauche est inclus dans la séquence reconnue, comme le montre la
+figure&nbsp;[fig-left-context2].</p>
+<p>Pour éviter cela, on peut utiliser le symbole <code class="docutils literal"><span class="pre">$*</span></code> qui indique la fin
+du contexte gauche de l’expression qu’on désire reconnaître. Ce symbole
+est représenté par une étoile verte dans le graphe, comme le montre la
+figure&nbsp;[fig-left-context3]. L’effet d’un tel contexte est d’utiliser une
+partie de la grammaire pour calculer la séquence reconnue, sans que
+cette partie ne figure dans le résultat (voir
+figure&nbsp;[fig-left-context4]).</p>
+<p>Toutes les sorties produites par un contexte gauche sont ignorées, comme
+on peut le voir dans la concordance de la figure [fig-left-context6],
+qui donne les résultats obtenus avec la grammaire de la figure
+[fig-left-context5].</p>
+<div class="figure" id="id17">
+<a class="reference internal image-reference" href="resources/img/fig6-17e.png"><img alt="Sorties ignorées dans un contexte gauche[fig-left-context5]" src="resources/img/fig6-17e.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Sorties ignorées dans un contexte gauche[fig-left-context5]</span></p>
+</div>
+<p>Toutefois, on peut mémoriser des informations avec des variables (voir
+section [section-variables]) et les utiliser en dehors du contexte
+gauche, comme le montrent la grammaire de la figure&nbsp;[fig-left-context7]
+et son résultat dans la figure&nbsp;[fig-left-context8].</p>
+<p>On peut invoquer dans une grammaire un graphe qui contient des contextes
+gauches, mais cela nécessite d’être vigilant. Au moment où le contexte
+gauche est exclu de la séquence reconnue, toutes les séquences qui
+avaient été reconnues par des graphes appelants en sont exclues
+également, car la séquence qui sera finalement reconnue devra être
+contiguë. Les sorties correspondant aux séquences exclues sont ignorées
+elles aussi.</p>
+<p>Ainsi, avec des contextes gauche et droit, on peut faire une distinction
+entre les motifs utilisés pour reconnaître des points du texte, et la
+délimitation des séquences à extraire dans les résultats. Par exemple,
+la grammaire de la figure [fig-left-context9] cherche des expressions
+comme <code class="docutils literal"><span class="pre">the</span> <span class="pre">animal's</span></code>, mais extrait seulement les noms, comme on peut
+le voir figure [fig-left-context10].</p>
+<p>Les poids (section&nbsp;[Transducers]) fonctionnent normalement dans les
+contextes gauches.</p>
+</div>
+</div>
+<div class="section" id="le-mode-morphologique">
+<h2>Le mode morphologique<a class="headerlink" href="#le-mode-morphologique" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="pourquoi">
+<h3>Pourquoi ?<a class="headerlink" href="#pourquoi" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Comme Unitex fonctionne sur une version “tokenisée” du texte, il n’est
+pas possible de faire des requêtes qui entrent à l’intérieur des
+“tokens”, sauf avec les filtres morphologiques (voir section
+[section-filters]), comme le montre la figure [fig-morpho1].</p>
+<div class="figure" id="id18">
+<a class="reference internal image-reference" href="resources/img/fig6-17k.png"><img alt="Reconnaissance d’éléments morphologiques[fig-morpho1]" src="resources/img/fig6-17k.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Reconnaissance d’éléments morphologiques[fig-morpho1]</span></p>
+</div>
+<p>Cependant, les filtres morphologiques ne permettent pas n’importe quelle
+requête, puisqu’ils ne peuvent pas faire référence aux informations
+contenues dans les dictionnaires. Ainsi, il est impossible de formuler
+de cette manière une requête comme “<em>un mot constitué du préfixe</em> <code class="docutils literal"><span class="pre">un</span></code>
+<em>suivi d’un adjectif en</em> <code class="docutils literal"><span class="pre">able</span></code>”.</p>
+<p>Pour surmonter cette difficulté, nous introduisons un mode morphologique
+dans le programme <code class="docutils literal"><span class="pre">Locate</span></code>. Il consiste à délimiter une partie de
+votre grammaire avec les symboles <code class="docutils literal"><span class="pre">$&lt;</span></code> et <code class="docutils literal"><span class="pre">$&gt;</span></code>. Dans cette zone, les
+données sont reconnues lettre par lettre, comme le montre la figure
+[fig-morpho2].</p>
+<div class="figure" id="id19">
+<a class="reference internal image-reference" href="resources/img/fig6-17l.png"><img alt="Exemple de zone morphologique dans la grammaire[fig-morpho2]" src="resources/img/fig6-17l.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple de zone morphologique dans la grammaire[fig-morpho2]</span></p>
+</div>
+</div>
+<div class="section" id="les-regles">
+<h3>Les règles<a class="headerlink" href="#les-regles" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Dans ce mode, le contenu du graphe n’est pas interprété de manière
+habituelle.</p>
+<ol class="arabic simple">
+<li>Il n’y a pas d’espace entre les boîtes. Ainsi, si on désire
+reconnaître un espace, on doit le rendre explicite avec <code class="docutils literal"><span class="pre">&quot;</span> <span class="pre">&quot;</span></code> (un
+espace entre guillemets).</li>
+<li>On peut toujours utiliser des sous-graphes, mais la fin de la zone
+morphologique doit se trouver dans le même graphe que son début.</li>
+<li>On peut utiliser des masques lexicaux qui nécessitent la consultation
+d’un dictionnaire — comme <code class="docutils literal"><span class="pre">&lt;DIC&gt;</span></code> , <code class="docutils literal"><span class="pre">&lt;be&gt;</span></code> ou <code class="docutils literal"><span class="pre">&lt;N:ms&gt;</span></code>, qui
+font référence aux informations contenues dans un dictionnaire —, du
+moment qu’il a été préalablement déclaré comme dictionnaire du mode
+morphologique (voir section&nbsp;[dic-mode-morpho]).</li>
+<li>On peut utiliser des masques lexicaux qui nécessitent la consultation
+d’un graphe-dictionnaire (section&nbsp;[section-dictionary-graphs]), du
+moment que le nom du graphe-dictionnaire contient l’option <code class="docutils literal"><span class="pre">b</span></code>.
+Cependant, cette possibilité ne fonctionne que pour les formes
+reconnues dans le texte par le graphe-dictionnaire pendant
+l’application initiale des dictionnaires
+(section&nbsp;[section-applying-dictionaries]), et non pour les formes qui
+n’apparaissent dans le texte que comme des parties de tokens.</li>
+<li>On peut utiliser des filtres morphologiques
+(section&nbsp;[section-filters]). Cependant, les filtres morphologiques
+employés seuls ou sur <code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code> ne s’appliqueront seulement qu’au
+caractère courant. Par conséquent, les filtres comme
+<code class="docutils literal"><span class="pre">&lt;&lt;[1-9][0-9]&gt;&gt;</span></code> qui sont conçus pour reconnaître plus d’un
+caractère ne reconnaîtront jamais rien. En fait, dans le mode
+morphologique, les filtres morphologiques ne sont utiles que pour
+exprimer des négations comme <code class="docutils literal"><span class="pre">&lt;&lt;[^aeiouy]&gt;&gt;</span></code> (n’importe quel
+caractère qui n’est pas une voyelle).</li>
+<li>Les contextes gauches et droits au sens de la
+section&nbsp;[section-contexts] sont interdits.</li>
+<li>On peut utiliser des sorties.</li>
+<li><code class="docutils literal"><span class="pre">&lt;LETTER&gt;</span></code> reconnaît n’importe quelle lettre définie dans le
+fichier alphabet.</li>
+<li><code class="docutils literal"><span class="pre">&lt;LOWER&gt;</span></code> reconnaît n’importe quelle minuscule définie dans le
+fichier alphabet.</li>
+<li><code class="docutils literal"><span class="pre">&lt;UPPER&gt;</span></code> reconnaît n’importe quelle majuscule définie dans le
+fichier alphabet.</li>
+<li><code class="docutils literal"><span class="pre">&lt;DIC&gt;</span></code> reconnaît n’importe quel mot présent dans un dictionnaire
+du mode morphologique, mais les méta-symboles <code class="docutils literal"><span class="pre">#</span></code>, <code class="docutils literal"><span class="pre">&lt;FIRST&gt;</span></code>,
+<code class="docutils literal"><span class="pre">&lt;NB&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;SDIC&gt;</span></code> et<code class="docutils literal"><span class="pre">&lt;CDIC&gt;</span></code> sont interdits.</li>
+<li>Si on atteint la fin de la zone sans être à la fin du token, la
+reconnaissance échoue. Par exemple, si le texte contient <code class="docutils literal"><span class="pre">enabled</span></code>,
+on ne peut pas reconnaître seulement <code class="docutils literal"><span class="pre">enable</span></code>.</li>
+</ol>
+<p>Les anciens codes correspondant à <code class="docutils literal"><span class="pre">&lt;LETTER&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;LOWER&gt;</span></code> et
+<code class="docutils literal"><span class="pre">&lt;UPPER&gt;</span></code> étaient respectivement <code class="docutils literal"><span class="pre">&lt;MOT&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;MIN&gt;</span></code> et <code class="docutils literal"><span class="pre">&lt;MAJ&gt;</span></code>.
+Ils restent opérationnels afin de conserver la compatibilité descendante
+du système avec les graphes existants. Même s’il n’est pas prévu de
+supprimer ces codes, on recommande de les éviter dans les graphes conçus
+pour fonctionner avec les versions plus récentes <a class="footnote-reference" href="#id6" id="id1">[1]</a>, pour ne pas faire
+augmenter inutilement le nombre de masques lexicaux en usage.</p>
+</div>
+<div class="section" id="dictionnaires-du-mode-morphologique">
+<h3>Dictionnaires du mode morphologique<a class="headerlink" href="#dictionnaires-du-mode-morphologique" title="Lien permanent vers ce titre">¶</a></h3>
+<p>[dic-mode-morpho] Dans le mode morphologique, on peut faire des requêtes
+qui utilisent les dictionnaires. Par exemple, la grammaire de la figure
+[fig-morpho3] cherche les mots constitués du préfixe <code class="docutils literal"><span class="pre">un</span></code> suivi d’un
+adjectif.</p>
+<p>Pour pouvoir reconnaître le mot <code class="docutils literal"><span class="pre">unaware</span></code> avec cette grammaire, le
+système doit savoir que <code class="docutils literal"><span class="pre">aware</span></code> est un adjectif. Le masque lexical
+<code class="docutils literal"><span class="pre">&lt;A&gt;</span></code> nécessite la consultation d’un dictionnaire. Mais <code class="docutils literal"><span class="pre">aware</span></code> peut
+ne pas être présent dans le texte, de sorte qu’on ne peut pas compter
+sur les dictionnaires du texte <a class="footnote-reference" href="#id7" id="id2">[2]</a>. C’est la raison pour laquelle on
+doit définir une liste de dictionnaires à consulter en mode
+morphologique. Pour ce faire, on va dans
+“Info&gt;Preferences&gt;Morphological-mode dictionaries”
+(figure&nbsp;[fig-morpho4]). On peut définir autant de dictionnaires du mode
+morphologique qu’on veut, mais ils doivent être au format <code class="docutils literal"><span class="pre">.bin</span></code>. Ceci
+fait, on peut appliquer la grammaire. Pour spécifier qu’un
+graphe-dictionnaire doit être consulté lorsqu’on est en mode
+morphologique, on utilise l’option <code class="docutils literal"><span class="pre">b</span></code> ou <code class="docutils literal"><span class="pre">z</span></code>
+(section&nbsp;[section-dictionary-graphs], Exporter les entrées produites
+comme dictionnaire du mode morphologique).</p>
+</div>
+<div class="section" id="variables-de-dictionnaire">
+<h3>Variables de dictionnaire<a class="headerlink" href="#variables-de-dictionnaire" title="Lien permanent vers ce titre">¶</a></h3>
+<p>[dictionary-variables] On peut affecter à des variables des informations
+issues des dictionnaires du mode morphologique. Ces variables sont
+appelées variables de dictionnaire ou variables morphologiques.
+L’initialisation d’une variable de ce type doit être associée à une
+boite contenant un motif qui fait référence à des informations contenues
+dans un dictionnaire du mode morphologique, à l’exception du motif
+<code class="docutils literal"><span class="pre">&lt;DIC&gt;</span></code>. On met <code class="docutils literal"><span class="pre">$xxx$</span></code> en sortie de la boîte, où <code class="docutils literal"><span class="pre">xxx</span></code> est un nom
+correct de variable (cf. section&nbsp;[section-using-variables]). Ceci
+affecte à une variable dénommée <code class="docutils literal"><span class="pre">xxx</span></code> l’entrée de dictionaire reconnue
+par le motif. Dans la suite des chemins qui passent par la boite, on
+peut obtenir la forme fléchie, la forme canonique et les codes fournis
+par l’entrée avec <code class="docutils literal"><span class="pre">$xxx.INFLECTED$</span></code>, <code class="docutils literal"><span class="pre">$xxx.LEMMA$</span></code> et
+<code class="docutils literal"><span class="pre">$xxx.CODE$</span></code>, comme le montre la figure [fig-morpho5]. On peut
+également utiliser les motifs suivants:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">$xxx.CODE.GRAM$</span></code>: fournit seulement le premier code grammatical,
+censé être la catégorie grammaticale</li>
+<li><code class="docutils literal"><span class="pre">$xxx.CODE.SEM$</span></code>: fournit tous les autres codes, séparés par des
+<code class="docutils literal"><span class="pre">+</span></code>, s’il en existe</li>
+<li><code class="docutils literal"><span class="pre">$xxx.CODE.FLEX$</span></code>: fournit tous les codes flexionnels séparés par
+des <code class="docutils literal"><span class="pre">:</span></code>, s’il en existe</li>
+<li><code class="docutils literal"><span class="pre">$xxx.CODE.ATTR=yyy$</span></code> renvoie la valeur d’une paire attribut-valeur
+contenue dans les codes sémantiques, c’est-à-dire la valeur <code class="docutils literal"><span class="pre">zzz</span></code>
+de l’attribut <code class="docutils literal"><span class="pre">yyy</span></code> s’il y figure un code sémantique de la forme
+<code class="docutils literal"><span class="pre">yyy=zzz</span></code>.</li>
+</ul>
+<p>Les variables de dictionnaire peuvent être utilisées en dehors du mode
+morphologique, comme sur la figure [fig-morpho7]. On peut effectuer des
+tests sur ces variables comme expliqué dans la section
+[section-variables].</p>
+<div class="figure" id="id20">
+<a class="reference internal image-reference" href="resources/img/fig6-17o.png"><img alt="Utilisation d’une variable de dictionnaire[fig-morpho5]" src="resources/img/fig6-17o.png" style="width: 16.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Utilisation d’une variable de dictionnaire[fig-morpho5]</span></p>
+</div>
+<p><strong>Variables de dictionnaire dans LocateTfst</strong></p>
+<p>Pour les grammaires appliquées avec <code class="docutils literal"><span class="pre">LocateTfst</span></code> (cf.
+section&nbsp;[section-locate-tfst]), on dispose d’une possibilité
+supplémentaire. En dehors du mode morphologique, on peut mémoriser dans
+une variable de dictionnaire une étiquette lexicale contenue dans
+l’automate du texte. Il suffit pour cela d’associer à la boîte une
+sortie de la forme <code class="docutils literal"><span class="pre">$:abc$</span></code> où <code class="docutils literal"><span class="pre">abc</span></code> est le nom de la variable. On
+peut ensuite l’utiliser comme variable de dictionnaire habituelle, de la
+façon décrite ci-dessus&nbsp;: on peut obtenir la forme fléchie, la forme
+canonique et les codes donnés dans l’entrée, sa catégorie grammaticale,
+ses codes sémantiques, ses codes flexionnels et la valeur <code class="docutils literal"><span class="pre">zzz</span></code> de
+l’attribut <code class="docutils literal"><span class="pre">yyy</span></code> s’il y figure un code sémantique de la forme
+<code class="docutils literal"><span class="pre">yyy=zzz</span></code>.</p>
+</div>
+</div>
+<div class="section" id="exploration-des-chemins-dune-grammaire">
+<h2>Exploration des chemins d’une grammaire<a class="headerlink" href="#exploration-des-chemins-dune-grammaire" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Il est possible de générer les chemins reconnus par une grammaire, par
+exemple pour vérifier qu’elle engendre correctement les formes
+attendues. Pour cela, ouvrez le graphe principal de votre grammaire et
+assurez-vous que la fenêtre du graphe est bien la fenêtre active (la
+fenêtre active possède une barre de titre bleu, tandis que les fenêtres
+inactives ont une barre de titre grise). Allez ensuite dans le menu
+“FSGraph”, puis dans le sous-menu “Tools”, et cliquez sur “Explore graph
+paths”. La fenêtre de la figure &nbsp;[fig-explore-graph-paths] apparaît
+alors.</p>
+<p>Le cadre supérieur contient le nom du graphe principal de la grammaire à
+explorer. Les options suivantes concernent la gestion des sorties de la
+grammaire ainsi que le mode d’exploration:</p>
+<ul class="simple">
+<li>“Ignore outputs”: les sorties sont ignorées;</li>
+<li>“Separate inputs and outputs”: les sorties sont affichées groupées
+après les entrées (`` a b c / A B C``);</li>
+<li>“Merge inputs and outputs”: chaque sortie est affichée immédiatement
+après l’entrée qui lui correspond (<code class="docutils literal"><span class="pre">a/A</span> <span class="pre">b/B</span> <span class="pre">c/C</span></code>).</li>
+<li>“Only paths”: les appels aux sous-graphes sont explorés
+récursivement;</li>
+<li>“Do not explore subgraphs recursively”: les appels aux sous-graphes
+sont affichés sans être explorés récursivement.</li>
+</ul>
+<p>Si l’option “Maximum number of sequences” est cochée, le nombre spécifié
+sera le nombre maximum de chemins générés. Si l’option n’est pas
+sélectionnée, tous les chemins seront générés.</p>
+<p>Voici ce que l’on obtient pour le graphe de la figure &nbsp;[fig-glace] avec
+les paramètres par défaut (ignorer les sorties, limite = 100 chemins) :</p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">glace</span> <span class="pre">à</span> <span class="pre">la</span> <span class="pre">pistache</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">glace</span> <span class="pre">à</span> <span class="pre">la</span> <span class="pre">fraise</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">glace</span> <span class="pre">à</span> <span class="pre">la</span> <span class="pre">vanille</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">glace</span> <span class="pre">vanille</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">glace</span> <span class="pre">fraise</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">glace</span> <span class="pre">pistache</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">pistache</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">fraise</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">vanille</span></code></p>
+<p><code class="docutils literal"><span class="pre">glace</span> <span class="pre">à</span> <span class="pre">la</span> <span class="pre">pistache</span></code></p>
+<p><code class="docutils literal"><span class="pre">glace</span> <span class="pre">à</span> <span class="pre">la</span> <span class="pre">fraise</span></code></p>
+<p><code class="docutils literal"><span class="pre">glace</span> <span class="pre">à</span> <span class="pre">la</span> <span class="pre">vanille</span></code></p>
+<p><code class="docutils literal"><span class="pre">glace</span> <span class="pre">vanille</span></code></p>
+<p><code class="docutils literal"><span class="pre">glace</span> <span class="pre">fraise</span></code></p>
+<p><code class="docutils literal"><span class="pre">glace</span> <span class="pre">pistache</span></code></p>
+<div class="figure" id="id21">
+<a class="reference internal image-reference" href="resources/img/fig6-19.png"><img alt="Exemple de graphe [fig-glace]" src="resources/img/fig6-19.png" style="width: 10.90000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple de graphe [fig-glace]</span></p>
+</div>
+</div>
+<div class="section" id="collection-de-graphes">
+<h2>Collection de graphes<a class="headerlink" href="#collection-de-graphes" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Il peut arriver que l’on souhaite appliquer plusieurs grammaires situées
+dans un même répertoire. Pour cela, il est possible de construire
+automatiquement une grammaire à partir d’une arborescence de fichiers.
+Supposons par exemple que l’on ait l’arborescence suivante:</p>
+<ul class="simple">
+<li><em>Dicos</em>:<ul>
+<li><em>Banque</em>:<ul>
+<li><code class="docutils literal"><span class="pre">carte.grf</span></code></li>
+</ul>
+</li>
+<li><em>Nourriture</em>:<ul>
+<li><code class="docutils literal"><span class="pre">eau.grf</span></code></li>
+<li><code class="docutils literal"><span class="pre">pain.grf</span></code></li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">truc.grf</span></code></li>
+</ul>
+</li>
+</ul>
+<p>Si l’on veut rassembler toutes ces grammaires en une seule, on peut le
+faire avec la commande “Build Graph Collection” dans le sous-menu
+“FSGraph &gt; Tools”. On configure cette opération au moyen de la fenêtre
+de la figure &nbsp;[fig-build-graph-collection].</p>
+<p>Dans le champ “Source directory”, sélectionnez le répertoire racine que
+vous voulez explorer (dans notre exemple, le répertoire <em>Dicos</em>). Dans
+le champ “Resulting GRF grammar”, indiquez le nom de la grammaire
+produite.</p>
+<p>ATTENTION : ne placez pas la grammaire de sortie dans l’arborescence que
+vous voulez explorer, car dans ce cas, le programme va chercher à lire
+et à écrire simultanément dans ce fichier, ce qui provoquera un
+plantage.</p>
+<p>Lorsque vous cliquerez sur “OK”, le programme recopiera les graphes dans
+le répertoire de la grammaire de sortie, et créera des sous-graphes
+correspondant aux différents sous-répertoires, comme on peut le voir sur
+la figure&nbsp;[fig-graph-collection], qui montre le graphe de sortie
+engendré pour notre exemple.</p>
+<p>On peut constater qu’une boîte contient les appels à des sous-graphes
+correspondant à des sous-répertoires (ici les répertoires <em>Banque</em> et
+<em>Nourriture</em>), et que l’autre boîte fait appel à tous les graphes qui se
+trouvaient dans le répertoire (ici le graphe <code class="docutils literal"><span class="pre">truc.grf</span></code>).</p>
+</div>
+<div class="section" id="regles-dapplication-des-transducteurs">
+<h2>Règles d’application des transducteurs<a class="headerlink" href="#regles-dapplication-des-transducteurs" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Cette section décrit les règles d’application des transducteurs lors des
+opérations de pré- traitement et de recherche de motifs. Les graphes de
+flexion et de normalisation de formes ambiguës ne sont pas concernés par
+ce qui suit.</p>
+<div class="section" id="insertion-a-gauche-du-motif-reconnu">
+<h3>Insertion à gauche du motif reconnu<a class="headerlink" href="#insertion-a-gauche-du-motif-reconnu" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Lorsqu’un transducteur est appliqué en mode REPLACE, les sorties
+remplacent les séquences lues dans le texte. En mode MERGE, les sorties
+sont insérées à gauche des séquences reconnues. Considérons le
+transducteur de la figure&nbsp;[fig-transducer-example] .</p>
+<div class="figure" id="id22">
+<a class="reference internal image-reference" href="resources/img/fig6-22.png"><img alt="Exemple de transducteur[fig-transducer-example]" src="resources/img/fig6-22.png" style="width: 7.20000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple de transducteur[fig-transducer-example]</span></p>
+</div>
+<p>Si l’on applique ce transducteur au roman <em>Ivanhoe</em> by Sir Walter Scott
+en mode MERGE, on obtient la concordance de la
+figure&nbsp;[fig-transducer-example-concordance]</p>
+</div>
+<div class="section" id="application-en-avancant">
+<h3>Application en avançant<a class="headerlink" href="#application-en-avancant" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Pendant les opérations de prétraitement, le texte est modifié au fur et
+à mesure qu’il est parcouru. Afin d’éviter le risque de boucler
+indéfiniment, il ne faut pas que les séquences produites par un
+transducteur puissent être ré-analysées par celui-ci. Pour cette raison,
+quand une séquence a été introduite dans le texte, l’application du
+transducteur se poursuit après cette séquence. Cette règle ne concerne
+que les transducteurs de prétraitement, car lors de l’application de
+graphes syntaxiques, les sorties ne modifient pas le texte parcouru,
+mais un fichier de concordances distinct du texte.</p>
+</div>
+<div class="section" id="priorite-a-gauche">
+<h3>Priorité à gauche<a class="headerlink" href="#priorite-a-gauche" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Lors de l’application d’une grammaire locale, les occurrences qui se
+chevauchent sont toutes indexées. Nous considérons, ici, de vrai
+chevauchements d’occurrence comme <code class="docutils literal"><span class="pre">abc</span></code> et <code class="docutils literal"><span class="pre">bcd</span></code>, et pas
+d’occurrences imbriquées comme <code class="docutils literal"><span class="pre">abc</span></code> et <code class="docutils literal"><span class="pre">bc</span></code>. Lors de la
+construction de la concordance, toutes ces occurrences sont présentées
+(voir figure&nbsp;[fig-overlappping-occurrences]).</p>
+<p>En revanche, si vous modifiez le texte au lieu de construire une
+concordance, il est nécessaire de choisir parmi ces occurrences
+lesquelles seront prises en compte. Pour cela, Unitex applique la règle
+de priorité suivante : la séquence la plus à gauche l’emporte.</p>
+<p>Si l’on applique cette règle aux trois occurrences de la concordance
+précédente, l’occurrence est concurrente avec . C’est donc la première
+qui est retenue car c’est l’occurrence la plus à gauche, et est
+éliminée. L’occurrence suivante n’est donc plus en conflit avec et peut
+donc apparaître dans le résultat:</p>
+<p><code class="docutils literal"><span class="pre">...Don,</span> <span class="pre">there</span> <span class="pre">extended</span> <span class="pre">large</span> <span class="pre">forest...</span></code></p>
+<p>La règle de priorité à gauche s’applique uniquement lorsque le texte est
+modifié, soit lors du prétraitement, soit après l’application d’un
+graphe syntaxique (voir section &nbsp;[section-modifying-text]).</p>
+</div>
+<div class="section" id="priorite-aux-sequences-les-plus-longues">
+<h3>Priorité aux séquences les plus longues<a class="headerlink" href="#priorite-aux-sequences-les-plus-longues" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Lors de l’application d’un graphe syntaxique, il est possible de choisir
+si la priorité doit être donnée aux séquences les plus courtes ou les
+plus longues, ou si toutes les séquences doivent être retenues. Lors des
+opérations de prétraitement, la priorité est toujours donnée aux
+séquences les plus longues.</p>
+</div>
+<div class="section" id="sorties-a-variables">
+<h3>Sorties à variables<a class="headerlink" href="#sorties-a-variables" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Comme nous l’avons vu à la section&nbsp;[section-using-variables], il est
+possible d’utiliser des variables d’entrée pour mémoriser le texte qui a
+été analysé par une grammaire. Ces variables peuvent être utilisées dans
+les graphes de prétraitement et dans les graphes syntaxiques.</p>
+<p>On doit donner des noms aux variables qu’on utilise. Ces noms peuvent
+contenir les lettres comprises entre <code class="docutils literal"><span class="pre">A</span></code> et <code class="docutils literal"><span class="pre">Z</span></code>, non accentuées
+minuscules ou majuscules, des chiffres et le caractère <code class="docutils literal"><span class="pre">_</span></code>
+(underscore).</p>
+<p>Pour définir le début et la fin de la zone à stocker dans une variable
+d’entrée, soit on utilise le bouton avec les parenthèses rouges dans la
+barre d’icônes au-dessus du graphe (section &nbsp;[toolbar-commands]), soit
+on crée deux boîtes, l’une contenant le nom de la variable encadré par
+les caractères <code class="docutils literal"><span class="pre">$</span></code> et <code class="docutils literal"><span class="pre">(</span></code> pour le début de la zone, et l’autre par
+<code class="docutils literal"><span class="pre">$</span></code> et <code class="docutils literal"><span class="pre">)</span></code> pour la fin. Pour utiliser une variable dans une sortie,
+on fait précéder et suivre son nom du caractère <code class="docutils literal"><span class="pre">$</span></code> (voir
+figure&nbsp;[fig-variable-definition]).</p>
+<p>Les variables sont globales. Cela signifie qu’on peut définir une
+variable dans un graphe et l’appeler dans un autre, comme l’illustrent
+les graphes de la figure &nbsp;[fig-variable-definition]. Si on applique le
+graphe <code class="docutils literal"><span class="pre">TitleName</span></code> en mode MERGE au texte <em>Ivanhoe</em>, on obtient la
+concordance de la figure &nbsp;[fig6-14].</p>
+<p>Les sorties à variables peuvent être utilisées pour déplacer des groupes
+de mots. En effet, l’application d’un transducteur en mode REPLACE
+n’écrit dans le texte que les séquences produites par des sorties. Pour
+intervertir deux groupes de mots, il suffit donc de les stocker dans des
+variables et de produire une sortie avec ces variables dans l’ordre
+souhaité. Ainsi, le transducteur de la figure&nbsp;[fig-swapping-words]
+appliqué en mode REPLACE au texte <em>Ivanhoe</em> donne la concordance de la
+figure&nbsp;[fig-no-space-problem].</p>
+<p>Si le début ou la fin d’une variable est mal défini (fin d’une variable
+avant son début, absence du début ou de la fin d’une variable), celle-ci
+sera ignorée lors des sorties. Consultez la section
+[section-advanced-search-options] pour d’autres options affectant le
+traitement d’erreurs concernant les variables.</p>
+<p>Il n’y a aucune limite au nombre de variables utilisables.</p>
+<p>Les variables d’entrées peuvent être imbriquées, et même se chevaucher
+comme le montre la figure&nbsp;[fig-overlapping-variables].</p>
+<div class="figure" id="id23">
+<a class="reference internal image-reference" href="resources/img/fig6-29.png"><img alt="Chevauchement de variables d’entrée[fig-overlapping-variables]" src="resources/img/fig6-29.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Chevauchement de variables d’entrée[fig-overlapping-variables]</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="variables-de-sortie">
+<h2>Variables de sortie<a class="headerlink" href="#variables-de-sortie" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Les variables d’entrée sont déclarées soit avec les parenthèses rouges
+de la barre d’icônes, soit avec <code class="docutils literal"><span class="pre">$xxx(</span></code> et <code class="docutils literal"><span class="pre">$xxx)</span></code>, et mémorisent
+des portions du texte d’entrée. Il est aussi possible de mémoriser des
+parties des sorties produites par une grammaire. Cela met en jeu des
+variables de sortie. Ces variables sont déclarées soit avec l’icône des
+parenthèses bleues dans la barre d’icônes au-dessus du graphe (section
+&nbsp;[toolbar-commands]), soit avec <code class="docutils literal"><span class="pre">$|xxx(</span></code> et <code class="docutils literal"><span class="pre">$|xxx)</span></code>. Elles
+apparaissent en bleu (voir figure&nbsp;[fig-output-variables]). Cette
+grammaire appliquée en mode MERGE au texte <em>Ivanhoe</em> produit la
+concordance visible sur la figure&nbsp;[fig-output-variables-concord].</p>
+<div class="figure" id="id24">
+<a class="reference internal image-reference" href="resources/img/fig6-17r.png"><img alt="Variables de sortie[fig-output-variables]" src="resources/img/fig6-17r.png" style="width: 8.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Variables de sortie[fig-output-variables]</span></p>
+</div>
+<p>Au moment où une variable de sortie est initialisée, les séquences de
+sortie du transducteur ne sont pas émises dans la sortie correspondant à
+l’occurrence courante, elles sont seulement mémorisées dans la variable
+de sortie créée par cette opération. Par exemple, les sorties <code class="docutils literal"><span class="pre">ADJ</span></code> et
+<code class="docutils literal"><span class="pre">NOUN</span></code> de la figure figure&nbsp;[fig-output-variables] n’ont pas été
+insérées à gauche du texte d’entrée dans la
+figure&nbsp;[fig-output-variables-concord]. Par ailleurs, les sorties sont
+traitées avant d’être mémorisées&nbsp;: si la sortie d’une boite contient une
+chaine comme <code class="docutils literal"><span class="pre">$A.LEMMA$</span></code>, la variable de sortie ne contiendra en fait
+pas cette chaîne mais le lemme associé à la variable <code class="docutils literal"><span class="pre">A</span></code>.</p>
+<p>Les variables de sortie mémorisent seulement des sorties effectivement
+produites par la grammaire. Ainsi, même en mode MERGE, les variables de
+sortie ne mémorisent jamais le texte d’entrée
+(figures&nbsp;[fig-output-variables] et [fig-output-variables-concord]).</p>
+<p>Quand une boite redéfinit une variable qui avait déjà été définie, la
+nouvelle valeur écrase l’ancienne. Ainsi, si la variable est définie
+dans une boucle, la valeur de la variable juste après la boucle dépend
+du dernier passage dans la boucle.</p>
+</div>
+<div class="section" id="operations-sur-les-variables">
+<h2>Opérations sur les variables<a class="headerlink" href="#operations-sur-les-variables" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="tests-sur-les-variables">
+<h3>Tests sur les variables<a class="headerlink" href="#tests-sur-les-variables" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Il est possible de tester si une variable est définie ou non, afin
+d’interrompre la reconnaissance courante si la condition n’est pas
+vérifiée. Ceci se fait en insérant la séquence <code class="docutils literal"><span class="pre">$xxx.SET$</span></code> dans la
+sortie d’une boîte. Ainsi, si une variable dénommée <code class="docutils literal"><span class="pre">xxx</span></code> a été
+définie, cette séquence est ignorée et la reconnaissance continue,
+sinon, la reconnaissance s’arrête et le programme repart en arrière.
+Ceci fonctionne sur les variables d’entrée, les variables de sortie et
+les variables de dictionnaire. De façon similaire, on peut vérifier
+qu’une variable n’est pas définie en utilisant <code class="docutils literal"><span class="pre">$xxx.UNSET$</span></code>. La
+figure [fig-testing-a-variable] montre un graphe qui utilise ce type de
+test. La figure [fig-testing-a-variable-results] montre les résultats
+obtenus par ce graphe en mode MERGE.</p>
+<div class="figure" id="id25">
+<a class="reference internal image-reference" href="resources/img/fig6-29b.png"><img alt="Test d’une variable[fig-testing-a-variable]" src="resources/img/fig6-29b.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Test d’une variable[fig-testing-a-variable]</span></p>
+</div>
+<div class="figure" id="id26">
+<a class="reference internal image-reference" href="resources/img/fig6-29c.png"><img alt="Résultats d’un test de variable[fig-testing-a-variable-results]" src="resources/img/fig6-29c.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Résultats d’un test de variable[fig-testing-a-variable-results]</span></p>
+</div>
+</div>
+<div class="section" id="comparaison-de-variables">
+<h3>Comparaison de variables<a class="headerlink" href="#comparaison-de-variables" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Il est également possible de comparer tout type de variable (d’entrée,
+de sortie, ou de dictionnaire) avec une constante ou une autre variable.
+Ceci se fait en insérant dans la sortie d’une boîte une séquence
+respectant la syntaxe suivante&nbsp;:</p>
+<p><code class="docutils literal"><span class="pre">$abc.EQUAL=xyz$</span></code></p>
+<p>Cela agit comme un interrupteur qui permet de bloquer l’exploration de
+grammaire si la valeur de la variable <code class="docutils literal"><span class="pre">abc</span></code> est différente de la
+valeur de la variable <code class="docutils literal"><span class="pre">xyz</span></code>. Remarquons que pour les variables de
+dictionnaire, c’est la forme fléchie telle qu’elle existe dans le
+dictionnaire (attention aux variantes de casse&nbsp;!) qui est utilisée pour
+le test. Si vous désirez comparer la variable <code class="docutils literal"><span class="pre">abc</span></code> à la constante
+<code class="docutils literal"><span class="pre">JKL</span></code>, utilisez le test suivant:</p>
+<p><code class="docutils literal"><span class="pre">$abc.EQUAL=#JKL$</span></code></p>
+<p>on peut également tester si le contenu est différent avec <code class="docutils literal"><span class="pre">UNEQUAL</span></code>.</p>
+<p>Si vous désirez comparer des variables en ignorant les variantes de
+casse, vous pouvez utiliser les tests suivants:</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal"><span class="pre">$abc.EQUALcC=xyz$</span></code></div>
+<div class="line">ou</div>
+<div class="line"><code class="docutils literal"><span class="pre">$abc.UNEQUALcC=xyz$</span></code></div>
+</div>
+</div>
+<div class="section" id="recherche-dun-code-semantique-dans-une-variable-de-dictionnaire">
+<h3>Recherche d’un code sémantique dans une variable de dictionnaire<a class="headerlink" href="#recherche-dun-code-semantique-dans-une-variable-de-dictionnaire" title="Lien permanent vers ce titre">¶</a></h3>
+<p>On peut chercher dans une variable de dictionnaire
+(section&nbsp;[dictionary-variables]) un “code sémantique” au sens de la
+section&nbsp;[section-DELAF-entry-syntax]. Pour cela, on insère dans la
+sortie d’une boite une séquence respectant la syntaxe suivante&nbsp;:</p>
+<p><code class="docutils literal"><span class="pre">$abc.EQ=Conc$</span></code></p>
+<p>Ce test agit comme un interrupteur qui permet de bloquer l’exploration
+de la grammaire si <code class="docutils literal"><span class="pre">Conc</span></code> ne figure pas parmi les “codes sémantiques”
+de la variable de dictionnaire <code class="docutils literal"><span class="pre">abc</span></code>. On peut chercher un seul code à
+la fois dans une variable. Pour vérifier plusieurs codes, on met
+plusieurs boites en série.</p>
+<p>Cette fonctionnalité est utilisée pour de grandes grammaires de
+graphes-dictionnaires morphologiques, en vue de dissocier dans des
+boites distinctes la vérification d’un code grammatical et de “codes
+sémantiques” qui viennent ensuite, comme dans
+<a href="#id3"><span class="problematic" id="id4">:raw-latex:`\cite{paumier_nam_2014}`</span></a>, page&nbsp;486. On teste le code
+grammatical avec un masque lexical, puis on fait de même pour les codes
+sémantiques en les cherchant dans la variable de dictionnaire
+correspondante. Cette dissociation peut accélérer l’application des
+graphes si&nbsp;:</p>
+<ul class="simple">
+<li>tous les graphes sont invoqués directement ou indirectement depuis un
+même graphe principal,</li>
+<li>le graphe principal est compilé et transformé en transducteur fini
+(voir section&nbsp;[flatten-section]),</li>
+<li>la boite qui contient le masque lexical est commune à plus de chemins
+que celles qui cherchent les codes sémantiques dans la variable de
+dictionnaire <a class="footnote-reference" href="#id8" id="id5">[3]</a>.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="application-des-graphes-aux-textes">
+<h2>Application des graphes aux textes<a class="headerlink" href="#application-des-graphes-aux-textes" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Cette section concerne uniquement les graphes syntaxiques.</p>
+<div class="section" id="configuration-de-la-recherche">
+<h3>Configuration de la recherche<a class="headerlink" href="#configuration-de-la-recherche" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Pour appliquer un graphe à un texte, vous devez ouvrir le texte, puis
+cliquer sur “Locate Pattern...” dans le menu “Text” ou appuyer sur
+&lt;Ctrl+L&gt;. Vous pouvez alors configurer votre recherche grâce à la
+fenêtre de la figure &nbsp;[fig-regexp-frame].</p>
+<div class="figure" id="id27">
+<a class="reference internal image-reference" href="resources/img/fig6-30.png"><img alt="Fenêtre de recherche d’expressions[fig-regexp-frame]" src="resources/img/fig6-30.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Fenêtre de recherche d’expressions[fig-regexp-frame]</span></p>
+</div>
+<p>Dans le cadre intitulé “Locate pattern in the form of”, choisissez
+“Graph” et sélectionnez votre graphe en cliquant sur le bouton “Set”.
+Vous pouvez choisir un graphe au format <code class="docutils literal"><span class="pre">.grf</span></code> (Unicode Graphs) ou un
+graphe compilé au format <code class="docutils literal"><span class="pre">.fst2</span></code> format (Unicode Compiled Graphs). Si
+votre graphe est au format <code class="docutils literal"><span class="pre">.grf</span></code>, Unitex le compilera automatiquement
+avant de lancer la recherche. Si vous cliquez sur “Activate debug mode”,
+la concordance sera affichée dans une fenêtre dans laquelle vous
+trouverez l’automate et, pour chaque séquence reconnue, la liste des
+états du chemin qui la reconnaît. Cette fenêtre est décrite en détails à
+la section&nbsp;[section-debug-mode].</p>
+<p>Le cadre “Index” permet de sélectionner le mode de reconnaissance:</p>
+<ul class="simple">
+<li>“Shortest matches” : donne la priorité aux séquences les plus
+courtes;</li>
+<li>“Longest matches” : donne la priorité aux séquences les plus longues.
+C’est le mode utilisé par défaut;</li>
+<li>“All matches” : donne toutes les séquences reconnues.</li>
+</ul>
+<p>Le cadre “Search limitation” permet de limiter ou non la recherche à un
+certain nombre d’occurrences. Par défaut, la recherche est limitée aux
+200 premières occurrences.</p>
+<p>Le cadre “Grammar outputs” concerne le mode d’utilisation des sorties.
+Le mode “Merge with input text” permet d’insérer les séquences produites
+par les sorties. Le mode “Replace recognized sequences” permet de
+remplacer les séquences reconnues par les séquences produites. Le
+troisième mode ignore les sorties. Ce dernier mode est utilisé par
+défaut.</p>
+<p>Dans le cadre “Search algorithm”, vous pouvez spécifier si vous voulez
+effectuer la recherche sur le texte en utilisant le programme Locate ou
+sur l’automate du texte avec LocateTfst. Par défaut, la recherche est
+faite avec le programme Locate, comme Unitex l’a toujours fait jusqu’à
+maintenant. Si vous désirez utiliser LocateTfst, lisez la
+section&nbsp;[section-locate-tfst].</p>
+<p>Une fois vos paramètres fixés, cliquez sur “SEARCH” pour lancer la
+recherche.</p>
+</div>
+<div class="section" id="options-de-recherche-avancees">
+<h3>Options de recherche avancées<a class="headerlink" href="#options-de-recherche-avancees" title="Lien permanent vers ce titre">¶</a></h3>
+<p>[section-advanced-search-options] Si vous sélectionnez l’onglet
+“Advanced options”, vous voyez le cadre de la figure
+[fig6-advanced-options1].</p>
+<div class="figure" id="id28">
+<a class="reference internal image-reference" href="resources/img/fig6-advanced-options1.png"><img alt="Options de recherche avancées[fig6-advanced-options1]" src="resources/img/fig6-advanced-options1.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Options de recherche avancées[fig6-advanced-options1]</span></p>
+</div>
+<p>L’option “Ambiguous output policy” est illustrée par le graphe de la
+figure [fig6-advanced-options2]. Lorsqu’un déterminant est suivi par un
+mot pouvant être un nom ou un adjectif, il peut produire deux sorties
+distinctes pour la même séquence d’entrée (le transducteur est dit
+ambigu).</p>
+<div class="figure" id="id29">
+<a class="reference internal image-reference" href="resources/img/fig6-advanced-options2.png"><img alt="Graphe avec des sorties ambiguës[fig6-advanced-options2]" src="resources/img/fig6-advanced-options2.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe avec des sorties ambiguës[fig6-advanced-options2]</span></p>
+</div>
+<p>Si nous appliquons ce graphe sur le texte <em>Ivanhoe</em> avec l’option &#8220;Allow
+ambiguous outputs” (celle par défaut), nous obtenons la concordance de
+la figure&nbsp;[fig6-advanced-options3]. Comme vous pouvez le constater, deux
+sorties sont produites pour la séquence <em>the noble</em>.</p>
+<div class="figure" id="id30">
+<a class="reference internal image-reference" href="resources/img/fig6-advanced-options3.png"><img alt="Sorties ambiguës pour *the noble*\ [fig6-advanced-options3]" src="resources/img/fig6-advanced-options3.png" style="width: 8.80000cm;" /></a>
+<p class="caption"><span class="caption-text">Sorties ambiguës pour <em>the noble</em>[fig6-advanced-options3]</span></p>
+</div>
+<p>A l’opposé, avec l’option “Forbid ambiguous outputs”, nous obtenons la
+concordance de la figure [fig6-advanced-options4], avec seulement une
+sortie choisie arbitrairement pour la séquence <em>the noble</em>.</p>
+<div class="figure" id="id31">
+<a class="reference internal image-reference" href="resources/img/fig6-advanced-options4.png"><img alt="Sortie unique *the noble*\ [fig6-advanced-options4]" src="resources/img/fig6-advanced-options4.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Sortie unique <em>the noble</em>[fig6-advanced-options4]</span></p>
+</div>
+<p>L’option “Variable error policy” permet de définir le comportement de
+<code class="docutils literal"><span class="pre">Locate</span></code>/<code class="docutils literal"><span class="pre">LocateTfst</span></code> lorsqu’ils rencontrent une sortie contenant
+une variable mal définie. Remarquons que ce paramètre n’a aucun effet si
+les sorties sont ignorées. Considérons par exemple le graphe de la
+figure [fig6-advanced-options5].</p>
+<p>Avec l’option “Ignore variable errors”, <em>A</em> est ignorée, comme si son
+contenu était vide, comme le montre la figure [fig6-advanced-options6].</p>
+<div class="figure" id="id32">
+<a class="reference internal image-reference" href="resources/img/fig6-advanced-options6.png"><img alt="La variable *A* peut être indéfinie [fig6-advanced-options6]" src="resources/img/fig6-advanced-options6.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">La variable <em>A</em> peut être indéfinie [fig6-advanced-options6]</span></p>
+</div>
+<p>Avec l’option “Exit on variable error”, <code class="docutils literal"><span class="pre">Locate</span></code>/<code class="docutils literal"><span class="pre">LocateTfst</span></code>
+émettent un message d’erreur, comme le montre la figure
+[fig6-advanced-options7].</p>
+<div class="figure" id="id33">
+<a class="reference internal image-reference" href="resources/img/fig6-advanced-options7.png"><img alt="Sortie à cause d’une variable erronée[fig6-advanced-options7]" src="resources/img/fig6-advanced-options7.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Sortie à cause d’une variable erronée[fig6-advanced-options7]</span></p>
+</div>
+<p>Avec l’option “Backtrack on variable error” , <code class="docutils literal"><span class="pre">Locate</span></code>/<code class="docutils literal"><span class="pre">LocateTfst</span></code>
+arrête l’exploration du chemin courant de la grammaire. Ainsi, les
+variables jouent le rôle d’interrupteurs qui coupent les chemins lorsqu’
+elles sont indéfinies. Par exemple, l’application de la grammaire
+[fig6-advanced-options5] produit seulement des sorties contenant des
+adjectifs , comme le montre la figure [fig6-advanced-options8].</p>
+</div>
+<div class="section" id="concordance">
+<h3>Concordance<a class="headerlink" href="#concordance" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le résultat de la recherche est un fichier d’index contenant les
+positions de toutes les oc- currences trouvées. La fenêtre de la
+figure&nbsp;[fig-configuration-display-occurrences] vous propose de
+construire une concordance, de modifier le texte ou de comparer le
+résultat de la recherche à la recherche précédente sur le même texte.</p>
+<p>Pour afficher une concordance, vous devez cliquer sur le bouton “Build
+concordance”. Vous pouvez paramétrer la taille des contextes gauche et
+droit en caractères. Vous pouvez également choisir le mode de tri qui
+sera appliqué aux lignes de la concordance grâce au menu “Sort According
+to”. Pour plus de détails sur les paramètres de construction de la
+concordance, reportez-vous à la section&nbsp;[section-display-occurrences].</p>
+<p>La concordance est produite sous la forme d’un fichier HTML Vous pouvez
+paramétrer Unitex pour que les concordances soient lues à l’aide d’un
+navigateur Web (voir section&nbsp;[section-display-occurrences]).</p>
+<p>Si vous affichez les concordances avec la fenêtre proposée par Unitex,
+vous pouvez accéder à la séquence reconnue dans le texte en cliquant sur
+l’occurrence. Si la fenêtre du texte n’est pas icônifiée et que le texte
+n’est pas trop long pour être affiché, vous verrez apparaître la
+séquence sélectionnée (voir figure&nbsp;[fig-back-to-text]).</p>
+<div class="figure" id="id34">
+<a class="reference internal image-reference" href="resources/img/fig6-32.png"><img alt="Sélection d’une occurrence dans le texte[fig-back-to-text]" src="resources/img/fig6-32.png" style="width: 13.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Sélection d’une occurrence dans le texte[fig-back-to-text]</span></p>
+</div>
+<p>De plus, si l’automate du texte a été construit et que la fenêtre
+correspondante n’est pas icônifiée, le fait de cliquer sur une
+occurrence sélectionne l’automate de la phrase qui contient cette
+occurrence.</p>
+</div>
+<div class="section" id="modification-du-texte">
+<h3>Modification du texte<a class="headerlink" href="#modification-du-texte" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Vous pouvez choisir de modifier le texte au lieu de construire une
+concordance. Pour cela, sélectionnez un nom de fichier dans le cadre
+“Modify text” de la fenêtre de la figure
+&nbsp;[fig-configuration-display-occurrences]. Ce fichier doit porter
+l’extension <code class="docutils literal"><span class="pre">.txt</span></code>.</p>
+<p>Si vous souhaitez modifier le texte courant, il faut choisir le fichier
+<code class="docutils literal"><span class="pre">.txt</span></code> correspondant. Si vous choisissez un autre nom de fichier, le
+texte courant ne sera pas affecté. Cliquez sur le bouton “GO” pour
+lancer la modification du texte. Les règles de priorités appliquées lors
+de cette opération sont détaillées à la
+section&nbsp;[section-applying-transducers-rules].</p>
+<p>Une fois cette opération effectuée, le fichier résultant est une copie
+du texte dans laquelle les sorties ont été prises en compte. Les
+opérations de normalisation et de découpage en unités lexicales sont
+automatiquement appliquées à ce fichier texte. Les dictionnaires du
+texte existants ne sont pas modifiés. Ainsi, si vous avez choisi de
+modifier le texte courant, les modifications sont immédiatement
+effectives. Vous pouvez alors lancer de nouvelles recherches sur le
+texte.</p>
+<p>ATTENTION : si vous avez choisi d’appliquer votre graphe en ignorant les
+sorties, toutes les occurrences seront effacées du texte.</p>
+</div>
+<div class="section" id="extraction-des-occurrences">
+<h3>Extraction des occurrences<a class="headerlink" href="#extraction-des-occurrences" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Vous pouvez extraire toutes les phrases du texte qui contiennent ou non
+des occurrences. Pour cela, choisissez un nom de fichier de sortie grâce
+au bouton “Set File” dans le cadre “Extract units”
+(figure&nbsp;[fig-configuration-display-occurrences]). Cliquez ensuite sur un
+des boutons “Extract matching units” ou “Extract unmatching units” selon
+que vous voulez extraire les phrases contenant les occurrences ou non.</p>
+</div>
+<div class="section" id="comparaison-de-concordances">
+<h3>Comparaison de concordances<a class="headerlink" href="#comparaison-de-concordances" title="Lien permanent vers ce titre">¶</a></h3>
+<p>L’option “Show differences with previous concordance” permet de comparer
+la concordance qui vient d’être calculée avec la concordance précédente,
+si elle existe. Pour cela, le programme <code class="docutils literal"><span class="pre">ConcorDiff</span></code> construit les
+deux concordances dans l’ordre du texte, puis compare leurs lignes. Le
+résultat est une page HTML qui montre alternativement les lignes des
+deux concordances, laissant une ligne vide quand un match n’apparaît que
+dans une seule des deux concordances (figure&nbsp;[fig-concordiff]).</p>
+<div class="figure" id="id35">
+<a class="reference internal image-reference" href="resources/img/fig6-33.png"><img alt="Exemple de comparaison de concordances[fig-concordiff]" src="resources/img/fig6-33.png" style="height: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple de comparaison de concordances[fig-concordiff]</span></p>
+</div>
+<p>Les lignes de la concordance antérieure sont grisées et celles de la
+concordance courante restent sur fond blanc. Dans chaque ligne, seules
+les séquences reconnues sont colorées. On peut cliquer dessus pour
+ouvrir le texte à cette position.</p>
+<p>Le bleu indique qu’une séquence est commune aux deux concordances. Le
+rouge indique qu’une séquence reconnue est commune aux deux
+concordances, mais avec des extensions différentes, c’est-à-dire que les
+deux séquences reconnues se chevauchent partiellement. Le vert signale
+qu’une séquence n’apparait que dans une seule concordance.</p>
+<p>S’il n’existe pas de concordance antérieure, le bouton est désactivé.</p>
+</div>
+<div class="section" id="mode-debug">
+<h3>Mode Debug<a class="headerlink" href="#mode-debug" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Lorsqu’on applique un graphe à un texte avec le menu <code class="docutils literal"><span class="pre">Locate</span></code> dans la
+fenêtre de la figure&nbsp;[fig-regexp-frame], si le mode debug est activé
+dans le champ “Locate pattern in the form of”, la concordance est
+affichée dans une fenêtre spéciale (voir figure&nbsp;[fig-debug-mode]),
+divisée en trois parties&nbsp;:</p>
+<div class="figure" id="id36">
+<a class="reference internal image-reference" href="resources/img/fig6-34.png"><img alt="La fenêtre de concordance en mode debug[fig-debug-mode]" src="resources/img/fig6-34.png" style="height: 9.50000cm;" /></a>
+<p class="caption"><span class="caption-text">La fenêtre de concordance en mode debug[fig-debug-mode]</span></p>
+</div>
+<p>En haut à droite, se trouve la fenêtre de concordance. Elle est
+identique à la fenêtre habituelle dans laquelle les séquences reconnues
+apparaissent en bleu.</p>
+<p>En bas à droite se trouve le graphe utilisé par <code class="docutils literal"><span class="pre">Locate</span></code>.</p>
+<p>A gauche, il y a un tableau divisé en trois colonnes: “Tag”, “Output” et
+“Matched”. Chaque token de la séquence reconnue apparaît dans la colonne
+“Matched”, la colonne “Tag” indique le contenu de la boîte de l’automate
+qui l’a reconnue, et si elle possède une sortie, elle apparaît dans la
+colonne “Output”.</p>
+<p>Pour chaque séquence reconnue de la concordance, si on clique dessus, le
+tableau est mis à jour. Si on clique sur une ligne du tableau, le
+système colore la boîte correspondante dans le graphe. On peut ainsi
+voir pour chaque occurrence reconnue dans le texte quel chemin de
+l’automate la reconnait. Le nombre en rouge au-dessus d’une boîte
+indique le nombre de séquences du texte pour lesquelles cette boîte a
+reconnu un token.</p>
+<p>Quand on applique un graphe en mode debug avec le menu
+<code class="docutils literal"><span class="pre">Text&gt;Locate</span> <span class="pre">Pattern</span></code>, le système le compile en un fichier <code class="docutils literal"><span class="pre">fst2</span></code>
+dans un formal spécial de mode debug, qui n’est pas compatible avec
+CasSys. Voir la section&nbsp;[graphs-for-cassys] pour résoudre ce problème.</p>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>À partir de la version 3.1bêta, révision 4072 du 2 octobre 2015.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id7" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Les dictionnaires du texte sont compilés pendant l’application
+initiale des dictionnaires (section&nbsp;[section-applying-dictionaries]),
+non pas pendant la recherche de motifs.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id8" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[3]</a></td><td>De cette façon, le masque lexical provoque une consultation des
+dictionnaires du mode morphologique qui n’est effectuée qu’une fois
+avant plusieurs recherches de codes sémantiques. Si on vérifie le
+code grammatical et un code sémantique par un même masque lexical,
+ces masques deviennent plus nombreux dans l’ensemble de la grammaire
+et ils provoquent plus de consultations des dictionnaires.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-fr.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Utilisation avancée des graphes</a><ul>
+<li><a class="reference internal" href="#les-types-de-graphes">Les types de graphes</a><ul>
+<li><a class="reference internal" href="#graphes-de-flexion">Graphes de flexion</a></li>
+<li><a class="reference internal" href="#graphes-de-pretraitement">Graphes de prétraitement</a></li>
+<li><a class="reference internal" href="#graphes-de-normalisation-de-lautomate-du-texte">Graphes de normalisation de l’automate du texte</a></li>
+<li><a class="reference internal" href="#graphes-syntaxiques">Graphes syntaxiques</a></li>
+<li><a class="reference internal" href="#grammaires-elag">Grammaires ELAG</a></li>
+<li><a class="reference internal" href="#graphes-parametres">Graphes paramétrés</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#compilation-dune-grammaire">Compilation d’une grammaire</a><ul>
+<li><a class="reference internal" href="#compilation-dun-graphe">Compilation d’un graphe</a></li>
+<li><a class="reference internal" href="#approximation-par-un-transducteur-fini">Approximation par un transducteur fini</a></li>
+<li><a class="reference internal" href="#contraintes-sur-les-grammaires">Contraintes sur les grammaires</a></li>
+<li><a class="reference internal" href="#intervalle-pour-le-nombre-de-repetitions">Intervalle pour le nombre de répétitions</a></li>
+<li><a class="reference internal" href="#detection-derreurs">Détection d’erreurs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#contextes">Contextes</a><ul>
+<li><a class="reference internal" href="#contextes-droits">Contextes droits</a></li>
+<li><a class="reference internal" href="#contextes-gauches">Contextes gauches</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#le-mode-morphologique">Le mode morphologique</a><ul>
+<li><a class="reference internal" href="#pourquoi">Pourquoi ?</a></li>
+<li><a class="reference internal" href="#les-regles">Les règles</a></li>
+<li><a class="reference internal" href="#dictionnaires-du-mode-morphologique">Dictionnaires du mode morphologique</a></li>
+<li><a class="reference internal" href="#variables-de-dictionnaire">Variables de dictionnaire</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#exploration-des-chemins-dune-grammaire">Exploration des chemins d’une grammaire</a></li>
+<li><a class="reference internal" href="#collection-de-graphes">Collection de graphes</a></li>
+<li><a class="reference internal" href="#regles-dapplication-des-transducteurs">Règles d’application des transducteurs</a><ul>
+<li><a class="reference internal" href="#insertion-a-gauche-du-motif-reconnu">Insertion à gauche du motif reconnu</a></li>
+<li><a class="reference internal" href="#application-en-avancant">Application en avançant</a></li>
+<li><a class="reference internal" href="#priorite-a-gauche">Priorité à gauche</a></li>
+<li><a class="reference internal" href="#priorite-aux-sequences-les-plus-longues">Priorité aux séquences les plus longues</a></li>
+<li><a class="reference internal" href="#sorties-a-variables">Sorties à variables</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#variables-de-sortie">Variables de sortie</a></li>
+<li><a class="reference internal" href="#operations-sur-les-variables">Opérations sur les variables</a><ul>
+<li><a class="reference internal" href="#tests-sur-les-variables">Tests sur les variables</a></li>
+<li><a class="reference internal" href="#comparaison-de-variables">Comparaison de variables</a></li>
+<li><a class="reference internal" href="#recherche-dun-code-semantique-dans-une-variable-de-dictionnaire">Recherche d’un code sémantique dans une variable de dictionnaire</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#application-des-graphes-aux-textes">Application des graphes aux textes</a><ul>
+<li><a class="reference internal" href="#configuration-de-la-recherche">Configuration de la recherche</a></li>
+<li><a class="reference internal" href="#options-de-recherche-avancees">Options de recherche avancées</a></li>
+<li><a class="reference internal" href="#concordance">Concordance</a></li>
+<li><a class="reference internal" href="#modification-du-texte">Modification du texte</a></li>
+<li><a class="reference internal" href="#extraction-des-occurrences">Extraction des occurrences</a></li>
+<li><a class="reference internal" href="#comparaison-de-concordances">Comparaison de concordances</a></li>
+<li><a class="reference internal" href="#mode-debug">Mode Debug</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-fr.html">Documentation overview</a><ul>
+      <li>Previous: <a href="05-grammars_FR_utf8.html" title="Chapitre précédent">Grammaires locales</a></li>
+      <li>Next: <a href="07-text_automaton_FR_utf8.html" title="Chapitre suivant">Automate du texte</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/06-advanced-use_FR_utf8.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, SCTB.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/06-advanced-use_FR_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

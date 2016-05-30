@@ -1,0 +1,1537 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Dictionnaires &mdash; documentation Unitex-fr 1.0.1</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="documentation Unitex-fr 1.0.1" href="Unitex-fr.html" />
+    <link rel="next" title="Recherche d’expressions rationnelles" href="04-pattern_matching_FR_utf8.html" />
+    <link rel="prev" title="Chargement d’un texte" href="02-loading_texts_FR_utf8.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dictionnaires">
+<h1>Dictionnaires<a class="headerlink" href="#dictionnaires" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="section" id="les-dictionnaires-dela">
+<h2>Les dictionnaires DELA<a class="headerlink" href="#les-dictionnaires-dela" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Les dictionnaires électroniques utilisés par Unitex utilisent le
+formalisme DELA (Dictionnaires Electroniques du LADL). Ce formalisme
+permet de décrire les entrées lexicales simples et composées d’une
+langue en leur associant de façon optionnelle des informations
+grammaticales, sémantiques et flexionnelles. On distingue deux sortes de
+dictionnaires électroniques. Le type que l’on utilise le plus couramment
+est le dictionnaire de formes fléchies, appelé DELAF (DELA de formes
+Fléchies) ou encore DELACF (DELA de formes Composées Fléchies) lorsqu’il
+s’agit d’un dictionnaire de mots composés. Le second type est le
+dictionnaire de formes non fléchies appelé DELAS (DELA de formes
+Simples) ou DELAC (DELA de formes Composées). Les programmes d’Unitex ne
+font pas de distinction entre les dictionnaires de formes simples et
+composées. Nous utiliserons donc les termes DELAF et DELAS pour désigner
+les deux sortes de dictionnaires que leurs entrées soient simples,
+composées ou mixtes.</p>
+<div class="section" id="format-des-delaf">
+<h3>Format des DELAF<a class="headerlink" href="#format-des-delaf" title="Lien permanent vers ce titre">¶</a></h3>
+<div class="section" id="syntaxe-dune-entree">
+<h4>Syntaxe d’une entrée<a class="headerlink" href="#syntaxe-dune-entree" title="Lien permanent vers ce titre">¶</a></h4>
+<p>Une entrée d’un DELAF est une ligne de texte terminée par un retour à la
+ligne qui respecte le schéma suivant :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mercantiles</span><span class="p">,</span><span class="n">mercantile</span><span class="o">.</span><span class="n">A</span><span class="o">+</span><span class="n">z1</span><span class="p">:</span><span class="n">mp</span><span class="p">:</span><span class="n">fp</span><span class="o">/</span><span class="n">ceci</span> <span class="n">est</span> <span class="n">un</span> <span class="n">exemple</span>
+</pre></div>
+</div>
+<p>Les différents éléments qui forment cette ligne sont les suivants:</p>
+<ul>
+<li><p class="first"><a href="#id1"><span class="problematic" id="id2">``</span></a>mercantiles `` est la forme fléchie de l’entrée. Cette forme
+fléchie est obligatoire;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">mercantile</span></code> est la forme canonique (lemme) de l’entrée. Pour les
+noms et les adjectifs, il s’agit en général de la forme au masculin
+singulier; pour les verbes, la forme canonique est l’infinitif. Cette
+information peut être omise comme dans l’exemple suivant :</p>
+<p><code class="docutils literal"><span class="pre">boîte</span> <span class="pre">à</span> <span class="pre">merveilles,.N+z1:fs</span></code></p>
+<p>Cela signifie alors que la forme canonique est identique à la forme
+fléchie. La forme canonique est séparée de la forme fléchie par une
+virgule;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">A+z1</span></code> est la séquence d’informations grammaticales et sémantiques.
+Dans notre exemple, <code class="docutils literal"><span class="pre">A</span></code> désigne un adjectif, et <code class="docutils literal"><span class="pre">z1</span></code> ndique qu’il
+s’agit d’un mot courant (voir tableau &nbsp;[tab-semantic-codes]).</p>
+<p>Toute entrée doit comporter au moins un code grammatical ou
+sémantique, séparé de la forme canonique par un point. S’il y a
+plusieurs codes, ceux-ci doivent être séparés par le caractère <code class="docutils literal"><span class="pre">+</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">:mp:fp</span></code> est la séquence d’informations flexionnelles. Ces
+informations décrivent le genre, le nombre, les temps et modes de
+conjugaisons, les déclinaisons pour les langues à cas, etc. Ces
+informations sont facultatives. Un code flexionnel est composé d’un
+ou plusieurs caractères codant chacun une information. Les codes
+flexionnels doivent être séparés par le caractère :. Dans notre
+exemple, <code class="docutils literal"><span class="pre">m</span></code> signifie masculin, <code class="docutils literal"><span class="pre">p</span></code> pluriel et <code class="docutils literal"><span class="pre">f</span></code> féminin
+(voir tableau &nbsp;[tab-inflectional-codes]). Le caractère <code class="docutils literal"><span class="pre">:</span></code>
+s’interprète comme un OU logique. Ainsi, <code class="docutils literal"><span class="pre">:mp:fp</span></code> signifie
+“masculin pluriel”, ou “féminin pluriel”. Comme chaque caractère
+correspond à une information, il est inutile d’utiliser plusieurs
+fois un même caractère. Ainsi, coder le participe passé avec le
+code<code class="docutils literal"><span class="pre">:PP</span></code> serait strictement équivalent à utiliser <code class="docutils literal"><span class="pre">:P</span></code> seul;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">/ceci</span> <span class="pre">est</span> <span class="pre">un</span> <span class="pre">exemple</span></code> est un commentaire. Les commentaires sont
+facultatifs et doivent être introduits par le caractère <code class="docutils literal"><span class="pre">/</span></code>. Les
+commentaires sont supprimés lorsque l’on comprime les dictionnaires.</p>
+</li>
+</ul>
+<p>REMARQUE IMPORTANTE : il est possible d’utiliser le point et la virgule
+dans une entrée de dictionnaire. Pour cela, il faut les déspécialiser
+avec le caractère <code class="docutils literal"><span class="pre">\</span></code> :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">3</span>\<span class="p">,</span><span class="mi">1415</span><span class="p">,</span><span class="n">PI</span><span class="o">.</span><span class="n">NOMBRE</span>
+<span class="n">Organisation</span> <span class="n">des</span> <span class="n">Nations</span> <span class="n">Unies</span><span class="p">,</span><span class="n">O</span>\<span class="o">.</span><span class="n">N</span>\<span class="o">.</span><span class="n">U</span>\<span class="o">..</span><span class="n">SIGLE</span>
+</pre></div>
+</div>
+<p>ATTENTION : chaque caractère est pris en compte dans une ligne de
+dictionnaire. Par exemple, si vous introduisez des espaces, ceux-ci
+seront considérés comme faisant partie intégrante des informations. Dans
+la ligne suivante :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">gît</span><span class="p">,</span><span class="n">gésir</span><span class="o">.</span><span class="n">V</span><span class="o">+</span><span class="n">z1</span><span class="p">:</span><span class="n">P3s</span> <span class="o">/</span><span class="n">voir</span> <span class="n">ci</span><span class="o">-</span><span class="n">gît</span>
+</pre></div>
+</div>
+<p>l’espace qui précède le caractère <code class="docutils literal"><span class="pre">/</span></code> sera considéré comme faisant
+partie d’un code flexionnel à 4 caractères composés de <code class="docutils literal"><span class="pre">P</span></code>, <code class="docutils literal"><span class="pre">3</span></code>,
+<code class="docutils literal"><span class="pre">s</span></code> et d’un espace.</p>
+<p>Il est possible d’insérer des lignes de commentaires dans un
+dictionnaire DELAF ou DELAS, en faisant débuter la ligne par le
+caractère <span class="math">\(/\)</span>. Exemple</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>/ L’entrée nominale pour ’par’ est un terme de golf
+par,.N+z3:ms
+</pre></div>
+</div>
+</div>
+<div class="section" id="mots-composes-avec-espace-ou-tiret">
+<h4>Mots composés avec espace ou tiret<a class="headerlink" href="#mots-composes-avec-espace-ou-tiret" title="Lien permanent vers ce titre">¶</a></h4>
+<p>Certains mots composés comme <em>grand-mère</em> peuvent s’écrire avec des
+espaces ou avec des tirets. Pour éviter de devoir dédoubler toutes les
+entrées, il est possible d’utiliser le caractère <code class="docutils literal"><span class="pre">=</span></code> . Lors de la
+compression du dictionnaire, le programme <code class="docutils literal"><span class="pre">Compress</span></code> vérifie pour
+chaque ligne si la forme fléchie ou la forme canonique contient le
+caractère <code class="docutils literal"><span class="pre">=</span></code>. Si c’est le cas, le programme remplace l’entrée par
+deux entrées : une où le caractère = est remplacé par un espace, et une
+où il est remplacé par un tiret. Ainsi, l’entrée suivante :</p>
+<p><code class="docutils literal"><span class="pre">grand=mères,grand=mère.N:fp</span></code></p>
+<p>est remplacée par les deux lignes suivantes:</p>
+<p><code class="docutils literal"><span class="pre">grand</span> <span class="pre">mères,grand</span> <span class="pre">mère.N:fp</span></code></p>
+<p><code class="docutils literal"><span class="pre">grand-mères,grand-mère.N:fp</span></code></p>
+<p>NOTE : si vous souhaitez écrire une entrée contenant le caractère <code class="docutils literal"><span class="pre">=</span></code>,
+déspécialisez-le avec le caractère <code class="docutils literal"><span class="pre">\</span></code> comme dans l’exemple suivant :</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal"><span class="pre">E\=mc2,.FORMULE</span></code></div>
+<div class="line">Cette opération de remplacement a lieu lors de la compression du
+dictionnaire. Une fois le dictionnaire comprimé, les signes <code class="docutils literal"><span class="pre">=</span></code>
+déspécialisés sont remplacés par de simples <code class="docutils literal"><span class="pre">=</span></code>. Ainsi, si l’on
+comprime un dictionnaire contenant les lignes suivantes :</div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">E</span><span class="o">=</span><span class="n">mc2</span><span class="p">,</span><span class="o">.</span><span class="n">FORMULE</span>
+<span class="n">grand</span><span class="o">=</span><span class="n">mère</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="p">:</span><span class="n">fs</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">et que l’on applique ce dictionnaire au texte :</div>
+<div class="line"><code class="docutils literal"><span class="pre">Ma</span> <span class="pre">grand-mère</span> <span class="pre">m’a</span> <span class="pre">expliqué</span> <span class="pre">la</span> <span class="pre">formule</span> <span class="pre">E=mc2.</span></code></div>
+</div>
+<p>on obtiendra les lignes suivantes dans le dictionnaire de mots composés
+du texte:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">E</span><span class="o">=</span><span class="n">mc2</span><span class="p">,</span><span class="o">.</span><span class="n">FORMULE</span>
+<span class="n">grand</span><span class="o">-</span><span class="n">mère</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="p">:</span><span class="n">fs</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="factorisation-dentrees">
+<h4>Factorisation d’entrées<a class="headerlink" href="#factorisation-dentrees" title="Lien permanent vers ce titre">¶</a></h4>
+<p>Plusieurs entrées ayant les mêmes formes fléchie et canonique peuvent
+être regroupées en une seule à condition qu’elle aient les mêmes codes
+grammaticaux et sémantiques. Cela permet entre autres de regrouper des
+conjugaisons identiques pour un même verbe :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">glace</span><span class="p">,</span><span class="n">glacer</span><span class="o">.</span><span class="n">V</span><span class="o">+</span><span class="n">z1</span><span class="p">:</span><span class="n">P1s</span><span class="p">:</span><span class="n">P3s</span><span class="p">:</span><span class="n">S1s</span><span class="p">:</span><span class="n">S3s</span><span class="p">:</span><span class="n">Y2s</span>
+</pre></div>
+</div>
+<p>Si les informations grammaticales et sémantiques diffèrent, il faut
+créer des entrées dis- tinctes :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">glace</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">z1</span><span class="p">:</span><span class="n">fs</span>
+<span class="n">glace</span><span class="p">,</span><span class="n">glacer</span><span class="o">.</span><span class="n">V</span><span class="o">+</span><span class="n">z1</span><span class="p">:</span><span class="n">P1s</span><span class="p">:</span><span class="n">P3s</span><span class="p">:</span><span class="n">S1s</span><span class="p">:</span><span class="n">S3s</span><span class="p">:</span><span class="n">Y2s</span>
+</pre></div>
+</div>
+<p>Certaines entrées ayant les mêmes codes grammaticaux et sémantiques
+peuvent avoir des sens différents, comme c’est le cas pour le mot
+<em>poêle</em> qui désigne un appareil de chauffage ou un voile au masculin et
+un instrument de cuisine au féminin. On peut donc distinguer les entrées
+dans ce cas :</p>
+<p><code class="docutils literal"><span class="pre">poêle,.N+z1:fs/</span> <span class="pre">poêle</span> <span class="pre">à</span> <span class="pre">frire</span></code></p>
+<p><code class="docutils literal"><span class="pre">poêle,.N+z1:ms/</span> <span class="pre">voile,</span> <span class="pre">linceul;</span> <span class="pre">appareil</span> <span class="pre">de</span> <span class="pre">chauffage</span></code></p>
+<p>NOTE : dans la pratique, cette distinction n’a pas d’autre conséquence
+qu’une augmentation du nombre d’entrées du dictionnaire. Les différents
+programmes qui composent Unitex donneront exactement les mêmes résultats
+si l’on fusionne ces entrées en :</p>
+<p><code class="docutils literal"><span class="pre">poêle,.N+z1:fs:ms</span></code></p>
+<p>L’intérêt de cette distinction est donc laissé à l’appréciation des
+personnes qui construisent des dictionnaires.</p>
+</div>
+</div>
+<div class="section" id="format-des-delas">
+<h3>Format des DELAS<a class="headerlink" href="#format-des-delas" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le format des DELAS est très similaire à celui des DELAF. La différence
+est qu’on ne mentionne qu’une forme canonique suivie de codes
+grammaticaux et/ou sémantiques. La forme canonique est séparée des
+différents codes par une virgule. Voici un exemple d’entrée :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cheval</span><span class="p">,</span><span class="n">N4</span><span class="o">+</span><span class="n">Anl</span>
+</pre></div>
+</div>
+<p>Le premier code grammatical ou sémantique sera interprété par le
+programme de flexion comme le nom de la grammaire à utiliser pour
+fléchir l’entrée. L’entrée de l’exemple cidessus indique que le mot
+<em>cheval</em> doit être fléchi avec une grammaire nommée <code class="docutils literal"><span class="pre">N4</span></code>. Il est
+possible d’ajouter des codes flexionnels aux entrées, mais la nature de
+l’opération de flexion limite l’intérêt de cette possibilité. Pour plus
+de détails, voir plus loin dans ce chapitre la section
+&nbsp;[section-automatic-inflection].</p>
+</div>
+<div class="section" id="contenu-des-dictionnaires">
+<h3>Contenu des dictionnaires<a class="headerlink" href="#contenu-des-dictionnaires" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les dictionnaires fournis avec Unitex contiennent des descriptions des
+mots simples et composés. Ces descriptions indiquent la catégorie
+grammaticale de chaque entrée, ses éventuels codes de flexion, ainsi que
+des informations sémantiques diverses. Les tableaux suivants donnent un
+aperçu des différents codes utilisés dans les dictionnaires fournis avec
+Unitex. Ces codes ont la même signification pour presque toutes les
+langues, même si certains d’entre eux sont propres à certaines langues
+(<em>i.e.</em> marque du neutre, etc.).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="37%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Code</strong></th>
+<th class="head"><strong>Signification</strong></th>
+<th class="head"><strong>Exemples</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">A</span></code></td>
+<td>adjectif</td>
+<td>fabuleux, broken-down</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ADV</span></code></td>
+<td>adverbe</td>
+<td>réellement, à la longue</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">CONJC</span></code></td>
+<td>conjonction de coordination</td>
+<td>mais</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">CONJS</span></code></td>
+<td>conjonction de subordination</td>
+<td>puisque, à moins que</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">DET</span></code></td>
+<td>déterminant</td>
+<td>ses, trente-six</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">INTJ</span></code></td>
+<td>interjection</td>
+<td>adieu, mille millions de mille sabords</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">N</span></code></td>
+<td>nom</td>
+<td>prairie, vie sociale</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">PREP</span></code></td>
+<td>préposition</td>
+<td>sans, à la lumière de</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">PRO</span></code></td>
+<td>pronom</td>
+<td>tu, elle-même</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">V</span></code></td>
+<td>verbe</td>
+<td>continuer, copier-coller</td>
+</tr>
+</tbody>
+</table>
+<p>Table: Codes grammaticaux usuels[tab-grammatical-codes]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="54%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Code</strong></th>
+<th class="head"><strong>Signification</strong></th>
+<th class="head"><strong>Exemple</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">z1</span></code></td>
+<td>langage courant</td>
+<td>blague</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">z2</span></code></td>
+<td>langage spécialisé</td>
+<td>sépulcre</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">z3</span></code></td>
+<td>langage très spécialisé</td>
+<td>houer</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">Abst</span></code></td>
+<td>abstrait</td>
+<td>bon goût</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Anl</span></code></td>
+<td>animal</td>
+<td>cheval de race</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">AnlColl</span></code></td>
+<td>animal collectif</td>
+<td>troupeau</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Conc</span></code></td>
+<td>concret</td>
+<td>abbaye</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ConcColl</span></code></td>
+<td>concret collectif</td>
+<td>décombres</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Hum</span></code></td>
+<td>humain</td>
+<td>diplomate</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">HumColl</span></code></td>
+<td>humain collectif</td>
+<td>vieille garde</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">t</span></code></td>
+<td>verbe transitif</td>
+<td>foudroyer</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">i</span></code></td>
+<td>verbe intransitif</td>
+<td>fraterniser</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">en</span></code></td>
+<td>particule pré-verbale (PPV) obligatoire</td>
+<td>en imposer</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">se</span></code></td>
+<td>verbe pronominal</td>
+<td>se marier</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ne</span></code></td>
+<td>verbe à négation obligatoire</td>
+<td>ne pas cesser de</td>
+</tr>
+</tbody>
+</table>
+<p>Table: Quelques codes sémantiques[tab-semantic-codes]</p>
+<p>NOTE : les descriptions des temps du tableau &nbsp;[tab-inflectional-codes]
+correspondent au français. Néanmoins, la plupart de ces définitions se
+retrouvent dans plusieurs langues (infinitif, présent, participe passé,
+etc.).</p>
+<p>Malgré une base commune à la plupart des langues, les dictionnaires
+contiennent des particularités de codage propres à chaque langue. Ainsi,
+les codes de flexion variant beaucoup d’une langue à une autre, n’ont
+pas été décrits ici. Pour une description exhaustive de tous les codes
+utilisés dans un dictionnaire, nous vous recommandons de vous adresser
+directement à l’auteur du dictionnaire.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="45%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Code</strong></th>
+<th class="head"><strong>Signification</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">m</span></code></td>
+<td>masculin</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">f</span></code></td>
+<td>féminin</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">n</span></code></td>
+<td>neutre</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td>singulier</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">p</span></code></td>
+<td>pluriel</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">1</span></code>, <code class="docutils literal"><span class="pre">2</span></code>, <code class="docutils literal"><span class="pre">3</span></code></td>
+<td>1st, 2nd, 3rd personne</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">P</span></code></td>
+<td>présent de l’indicatif</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">I</span></code></td>
+<td>imparfait de l’indicatif</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">S</span></code></td>
+<td>présent du subjonctif</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">T</span></code></td>
+<td>imparfait du subjonctif</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Y</span></code></td>
+<td>présent de l’impératif</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">C</span></code></td>
+<td>présent du conditionnel</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">J</span></code></td>
+<td>passé simple</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">W</span></code></td>
+<td>infinitif</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">G</span></code></td>
+<td>participe présent</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">K</span></code></td>
+<td>participe passé</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">F</span></code></td>
+<td>futur</td>
+</tr>
+</tbody>
+</table>
+<p>Table: Codes flexionnels usuels[tab-inflectional-codes]</p>
+<p>Les codes présentés ne sont absolument pas limitatifs. Chaque
+utilisateur peut introduire ses propres codes, et créer ses propres
+dictionnaires. Par exemple, on pourrait dans un but pédagogique
+introduire dans les dictionnaires anglais des marques indiquant les
+faux-amis français :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bless</span><span class="p">,</span><span class="o">.</span><span class="n">V</span><span class="o">+</span><span class="n">faux</span><span class="o">-</span><span class="n">ami</span><span class="o">/</span><span class="n">bénir</span>
+<span class="n">cask</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">faux</span><span class="o">-</span><span class="n">ami</span><span class="o">/</span><span class="n">tonneau</span>
+<span class="n">journey</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">faux</span><span class="o">-</span><span class="n">ami</span><span class="o">/</span><span class="n">voyage</span>
+</pre></div>
+</div>
+<p>Il est également possible d’utiliser les dictionnaires pour stocker des
+informations parti- culières. Ainsi, on pourrait utiliser la forme
+fléchie d’une entrée pour décrire un sigle et la forme canonique pour en
+donner la forme complète :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>ADN,Acide DésoxyriboNucléique.SIGLE
+LADL,Laboratoire d’Automatique Documentaire et Linguistique.SIGLE
+SAV,Service Après-Vente.SIGLE
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="recherche-dun-mot-dans-un-dictionnaire">
+<h2>Recherche d’un mot dans un dictionnaire<a class="headerlink" href="#recherche-dun-mot-dans-un-dictionnaire" title="Lien permanent vers ce titre">¶</a></h2>
+<p>[section-dictionary-lookup] Vous pouvez rechercher un mot dans plusieurs
+dictionnaires de deux manières :</p>
+<div class="figure" id="id63">
+<a class="reference internal image-reference" href="resources/img/fig3-1.png"><img alt="Menu “DELA”" src="resources/img/fig3-1.png" style="width: 13.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Menu “DELA”</span></p>
+</div>
+<p>Si vous avez ouvert un dictionnaire, la fenêtrre affichée contient un
+champ qui vous permet d’effectuer une recherche. Si le mot apparaît dans
+le dictionnaire, le bouton “Find” surligne la première entrée
+correspondante. Si plusieurs entrées correspondent, vous pouvez les
+parcourir en cliquant sur les deux boutons en forme de flèche.</p>
+<div class="figure" id="id64">
+<a class="reference internal image-reference" href="resources/img/fig3-2.png"><img alt="Recherche d’un mot dans un dictionnaire" src="resources/img/fig3-2.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Recherche d’un mot dans un dictionnaire</span></p>
+</div>
+<p>Vous pouvez aussi rechercher un mots dans plusieurs dictionnaires en
+cliquant sur le bouton “Lookup” du menu “DELA”. Vous pouvez ensuite
+sélectionner les dictionnaires dans lesquels rechercher le mot que vous
+avez entré.</p>
+<div class="figure" id="id65">
+<a class="reference internal image-reference" href="resources/img/fig3-3.png"><img alt="Recherche d’un mot dans plusieurs dictionnaires" src="resources/img/fig3-3.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Recherche d’un mot dans plusieurs dictionnaires</span></p>
+</div>
+</div>
+<div class="section" id="verification-du-format-du-dictionnaire">
+<h2>Vérification du format du dictionnaire<a class="headerlink" href="#verification-du-format-du-dictionnaire" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Lorsque les dictionnaires sont de taille importante, il devient
+fastidieux de les vérifier à la main. Unitex contient le programme
+<code class="docutils literal"><span class="pre">CheckDic</span></code> qui vérifie automatiquement les dictionnaires DELAF et
+DELAS.</p>
+<p>Ce programme effectue une vérification de la syntaxe des entrées. Pour
+chaque entrée mal formée, le programme affiche le numéro de ligne, le
+contenu de cette ligne et la nature de l’erreur. Les résultats de
+l’analyse sont sauvés dans un fichier nommé <code class="docutils literal"><span class="pre">CHECK_DIC.TXT</span></code> qui est
+affiché une fois la vérification terminée. En plus des éventuels
+messages d’erreurs, ce fichier contient la liste de tous les caractères
+utilisés dans les formes fléchies et canoniques, la liste des codes
+grammaticaux et sémantiques,ainsi que la liste des codes flexionnels
+utilisés. La liste des caractères permet de vérifier que les caractères
+présents dans le dictionnaire sont cohérents avec ceux présents dans le
+fichier alphabet de la langue. Chaque caractère est suivi par sa valeur
+en notation hexadécimale. Les listes de codes peuvent être utilisées
+pour vérifier qu’il n’y a pas de faute de frappe dans les codes du
+dictionnaire.</p>
+<p>Le programme <code class="docutils literal"><span class="pre">CheckDic</span></code> fonctionne avec des dictionnaires non
+comprimés, c’est-à-dire sous forme de fichiers texte. La convention
+généralement appliquée est de donner l’extension <code class="docutils literal"><span class="pre">.dic</span></code> . Pour
+vérifier le format d’un dictionnaire, il faut tout d’abord l’ouvrir en
+cliquant sur “Open...” dans le menu “DELA”.</p>
+<div class="figure" id="id66">
+<a class="reference internal image-reference" href="resources/img/fig3-4.png"><img alt="Exemple de dictionnaire[fig-dictionary-example]" src="resources/img/fig3-4.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple de dictionnaire[fig-dictionary-example]</span></p>
+</div>
+<p>Chargeons le dictionnaire de la figure&nbsp;[fig-dictionary-example]. Pour
+lancer la vérification automatique, cliquez sur “Check Format...” dans
+le menu “DELA”. la fenêtre de la figure &nbsp;[fig-dictionary-checking]
+apparaît alors. Cette fenêtre vous permet de choisir le type du
+dictionnaire que vous voulez vérifier. Les résultats de la vérification
+du dictionnaire de la figure&nbsp;[fig-dictionary-example], sont présentés
+sur la figure&nbsp;[fig-dictionary-checking-results].</p>
+<p>La première erreur est due au fait que le programme n’ait pas trouvé de
+point. Le seconde, au fait qu’il n’ait pas trouvé de virgule marquant la
+fin de la forme fléchie. La troisième erreur indique que le programme
+n’a trouvé aucun code grammatical ou sémantique.</p>
+</div>
+<div class="section" id="tri">
+<h2>Tri<a class="headerlink" href="#tri" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Unitex manipule les dictionnaires sans se soucier de l’ordre des
+entrées. Toutefois, pour des raisons de présentation, il est souvent
+préférable de trier les dictionnaires. L’opération de tri varie selon
+plusieurs critères, à commencer par la langue du texte à trier. Ainsi,
+le tri d’un dictionnaire thaï s’effectue selon un ordre différent de
+l’ordre alphabétique, si bien qu’Unitex utilise un mode de tri développé
+spécialement pour le thaï (voir chapitre [chap-external-programs]).</p>
+<p>Pour les langues européennes, le tri s’effectue généralement selon
+l’ordre lexicographique, avec toutefois quelques variantes. En effet,
+certaines langues comme le français considèrent certains caractères
+comme équivalents. Par exemple, la différence entre les caractères <code class="docutils literal"><span class="pre">e</span></code>
+et <code class="docutils literal"><span class="pre">é</span></code> est ignorée lorsque l’on veut comparer les mots <code class="docutils literal"><span class="pre">manger</span></code> et
+<code class="docutils literal"><span class="pre">mangés</span></code>, car les contextes <code class="docutils literal"><span class="pre">r</span></code> et <code class="docutils literal"><span class="pre">s</span></code> permettent de décider de
+l’ordre. La distinction n’est faite que lorsque les contextes sont
+identiques, ce qui est le cas si l’on compare <code class="docutils literal"><span class="pre">pêche</span></code> et <code class="docutils literal"><span class="pre">pèche</span></code>.</p>
+<p>Afin de prendre en compte ce phénomène, le programme de tri <code class="docutils literal"><span class="pre">SortTxt</span></code>
+utilise un fichier qui définit des équivalences de caractères. Ce
+fichier s’appelle <code class="docutils literal"><span class="pre">Alphabet_sort.txt</span></code> et se trouve dans le répertoire
+de la langue courante de l’utilisateur. Voici les premières lignes du
+fichier utilisé par défaut pour le français :</p>
+<p><code class="docutils literal"><span class="pre">AÀÂÄaàâä</span></code></p>
+<p><code class="docutils literal"><span class="pre">Bb</span></code></p>
+<p><code class="docutils literal"><span class="pre">CÇcç</span></code></p>
+<p><code class="docutils literal"><span class="pre">Dd</span></code></p>
+<p><code class="docutils literal"><span class="pre">EÉÈÊËeéèêë</span></code></p>
+<p>Les caractères présents sur une même ligne sont considérés comme
+équivalents quand le contexte le permet. Lorsqu’il faut comparer deux
+caractères équivalents, on les compare selon l’ordre dans lequel ils
+apparaissent de gauche à droite sur la ligne. On peut voir sur l’extrait
+ci-dessus qu’on ne fait pas de différence entre minuscules et
+majuscules, et qu’on ignore les accents ainsi que la cédille.</p>
+<p>Pour trier un dictionnaire, ouvrez-le, puis cliquez sur “Sort
+Dictionary” dans le menu “DELA”. Par défaut, le programme cherche
+toujours à utiliser le fichier <code class="docutils literal"><span class="pre">Alphabet_sort.txt</span></code>. Si ce fichier est
+absent, le tri se fait selon l’indice des caractères dans le codage
+Unicode. En modifiant ce fichier, vous pouvez définir vos propres
+préférences de tri.</p>
+<p>Remarque : après l’application des dictionnaires sur un texte, les
+fichiers <code class="docutils literal"><span class="pre">dlf</span></code>, <code class="docutils literal"><span class="pre">dlc</span></code> et <code class="docutils literal"><span class="pre">err</span></code> sont automatiquement triés avec ce
+programme.</p>
+</div>
+<div class="section" id="flexion-automatique">
+<h2>Flexion automatique<a class="headerlink" href="#flexion-automatique" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="flexion-des-mots-simples">
+<h3>Flexion des mots simples<a class="headerlink" href="#flexion-des-mots-simples" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Comme décrit dans la section&nbsp;[section-DELAS-format], une ligne de DELAS
+se compose généralement d’une forme canonique et d’une séquence de codes
+grammaticaux ou sémantiques :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">aviatrix</span><span class="p">,</span><span class="n">N4</span><span class="o">+</span><span class="n">Hum</span>
+<span class="n">matrix</span><span class="p">,</span><span class="n">N4</span><span class="o">+</span><span class="n">Math</span>
+<span class="n">radix</span><span class="p">,</span><span class="n">N4</span>
+</pre></div>
+</div>
+<p>Le premier code rencontré est interprété comme le nom de la grammaire à
+utiliser pour fléchir la forme canonique. Il y a deux formes possibles :</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">N4</span></code>: nom de la grammaire=<code class="docutils literal"><span class="pre">N4.fst2</span></code>, codes grammaticaux=<code class="docutils literal"><span class="pre">N</span></code>
+(le plus long préfixe uniquement composé de lettres)</li>
+<li><code class="docutils literal"><span class="pre">N(NC_XXX)</span></code>: nom de la grammaire=<code class="docutils literal"><span class="pre">NC_XXX.fst2</span></code>, codes
+grammaticaux=<code class="docutils literal"><span class="pre">N</span></code></li>
+</ul>
+<p>Ces grammaires de flexion seront automatiquement compilées si besoin
+est. Dans l’exemple ci-dessus, toutes les entrées seront fléchies avec
+une grammaire nommée <code class="docutils literal"><span class="pre">N4</span></code>.</p>
+<p>Pour lancer la flexion, cliquez sur “Inflect...” dans le menu “DELA”. La
+fenêtre de la figure&nbsp;[fig-inflection-configuration] permet d’indiquer au
+programme de flexion le répertoire dans lequel se trouvent les
+grammaires de flexion. Par défaut, le sous-répertoire <code class="docutils literal"><span class="pre">Inflection</span></code> du
+répertoire de la langue courante est utilisé. On peut aussi spécifier
+quels types de mots le dictionnaire est supposé contenir. Si une entrée
+non conforme est rencontrée, un message d’erreur sera affiché.</p>
+<div class="figure" id="id67">
+<a class="reference internal image-reference" href="resources/img/fig3-8.png"><img alt="Grammaire de flexion ``N4``\ [fig-example-inflectional-grammar]" src="resources/img/fig3-8.png" style="width: 4.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Grammaire de flexion <code class="docutils literal"><span class="pre">N4</span></code>[fig-example-inflectional-grammar]</span></p>
+</div>
+<p>La figure&nbsp;[fig-example-inflectional-grammar] présente un exemple de
+grammaire de flexion. Les chemins décrivent les suffixes à ajouter ou à
+retrancher pour obtenir la forme fléchie à partir de la forme canonique,
+et les sorties (texte en gras sous les boîtes) donnent les codes
+flexionnels à ajouter à l’entrée du dictionnaire.</p>
+<p>Dans notre exemple, deux chemins sont possibles. Le premier ne modifie
+pas la forme canonique et ajoute le code flexionnel <code class="docutils literal"><span class="pre">:s</span></code>. Le second
+retranche une lettre grâce à l’opérateur <code class="docutils literal"><span class="pre">L</span></code>, ajoute ensuite le
+suffixe <code class="docutils literal"><span class="pre">ces</span></code> et ajoute le code flexionnel <code class="docutils literal"><span class="pre">:mp</span></code>.</p>
+<p>Voici les opérateurs utilisables:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">L</span></code> (left) enlève une lettre à l’entrée;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">R</span></code> (right) rétablit une lettre de l’entrée. En français, beaucoup
+de verbes du premier groupe se conjuguent au présent à la troisième
+personne du singulier en retirant le <code class="docutils literal"><span class="pre">r</span></code> de l’infinitif et en
+changeant la 4<span class="math">\(\ieme\)</span> lettre en partant de la fin en <code class="docutils literal"><span class="pre">è</span></code>:
+<code class="docutils literal"><span class="pre">peler</span></code> <span class="math">\(\rightarrow\)</span> <code class="docutils literal"><span class="pre">pèle</span></code>, <code class="docutils literal"><span class="pre">acheter</span></code>
+<span class="math">\(\rightarrow\)</span> <code class="docutils literal"><span class="pre">achète</span></code>, <code class="docutils literal"><span class="pre">gérer</span></code> <span class="math">\(\rightarrow\)</span>
+<code class="docutils literal"><span class="pre">gère</span></code>, etc. Plutôt que d’écrire un suffixe de flexion pour chaque
+verbe (<code class="docutils literal"><span class="pre">LLLLèle</span></code>, <code class="docutils literal"><span class="pre">LLLLète</span></code> and <code class="docutils literal"><span class="pre">LLLLère</span></code>), on peut utiliser
+l’opérateur <code class="docutils literal"><span class="pre">R</span></code> pour n’en écrire qu’un seul : <code class="docutils literal"><span class="pre">LLLLèRR</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">C</span></code> (copy) duplique une lettre de l’entrée, en décalant tout ce qui
+se trouve à sa droite.</p>
+<p>Supposons par exemple que l’on souhaite générer automatiquement des
+adjectifs en <code class="docutils literal"><span class="pre">able</span></code> à partir de noms. Dans des cas comme
+<code class="docutils literal"><span class="pre">regrettable</span></code> ou <code class="docutils literal"><span class="pre">réquisitionnable</span></code>, on observe un doublement de
+la consonne finale du nom. Pour éviter d’écrire un graphe de flexion
+pour chaque consonne finale possible, on peut utiliser l’opérateur
+<code class="docutils literal"><span class="pre">C</span></code> afin de dupliquer la consonne finale, quelle qu’elle soit;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">D</span></code> (delete) supprime une lettre de l’entrée, en décalant tout ce
+qui se trouve à sa droite. Si l’on souhaite par exemple fléchir le
+mot roumain <code class="docutils literal"><span class="pre">european</span></code> en <code class="docutils literal"><span class="pre">europeni</span></code>, on utilisera la séquence
+<code class="docutils literal"><span class="pre">LDRi</span></code>. Le <code class="docutils literal"><span class="pre">L</span></code> positionnera le curseur sur la lettre <code class="docutils literal"><span class="pre">a</span></code>, <code class="docutils literal"><span class="pre">D</span></code>
+va supprimer le <code class="docutils literal"><span class="pre">a</span></code>, en décalant le <code class="docutils literal"><span class="pre">n</span></code> sur la gauche, puis
+<code class="docutils literal"><span class="pre">Ri</span></code> va rétablir le <code class="docutils literal"><span class="pre">n</span></code> et ajouter un <code class="docutils literal"><span class="pre">i</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">U</span></code> (unaccent) enlève l’accent du caractère courant s’il en
+comporte un. Par exemple la séquence <code class="docutils literal"><span class="pre">LLUx</span></code> appliquée au mot
+<code class="docutils literal"><span class="pre">mangés</span></code> produit la forme fléchie <code class="docutils literal"><span class="pre">mangex</span></code>, puisque <code class="docutils literal"><span class="pre">U</span></code> à
+transformé le <code class="docutils literal"><span class="pre">é</span></code> en <code class="docutils literal"><span class="pre">e</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">P</span></code> (uppercase) met en majuscule la première lettre de la pile. Par
+exemple, la séquence <code class="docutils literal"><span class="pre">Px</span></code> transforme <code class="docutils literal"><span class="pre">foo</span></code> en <code class="docutils literal"><span class="pre">Foox</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">W</span></code> (lowercase) met en minuscule la première lettre de la pile.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">&lt;R=?&gt;</span></code> remplace la première lettre de la pile par la lettre <code class="docutils literal"><span class="pre">?</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">&lt;I=?&gt;</span></code> insère la lettre <code class="docutils literal"><span class="pre">?</span></code> avant la première lettre de la pile.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">&lt;X=n&gt;</span></code> supprime les <span class="math">\(n\)</span> premières lettres de la pile.</p>
+</li>
+</ul>
+<p>Il y a également deux opérateurs spéciaux pour le Coréen:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">J</span></code> supprime une lettre Jamo. Si le caractère est un Hangul, ce
+caractère est d’abord remplacé par sa séquence équivalente en
+alphabet Jamo, ensuite, la dernière lettre Jamo est supprimée. Si le
+caractère n’est ni un Jamo, ni un Hangul, une erreur est produite.</li>
+<li><code class="docutils literal"><span class="pre">.</span></code> (latin dot) insère une limite de syllabe. Ceci a un effet de
+ford, si le haut de la pile contient des lettres Jamo, elles sont
+recombinées en Hangul.</li>
+</ul>
+<p>Voici un exemple qui décrit la flexion de <code class="docutils literal"><span class="pre">choose</span></code> en <code class="docutils literal"><span class="pre">chosen</span></code> grâce
+à la séquence d’opérateurs <code class="docutils literal"><span class="pre">LLDRRn</span></code> :</p>
+<ul>
+<li><p class="first">Étape 0: initialisation de la pile avec la forme canonique; on place
+le curseur après la dernière lettre:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="6%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">c</span></code></td>
+<td><code class="docutils literal"><span class="pre">h</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td><code class="docutils literal"><span class="pre">e</span></code></td>
+<td>`` ``</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Étape 1: on décale le curseur vers la gauche:</p>
+<p><code class="docutils literal"><span class="pre">LLDRRn</span></code></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="6%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">c</span></code></td>
+<td><code class="docutils literal"><span class="pre">h</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td><code class="docutils literal"><span class="pre">e</span></code></td>
+<td>`` ``</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Étape 2: on décale une seconde fois le curseur vers la gauche:</p>
+<p><code class="docutils literal"><span class="pre">LLDRRn</span></code></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="6%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">c</span></code></td>
+<td><code class="docutils literal"><span class="pre">h</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td><code class="docutils literal"><span class="pre">e</span></code></td>
+<td>`` ``</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Étape 3: on décale tout ce qui est à droite du curseur vers la gauche
+:</p>
+<p><code class="docutils literal"><span class="pre">LLDRRn</span></code></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="6%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">c</span></code></td>
+<td><code class="docutils literal"><span class="pre">h</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td><code class="docutils literal"><span class="pre">e</span></code></td>
+<td>`` ``</td>
+<td>`` ``</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Step 4: on décale le curseur vers la droite:</p>
+<p><code class="docutils literal"><span class="pre">LLDRRn</span></code></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="6%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">c</span></code></td>
+<td><code class="docutils literal"><span class="pre">h</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td><code class="docutils literal"><span class="pre">e</span></code></td>
+<td>`` ``</td>
+<td>`` ``</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Step 5: on décale encore le curseur vers la droite:</p>
+<p><code class="docutils literal"><span class="pre">LLDRRn</span></code></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="6%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">c</span></code></td>
+<td><code class="docutils literal"><span class="pre">h</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td><code class="docutils literal"><span class="pre">e</span></code></td>
+<td>`` ``</td>
+<td>`` ``</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Step 6: on écrit un <code class="docutils literal"><span class="pre">n</span></code></p>
+<p><code class="docutils literal"><span class="pre">LLDRRn</span></code></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="6%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">c</span></code></td>
+<td><code class="docutils literal"><span class="pre">h</span></code></td>
+<td><code class="docutils literal"><span class="pre">o</span></code></td>
+<td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td><code class="docutils literal"><span class="pre">e</span></code></td>
+<td><code class="docutils literal"><span class="pre">n</span></code></td>
+<td>`` ``</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<p>Une fois la séquence d’opérateurs épuisée, on prend le contenu de la
+pile jusqu’avant le curseur pour former la forme fléchie (ici
+<code class="docutils literal"><span class="pre">chosen</span></code>).</p>
+<p>Le programme de flexion <code class="docutils literal"><span class="pre">Inflect</span></code> explore tous les chemins de la
+grammaire de flexion en engendrant toutes les formes fléchies possibles.
+Afin d’éviter de devoir remplacer les noms des grammaires de flexion par
+de vrais codes grammaticaux dans le dictionnaire obtenu, le programme
+remplace ces noms par leurs plus longs préfixes composés de lettres.
+Ainsi, <code class="docutils literal"><span class="pre">N4</span></code> est remplacé par <code class="docutils literal"><span class="pre">N</span></code>. En choisissant judicieusement les
+noms des grammaires de flexion, on peut donc engendrer directement un
+dictionnaire prêt à l’emploi.</p>
+<p>La figure [fig-inflection-result] montre le dictionnaire obtenu après
+flexion du DELAS de notre exemple.</p>
+<div class="figure" id="id68">
+<a class="reference internal image-reference" href="resources/img/fig3-9.png"><img alt="Résultat de la flexion automatique[fig-inflection-result]" src="resources/img/fig3-9.png" style="width: 9.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Résultat de la flexion automatique[fig-inflection-result]</span></p>
+</div>
+</div>
+<div class="section" id="operateurs-de-flexion-avances">
+<h3>Opérateurs de flexion avancés<a class="headerlink" href="#operateurs-de-flexion-avances" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Dans certaines langues, le processus de flexion entraine une
+modification de la racine du mot. Plusieurs opérateurs ont été
+développés pour faciliter ce type de traitement. Ils permettent de
+rechercher et d’enlever un suffixe du mot <code class="docutils literal"><span class="pre">W</span></code> à fléchir. Cette
+opération peut être accompagnée de la mémorisation dans une variable ($
+ou £) d’un facteur de ce suffixe. Ces opérateurs peuvent prendre les
+formes suivantes&nbsp;:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">&lt;X$Y&gt;``&nbsp;:</span> <span class="pre">On</span> <span class="pre">recherche</span> <span class="pre">à</span> <span class="pre">la</span> <span class="pre">fin</span> <span class="pre">du</span> <span class="pre">mot</span> <span class="pre">``W</span></code> le suffixe <code class="docutils literal"><span class="pre">Y</span></code>.
+Puis, on recherche à partir de la position atteinte la <strong>plus
+proche</strong> occurrence de <code class="docutils literal"><span class="pre">X</span></code> qui précède strictement celle de <code class="docutils literal"><span class="pre">Y</span></code> .
+La variable $ contient alors le <strong>plus court facteur</strong>
+(<strong>$</strong>hortest) de <code class="docutils literal"><span class="pre">W</span></code> strictement compris entre <code class="docutils literal"><span class="pre">X</span></code> et <code class="docutils literal"><span class="pre">Y</span></code>
+(<code class="docutils literal"><span class="pre">W</span> <span class="pre">=</span> <span class="pre">U.X.$.Y</span></code>)  <a class="footnote-reference" href="#id61" id="id3">[1]</a>. L’opérateur <code class="docutils literal"><span class="pre">&lt;X$Y&gt;</span></code> retire <code class="docutils literal"><span class="pre">X.$.Y</span></code> de
+<code class="docutils literal"><span class="pre">W</span></code> et donne une valeur à $. Une fois qu’il a été appliqué, la
+séquence qui reste dans la pile est <code class="docutils literal"><span class="pre">U</span></code>, et la variable $ peut être
+utilisée dans le reste du chemin.</li>
+<li><code class="docutils literal"><span class="pre">&lt;X£Y&gt;``&nbsp;:</span> <span class="pre">On</span> <span class="pre">recherche</span> <span class="pre">à</span> <span class="pre">la</span> <span class="pre">fin</span> <span class="pre">du</span> <span class="pre">mot</span> <span class="pre">``W</span></code> le suffixe <code class="docutils literal"><span class="pre">Y</span></code>.
+Puis, on recherche à partir de la position atteinte l’occurrence de
+<code class="docutils literal"><span class="pre">X</span></code> la <strong>plus à gauche</strong> qui précède strictement celle de <code class="docutils literal"><span class="pre">Y</span></code>. La
+variable £ contient alors le <strong>plus long facteur</strong> (<strong>£</strong>ongest) de
+<code class="docutils literal"><span class="pre">W</span></code> strictement compris entre <code class="docutils literal"><span class="pre">X</span></code> et <code class="docutils literal"><span class="pre">Y</span></code> (<code class="docutils literal"><span class="pre">W</span> <span class="pre">=</span> <span class="pre">U.X.£.Y</span></code>).</li>
+<li><code class="docutils literal"><span class="pre">&lt;X&gt;``&nbsp;:</span> <span class="pre">Si</span> <span class="pre">aucune</span> <span class="pre">variable</span> <span class="pre">n’est</span> <span class="pre">présente,</span> <span class="pre">on</span> <span class="pre">recherche</span> <span class="pre">``X</span></code> comme
+suffixe de <code class="docutils literal"><span class="pre">W</span></code> (<code class="docutils literal"><span class="pre">W</span> <span class="pre">=U.X</span></code>).</li>
+<li><code class="docutils literal"><span class="pre">&lt;$Y&gt;</span></code>: Si le facteur <code class="docutils literal"><span class="pre">X</span></code> est absent, le <strong>plus court facteur
+``$``</strong> est la première lettre qui précède strictement <code class="docutils literal"><span class="pre">Y</span></code> .</li>
+<li><code class="docutils literal"><span class="pre">&lt;£Y&gt;``&nbsp;:</span> <span class="pre">Si</span> <span class="pre">le</span> <span class="pre">facteur</span> <span class="pre">``X</span></code> est absent, le <strong>plus long facteur
+``£``</strong> est le préfixe de <code class="docutils literal"><span class="pre">W</span></code> tel que <code class="docutils literal"><span class="pre">W</span> <span class="pre">=</span> <span class="pre">£.Y</span></code>.</li>
+</ul>
+<p>Pour illustrer l’utilisation des ces opérateurs, considérons le verbe
+<em>reprendre</em>&nbsp;:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="36%" />
+<col width="30%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Verbe</th>
+<th class="head">Opérateur</th>
+<th class="head">Variable</th>
+<th class="head">Résultat</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>reprendre</td>
+<td>&lt;re&gt;</td>
+<td>&nbsp;</td>
+<td>reprend</td>
+</tr>
+<tr class="row-odd"><td>reprendre</td>
+<td>&lt;$&gt;</td>
+<td>$ = e</td>
+<td>reprendr</td>
+</tr>
+<tr class="row-even"><td>reprendre</td>
+<td>&lt;£&gt;</td>
+<td>£= reprendre</td>
+<td><span class="math">\(\varepsilon\)</span></td>
+</tr>
+<tr class="row-odd"><td>reprendre</td>
+<td>&lt;re$re&gt;</td>
+<td>$ = nd</td>
+<td>rep</td>
+</tr>
+<tr class="row-even"><td>reprendre</td>
+<td>&lt;re£re&gt;</td>
+<td>£ = prend</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>reprendre</td>
+<td>&lt;$re&gt;</td>
+<td>$ = d</td>
+<td>repren</td>
+</tr>
+<tr class="row-even"><td>reprendre</td>
+<td>&lt;re$&gt;</td>
+<td>$ = <span class="math">\(\varepsilon\)</span></td>
+<td>reprendre</td>
+</tr>
+<tr class="row-odd"><td>reprendre</td>
+<td>&lt;£re&gt;</td>
+<td>£ = reprend</td>
+<td><span class="math">\(\varepsilon\)</span></td>
+</tr>
+<tr class="row-even"><td>reprendre</td>
+<td>&lt;re£&gt;</td>
+<td>£ = prendre</td>
+<td>re</td>
+</tr>
+</tbody>
+</table>
+<p>Le programme MultiFlex permet d’utiliser dix variables de type $ dont
+les noms sont $, $1..., $9 et dix variables de type £ dont les noms sont
+£, £1..., £9. De plus, plusieurs variables de types différents peuvent
+être utilisées au sein d’une même opération. Ainsi l’opérateur
+&lt;£3re$7re&gt; appliqué au verbe <em>reprendre</em> donne £3 = rep et $7 = <code class="docutils literal"><span class="pre">nd</span></code>.</p>
+<p>Si l’on considère les verbes <code class="docutils literal"><span class="pre">accélérer</span></code>, <code class="docutils literal"><span class="pre">sécher</span></code>, la deuxième
+personne du présent de l’indicatif peut être générée par l’opération
+&lt;é$er&gt;è$es&nbsp;:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="8%" />
+<col width="19%" />
+<col width="7%" />
+<col width="8%" />
+<col width="4%" />
+<col width="7%" />
+<col width="19%" />
+<col width="14%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">accélérer</span></code></td>
+<td>&lt;é$er&gt;</td>
+<td><span class="math">\(\rightarrow\)</span></td>
+<td>accél</td>
+<td>$ = r</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>è$es</td>
+<td><span class="math">\(\rightarrow\)</span></td>
+<td><code class="docutils literal"><span class="pre">accélères</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">sécher</span></code></td>
+<td>&lt;é$er&gt;</td>
+<td><span class="math">\(\rightarrow\)</span></td>
+<td>s</td>
+<td>$ = ch</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>è$es</td>
+<td><span class="math">\(\rightarrow\)</span></td>
+<td><code class="docutils literal"><span class="pre">sèches</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>On remarque que le facteur <code class="docutils literal"><span class="pre">$</span></code> conservé dans la forme fléchie est de
+longueur variable (<code class="docutils literal"><span class="pre">r</span></code>, <code class="docutils literal"><span class="pre">ch</span></code>). La flexion de <code class="docutils literal"><span class="pre">accélérer</span></code> et
+<code class="docutils literal"><span class="pre">sécher</span></code> ne peut se faire que par des opérateurs de pile classiques à
+l’aide d’une opération commune. Deux opérations différentes
+(<code class="docutils literal"><span class="pre">-4RèCes</span></code>, <code class="docutils literal"><span class="pre">-5RèCes</span></code>) sont nécessaires. Le graphe de la
+figure&nbsp;[fig-inflection-secher] permet de fléchir des verbes comme
+<code class="docutils literal"><span class="pre">accélérer</span></code> et <code class="docutils literal"><span class="pre">sécher</span></code> au présent.</p>
+<p>Voici les flexions obtenues pour les verbes <code class="docutils literal"><span class="pre">accélérer</span></code> et <code class="docutils literal"><span class="pre">sécher</span></code>:</p>
+<p><a class="reference internal" href="resources/img/fig3-flexion_aussprechen2.png"><img alt="image" src="resources/img/fig3-flexion_aussprechen2.png" style="width: 5.00000cm;" /></a></p>
+<p>Le redoublement de certaines lettres lors de la flexion peut s’effectuer
+avec l’opérateur $. Par exemple l’adject <em>tranquil</em> en anglais possède
+deux formes au comparatif et deux au superlatf. Le graphe de la figure
+&nbsp;[fig-inflection-tranquil] permet de les produire.</p>
+<p>Voici les flexions obtenues pour l’adjectif anglais <code class="docutils literal"><span class="pre">tranquil</span></code>:</p>
+<p><a class="reference internal" href="resources/img/fig3-flexion_aussprechen2.png"><img alt="image" src="resources/img/fig3-flexion_aussprechen2.png" style="width: 5.00000cm;" /></a></p>
+<p>Dans certaines langues, certaines formes fléchies comporte un préfixe
+qui s’ajoute devant la racine. C’est le cas lors de la formation du
+participe passé en allemand. L’utilisation conjointe des opérateurs
+<code class="docutils literal"><span class="pre">£</span></code> et <code class="docutils literal"><span class="pre">$</span></code> permet de fléchir le verbe allemand <code class="docutils literal"><span class="pre">sprechen</span></code> (parler)
+au présent et participe passé comme le montre le graphe de la
+figure&nbsp;[fig-inflection-sprechen].</p>
+<p>Voici les flexions obtenues pour le verbe allemand <code class="docutils literal"><span class="pre">sprechen</span></code>:</p>
+<p><a class="reference internal" href="resources/img/fig3-flexion_aussprechen2.png"><img alt="image" src="resources/img/fig3-flexion_aussprechen2.png" style="width: 5.00000cm;" /></a></p>
+<p>Si l’on veut fléchir le verbe à particule aussprechen on peut utiliser
+deux variables de type $. Le figure &nbsp;[fig-inflection-aussprechen] montre
+un graphe qui comport les variables <code class="docutils literal"><span class="pre">$1</span></code> et <code class="docutils literal"><span class="pre">$2</span></code>.</p>
+<p>Voici les flexions obtenues pour le verbe allemand <code class="docutils literal"><span class="pre">aussprechen</span></code>:</p>
+<p><a class="reference internal" href="resources/img/fig3-flexion_aussprechen2.png"><img alt="image" src="resources/img/fig3-flexion_aussprechen2.png" style="width: 5.00000cm;" /></a></p>
+<p><strong>Codes sémantiques</strong> Dans certaines langues, il existe des
+caractéristiques flexionnelles qui correspondent en fait à des
+caractéristiques sémantiques comme par exemple les marqueurs de la forme
+passive. Ces codes peuvent ne pas apparaître comme des codes
+flexionnels, mais plutôt comme des codes sémantiques. Pour produire des
+codes sémantiques, il faut insérer un signe plus au début de la sortie
+d’une boîte. Cette boîte doit seulement contenir le code sémantique
+précédé d’un plus, comme le montre la figure&nbsp;[fig-inflection-sem].</p>
+</div>
+<div class="section" id="flexion-des-mots-composes">
+<h3>Flexion des mots composés<a class="headerlink" href="#flexion-des-mots-composes" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Voir chapitre [chap-multiflex].</p>
+</div>
+<div class="section" id="flexion-des-langues-semitiques">
+<h3>Flexion des langues sémitiques<a class="headerlink" href="#flexion-des-langues-semitiques" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les langues sémitiques comme l’arabe ou l’hébreu se fléchissent d’une
+manière qui n’est pas facilement représentable avec les opérateurs de
+flexion décrits ci-dessus. Leur morphologie obéit à une logique
+différente&nbsp;: les mots se fléchissent selon un <em>squelette consonantique</em>.
+Le processus de flexion combine ce squelette avec des voyelles. Des
+opérateurs spécifiques ont été implémentés pour les langues sémitiques,
+et certains pourraient être utiles aussi pour des langues en dehors de
+la famille sémitique, comme le tagalog.</p>
+<p>Tout d’abord, voyons un cas où on ne code que les consonnes dans le
+champ lemme de l’entrée DELAS&nbsp;:</p>
+<p><code class="docutils literal"><span class="pre">ktb,$V31-123</span></code></p>
+<p>Le signe <code class="docutils literal"><span class="pre">$</span></code> avant le code grammatical indique que la grammaire de
+flexion est en mode sémitique, et la forme <code class="docutils literal"><span class="pre">ktb</span></code> qui figure dans le
+champ lemme est le squelette consonantique. La figure [semitic-grammar]
+montre une grammaire jouet <code class="docutils literal"><span class="pre">V31-123.grf</span></code> qui illustre le
+fonctionnement du mode sémitique. Les grammaires de flexion utilisent la
+translittération Buckwalter++ de l’écriture arabe
+(cf.&nbsp;section&nbsp;[transliteration-Arabic]).</p>
+<p>Le mode sémitique obéit aux règles suivantes:</p>
+<ol class="arabic simple">
+<li>Tous les opérateurs de flexion standard peuvent être utilisés (<code class="docutils literal"><span class="pre">L</span></code>,
+<code class="docutils literal"><span class="pre">R</span></code>, etc.).</li>
+<li>Un chiffre représente une lettre du champ lemme (<code class="docutils literal"><span class="pre">1</span></code> pour la
+première, <code class="docutils literal"><span class="pre">2</span></code> pour la seconde, etc). Dans notre exemple, <code class="docutils literal"><span class="pre">1</span></code>,
+<code class="docutils literal"><span class="pre">2</span></code> et <code class="docutils literal"><span class="pre">3</span></code> représentent respectivement <code class="docutils literal"><span class="pre">k</span></code>, <code class="docutils literal"><span class="pre">t</span></code> et <code class="docutils literal"><span class="pre">b</span></code>. Si
+on veut désigner une lettre après la neuvième, on doit protéger son
+numéro avec des chevrons&nbsp;: <code class="docutils literal"><span class="pre">&lt;10&gt;</span></code>.</li>
+</ol>
+<div class="line-block">
+<div class="line">Le DELAF produit par cette grammaire est:</div>
+<div class="line"><code class="docutils literal"><span class="pre">yakotubu,ktb.V:aI3ms</span></code></div>
+</div>
+<div class="line-block">
+<div class="line">Si on ne code que les consonnes dans le champ lemme et que deux
+entrées ont les mêmes consonnes mais diffèrent par leurs voyelles, on
+doit coder les voyelles dans les grammaires de flexion&nbsp;:</div>
+<div class="line"><code class="docutils literal"><span class="pre">Hsb,$V3au</span> <span class="pre">//</span> <span class="pre">compter,</span> <span class="pre">Hasaba,</span> <span class="pre">yaHosubu</span></code></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Hsb,$V3ii</span> <span class="pre">//</span> <span class="pre">penser,</span> <span class="pre">Hasiba,</span> <span class="pre">yaHosibu</span></code></p>
+<p>Pour copier tout le champ lemme, on peut utiliser l’opérateur &lt;LEMMA&gt;.
+Une boite contenant cet opérateur récupère tout le champ lemme mais ne
+dépend pas du nombre de lettres. Cet opérateur est utile pour les noms
+et adjectifs arabes pour lesquels les formes du masculin sont obtenues
+en insérant des voyelles dans le squelette consonantique, alors que
+celles du féminin le sont en ajoutant des suffixes
+(figure&nbsp;[LEMMA-operator]). Dans cet exemple, on a codé à la fois les
+consonnes et les voyelles dans le champ lemme.</p>
+<p>L’opérateur &lt;n.LEMMA&gt; copie le lemme depuis la <span class="math">\(n\)</span>ième position
+jusqu’à la fin. Par exemple, dans certains noms arabes, la voyelle brève
+de la première syllabe alterne&nbsp;: <code class="docutils literal"><span class="pre">a/u</span></code>, <code class="docutils literal"><span class="pre">a/i</span></code> ou <code class="docutils literal"><span class="pre">u/i</span></code>, comme dans
+<code class="docutils literal"><span class="pre">nufaAyap</span></code>/<code class="docutils literal"><span class="pre">nifaAyap</span></code> ”ordures”. La grammaire de flexion de la
+fig.&nbsp;[n.LEMMA-operator] produit à la fois les variantes en <code class="docutils literal"><span class="pre">u</span></code> et en
+<code class="docutils literal"><span class="pre">i</span></code> comme formes fléchies de <code class="docutils literal"><span class="pre">nufaAyap</span></code>.</p>
+<p>En tagalog, une langue austronésienne parlée aux Philippines et qui
+utilise communément des infixes et des redoublements pour la flexion,
+&lt;LEMMA&gt; et &lt;n.LEMMA&gt; peuvent être utiles pour produire des temps
+verbaux. La grammaire de flexion jouet de la fig.&nbsp;[tagalog] produit le
+parfait <code class="docutils literal"><span class="pre">kumain</span></code>, le futur <code class="docutils literal"><span class="pre">kakain</span></code> et l’imparfait <code class="docutils literal"><span class="pre">kumakain</span></code> du
+verbe <code class="docutils literal"><span class="pre">kain</span></code> ”manger”.</p>
+</div>
+</div>
+<div class="section" id="translitteration-des-dictionnaires-darabe">
+<h2>Translittération des dictionnaires d’arabe<a class="headerlink" href="#translitteration-des-dictionnaires-darabe" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Quand les linguistes arabes analysent des dictionnaires pour y détecter
+des erreurs, la lecture dans l’écriture arabe est simple et efficace.
+Cependant, quand ils créent des grammaires de flexion
+(section&nbsp;[section-automatic-inflection]), des éléments de mots arabes
+apparaissent dans la même boite que des informations morpho-syntaxiques
+codées dans l’alphabet latin, et dans ce contexte, les allers-retours
+entre l’écriture arabe, qui se lit de droite à gauche, et l’alphabet
+latin, qui se lit de gauche à droite, ne sont pas pratiques. Avec
+Unitex, on peut coder des grammaires de flexion entièrement dans
+l’alphabet latin, en utilisant la translittération Buckwalter++, une
+correspondance biunivoque entre un codage Unicode de l’écriture arabe et
+des lettres de l’alphabet latin (cf.&nbsp;<a href="#id4"><span class="problematic" id="id5">:raw-latex:`\cite{neme2011}`</span></a>,
+section&nbsp;3.2, pp.&nbsp;4–6). La translittération Buckwalter++ est définie par
+la table des figures&nbsp;[buckwalter1] et [buckwalter2]. Unitex offre une
+fonctionnalité de translittération de dictionnaires DELAS et DELAF de
+l’arabe vers le code Buckwalter++ et inversement
+(fig.&nbsp;[Arabic-transliteration]). Cette fonctionnalité est accessible par
+le menu DELA.</p>
+</div>
+<div class="section" id="compression">
+<h2>Compression<a class="headerlink" href="#compression" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Unitex applique aux textes des dictionnaires comprimés. La compression
+permet de réduire la taille des dictionnaires et d’en accélérer la
+consultation. Cette opération s’effectue avec le programme <code class="docutils literal"><span class="pre">Compress</span></code>.
+Celui-ci prend en entrée un dictionnaire sous forme de fichier texte
+(par exemple <code class="docutils literal"><span class="pre">mon_dico.dic</span></code>) et produit deux fichiers:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">mon_dico.bin</span></code> contient l’automate minimal des formes fléchies du
+dictionnaire;</li>
+<li><code class="docutils literal"><span class="pre">mon_dico.inf</span></code> contient des codes qui permettent de reconstruire le
+dictionnaire d’origine à partir des formes fléchies contenues dans
+<code class="docutils literal"><span class="pre">mon_dico.bin</span></code>.</li>
+</ul>
+<p>L’automate minimal contenu dans <code class="docutils literal"><span class="pre">mon_dico.bin</span></code> est une représentation
+des formes fléchies où tous les préfixes et suffixes communs sont
+factorisés. Par exemple, l’automate minimal des mots <code class="docutils literal"><span class="pre">me</span></code>, <code class="docutils literal"><span class="pre">te</span></code>,
+<code class="docutils literal"><span class="pre">se</span></code>, <code class="docutils literal"><span class="pre">ma</span></code>, <code class="docutils literal"><span class="pre">ta</span></code> et <code class="docutils literal"><span class="pre">sa</span></code> peut être représenté par le graphe de
+la figure&nbsp;[fig-example-minimal-automaton].</p>
+<p>Pour comprimer un dictionnaire, ouvrez-le puis cliquez sur “Compress
+into FST” dans le menu “DELA”. La compression est indépendante de la
+langue et du contenu du dictionnaire. Les messages produits par le
+programme sont affichés dans une fenêtre qui ne se ferme pas
+automatiquement. Vous pouvez ainsi voir la taille du fichier <code class="docutils literal"><span class="pre">.bin</span></code>,
+obtenu, le nombre de lignes lues ainsi que le nombre de codes
+flexionnels produits. La figure &nbsp;[fig-compression-result] montre le
+résultat de la compression d’un dictionnaire de mots simples.</p>
+<div class="figure" id="id69">
+<a class="reference internal image-reference" href="resources/img/fig3-11.png"><img alt="Résultat d’une compression[fig-compression-result]" src="resources/img/fig3-11.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Résultat d’une compression[fig-compression-result]</span></p>
+</div>
+<p>À titre indicatif, les taux de compression généralement observés sont
+d’environ 95% pour les dictionnaires de mots simples et 50% pour ceux de
+mots composés.</p>
+<p>Quand le mode sémitique ([subsection-semitic-inflection]) a beaucoup été
+utilisé lors de la flexion d’un dictionnaire, une variante spécifique de
+l’algorithme de compression peut réduire la taille des fichiers <code class="docutils literal"><span class="pre">.bin</span></code>
+et <code class="docutils literal"><span class="pre">.inf</span></code>. Pour l’invoquer, soit on déclare la langue comme étant
+sémitique dans les préférences globales, en cochant l’option ”Semitic
+language” dans ”Preferences &gt; Language and Presentation”, soit on lance
+le programme Compress en ligne de commande avec l’option <code class="docutils literal"><span class="pre">--semitic</span></code>.</p>
+</div>
+<div class="section" id="application-de-dictionnaires">
+<h2>Application de dictionnaires<a class="headerlink" href="#application-de-dictionnaires" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Unitex peut manipuler soit des dictionnaires compressés (<code class="docutils literal"><span class="pre">.bin</span></code>) soit
+des graphes-dictionnaires (<code class="docutils literal"><span class="pre">.fst2</span></code>). Ces dictionnaires peuvent être
+appliqués soit lors du prétraitement, soit explicitement en cliquant sur
+“Apply Lexical Resources...” dans le menu “Text”. Nous allons maintenant
+détailler les règles de l’application des dictionnaires. Le cas des
+graphes-dictionnaires sera abordé dans la section
+&nbsp;[section-dictionary-graphs].</p>
+<div class="section" id="priorites">
+<h3>Priorités<a class="headerlink" href="#priorites" title="Lien permanent vers ce titre">¶</a></h3>
+<p>La règle de priorité est la suivante : si un mot du texte a été trouvé
+dans un dictionnaire, ce mot ne sera plus pris en compte lors de
+l’application de dictionnaires ayant une priorité inférieure.</p>
+<p>Cela permet d’éliminer certaines ambiguïtés lors de l’application des
+dictionnaires. Par exemple, le mot <em>par</em> a une interprétation nominale
+dans le domaine du golf. Si l’on ne veut pas envisager cet emploi, il
+suffit de créer un dictionnnaire filtre ne contenant que l’entrée
+<code class="docutils literal"><span class="pre">par,.PREP</span></code> et de le sauver en lui donnant la priorité la plus haute.
+De cette manière, même si le dictionnaire des mots simples contient
+l’autre entrée, celle-ci sera ignorée grâce au jeu des priorités.</p>
+<p>Il y a trois niveaux de priorités. Les dictionnaires dont les noms sans
+extension se terminent par <code class="docutils literal"><span class="pre">-</span></code> ont la priorité la plus grande ; ceux
+dont le nom se termine par <code class="docutils literal"><span class="pre">+</span></code> ont la priorité la plus faible ; les
+autres dictionnaires sont appliqués avec une priorité moyenne. L’ordre
+d’application de plusieurs dictionnaires ayant la même priorité est sans
+importance. En ligne de commande, l’instruction :</p>
+<p><code class="docutils literal"><span class="pre">Dico</span> <span class="pre">ex.snt</span> <span class="pre">alph.txt</span> <span class="pre">ctr+.bin</span> <span class="pre">cities-.bin</span> <span class="pre">rivers.bin</span> <span class="pre">regions-.bin</span></code></p>
+<p>appliquerait donc les dictionnaires dans l’ordre suivant (<code class="docutils literal"><span class="pre">ex.snt</span></code> est
+le texte auquel sont appliqués les dictionnaires, <code class="docutils literal"><span class="pre">alph.txt</span></code> est le
+fichier alphabet utilisé):</p>
+<ol class="arabic simple">
+<li><code class="docutils literal"><span class="pre">cities-.bin</span></code></li>
+<li><code class="docutils literal"><span class="pre">regions-.bin</span></code></li>
+<li><code class="docutils literal"><span class="pre">rivers.bin</span></code></li>
+<li><code class="docutils literal"><span class="pre">ctr+.bin</span></code></li>
+</ol>
+</div>
+<div class="section" id="regles-dapplication-des-dictionnaires">
+<h3>Règles d’application des dictionnaires<a class="headerlink" href="#regles-dapplication-des-dictionnaires" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Outre la règle de priorités, l’application des dictionnaires s’effectue
+en respectant les majuscules et les espaces. La règle du respect des
+majucules est la suivante :</p>
+<ul class="simple">
+<li>s’il y a une majuscule dans le dictionnaire, alors il doit y avoir
+une majuscule dans le texte ;</li>
+<li>s’il y a une minuscule dans le dictionnaire, il peut y avoir soit une
+minuscule soit une majuscule dans le texte.</li>
+</ul>
+<p>Ainsi, l’entrée <code class="docutils literal"><span class="pre">pierre,.N:fs</span></code> reconnaîtra les mots <code class="docutils literal"><span class="pre">pierre</span></code>,
+<code class="docutils literal"><span class="pre">Pierre</span></code> et <code class="docutils literal"><span class="pre">PIERRE</span></code>, alors que</p>
+<p><code class="docutils literal"><span class="pre">Pierre,.N+Prénom</span></code> ne reconnaîtra que <code class="docutils literal"><span class="pre">Pierre</span></code> et <code class="docutils literal"><span class="pre">PIERRE</span></code>. Les
+lettres minuscules et majuscules sont définies par le fichier alphabet
+passé en paramètre au programme <code class="docutils literal"><span class="pre">Dico</span></code> .</p>
+<p>Le respect des espacements est une règle très simple : pour qu’une
+séquence du texte soit reconnue par une entrée de dictionnaire, elle
+doit avoir exactement les mêmes espaces. Par exemple, si le dictionnaire
+contient <code class="docutils literal"><span class="pre">aujourd'hui,.ADV</span></code>, la séquence <code class="docutils literal"><span class="pre">Aujourd'</span> <span class="pre">hui</span></code> ne sera pas
+reconnue à cause de l’espace qui suit l’apostrophe.</p>
+</div>
+<div class="section" id="graphes-dictionnaires">
+<h3>Graphes-dictionnaires<a class="headerlink" href="#graphes-dictionnaires" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Le programme <code class="docutils literal"><span class="pre">Dico</span></code> est également capable d’appliquer des
+graphes-dictionnaires. Il s’agit de graphes qui respectent, par
+défaut <a class="footnote-reference" href="#id62" id="id6">[2]</a>, la règle suivante : si on les applique avec le programme
+<code class="docutils literal"><span class="pre">Locate</span></code> en mode MERGE, ils doivent produire des séquences
+correspondant à des lignes de DELAF. Quand on les applique à un texte,
+ils attachent les étiquettes lexicales DELAF à ces séquences.</p>
+<div class="figure" id="id70">
+<a class="reference internal image-reference" href="resources/img/fig3-12.png"><img alt="Graphe-dictionnaire des éléments chimiques[elements]" src="resources/img/fig3-12.png" style="height: 24.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Graphe-dictionnaire des éléments chimiques[elements]</span></p>
+</div>
+<p>La figure [elements] montre un graphe reconnaissant les symboles
+chimiques. On peut voir sur cette figure un premier avantage par rapport
+aux dictionnaires compressés : l’utilisation des guillemets permet de
+forcer le respect de la casse. Ainsi, ce graphe reconnaîtra bien <code class="docutils literal"><span class="pre">Fe</span></code>
+mais pas <code class="docutils literal"><span class="pre">FE</span></code>, alors qu’il est impossible de spécifier une telle
+interdiction dans un DELAF usuel.</p>
+<p>Le second avantage des graphes-dictionnaires est qu’ils peuvent
+exploiter les résultats fournis par les dictionnaires appliqués
+précédemment. Ainsi, on peut appliquer le dictionnaire général, puis
+étiqueter comme noms propres les mots inconnus commençant par une
+majuscule à l’aide du graphe <code class="docutils literal"><span class="pre">NPr+</span></code> de la figure&nbsp;[graph-NPr]. Le <code class="docutils literal"><span class="pre">+</span></code>
+dans le nom du graphe lui donne une priorité basse afin qu’il soit
+appliqué après le dictionnaire général. Pour fonctionner, ce graphe se
+base sur les mots qui sont toujours inconnus après le passage du
+dictionnaire général. Les crochets correspondent à une définition de
+contexte (voir la section [section-contexts]).</p>
+<p>Comme les graphes-dictionnaires sont appliqués par le moteur du
+programme <code class="docutils literal"><span class="pre">Locate</span></code>, ils peuvent utiliser tout ce que le programme
+<code class="docutils literal"><span class="pre">Locate</span></code> autorise. En particulier, il est possible d’utiliser les
+filtres morphologiques (section&nbsp;[section-filters]) et le mode
+morphologique (section&nbsp;[section-morphological-mode]). Ainsi, le graphe
+de la figure [graph-CR] utilise ces filtres pour reconnaître les nombres
+en chiffres romains. Notons qu’il utilise également des contextes afin
+d’éviter, par exemple, que <code class="docutils literal"><span class="pre">C</span></code> ne soit pris comme chiffre romain quand
+il est suivi par une apostrophe.</p>
+<p>Par défaut, les graphes-dictionnaires sont appliqués en mode MERGE. Il
+est possible de les appliquer en mode REPLACE, en ajoutant à leur le nom
+le suffixe <code class="docutils literal"><span class="pre">-r</span></code>. Celui-ci se combine avec les priorités <code class="docutils literal"><span class="pre">+</span></code> et
+<code class="docutils literal"><span class="pre">-</span></code>:</p>
+<p><code class="docutils literal"><span class="pre">bagpipe-r.fst2</span>&nbsp; <span class="pre">McAdam-r-.fst2</span>&nbsp; <span class="pre">phtirius-r+.fst2</span></code></p>
+<div class="section" id="exporter-les-entrees-produites-comme-dictionnaire-du-mode-morphologique">
+<h4>Exporter les entrées produites comme dictionnaire du mode morphologique<a class="headerlink" href="#exporter-les-entrees-produites-comme-dictionnaire-du-mode-morphologique" title="Lien permanent vers ce titre">¶</a></h4>
+<p>Les entrées produites par un graphe-dictionnaire sont consultées par le
+programme <code class="docutils literal"><span class="pre">Locate</span></code> quand il rencontre des masques lexicaux qui
+nécessitent la consultation d’un dictionnaire.</p>
+<p>Cependant, cette fonctionnalité est restreinte quand le masque lexical
+est en mode morphologique (cf.&nbsp;section&nbsp;[section-morphological-mode]). On
+ne peut pas déclarer un graphe-dictionnaire comme dictionnaire du mode
+morphologique de la manière habituelle (cf.&nbsp;section&nbsp;[dic-mode-morpho]),
+car ce n’est pas un fichier <code class="docutils literal"><span class="pre">.bin</span></code>. Quand on est en mode
+morphologique, les masques lexicaux qui nécessitent la consultation d’un
+dictionnaire ne déclenchent pas la consultation de
+graphes-dictionnaires. En compensation, on dispose de plusieurs
+solutions.</p>
+<ul class="simple">
+<li>On peut envisager d’invoquer le graphe-dictionnaire depuis la partie
+du graphe qui est en mode morphologique.</li>
+<li>Unitex produit de façon interne un dictionnaire des formes reconnues
+dans le texte par un graphe-dictionnaire. Si le nom du
+graphe-dictionnaire contient l’option <code class="docutils literal"><span class="pre">b</span></code> (voir ci-dessous
+Conventions de nommage), ce dictionnaire produit automatiquement est
+inclus implicitement parmi les dictionnaires du mode morphologique,
+de telle sorte qu’il est consulté quand le programme <code class="docutils literal"><span class="pre">Locate</span></code>
+rencontre des masques lexicaux en mode morphologique. Mais cette
+solution ne fonctionne que pour les formes reconnues par le
+graphe-dictionnaire pendant l’application initiale des dictionnaires
+(cf.&nbsp;section&nbsp;[section-applying-dictionaries]), et non pour celles qui
+n’apparaissent dans le texte que comme parties de tokens.</li>
+</ul>
+<p>Si on ajoute <code class="docutils literal"><span class="pre">z</span></code> à la place de <code class="docutils literal"><span class="pre">b</span></code>, le dictionnaire produit de façon
+interne pour le texte est immédiatement compressé, et il peut être
+consulté quand d’autres graphes-dictionnaires sont appliqués par la
+suite.</p>
+</div>
+<div class="section" id="conventions-de-nommage">
+<h4>Conventions de nommage<a class="headerlink" href="#conventions-de-nommage" title="Lien permanent vers ce titre">¶</a></h4>
+<div class="line-block">
+<div class="line">Le processus de nommage d’un graphe-dictionnaire s’établit comme suit
+:</div>
+<div class="line"><code class="docutils literal"><span class="pre">nom(-XYZ)([-+]).fst2</span></code></div>
+<div class="line">où:</div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">X</span></code> prend l’une des valeurs <code class="docutils literal"><span class="pre">[rRmM]</span></code>: <code class="docutils literal"><span class="pre">r</span></code> signifie mode
+REPLACE; <code class="docutils literal"><span class="pre">M</span></code> signifie mode MERGE (mode par défaut);</li>
+<li><code class="docutils literal"><span class="pre">Y</span></code> prend l’une des valeurs <code class="docutils literal"><span class="pre">[bBzZ]</span></code>: option qui régit la
+construction d’un dictionnaire du mode morphologique (voir
+ci-dessus);</li>
+<li><code class="docutils literal"><span class="pre">Z</span></code> prend l’une des valeurs <code class="docutils literal"><span class="pre">[aAlLsS]</span></code>: <code class="docutils literal"><span class="pre">a</span></code> signifie que le
+graphe est appliqué en mode “All matches”; <code class="docutils literal"><span class="pre">l</span></code> signifie mode
+“Longest matches” (mode par défault); <code class="docutils literal"><span class="pre">s</span></code> signifie “Shortest
+matches”.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="graphe-dictionnaire-morphologique">
+<h3>Graphe-dictionnaire morphologique<a class="headerlink" href="#graphe-dictionnaire-morphologique" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Dans un graphe-dictionnaire, chaque chemin doit, par défaut, produire
+une entrée lexicale à inclure dans le dictionnaire du texte. Dans un
+graphe-dictionnaire morphologique, chaque chemin doit produire une
+séquence d’une ou plusieurs étiquettes délimitées par des accolades et
+conformes à la syntaxe des lignes du DELAF
+(section&nbsp;[section-DELAF-entry-syntax]). Les sorties de tels graphes
+seront utilisées comme entrées pour construire l’automate du texte. Nous
+les appelons “graphes-dictionnaires morphologiques” parce que leur
+principale utilité est de fournir de nouvelles analyses morphologiques
+dans l’automate du texte, grâce au mode morphologique (voir
+[section-morphological-mode]). Cette fonctionnalité est utile pour des
+langues agglutinantes comme le coréen. Pour pouvoir utiliser un graphe
+comme graphe-dictionnaire morphologique, on le déclare par une barre
+oblique (slash, /) comme premier caractère de sa sortie, comme dans la
+figure [morphoA].</p>
+<div class="figure" id="id71">
+<a class="reference internal image-reference" href="resources/img/fig3-14a.png"><img alt="Exemple de graphe-dictionnaire morphologique[morphoA]" src="resources/img/fig3-14a.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Exemple de graphe-dictionnaire morphologique[morphoA]</span></p>
+</div>
+<p>La règle est simple: toute sortie du graphe-dictionnaire commençant par
+une barre oblique (slash, /) est ajoutée au fichier <code class="docutils literal"><span class="pre">tags.ind</span></code>, situé
+dans le répertoire du texte. Ce fichier est utilisé par le programme
+<code class="docutils literal"><span class="pre">Txt2Fst2</span></code> afin d’ajouter des interprétations à l’automate du texte.
+La grammaire de la figure [morphoA] reconnaît des mots formés par le
+préfixe <code class="docutils literal"><span class="pre">un</span></code> suivi d’un adjectif. Si on l’applique comme
+graphe-dictionnaire, on obtient de nouveaux chemins dans l’automate du
+texte comme le montre la figure [morphoB]. Remarquons que lorsque deux
+tags correspondent à des analyses dans la même unité lexicale, le lien
+entre eux est affiché par une ligne discontinue.</p>
+<div class="figure" id="id72">
+<a class="reference internal image-reference" href="resources/img/fig3-14b.png"><img alt="Chemin ajouté par un graphe-dictionnaire morphologique[morphoB]" src="resources/img/fig3-14b.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Chemin ajouté par un graphe-dictionnaire morphologique[morphoB]</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="bibliographie">
+<h2>Bibliographie<a class="headerlink" href="#bibliographie" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Le tableau &nbsp;[ref-dicos] donne quelques références relatives aux
+dictionnaires électroniques de mots simples et composés. Pour plus de
+détails, consultez la page de références sur le site web d’Unitex:
+<a class="reference external" href="http://www-igm.univ-mlv.fr/~unitex">http://www-igm.univ-mlv.fr/~unitex</a></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="47%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Langue</strong></th>
+<th class="head"><strong>Mots simples</strong></th>
+<th class="head"><strong>Mots composés</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>English</td>
+<td><a href="#id7"><span class="problematic" id="id8">:raw-latex:`\cite{klarsfeld}`</span></a>, <a href="#id9"><span class="problematic" id="id10">:raw-latex:`\cite{monceaux-1995}`</span></a></td>
+<td><a href="#id11"><span class="problematic" id="id12">:raw-latex:`\cite{delac-anglais}`</span></a>, <a href="#id13"><span class="problematic" id="id14">:raw-latex:`\cite{these-Savary}`</span></a></td>
+</tr>
+<tr class="row-odd"><td>French</td>
+<td><a href="#id15"><span class="problematic" id="id16">:raw-latex:`\cite{formes-ambigues}`</span></a>, <a href="#id17"><span class="problematic" id="id18">:raw-latex:`\cite{dicos-francais}`</span></a>, <a href="#id19"><span class="problematic" id="id20">:raw-latex:`\cite{jacques-1995}`</span></a></td>
+<td><a href="#id21"><span class="problematic" id="id22">:raw-latex:`\cite{dicos-francais}`</span></a>, <a href="#id23"><span class="problematic" id="id24">:raw-latex:`\cite{Gross96}`</span></a>, <a href="#id25"><span class="problematic" id="id26">:raw-latex:`\cite{max-1993}`</span></a>, <a href="#id27"><span class="problematic" id="id28">:raw-latex:`\cite{syntaxe-de-ladverbe}`</span></a></td>
+</tr>
+<tr class="row-even"><td>Modern Greek</td>
+<td><a href="#id29"><span class="problematic" id="id30">:raw-latex:`\cite{modern-greek}`</span></a>, <a href="#id31"><span class="problematic" id="id32">:raw-latex:`\cite{matthieu-anastasia}`</span></a>, <a href="#id33"><span class="problematic" id="id34">:raw-latex:`\cite{these-tita}`</span></a></td>
+<td><a href="#id35"><span class="problematic" id="id36">:raw-latex:`\cite{tita-2002}`</span></a>, <a href="#id37"><span class="problematic" id="id38">:raw-latex:`\cite{anastasia-2002}`</span></a></td>
+</tr>
+<tr class="row-odd"><td>Italian</td>
+<td><a href="#id39"><span class="problematic" id="id40">:raw-latex:`\cite{delaf-italien}`</span></a>, <a href="#id41"><span class="problematic" id="id42">:raw-latex:`\cite{delaf-italien-book}`</span></a></td>
+<td><a href="#id43"><span class="problematic" id="id44">:raw-latex:`\cite{composes-italien}`</span></a></td>
+</tr>
+<tr class="row-even"><td>Spanish</td>
+<td><a href="#id45"><span class="problematic" id="id46">:raw-latex:`\cite{blanco-2000}`</span></a></td>
+<td><a href="#id47"><span class="problematic" id="id48">:raw-latex:`\cite{blanco-1997}`</span></a></td>
+</tr>
+<tr class="row-odd"><td>Portuguese</td>
+<td><a href="#id49"><span class="problematic" id="id50">:raw-latex:`\cite{eleuterio1995}`</span></a>, <a href="#id51"><span class="problematic" id="id52">:raw-latex:`\cite{ranchhod1996b}`</span></a>, <a href="#id53"><span class="problematic" id="id54">:raw-latex:`\cite{ranchhodd1998}`</span></a>, <a href="#id55"><span class="problematic" id="id56">:raw-latex:`\cite{muniz2005}`</span></a></td>
+<td><a href="#id57"><span class="problematic" id="id58">:raw-latex:`\cite{ranchhod1991}`</span></a>, <a href="#id59"><span class="problematic" id="id60">:raw-latex:`\cite{ranchhodd1998}`</span></a></td>
+</tr>
+</tbody>
+</table>
+<p>Table: Quelques références bibliographiques sur les dictionnaires
+électroniques[ref-dicos]</p>
+<table class="docutils footnote" frame="void" id="id61" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[1]</a></td><td>Le point représente ici l’opération de concaténation.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id62" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[2]</a></td><td>Les graphes-dictionnaires morphologiques sont une exception
+(section&nbsp;[section-morphological-dictionary-graphs]) .</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-fr.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Dictionnaires</a><ul>
+<li><a class="reference internal" href="#les-dictionnaires-dela">Les dictionnaires DELA</a><ul>
+<li><a class="reference internal" href="#format-des-delaf">Format des DELAF</a><ul>
+<li><a class="reference internal" href="#syntaxe-dune-entree">Syntaxe d’une entrée</a></li>
+<li><a class="reference internal" href="#mots-composes-avec-espace-ou-tiret">Mots composés avec espace ou tiret</a></li>
+<li><a class="reference internal" href="#factorisation-dentrees">Factorisation d’entrées</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#format-des-delas">Format des DELAS</a></li>
+<li><a class="reference internal" href="#contenu-des-dictionnaires">Contenu des dictionnaires</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#recherche-dun-mot-dans-un-dictionnaire">Recherche d’un mot dans un dictionnaire</a></li>
+<li><a class="reference internal" href="#verification-du-format-du-dictionnaire">Vérification du format du dictionnaire</a></li>
+<li><a class="reference internal" href="#tri">Tri</a></li>
+<li><a class="reference internal" href="#flexion-automatique">Flexion automatique</a><ul>
+<li><a class="reference internal" href="#flexion-des-mots-simples">Flexion des mots simples</a></li>
+<li><a class="reference internal" href="#operateurs-de-flexion-avances">Opérateurs de flexion avancés</a></li>
+<li><a class="reference internal" href="#flexion-des-mots-composes">Flexion des mots composés</a></li>
+<li><a class="reference internal" href="#flexion-des-langues-semitiques">Flexion des langues sémitiques</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#translitteration-des-dictionnaires-darabe">Translittération des dictionnaires d’arabe</a></li>
+<li><a class="reference internal" href="#compression">Compression</a></li>
+<li><a class="reference internal" href="#application-de-dictionnaires">Application de dictionnaires</a><ul>
+<li><a class="reference internal" href="#priorites">Priorités</a></li>
+<li><a class="reference internal" href="#regles-dapplication-des-dictionnaires">Règles d’application des dictionnaires</a></li>
+<li><a class="reference internal" href="#graphes-dictionnaires">Graphes-dictionnaires</a><ul>
+<li><a class="reference internal" href="#exporter-les-entrees-produites-comme-dictionnaire-du-mode-morphologique">Exporter les entrées produites comme dictionnaire du mode morphologique</a></li>
+<li><a class="reference internal" href="#conventions-de-nommage">Conventions de nommage</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graphe-dictionnaire-morphologique">Graphe-dictionnaire morphologique</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bibliographie">Bibliographie</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-fr.html">Documentation overview</a><ul>
+      <li>Previous: <a href="02-loading_texts_FR_utf8.html" title="Chapitre précédent">Chargement d’un texte</a></li>
+      <li>Next: <a href="04-pattern_matching_FR_utf8.html" title="Chapitre suivant">Recherche d’expressions rationnelles</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/03-dictionaries_FR_utf8.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, SCTB.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/03-dictionaries_FR_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
