@@ -1,0 +1,642 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh_CN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>语法规则 &mdash; Unitex-zh 1.0.1 文档</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-zh 1.0.1 文档" href="Unitex-zh.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>语法规则<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>语法是代表大多数的语言现象的有效方式。第一部分介绍从形式上来说这些都是基于语法。然后，我们将看到如何建立和现在用&nbsp;Unitex
+的语法。</p>
+<div class="section" id="id2">
+<h2>语法规范化<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id3">
+<h3>上下文无关文法<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<p>在&nbsp;Unitex
+语法是代数文法的变体，也被称为上下文无关文法。代数语法包括重写规则。这里是一个匹配任何数目的字符<span class="math">\(a\)</span>:语法。</p>
+<p><span class="math">\(S\)</span> <span class="math">\(aS\)</span></p>
+<p><span class="math">\(S\)</span></p>
+<p><em>非终端符号</em>
+因为它们可以被重写。不能由规则重写符号称为&nbsp;<em>非终端符号</em>。成员权利规则非终端及终端的符号序列。Epsilon符号记为
+表示空词。在上面<span class="math">\(S\)</span>语法是一个非终端符号和:math:` A <cite>终端。
+:math:</cite> S`可以写成无论是在:math:` A <cite>随后:math:</cite> S`或一句空话。通过规则的应用程序的重写操作是被称作&nbsp;<em>分流</em>。我们把一个语法识别的单词，如果有产生字推导的序列。非终端用作在第一分支的起始点被称作&nbsp;<em>公理</em>。</p>
+<p>&nbsp;<em>aa</em>，因为你可以通过执行以下方法来得到关于<span class="math">\(S\)</span>的公理：</p>
+<p>公理 1: 改写成&nbsp;<span class="math">\(aS\)</span> 形式</p>
+<p><span class="math">\(aS\)</span></p>
+<p>公理 2: 把&nbsp;<span class="math">\(S\)</span> 右边的成员改写成&nbsp;<span class="math">\(aS\)</span></p>
+<p><span class="math">\(S\)</span> <span class="math">\(a\)</span> <span class="math">\(aaS\)</span></p>
+<p>公理 3: 把&nbsp;<span class="math">\(S\)</span> 改写成</p>
+<p><span class="math">\(S\)</span> <span class="math">\(aS\)</span> <span class="math">\(aa\)</span> <span class="math">\(aa\)</span></p>
+<p><em>一个语法的语言</em>称为经其认可的所有单词。代数语法识别的语言被称为<em>代数语言</em>或<em>上下文无关语言</em>.</p>
+</div>
+<div class="section" id="id4">
+<h3>广义的上下文无关文法<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>扩展代数语法是代数语法，其中成员的权利规则是符号，不过正则表达式的多个序列。
+因此，语法识别的:math:` A <a href="#id5"><span class="problematic" id="id6">`</span></a>任何序列可以在单个规则的扩展语法被重写：</p>
+<p><span class="math">\(S\)</span> <span class="math">\(a*\)</span></p>
+<p><em>递归转换</em> (<em>英文缩写RTN</em>) 或
+<em>语法图</em>,用作一个用户友好的图形界面。事实上，规则的权利可以通过其名称是规则的左侧的图形来表示。</p>
+<p>，&nbsp;Unitex
+文法是不完全广泛上下文无关文法，因为它们整合&nbsp;<em>转译</em>的概念.这个概念，从有限自动机借来的，也就是说，语法可以产生输出。为了清楚起见，我们将使用语法术语或图形。当一个语法将产生的输出中，我们使用的术语&nbsp;<em>transducteur</em>,
+在有限状态自动机的领域延伸的换能器的定义。</p>
+</div>
+</div>
+<div class="section" id="id7">
+<h2>编辑图表<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id8">
+<h3>创建图表<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>要创建一个图表，请单击&nbsp;“FS图” 菜单中的“新建” ([fig-fsgraph-menu]).</p>
+<div class="figure" id="id35">
+<a class="reference internal image-reference" href="_images/fig5-1.png"><img alt="&nbsp;FS图 菜单[fig-fsgraph-menu]" src="_images/fig5-1.png" style="width: 13.00000cm;" /></a>
+<p class="caption"><span class="caption-text">&nbsp;FS图 菜单[fig-fsgraph-menu]</span></p>
+</div>
+<p>，我们看到一个窗口出现在图&nbsp;[fig-new-graph].</p>
+<div class="figure" id="id36">
+<a class="reference internal image-reference" href="_images/fig5-2.png"><img alt="空白图[fig-new-graph]" src="_images/fig5-2.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">空白图[fig-new-graph]</span></p>
+</div>
+<p>&nbsp;Unitex
+，必须转换为Unicode。转换方法是相同的，作为文字（见&nbsp;[section-conversion-texte-unicode]).</p>
+<p>箭头符号表示图表的&nbsp;<em>初始状态</em>。由含有方形圆的初始符号是 <em>最终状态</em>
+图表的最终状态。最后文法识别由路径从初始状态描述到最终状态序列。</p>
+<p>，单击窗口中同时按下&nbsp;Ctrl 键。
+你会看到一个蓝色的方形象征产生的空的框（见图&nbsp;[fig-box-creation]）。当创建一个框，后者被自动选择。</p>
+<div class="figure" id="id37">
+<a class="reference internal image-reference" href="_images/fig5-3.png"><img alt="创建框[fig-box-creation]" src="_images/fig5-3.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">创建框[fig-box-creation]</span></p>
+</div>
+<p>，窗口的顶部（图&nbsp;[fig-box-creation]）。
+该套装包含符号<code class="docutils literal"><span class="pre">&lt;E&gt;</span></code>它代表了空词。更换用符号本文<code class="docutils literal"><span class="pre">I+you+he+she+it+we+they</span></code>，然后按
+Enter
+键确认。你已经创建了一个包含七行一个对话框（见图&nbsp;[fig-pronoun-box])。</p>
+<div class="figure" id="id38">
+<a class="reference internal image-reference" href="_images/fig5-4.png"><img alt="包含框" src="_images/fig5-4.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">包含框</span></p>
+</div>
+<p><code class="docutils literal"><span class="pre">I+you+he+she+it+we+they</span></code>[fig-pronoun-box]</p>
+<p>事实上，字符&nbsp;<code class="docutils literal"><span class="pre">+</span></code>作为分隔符。是因为它没有连接到任何其他的框显示为红色文本行。
+经常使用的这种类型的框中插入一个图形注释。</p>
+<p>，您必须创建一个框，与&nbsp;<code class="docutils literal"><span class="pre">/</span></code>开始。框的文本是绿色的，并且可以包含空行。
+这个框不能要么转型传入或传出过渡（见图&nbsp;[comment-box])。</p>
+<div class="figure" id="id39">
+<a class="reference internal image-reference" href="_images/fig5-4b.png"><img alt="包含注释的框[comment-box]" src="_images/fig5-4b.png" style="width: 12.50000cm;" /></a>
+<p class="caption"><span class="caption-text">包含注释的框[comment-box]</span></p>
+</div>
+<p>，则必须点击开始框，然后在目标框。
+如果已经有两个框之间的过渡，后者被去除。这是可能
+在目标中执行，首先单击此相同的操作，然后按开始框，同时按下Shift键。
+在我们的例子中，一旦连接到初始状态和图形的最终状态的方块中，
+我们得到图&nbsp;[fig-pronoun-graph]:</p>
+<div class="figure" id="id40">
+<a class="reference internal image-reference" href="_images/fig5-5.png"><img alt="英语代词的图形识别[fig-pronoun-graph]" src="_images/fig5-5.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">英语代词的图形识别[fig-pronoun-graph]</span></p>
+</div>
+<p>：如果您双击一个框，该框将连接到它本身（见图&nbsp;[fig-loop-box]）。要取消，再次框上的双击。</p>
+<div class="figure" id="id41">
+<a class="reference internal image-reference" href="_images/fig5-6.png"><img alt="Boîte reliée à elle-même[fig-loop-box]" src="_images/fig5-6.png" style="width: 4.50000cm;" /></a>
+<p class="caption"><span class="caption-text">Boîte reliée à elle-même[fig-loop-box]</span></p>
+</div>
+<p>“另存为...”，从&nbsp;“FS图”菜单来保存图。。默认情况下，&nbsp;Unitex
+提供了保存在子目录<code class="docutils literal"><span class="pre">Graphs</span></code>的图形。你可以看到，如果图形通过检查图表标题的最后一个记录后改变包含文本&nbsp;<code class="docutils literal"><span class="pre">(Unsaved)</span></code>。</p>
+<p>一个图可能包含循环。环路可以环绕单框，如图&nbsp;[fig-loop-box]或更多，如图&nbsp;[multi-selection]所示。循环的内容将认识到任何数目的顺序次。我们可以对的次数设置限制，但仅用于围绕单个框的循环：参见&nbsp;[nb-repetitions]。</p>
+<p>，我们可以证明，单击鼠标右键，右键菜单，可以执行最常见的操作〜（图&nbsp;[contextual-menu]）：</p>
+<div class="figure" id="id42">
+<a class="reference internal image-reference" href="_images/fig5-6b.png"><img alt="上下文菜单[contextual-menu]" src="_images/fig5-6b.png" style="width: 7.50000cm;" /></a>
+<p class="caption"><span class="caption-text">上下文菜单[contextual-menu]</span></p>
+</div>
+<ul class="simple">
+<li>创建一个框</li>
+<li>保存或打印当前图表或修改页面设置项目常用的菜单“工具”和“格式”“放大”是在菜单中也提供&nbsp;“FS图”</li>
+</ul>
+<p>如果选择了一个或多个方框，以下菜单变为可用，并且可以对这个组的框执行若干类型的操作。否则，他们是无用的，因此无效。</p>
+<ul class="simple">
+<li>关于所选框用输入变量的定义
+或输出部分分隔符或形态模式所指的上下文的输出。这些操作也可以用图形窗口的编辑工具栏（见&nbsp;[toolbar-commands]）。</li>
+<li>合并选定框</li>
+<li>在新图中导出选定框</li>
+</ul>
+</div>
+<div class="section" id="id9">
+<h3>子图<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>要调用一个子图，由字符&nbsp;<code class="docutils literal"><span class="pre">:</span></code>
+前面表示在一个框里他的名字。如果你在框中输入：</p>
+<p><code class="docutils literal"><span class="pre">alpha+:beta+gamma+:E:\greek\delta.grf</span></code></p>
+<p>&nbsp;[fig-subgraph-call]的框。</p>
+<div class="figure" id="id43">
+<a class="reference internal image-reference" href="_images/fig5-7.png"><img alt="子图上绘制图表 ``beta`` et ``delta``\ [fig-subgraph-call]" src="_images/fig5-7.png" style="width: 6.00000cm;" /></a>
+<p class="caption"><span class="caption-text">子图上绘制图表 <code class="docutils literal"><span class="pre">beta</span></code> et <code class="docutils literal"><span class="pre">delta</span></code>[fig-subgraph-call]</span></p>
+</div>
+<p>(<code class="docutils literal"><span class="pre">E:\greek\delta.grf</span></code>) 或简单地不带路径的名称
+(<code class="docutils literal"><span class="pre">beta</span></code>);在这种情况下，子图被假定为在相同的目录中引用它的曲线图。这是不建议，因为它破坏了其便携使用使用绝对路径图的名字。如果您使用绝对图的名字来操作&nbsp;<code class="docutils literal"><span class="pre">E:\greek\delta.grf</span></code>
+图形编译器发出警告（见图〜[fig-warning-absolute-graph-name])。</p>
+<div class="figure" id="id44">
+<a class="reference internal image-reference" href="_images/fig5-8.png"><img alt="对非便携式图形名称报错[fig-warning-absolute-graph-name]" src="_images/fig5-8.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">对非便携式图形名称报错[fig-warning-absolute-graph-name]</span></p>
+</div>
+<p>，建议使用&nbsp;<code class="docutils literal"><span class="pre">\</span></code> 或&nbsp;<code class="docutils literal"><span class="pre">/</span></code>
+作为图形名称的隔板。相反，它是使用器的&nbsp;<code class="docutils literal"><span class="pre">:</span></code>
+好：无论你的工作系统。我们也可以看到在图
+&nbsp;[fig-warning-absolute-graph-name]这就是分离器由图形编译器内部使用(<code class="docutils literal"><span class="pre">E::greek:delta.grf</span></code>)。</p>
+<p><strong>投递目录</strong> [section-repository]</p>
+<p>&nbsp;<span class="math">\(Y\)</span>语法使用语法&nbsp;<span class="math">\(X\)</span>，常见的做法是&nbsp;<span class="math">\(X\)</span>的所有图形复制的目录中&nbsp;:math:` Y`的图是，这会有两个问题：</p>
+<ul class="simple">
+<li>在目录图形的数目很快就变得非常重要&nbsp;; 。</li>
+</ul>
+<p>为了避免这种情况，可以存储在特定目录语法:math:` X <cite>，称为
+*投递目录*。。这个目录是一种库，在那里你可以存储图形，然后使用`</cite>::<code class="docutils literal"><span class="pre">\</span> <span class="pre">而不是</span>
+<span class="pre">``:</span></code>。要使用这个机制，首先要在菜单中定义信息库目录“信息&gt;首选项...&gt;目录”（参见图[directories]）。
+选择在“图形库”目录。投递目录是适当的工作语言，所以你不必使用相同的目录多种语言。</p>
+<div class="figure" id="id45">
+<a class="reference internal image-reference" href="_images/fig5-10.png"><img alt="确认存放的目录[directories]" src="_images/fig5-10.png" style="width: 8.00000cm;" /></a>
+<p class="caption"><span class="caption-text">确认存放的目录[directories]</span></p>
+</div>
+<p>，如图[repository]。如果我们调用图&nbsp;<code class="docutils literal"><span class="pre">DET</span></code> 这是在子目录&nbsp;<code class="docutils literal"><span class="pre">Johnson</span></code>
+，我们称作</p>
+<p><code class="docutils literal"><span class="pre">::Det:Johnson:DET</span></code> (见图[repository-graph-call] <a class="footnote-reference" href="#id33" id="id10">[1]</a>)。</p>
+<div class="figure" id="id46">
+<a class="reference internal image-reference" href="_images/fig5-11.png"><img alt="投递目录的例子[repository]" src="_images/fig5-11.png" style="width: 3.90000cm;" /></a>
+<p class="caption"><span class="caption-text">投递目录的例子[repository]</span></p>
+</div>
+<div class="figure" id="id47">
+<a class="reference internal image-reference" href="_images/fig5-12.png"><img alt="调用投递目录的图[repository-graph-call]" src="_images/fig5-12.png" style="width: 6.70000cm;" /></a>
+<p class="caption"><span class="caption-text">调用投递目录的图[repository-graph-call]</span></p>
+</div>
+<p>：如果你想避免把你的图表复杂路径&nbsp;<code class="docutils literal"><span class="pre">::Det:Johnson:DET</span></code>，您可以创建一个名为图&nbsp;<code class="docutils literal"><span class="pre">DET</span></code>您将资料库根目录&nbsp;<code class="docutils literal"><span class="pre">D:\repository\DET.grf</span></code>）。此图只包含对图形<code class="docutils literal"><span class="pre">::Det:Johnson:DET</span></code>。然后，你可以把你的图形简单调用&nbsp;<code class="docutils literal"><span class="pre">::DET</span></code>。这使1不和要有复杂的名称和2）修改投递目录的图表，而无需更改所有的图表。事实上，你只需要在投递目录的根更新图表。
+（图&nbsp;[fig-subgraph-call]），或在卡其子图的情况下，行库目录看（图&nbsp;[repository-graph-call]）。如果该文件位于&nbsp;<a href="#id11"><span class="problematic" id="id12">``</span></a><code class="docutils literal"><span class="pre">.grf</span>
+<span class="pre">子图未在指定的路径中，&nbsp;Unitex</span> <span class="pre">搜索文件&nbsp;\</span> <span class="pre">``.fst2</span></code>
+相同的名称。如果&nbsp;Unitex 发现既不是&nbsp;<code class="docutils literal"><span class="pre">.grf</span></code>
+也不&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code>，调用缺少的图形出现在红色背景上的一条线。</p>
+<div class="figure" id="id48">
+<a class="reference internal image-reference" href="_images/fig5-9.png"><img alt="缺少的子图显示为红色" src="_images/fig5-9.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">缺少的子图显示为红色</span></p>
+</div>
+<p>，您可以通过点击灰线，同时按下Alt键打开一个子图。在Linux上，使用&nbsp;&lt; Alt +
+点击 &gt;</p>
+<blockquote>
+<div>[2]_要打开一个子图，就其名字中间点击（中间的按钮），或使同时点击（左右按钮）。</div></blockquote>
+<p>图表由当前图形调用，调用当前图形可以通过点击第四组按钮中的第二和第三个按钮的工具栏上观看的图的列表（图&nbsp;[list-called-graphs]&nbsp;;
+也可见图&nbsp;[fig-toolbar], 专栏&nbsp;[toolbar-commands]）。 在子图列表中：</p>
+<p>，由当前图形称为图形之一 ，因此，未经处理的有其在橙色名 （拓展名既不是
+.grf 也不 .fst2 ）显示为红色。</p>
+<div class="figure" id="id49">
+<a class="reference internal image-reference" href="_images/fig5-12b.png"><img alt="显示所有已知图列表[list-called-graphs]" src="_images/fig5-12b.png" style="width: 15.20000cm;" /></a>
+<p class="caption"><span class="caption-text">显示所有已知图列表[list-called-graphs]</span></p>
+</div>
+</div>
+<div class="section" id="id13">
+<h3>搬运框<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<p>您可以选择使用鼠标多框。只需点击和移动鼠标而不释放按钮。当您松开按钮时，受选择矩形的所有框将被选中，然后会出现在白色的蓝色背景（图
+[multi-selection])。</p>
+<div class="figure" id="id50">
+<a class="reference internal image-reference" href="_images/fig5-13.png"><img alt="选择多个框[multi-selection]" src="_images/fig5-13.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">选择多个框[multi-selection]</span></p>
+</div>
+<p>您可以选择多个框现在&nbsp;&lt;CTRL&gt; 和&nbsp;&lt;SHIFT&gt;
+和点击每个框添加到选择。通过这种方式，可以选择多个框而不选择整个区域（图&nbsp;[multi-selection2])。</p>
+<div class="figure" id="id51">
+<a class="reference internal image-reference" href="_images/fig5-13b.png"><img alt="选择选择框[multi-selection2]" src="_images/fig5-13b.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">选择选择框[multi-selection2]</span></p>
+</div>
+<p>，您可以通过点击并没有释放按钮移动鼠标移动它们。要取消选择，单击图形中的空白区域;如果你点击一个框，所有的选择框将被连接到它。</p>
+<p>，如图&nbsp;[copy-paste-multi-selection]。要做到这一点，选择它们，按&nbsp;&lt; Ctrl +
+C &gt;或从“编辑”菜单中点击“复制”。你多现在在&nbsp;Unitex
+的剪贴板。然后，您可以通过按下&nbsp;&lt; Ctrl + V
+&gt;或通过单击“粘贴”，从“编辑”菜单中粘贴此选择。</p>
+<div class="figure" id="id52">
+<a class="reference internal image-reference" href="_images/fig5-14.png"><img alt="复制并粘贴多个选择[copy-paste-multi-selection]" src="_images/fig5-14.png" style="width: 13.00000cm;" /></a>
+<p class="caption"><span class="caption-text">复制并粘贴多个选择[copy-paste-multi-selection]</span></p>
+</div>
+<p>：您可以粘贴从它派生不同的图形多重选择。</p>
+<p>，选择删除它们所包含的文本（也就是说，在窗口顶部显示的字段中的文本），然后按Enter。</p>
+<p>。</p>
+</div>
+<div class="section" id="id14">
+<h3>输出<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<p>这是可能的输出关联到一个框。为此，使用特殊字符&nbsp;<code class="docutils literal"><span class="pre">/</span></code>。所有字符到它的权利将被视为输出的一部分。因此，文本
+<code class="docutils literal"><span class="pre">one+two+three/number</span></code> 给出图框&nbsp;[fig-exemple-transduction]。</p>
+<div class="figure" id="id53">
+<a class="reference internal image-reference" href="_images/fig5-15.png"><img alt="结果实例[fig-exemple-transduction]" src="_images/fig5-15.png" style="width: 4.50000cm;" /></a>
+<p class="caption"><span class="caption-text">结果实例[fig-exemple-transduction]</span></p>
+</div>
+<p>&nbsp;<code class="docutils literal"><span class="pre">number</span></code> ，并输出一个空框，我们写
+<code class="docutils literal"><span class="pre">&lt;E&gt;/number</span></code>（例如〜：图中最右边的框&nbsp;[fig-using-variable]是空的，一个输出）。与框相关联的输出以粗体显示在下面。</p>
+<p><strong>权</strong></p>
+<p>。因此，当一个序列由具有不同的输出几条路径识别
+（歧义翻译器）只有一个最大权重路径将被保留。
+经过一个“查找”，该协议将只承认曾经的序列，并输出（图&nbsp;[fig-weights-in-graphs])。</p>
+<div class="figure" id="id54">
+<a class="reference internal image-reference" href="_images/fig5-15b.png"><img alt="权重曲线[fig-weights-in-graphs]" src="_images/fig5-15b.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">权重曲线[fig-weights-in-graphs]</span></p>
+</div>
+<p>。举一个权重为1的框中插入&nbsp;<code class="docutils literal"><span class="pre">${1}$</span></code>在出口，就如同&nbsp;<code class="docutils literal"><span class="pre">&lt;E&gt;/${1}$</span></code>.</p>
+<p>。路径的权重可能是零，但也可以为负。有权重的路径，即使为零，具有优先于没有权重的特性。</p>
+<p>有了这些权重，我们可以定义识别相同序列的路径之间的优先权。不能设置两个序列，其中一个被包括在其他之间的优先级（见&nbsp;[section-configuration-recherche]）或重叠序列之间（见&nbsp;[section-priorite-gauche])。</p>
+<p>，而不是在子图或图表的调用者。</p>
+</div>
+<div class="section" id="id15">
+<h3>输入变量<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
+<p>有可能选择由输入变量的装置由一个语法识别的文本的部分。要输入变量&nbsp;<code class="docutils literal"><span class="pre">var1</span></code>到语法的一部分关联，请使用带图标栏中图形上方的红色括号（第&nbsp;[toolbar-commands]章）一个或按钮或特殊符号&nbsp;<code class="docutils literal"><span class="pre">$var1$(</span></code>
+和 <code class="docutils literal"><span class="pre">$var1$)</span></code>。
+（这些符号分别定义了区域店面的开头和结尾。建立一个包含&nbsp;<code class="docutils literal"><span class="pre">$var1$(</span></code> 和
+<code class="docutils literal"><span class="pre">$var1$)</span></code>，这些框不应该包含任何东西变量名，并且前面由
+<code class="docutils literal"><span class="pre">$</span></code>和右括号组成。然后将框连接到期望的区域语法）。
+在图的曲线〜[fig-using-variable]，识别开头的号码，它被存储于命名为&nbsp;<code class="docutils literal"><span class="pre">var1</span></code>
+，接着&nbsp;<code class="docutils literal"><span class="pre">dollar</span></code> 或是<code class="docutils literal"><span class="pre">dollars</span></code>。</p>
+<div class="figure" id="id55">
+<a class="reference internal image-reference" href="_images/fig5-16.png"><img alt="输入变量的使用 ``var1`` [fig-using-variable]" src="_images/fig5-16.png" style="width: 13.50000cm;" /></a>
+<p class="caption"><span class="caption-text">输入变量的使用 <code class="docutils literal"><span class="pre">var1</span></code> [fig-using-variable]</span></p>
+</div>
+<p>，大写或小写，并且数字和字符&nbsp;<code class="docutils literal"><span class="pre">_</span></code> 。 &nbsp;Unitex
+能区分是小写和大写字母之差。</p>
+<p>，它可以在输出用的字符<code class="docutils literal"><span class="pre">$</span></code>在其名称中使用。图&nbsp;[fig-date-grammar]的语法识别由一个月，一年的日期，并输出相同的日期，但在按年月顺序排列。</p>
+<p>如果你想使用&nbsp;<code class="docutils literal"><span class="pre">$</span></code>字符输出在一个框中，我们必须设置它，如图〜[fig-using-variable]。</p>
+<div class="figure" id="id56">
+<a class="reference internal image-reference" href="_images/fig5-17.png"><img alt="在日期的年份和月份反转[fig-date-grammar]" src="_images/fig5-17.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">在日期的年份和月份反转[fig-date-grammar]</span></p>
+</div>
+<p>，
+新值将覆盖旧的。因此，如果该变量是在一个循环设置，只是在循环之后的变量的值取决于通过循环中的最后时间。</p>
+<p>&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">LocateTfst</span></code>
+考虑到不确定的变量是空的。我们可以改变这种行为（见[section-advanced-search-options]）。此外，它是在图中可以查询一个变量，看它是否已经被初始化（第&nbsp;[section-variables]章)。</p>
+</div>
+<div class="section" id="id16">
+<h3>复制列表<a class="headerlink" href="#id16" title="永久链接至标题">¶</a></h3>
+<p>它可方便地进行复制黏贴，并从一个文本编辑器的邮框中的图表粘贴的词或短语的列表。为了避免必须每学期手动复制，&nbsp;Unitex
+提供的复制机制列表。要使用它，在你的文本编辑器中选择你的清单，使用&nbsp;&lt;
+Ctrl + C &gt;或内置复制功能，你的编辑复制。然后创建图表在一个框里，并使用&nbsp;&lt;
+Ctrl + V
+&gt;键或从“编辑”菜单中选择“粘贴”，将其粘贴到对话框。您将看到如图的窗口&nbsp;[fig-setting-contexts-for-multiple-copy]。</p>
+<div class="figure" id="id57">
+<a class="reference internal image-reference" href="_images/fig5-18.png"><img alt="选择一个列表的副本[fig-setting-contexts-for-multiple-copy]" src="_images/fig5-18.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">选择一个列表的副本[fig-setting-contexts-for-multiple-copy]</span></p>
+</div>
+<p>。默认情况下，这些设置都是空的。如下所示:</p>
+<p><em>eat</em></p>
+<p><em>sleep</em></p>
+<p><em>drink</em></p>
+<p><em>play</em></p>
+<p><em>read</em></p>
+<p>我们能看到如下框显示&nbsp;[fig-multiple-copy]。</p>
+<div class="figure" id="id58">
+<a class="reference internal image-reference" href="_images/fig5-19.png"><img alt="框通过复制列表具有加成上下文获得[fig-multiple-copy]" src="_images/fig5-19.png" style="width: 6.70000cm;" /></a>
+<p class="caption"><span class="caption-text">框通过复制列表具有加成上下文获得[fig-multiple-copy]</span></p>
+</div>
+</div>
+<div class="section" id="id17">
+<h3>特殊符号<a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h3>
+<p>按特定的方式解释下列符号的&nbsp;Unitex 图形编辑器：</p>
+<p><code class="docutils literal"><span class="pre">&quot;</span> <span class="pre">+</span> <span class="pre">:</span> <span class="pre">/</span> <span class="pre">&lt;</span> <span class="pre">&gt;</span> <span class="pre">#</span> <span class="pre">\</span></code></p>
+<p>表 &nbsp;[tab-special-symbols]总结了这些符号在&nbsp;Unitex
+的含义，以及，或如何在文本识别这些字符。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="64%" />
+<col width="23%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><code class="docutils literal"><span class="pre">符号</span></code></th>
+<th class="head"><code class="docutils literal"><span class="pre">意义</span></code></th>
+<th class="head"><code class="docutils literal"><span class="pre">编码</span></code></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;</span></code></td>
+<td>双引号可以既不是&nbsp;Unitex 解释序列，或在任何情况下变化。</td>
+<td><code class="docutils literal"><span class="pre">\&quot;</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">+</span></code></td>
+<td><code class="docutils literal"><span class="pre">+</span></code> 将框的不同行分开</td>
+<td><code class="docutils literal"><span class="pre">&quot;+&quot;</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">:</span></code></td>
+<td><code class="docutils literal"><span class="pre">:</span></code> 引入一个子图</td>
+<td><code class="docutils literal"><span class="pre">&quot;:&quot;</span></code> or <code class="docutils literal"><span class="pre">\:</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">/</span></code></td>
+<td><code class="docutils literal"><span class="pre">/</span></code> 描述框的输出的最开头</td>
+<td><code class="docutils literal"><span class="pre">\/</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&lt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">&lt;</span></code> 在一些话的开头</td>
+<td><code class="docutils literal"><span class="pre">&quot;&lt;&quot;</span></code> or <code class="docutils literal"><span class="pre">\&lt;</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&gt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">&gt;</span></code> 在一些话的结尾 <code class="docutils literal"><span class="pre">&quot;&gt;&quot;</span></code> or <code class="docutils literal"><span class="pre">\&gt;</span></code></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">#</span></code></td>
+<td><code class="docutils literal"><span class="pre">#</span></code> 禁止空格</td>
+<td><code class="docutils literal"><span class="pre">&quot;#&quot;</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">\</span></code></td>
+<td><code class="docutils literal"><span class="pre">\</span></code> 处理特殊字符</td>
+<td><code class="docutils literal"><span class="pre">\\</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Table: 在图形编辑器的特殊符号的编码[tab-special-symbols]</p>
+</div>
+<div class="section" id="id18">
+<h3>工具栏功能<a class="headerlink" href="#id18" title="永久链接至标题">¶</a></h3>
+<p>[toolbar-commands]</p>
+<p>工具栏上面的显示图标的图形包含快捷方式某些命令和可以操作使用“工具”图的框。此图标栏可以通过点击“粗”区域移动。它甚至可以从图分离，然后显示为单独的窗口（见图&nbsp;[fig-toolbar]）。
+在这种情况下，靠近窗口的事实替换工具栏到原来的位置。每个图都有自己的工具栏。</p>
+<div class="figure" id="id59">
+<a class="reference internal image-reference" href="_images/fig5-20.png"><img alt="工具栏[fig-toolbar]" src="_images/fig5-20.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">工具栏[fig-toolbar]</span></p>
+</div>
+<p>。以下五个操作对应于“复制”，“剪切”，“粘贴”，“重做”和“撤销”。</p>
+<p>6个按钮对应编辑命令框。第一，在白色箭头的形状，对应于正常编辑框。其他5对应的工具。要使用工具，单击其图标：鼠标光标会改变形状，鼠标点击会再以特定的方式来解释。下面介绍的工具，从左至右依次为：</p>
+<p>：代替点击创建一个空框; ：删除框，单击;
+：此工具来选择一个或多个框以及或连接到另一个。不同于正常模式时，或同时移动鼠标指针显示将要创建的转换;
+：此工具执行同前，但通过连接扭转所选框点击框;
+：打开当您单击在一个框里相应的灰线一子图。</p>
+<p>，图形上的〜右下方点击：点击次数将再次正常解释。</p>
+<p>。下面的两个让你看到相关列表与当前图图表：</p>
+<p>。如果一个文件位于拓展名&nbsp;<a href="#id19"><span class="problematic" id="id20">``</span></a><a href="#id21"><span class="problematic" id="id22">``</span></a>.grf
+的同时它所包含的图形显示在一个窗口&nbsp;Unitex
+改变，一个弹出窗口会提示你重新加载。</p>
+<p>，以另一图表或曲线图的另一个版本。一个新的窗口会出现（参见图&nbsp;[Graph-DIFF]）包含两个图以指示所述类型的两个曲线图之间的差异的颜色：插入，删除，移动框和改变在绿色，分别，红色，紫色和黄色所示的框的内容。</p>
+<div class="figure" id="id60">
+<a class="reference internal image-reference" href="_images/DIFF.png"><img alt="DIFF[Graph-DIFF]" src="_images/DIFF.png" style="width: 15.60000cm;" /></a>
+<p class="caption"><span class="caption-text">DIFF[Graph-DIFF]</span></p>
+</div>
+<p>最后六个按钮是快捷方式的变量，形态学方法或一个或多个选定框上下文的定义。如果选择一个或多个方框，这些按钮仅激活：</p>
+<ul class="simple">
+<li>: 输入变量 (见第&nbsp;[section-using-variables]章)</li>
+<li>: 输出变量 (见第&nbsp;[section-output-variables]章)</li>
+<li>: 形态模式 (见第&nbsp;[section-morphological-mode]章)</li>
+<li>: 左侧内容(见第&nbsp;[section-contexts]见第)</li>
+<li>: 右侧内容 (见第&nbsp;[section-contexts]见第)</li>
+<li>: 右侧负内容 (见第&nbsp;[section-contexts]见第)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id23">
+<h2>显示选项<a class="headerlink" href="#id23" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id24">
+<h3>在一个框里行进行排序<a class="headerlink" href="#id24" title="永久链接至标题">¶</a></h3>
+<p>您可以通过从子菜单中“工具”菜单中的&nbsp;“FS图”
+选择并单击“排序节点标签”框中的内容进行排序。此排序不使用&nbsp;<code class="docutils literal"><span class="pre">SortTxt</span></code>。这是一个基本的排序，根据在Unicode编码字符的顺序进行排序的方块的行。</p>
+</div>
+<div class="section" id="id25">
+<h3>缩放<a class="headerlink" href="#id25" title="永久链接至标题">¶</a></h3>
+<p>子菜单“缩放”，您可以选择在其中将在图表上显示的规模。</p>
+<div class="figure" id="id61">
+<a class="reference internal image-reference" href="_images/fig5-21.png"><img alt="子菜单缩放" src="_images/fig5-21.png" style="width: 6.40000cm;" /></a>
+<p class="caption"><span class="caption-text">子菜单缩放</span></p>
+</div>
+<p>“适合屏幕”拉伸或收缩图形给它的屏幕大小。
+“适合窗口”进行调整，使其在窗口中完全显示的图形。</p>
+</div>
+<div class="section" id="id26">
+<h3>抗锯齿<a class="headerlink" href="#id26" title="永久链接至标题">¶</a></h3>
+<p>抗混叠是避免了像素化效果的渲染效果。
+您可以通过单击“格式”子菜单中激活这个效应“抗锯齿......”。图〜[fig-antialiasing]显示正常（上图），显示两个图，并应用了抗锯齿（下图）。</p>
+<div class="figure" id="id62">
+<a class="reference internal image-reference" href="_images/fig5-22.png"><img alt="抗锯齿实例[fig-antialiasing]" src="_images/fig5-22.png" style="width: 13.50000cm;" /></a>
+<p class="caption"><span class="caption-text">抗锯齿实例[fig-antialiasing]</span></p>
+</div>
+<p>&nbsp;Unitex 的执行。我们建议，如果你的机器不是强大，最好不使用它。</p>
+</div>
+<div class="section" id="id27">
+<h3>对齐框<a class="headerlink" href="#id27" title="永久链接至标题">¶</a></h3>
+<p>以获得平滑的曲线图，它是对准框，水平和垂直方向是有用的。为此，选择框对齐，然后单击“对齐......”从子菜单中的“格式”菜单中的&nbsp;“
+FS图 ”或按&nbsp;&lt;Ctrl+ M&gt; 。然后，您会看到如图&nbsp;[fig-alignment-frame]窗口。</p>
+<p>水平对齐选项有：</p>
+<ul class="simple">
+<li>上: 框在最上面的框对齐;</li>
+<li>中: 框都集中在同一轴线上;</li>
+<li>下: 框在最低框对齐。</li>
+</ul>
+<div class="figure" id="id63">
+<a class="reference internal image-reference" href="_images/fig5-23.png"><img alt="调整窗口[fig-alignment-frame]" src="_images/fig5-23.png" style="width: 6.60000cm;" /></a>
+<p class="caption"><span class="caption-text">调整窗口[fig-alignment-frame]</span></p>
+</div>
+<p>为垂直取向的可能是：</p>
+<ul class="simple">
+<li>左: 框在最左边的方框内对齐;</li>
+<li>中: 框都集中在同一轴线上;</li>
+<li>右: 框与右边的框中对齐。</li>
+</ul>
+<p>图&nbsp;[fig-vertical-left-alignment]
+展示出了对准的一个例子。该组框向右侧是被垂直排列在左侧的左框的副本。</p>
+<div class="figure" id="id64">
+<a class="reference internal image-reference" href="_images/fig5-24.png"><img alt="左垂直对齐的例子[fig-vertical-left-alignment]" src="_images/fig5-24.png" style="width: 11.50000cm;" /></a>
+<p class="caption"><span class="caption-text">左垂直对齐的例子[fig-vertical-left-alignment]</span></p>
+</div>
+<p>“使用网格”，以显示在图形的背景的网格。这可以使用大约对齐框。</p>
+<div class="figure" id="id65">
+<a class="reference internal image-reference" href="_images/fig5-25.png"><img alt="使用网格的例子" src="_images/fig5-25.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">使用网格的例子</span></p>
+</div>
+</div>
+<div class="section" id="id28">
+<h3>演示，字体和颜色<a class="headerlink" href="#id28" title="永久链接至标题">¶</a></h3>
+<p>您可以通过按下&nbsp;&lt;Ctrl+ R&gt; 或点击从“格式”菜单中的&nbsp;“FS图”
+，这将导致的显示器的子菜单配置图的外观“介绍......”如图&nbsp;[fig-graph-display-configuration]。</p>
+<div class="figure" id="id66">
+<a class="reference internal image-reference" href="_images/fig5-26.png"><img alt="配置图形的外观[fig-graph-display-configuration]" src="_images/fig5-26.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">配置图形的外观[fig-graph-display-configuration]</span></p>
+</div>
+<p>字体设置为：</p>
+<p>：在框中并在编辑框的内容文本框中使用的字体; ：用于显示框的事件字体。</p>
+<p>：</p>
+<ul class="simple">
+<li>背景：背景颜色;</li>
+<li>前景：用于框的文字和图案色彩;</li>
+<li>辅助节点：采用子图彩框;</li>
+<li>选定的节点：选择使用时，画框的颜色;</li>
+<li>如何节点：用于绘制未链接到任何其他框的颜色。</li>
+</ul>
+<p>其他设置选项为：</p>
+<ul class="simple">
+<li>日期：显示在曲线图的左下角当前日期;</li>
+<li>文件名：显示在图的左下角的曲线图的名称;</li>
+<li>路径：您可以在底角全路径图名的显示
+曲线图的左侧。此选项仅在“文件名”选项被选中的效果;</li>
+<li>框架：绘制图形围绕一个框架;</li>
+<li>从右到左：反转图形的播放方向（见例&nbsp;[fig-right-to-left-graph])。</li>
+</ul>
+<div class="figure" id="id67">
+<a class="reference internal image-reference" href="_images/fig5-27.png"><img alt="从右读向左的图[fig-right-to-left-graph]" src="_images/fig5-27.png" style="width: 14.50000cm;" /></a>
+<p class="caption"><span class="caption-text">从右读向左的图[fig-right-to-left-graph]</span></p>
+</div>
+<p>“默认”按钮，恢复默认设置。如果单击“确定”按钮，只有当前图形将在“信息”菜单中更改。首选项要更改语言的默认首选项，点击“首选项...”，然后选择“图形演示”选项卡。</p>
+</div>
+</div>
+<div class="section" id="unitex">
+<h2>&nbsp;Unitex 的拓展图<a class="headerlink" href="#unitex" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id29">
+<h3>一个文件中的曲线图<a class="headerlink" href="#id29" title="永久链接至标题">¶</a></h3>
+<p>要包含在文档中的图形，你必须做出一个图像。为此，第一种方法是将您的图形导出为图片格式〜：&nbsp;PNG
+，&nbsp;JPEG 或&nbsp;SVG 。要做到这一点，转到&nbsp;“ FS图
+”菜单，单击“导出为图片”。然后选择文件类型。你会准备的图像被整合文档中或与图像编辑软件进行编辑。为了使图像更流畅，你可以让你想要的图形抗锯齿。
+对于&nbsp;JPEG ，&nbsp;PNG 使用无损压缩质量，所以&nbsp;PNG 总是给人比&nbsp;JPEG
+更好的结果。并且不同于&nbsp;PNG 和&nbsp;JPEG 位图格式，&nbsp;SVG
+是一个矢量格式，这往往提供了一个更好的结果。使用该软件 Inkscape
+中，它也可以转换在&nbsp;EPS 或&nbsp;PDF&nbsp;SVG 文件，与这些命令行：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Inkscape</span> <span class="o">-</span><span class="n">z</span> <span class="o">-</span><span class="n">E</span> <span class="n">graph</span><span class="o">.</span><span class="n">eps</span> <span class="n">graph</span><span class="o">.</span><span class="n">svg</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Inkscape</span> <span class="o">-</span><span class="n">z</span> <span class="o">-</span><span class="n">A</span> <span class="n">graph</span><span class="o">.</span><span class="n">pdf</span> <span class="n">graph</span><span class="o">.</span><span class="n">svg</span>
+</pre></div>
+</div>
+<p>第二种方法是屏幕截图:</p>
+<p>Windows操作系统下:</p>
+<p>12键上的“打印屏幕”。在Windows的“附件”菜单启动&nbsp;<code class="docutils literal"><span class="pre">Paint</span></code>。按&nbsp;&lt; Ctrl +
+V &gt;。
+&nbsp;<code class="docutils literal"><span class="pre">Paint</span></code>可以告诉你，在剪贴板中的图像太大，并询问您是否要放大图像。点击&nbsp;“Yes”
+。现在，您可以编辑画面的图像。选择您感兴趣的区域。要做到这一点，去选择模式通过点击虚线框是在窗口的左上角。现在，您可以用鼠标选择图像的区域。一旦你选择的区域，按&nbsp;&lt;
+Ctrl + C &gt;。您的选择现在在剪贴板上，它会刚刚进入你的文件，并键入&nbsp;&lt; Ctrl
++ V &gt;粘贴图像。</p>
+<p>Linux操作系统下:</p>
+<p>（如使用&nbsp;<code class="docutils literal"><span class="pre">xv</span></code>）。然后调整图形编辑器（如&nbsp;<code class="docutils literal"><span class="pre">TheGimp</span></code>）放入图片，并粘贴图像文档中以同样的方式与Windows相同。</p>
+<p><strong>矢量图</strong></p>
+<p>如果你喜欢一个矢量图像，你可以把你的图形为&nbsp;SVG，可与软件一起使用，如&nbsp;Inkscape
+(<a href="#id30"><span class="problematic" id="id31">:raw-latex:`\cite{Inkscape}`</span></a>).
+它允许获得在文件可用的&nbsp;PostScript输出&nbsp;LaTeX。</p>
+</div>
+<div class="section" id="id32">
+<h3>打印图片<a class="headerlink" href="#id32" title="永久链接至标题">¶</a></h3>
+<p>您可以通过点击从&nbsp;“ FS图 ”菜单打印出图“打印...”或 按下&nbsp;&lt; Ctrl+ P &gt;。</p>
+<p>注意：您必须确保打印机的方向设置（纵向或横向）与图形的方向一致。</p>
+<p>你可以通过点击菜单中的&nbsp;“ FS图
+”下的“页面设置”设置您的打印首选项。您也可以打印通过点击打开所有图形“全部打印…”。</p>
+<table class="docutils footnote" frame="void" id="id33" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id10">[1]</a></td><td>为了清楚起见，调用投递目录的图表显示在卡其色的背景，而不是灰色的。</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id34" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td>如果你用KDE的话，则可以使用&nbsp;&lt; Alt + 点击 &gt; 控制</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-zh.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">语法规则</a><ul>
+<li><a class="reference internal" href="#id2">语法规范化</a><ul>
+<li><a class="reference internal" href="#id3">上下文无关文法</a></li>
+<li><a class="reference internal" href="#id4">广义的上下文无关文法</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id7">编辑图表</a><ul>
+<li><a class="reference internal" href="#id8">创建图表</a></li>
+<li><a class="reference internal" href="#id9">子图</a></li>
+<li><a class="reference internal" href="#id13">搬运框</a></li>
+<li><a class="reference internal" href="#id14">输出</a></li>
+<li><a class="reference internal" href="#id15">输入变量</a></li>
+<li><a class="reference internal" href="#id16">复制列表</a></li>
+<li><a class="reference internal" href="#id17">特殊符号</a></li>
+<li><a class="reference internal" href="#id18">工具栏功能</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id23">显示选项</a><ul>
+<li><a class="reference internal" href="#id24">在一个框里行进行排序</a></li>
+<li><a class="reference internal" href="#id25">缩放</a></li>
+<li><a class="reference internal" href="#id26">抗锯齿</a></li>
+<li><a class="reference internal" href="#id27">对齐框</a></li>
+<li><a class="reference internal" href="#id28">演示，字体和颜色</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unitex">&nbsp;Unitex 的拓展图</a><ul>
+<li><a class="reference internal" href="#id29">一个文件中的曲线图</a></li>
+<li><a class="reference internal" href="#id32">打印图片</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-zh.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/05-grammars_ZH_utf8.txt"
+            rel="nofollow">显示源代码</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>快速搜索</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/05-grammars_ZH_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

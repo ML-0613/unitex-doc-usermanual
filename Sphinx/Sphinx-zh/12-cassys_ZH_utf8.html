@@ -1,0 +1,561 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh_CN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>级联传感器 &mdash; Unitex-zh 1.0.1 文档</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-zh 1.0.1 文档" href="Unitex-zh.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>级联传感器<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>本章介绍了创建传感器和通过自然语言的新工作方式的级联能力的工具<em>CasSys</em>
+<em>传感器级联</em> 一个应用于多个图形 (自动机和传感器), 表示于下列文字:
+每个图形改变文本，并且可以通过下面的图可以用于进一步处理的变化。这种类型的系统主要用于解析，分块，信息提取，识别实体的命名等要做到这一点，&nbsp;CasSys
+采用了一系列的“定位模式”用适当的选项。</p>
+<p><em>&nbsp;CasSys</em> 系统的第一个原型于2002年在实验室 LI 创建 (Laboratoire
+d’Informatique de l’Université de Tours)
+(<a href="#id2"><span class="problematic" id="id3">:raw-latex:`\cite{these-nathalie}`</span></a>)。
+这个原型是完全致力于命名实体的抽取。然后&nbsp;CasSys
+推广到适用于任何类型，它需要一个级联更新。它多年来不断完善，实际上并没有在&nbsp;Unitex
+正在建设中。它是通过最近的一个项目  <a class="footnote-reference" href="#id20" id="id4">[1]</a>，从而达到&nbsp;CasSys 和&nbsp;Unitex
+的全面整合。</p>
+<p>&nbsp;Unitex
+的语法是类型语境的自由并把有限状态自动机的结果转导领域的概念。用转换（转换器）的文法能够产生输出。&nbsp;CasSys
+专门从事传感器在级联的形式应用。</p>
+<p>级联可用于解析，分块，信息提取等。 。 这些输出可能是：</p>
+<p>，并显示在所得到的协议或经修正的文本。 。</p>
+<p>。</p>
+<p>，我们将介绍如何创建级联传感器以及如何应用。然后，我们显示的选项，并提供&nbsp;CasSys
+可能性。</p>
+<div class="section" id="cassys">
+<h2>应用&nbsp;CasSys 级联传感器<a class="headerlink" href="#cassys" title="永久链接至标题">¶</a></h2>
+<p>应用与&nbsp;CasSys
+转换级联是代表一种语言现象与换能器的列表，以适用于特定的顺序文本：&nbsp;CasSys
+及其在&nbsp;Unitex
+接口可以实现它。本节将介绍如何使用界面来创建和管理的图（顺序，添加，删除），并应用了级联。</p>
+<div class="section" id="id5">
+<h3>创建传感器的列表<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>，&nbsp;FS 表的菜单有两个子菜单：“&nbsp;<em>新级联</em>” 和 “&nbsp;<em>编辑级联……</em>” (Figure
+[fig13-08])。要创建换能器的列表中，选择
+“<em>新级联</em>”。如果你想改变现有的级联关系，选择“<em>编辑级联……</em>”，然后选择新级联的关系。</p>
+<div class="figure" id="id21">
+<a class="reference internal image-reference" href="_images/fig13-08.png"><img alt="&nbsp;Unitex 中“ FS 表”的子菜单下的“新级联”和“&nbsp;*编辑级联……*”" src="_images/fig13-08.png" style="width: 4.00000cm;" /></a>
+<p class="caption"><span class="caption-text">&nbsp;Unitex 中“ FS 表”的子菜单下的“新级联”和“&nbsp;<em>编辑级联……</em>”</span></p>
+</div>
+<p>当前语言的目录包含子目录名为&nbsp;CasSys
+其中级联配置文件的位置。这些是扩展名为&nbsp;<em>.csc</em>是文本文件 (例如: ma
+cascade.csc)。</p>
+</div>
+<div class="section" id="id6">
+<h3>编辑传感器列表<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>&nbsp;CasSys 的配置窗口 ([fig13-03])有三个部分：</p>
+<div class="figure" id="id22">
+<a class="reference internal image-reference" href="_images/fig13-03.png"><img alt="与换能器的右侧列表的&nbsp;CasSys 配置窗口" src="_images/fig13-03.png" style="width: 16.00000cm;" /></a>
+<p class="caption"><span class="caption-text">与换能器的右侧列表的&nbsp;CasSys 配置窗口</span></p>
+</div>
+<ol class="arabic">
+<li><p class="first">左侧的&nbsp;<em>管理文件</em>留下的框架，您可以选择换能器放在级联。经理仅显示&nbsp;FST2
+文件（在列表中希望所有的图表必须编译&nbsp;FST2
+格式）。要编辑的级联，选择左边的图形和使用拖放把正确的。</p>
+</li>
+<li><p class="first">&nbsp;<em>tableau</em>的右侧显示级联：选择每个图形传感器和选项的有序列表。该表显然是空的一个新的级联。
+表中的列 (Figure [fig13-09])给每个图形的数量，并允许选择他们的行为。</p>
+<ul class="simple">
+<li><strong>#</strong> : 在级联的每个图表或转换器的编号； FST2 的文件是编号。</li>
+<li><strong>禁用</strong> : 要选择当前图形。&nbsp;<em>禁用</em> 表示： “&nbsp;<em>不应用于级联</em>”.
+未选中的图形出现没有编号，灰色和划掉。</li>
+<li>&nbsp;<strong>名称</strong> : 图的名称(以&nbsp;<em>fst2</em> 为拓展名).
+如果你把鼠标放在图形的名称，工具提示出现带有图形的完整路径。这些图表，它的源文件不会出现斜体和红色。</li>
+<li><strong>整合</strong>:如果换能器是在合并模式被应用。</li>
+<li><strong>替换</strong>:如果换能器将被应用于在替换模式。</li>
+<li><strong>直到断点</strong>:如果换能器是直到即达到一个固定点的文本是不变，以应用一次或数次（见[sub:AppWhiCon]）。</li>
+</ul>
+<p>：</p>
+<ul class="simple">
+<li><em>“上移一层”/“下移一层”/“置于顶层”/“置于底层”</em>用于改变在列表中换能器的顺序（它们移动选定的换能器）;
+&nbsp;<em>“上移一层”</em>
+和&nbsp;<em>“下移一层”</em>移动传感器选定行向上或向下，&nbsp;<em>“置于顶层”</em> et
+<em>“置于底层”</em>定位开始或列表的末尾。</li>
+<li><em>“删除”</em>将删除传感器的列表中选定的传感器。</li>
+<li><em>“添加”</em>在列表中增加一个换能器（预先选择的）。它将替代之前的。</li>
+<li><em>“视图”</em>打开两个在换能器的列表的文件浏览器中选择的曲线图。这是非常有用的快速访问任何转换器，以及采取一看，要改变。</li>
+<li><em>“保存”</em> 和
+<em>“另存为”</em>可以记录换能器的列表。缺省情况下，列出了换能器被放置在当前&nbsp;CasSys
+语言的目录（例如法语/CasSys）.</li>
+<li><em>“编辑”</em>编译级联的所有图形。</li>
+<li><em>“禁用所有”</em>禁用级联的所有图形。</li>
+<li><em>“启用所有”</em>选择级联的所有图形。</li>
+<li><em>“关闭”</em>关闭当前窗口。</li>
+</ul>
+</li>
+</ol>
+<div class="figure" id="id23">
+<a class="reference internal image-reference" href="_images/fig13-09.png"><img alt="转译列表" src="_images/fig13-09.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">转译列表</span></p>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>引用级联<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>在“文字”菜单中，选择子菜单“<em>Apply&nbsp;CasSys cascade...</em>”
+(图[fig13-01])打开窗口&nbsp;CasSys 。此菜单“<em>Apply&nbsp;CasSys cascade...</em>”
+没被激活只有当文本之前已经被打开。</p>
+<div class="figure" id="id24">
+<a class="reference internal image-reference" href="_images/fig13-01.png"><img alt="&nbsp;Unitex “文本”菜单下菜单和“引用&nbsp;CasSys 级联”的子菜单" src="_images/fig13-01.png" style="width: 5.00000cm;" /></a>
+<p class="caption"><span class="caption-text">&nbsp;Unitex “文本”菜单下菜单和“引用&nbsp;CasSys 级联”的子菜单</span></p>
+</div>
+<p>&nbsp;CasSys 窗口 ([fig13-02])显示当前语言的&nbsp;CasSys
+目录的内容。它可以让你选择包含传感器列表适用于文本文件。一旦选择了这个列表，你可以点击“启动”按钮应用级联。</p>
+<div class="figure" id="id25">
+<a class="reference internal image-reference" href="_images/fig13-02.png"><img alt="打开级联传感器后的窗口" src="_images/fig13-02.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">打开级联传感器后的窗口</span></p>
+</div>
+<p>在首选项中规定的形态方法的任何字典是你的图表可用。
+首选项可以从菜单“Info” (Info –&gt;Preferences –&gt; morphological-mode
+dictionaries) 进行更改。</p>
+</div>
+<div class="section" id="id8">
+<h3>共享级联传感器列表文件<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>为了便于与&nbsp;CasSys
+协同工作，一个输出/输入功能的设置有一个换能器列表文件。这种可能性是由菜单提供“<em>文本
+/ 应用&nbsp;CasSys 级联..</em>” (图 [fig13-02]).</p>
+<p>要共享一个级联列表文件，下面必须满足：</p>
+<ol class="arabic simple">
+<li><strong>Export :</strong> 选择一个级联文件并单击“导出”按钮。
+（可共享的文件在<code class="docutils literal"><span class="pre">/&nbsp;CasSys</span> <span class="pre">/Share</span></code>）</li>
+<li><strong>导入:</strong> 选择文件并单击“导入”。
+（准备的文件中使用的目录<code class="docutils literal"><span class="pre">/CasSys</span></code>中创建）</li>
+</ol>
+</div>
+</div>
+<div class="section" id="id9">
+<h2>&nbsp;CasSys 详细说明<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h2>
+<p>在本节中，我们提出了如何&nbsp;CasSys 的详细说明。</p>
+<div class="section" id="id10">
+<h3>使用的图表的类型<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<p>&nbsp;CasSys 使用图形的编译版本（格式<code class="docutils literal"><span class="pre">.fst2</span></code>）。 &nbsp;CasSys
+管理本地语法(section&nbsp;[syntactic-graphs])在第[chap-advanced-grammars]章介绍。
+级联使用的语法遵循相同的规则，在&nbsp;Unitex
+语法里经常出现。它们可以具有子图，参考信息中的字典。</p>
+<p>&nbsp;CasSys
+不在<code class="docutils literal"><span class="pre">fst2</span></code>兼容([section-debug-mode])。当与菜单<code class="docutils literal"><span class="pre">Text&gt;</span> <span class="pre">Locate</span> <span class="pre">Pattern</span></code>施加图形调试模式下，系统编译在调试模式下的特殊格式的曲线图。对于<code class="docutils literal"><span class="pre">fst2</span></code>正常格式的文件，重建图，或者在菜单
+<code class="docutils literal"><span class="pre">FSGraph</span></code> 无论是在命令行或应用的图形与 <code class="docutils literal"><span class="pre">Locate</span> <span class="pre">Pattern</span></code>
+之前检查调试模式。</p>
+</div>
+<div class="section" id="id11">
+<h3>使用迭代器<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<p>&nbsp;CasSys
+可以在文本中设置反复应用图形，直到获得新的匹配。这种行为是根据直到修复项目检查或没有
+<code class="docutils literal"><span class="pre">Until</span> <span class="pre">fix</span> <span class="pre">point</span></code> 每个图形。本节介绍了此选项的行为。</p>
+<p>例如，考虑该图[fig:AB-&gt;A]其中确认<em>AB</em> 是本 <em>A</em>替换。</p>
+<div class="figure" id="id26">
+<a class="reference internal image-reference" href="_images/AB_to_A.png"><img alt="转换器把 A 换成 BA" src="_images/AB_to_A.png" style="width: 6.00000cm;" /></a>
+<p class="caption"><span class="caption-text">转换器把 A 换成 BA</span></p>
+</div>
+<div class="line-block">
+<div class="line">考虑文本 <em>B B B A A A</em>。这段文字 [fig:AB-&gt;A] 用了<em>Until fix point</em>
+：</div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="18%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">initial text</th>
+<th class="head">B</th>
+<th class="head">B</th>
+<th class="head">B</th>
+<th class="head">A</th>
+<th class="head">A</th>
+<th class="head">A</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>迭代1</td>
+<td>&nbsp;</td>
+<td>B</td>
+<td>B</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+<td>1 匹配</td>
+</tr>
+<tr class="row-odd"><td>迭代2</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>B</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+<td>1匹配</td>
+</tr>
+<tr class="row-even"><td>迭代3</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+<td>1匹配</td>
+</tr>
+<tr class="row-odd"><td>迭代4</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+<td>0匹配</td>
+</tr>
+</tbody>
+</table>
+<p>在前三次迭代中，获得一个匹配，图形，然后再次施加到得到的文本。在第四次迭代，没有找到匹配的，序列不再重新应用。
+留意使用此选项可能关闭。例如，如果施加在实施例的文字识别&nbsp;EMPHA和&nbsp;EMPHA替换它的换能器会导致堵塞。</p>
+</div>
+<div class="section" id="id12">
+<h3>级联规则<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>在级联中，&nbsp;Unitex 每个图形中使用的规则如下：</p>
+<ul class="simple">
+<li>优先在最左边的理由：当地语法的应用过程中，重叠的事件都编入索引。在相关的结构中，所有这些实例都存在，但作为&nbsp;CasSys
+修改级联的每个图形的应用后的文字，它是必要的，这些事件中进行选择所考虑的之一。优先考虑的是最左边的序列。
+：在&nbsp;CasSys ，在图的应用是保守的最长序列。 ：在&nbsp;CasSys
+，这个数量不局限于：这样的限制在&nbsp;CasSys
+没有意义。所有的事件总是在文本索引。</li>
+</ul>
+</div>
+<div class="section" id="id13">
+<h3>&nbsp;CasSys 的标记图谱<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<p>输出换能器可以用来将信息插入文本，尤其是标记的识别理由：它可以使用）的任何种类的标记，（(),
+[]，’“等等。或XML标签，如&lt;XXX&gt; &lt;/ XXX&gt;，但&nbsp;CasSys
+提供注释认可的场地，提供我们现在提出了一些机会，一种特殊的方式。</p>
+<p>的端部的标记;
+STOP标记，相邻字母序列，词汇标签Aujourd’hui.ADV等。词汇标签中使用&nbsp;CasSys
+特别。词法标签（括号），通常被用来避免歧义（详见第[tokenization]和[section-displaying-sentence-automata]部分）。
+例如，在一个字，如果你有令牌<em>{curly
+brackets,.N}</em>，即“大”或“括号”被识别，但只有整个序列“大括号”。词法标签可以包含一个复杂的词汇信息<em>N+Pers+Hum:fs</em>。
+在图中，有可能在一个词汇面具使用的信息找到一个令牌：<em>&lt;.N&gt;</em>例如，我们可以写
+<em>&lt;。Pers+Hum&gt;</em>这些词汇面具“搜索正则表达式”部分中描述[section-special-symbols]。</p>
+<p>在&nbsp;CasSys
+我们使用的词汇品牌特别。换能器级联有趣的是，找到一个岛上。有必要对这种类型的系统，以避免以前识别图案是不明确的与那些由下列图表识别。为了避免这种情况，我们的标签通过图表的形式确认的理由<em>{</em>
+和<em>tag1+tag2+tagn}</em> (或 <em>tag1, tag2, etc.</em> 是自己的标签)。</p>
+<p>，这里有一个简单的例子。这里我们正在努力的文字是：</p>
+<p><em>bac a b c cc a b b ba ab a b bca a b c abaabc</em>。</p>
+<p>图grfAB ([fig13-05])识别文本序列*ab*并增加了词汇标签 {a
+b,.AB}。在合并模式应用于此图形添加 <em>{</em> 和 <em>,.AB}</em></p>
+<div class="figure" id="id27">
+<a class="reference internal image-reference" href="_images/fig13-05.png"><img alt="Le graphe grfAB" src="_images/fig13-05.png" style="width: 6.00000cm;" /></a>
+<p class="caption"><span class="caption-text">Le graphe grfAB</span></p>
+</div>
+<p>： <em>bac {a b,.AB} c cc {a b,.AB} b ba ab {a b,.AB} bca {a b,.AB} c
+abaabc</em>。</p>
+<p>标记为。这种模式的一部分（只能a或b中的一个）不能因为的标签。</p>
+<p>这个图形后，级联应用于另一个命名为“tagAB”
+([fig13-06])的图形，包含了&lt;AB&gt;字符。
+它能识别前任图形所标记的所有字符序列。</p>
+<div class="figure" id="id28">
+<a class="reference internal image-reference" href="_images/fig13-06.png"><img alt="tagAB图" src="_images/fig13-06.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">tagAB图</span></p>
+</div>
+<p>结果为：<em>bac {{a b,.AB} c,.ABC} cc {a b,.AB} b ba ab {ab,.AB}
+{bca,.BCA} {{a b,.AB} c,.ABC} abaabc</em>。</p>
+<p>&nbsp;Unitex
+所显示的一致性应该像那个数字([fig13-07])。对于涉及到程序设计（人物之间的歧义标签）的原因，我们还有其他的选择来放置<span class="math">\(\backslash\)</span>;这就是为什么这些符号是由<span class="math">\(\backslash\)</span>，以避免与&nbsp;Unitex
+的问题。</p>
+<div class="figure" id="id29">
+<a class="reference internal image-reference" href="_images/fig13-07.png"><img alt="在级联中的相应的应用程序之后" src="_images/fig13-07.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">在级联中的相应的应用程序之后</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="id14">
+<h2>通用图<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h2>
+<p>有时候，一些元素试图使用他们的文本，但可能会出现这些文本不存在。为了找到这样的事件，&nbsp;CasSys
+建议使用通用图形。这些图表包含空箱子正被应用于文本之前，由程序自动填充。这些通用图表只有使用括号工作，作为程序咨询字典文本分析未来图形。</p>
+<div class="section" id="id15">
+<h3>通用图定义<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
+<p>&nbsp;CasSys 识别一个通用的图形必须检查 <em>Generic</em> 列(见图[fig12-3])。</p>
+<div class="figure" id="id30">
+<a class="reference internal image-reference" href="_images/fig12-3.png"><img alt="通用图" src="_images/fig12-3.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">通用图</span></p>
+</div>
+</div>
+<div class="section" id="id16">
+<h3>构造通用图<a class="headerlink" href="#id16" title="永久链接至标题">¶</a></h3>
+<p>在一个通用图的路径必须用$G和输出，开括号的盒子开始。这是将由&nbsp;CasSys
+填充的框。第二个框包含输出要搜索的元素。在[fig12-3-01]，在框中输入的每一个类别<em>x</em>从文本中提取字典。例如，提取&nbsp;EMPH的&nbsp;CasSys
+&nbsp;textitA
+{A，.X}字典的文字，如[fig12-3-01a]。此外，负右上下文(section&nbsp;[section-contexts])放防止第二标签的发生。</p>
+<div class="figure" id="id31">
+<a class="reference internal image-reference" href="_images/fig12-3-01.png"><img alt="通用图" src="_images/fig12-3-01.png" style="width: 5.00000cm;" /></a>
+<p class="caption"><span class="caption-text">通用图</span></p>
+</div>
+<div class="figure" id="id32">
+<a class="reference internal image-reference" href="_images/fig12-3-01a.png"><img alt="改变通用图" src="_images/fig12-3-01a.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">改变通用图</span></p>
+</div>
+<p>在<em>{{A,.y}
+{B,.z},.x}</em>参考图[fig12-3-01]发生的情况下，框<em>AB</em>如图[fig12-3-02]。</p>
+<div class="figure" id="id33">
+<a class="reference internal image-reference" href="_images/fig12-3-02.png"><img alt="改变通用图" src="_images/fig12-3-02.png" style="width: 8.00000cm;" /></a>
+<p class="caption"><span class="caption-text">改变通用图</span></p>
+</div>
+<p>，例如：<em>Y</em>如图[fig12-3-03];只有<em>A</em>这是摆在框中，如图[fig12-3-04]。</p>
+<div class="figure" id="id34">
+<a class="reference internal image-reference" href="_images/fig12-3-03.png"><img alt="带限制的通用图" src="_images/fig12-3-03.png" style="width: 5.00000cm;" /></a>
+<p class="caption"><span class="caption-text">带限制的通用图</span></p>
+</div>
+<div class="figure" id="id35">
+<a class="reference internal image-reference" href="_images/fig12-3-04.png"><img alt="修改通用图" src="_images/fig12-3-04.png" style="width: 8.00000cm;" /></a>
+<p class="caption"><span class="caption-text">修改通用图</span></p>
+</div>
+<p>，一个类别的否定，图例如&nbsp;<em>~y</em>中的[fig12-3-05]把&nbsp;textitB在此框中(figure
+[fig12-3-06])。</p>
+<div class="figure" id="id36">
+<a class="reference internal image-reference" href="_images/fig12-3-05.png"><img alt="带否定的通用图" src="_images/fig12-3-05.png" style="width: 5.00000cm;" /></a>
+<p class="caption"><span class="caption-text">带否定的通用图</span></p>
+</div>
+<div class="figure" id="id37">
+<a class="reference internal image-reference" href="_images/fig12-3-06.png"><img alt="修改通用图" src="_images/fig12-3-06.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">修改通用图</span></p>
+</div>
+<p>如果我们想要补充由一些图不应该寻求的输出，第三框添加为图[fig12-3-07]。</p>
+<div class="figure" id="id38">
+<a class="reference internal image-reference" href="_images/fig12-3-07.png"><img alt="完整的通用图" src="_images/fig12-3-07.png" style="width: 6.00000cm;" /></a>
+<p class="caption"><span class="caption-text">完整的通用图</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="id17">
+<h2>级联结果<a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id18">
+<h3>显示级联结果<a class="headerlink" href="#id18" title="永久链接至标题">¶</a></h3>
+<p>级联的应用的结果是一个索引文件（<em>concord.ind</em>），如以 <em>“Locate
+pattern”</em> 一个搜索模式时的情况。该索引文件包含在&nbsp;Unitex
+控识别的所有序列。</p>
+<p>，只需点击 “Build concordance”
+按钮(就像在第[chap-advanced-grammars]章)在“Text / Located
+sequences”菜单下。 图[fig13-04]有识别命名实体级联的匹配样本。</p>
+<div class="figure" id="id39">
+<a class="reference internal image-reference" href="_images/fig13-04.png"><img alt="&nbsp;Unitex 下的&nbsp;CasSys 一致性" src="_images/fig13-04.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">&nbsp;Unitex 下的&nbsp;CasSys 一致性</span></p>
+</div>
+</div>
+<div class="section" id="id19">
+<h3>级联的各种文件结果<a class="headerlink" href="#id19" title="永久链接至标题">¶</a></h3>
+<p>&nbsp;CasSys
+保留在级联的每个图形创建的所有文本。这可以是用于测试，调试或从级联不同的结果的验证是有用的。然后就可以纠正错误的图形应用程序的顺序或发现在他们的写作错误。方便的是添加到一个换能器名它的输出，以查看什么原因已经被任何图形识别的最终结果。</p>
+<p>如果要应用级联文本example.txt，我们需要创建两个目录：&nbsp;<code class="docutils literal"><span class="pre">exemple_snt</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">exemple_csc</span></code>。
+在&nbsp;<code class="docutils literal"><span class="pre">exemple_csc</span></code>中创建的文件是由每个图得到的结果。这些文件是根据产生它们的曲线图的数目来命名。例如，如果第三个图形识别模式，此图形的应用程序的结果都存储在&nbsp;<code class="docutils literal"><span class="pre">exemple_3</span></code><code class="docutils literal"><span class="pre">_0_snt</span></code>的&nbsp;<code class="docutils literal"><span class="pre">exemple_3_0.snt</span></code>包括修改后的文本。</p>
+</div>
+<div class="section" id="xml">
+<h3>词法标签的文本 XML 格式<a class="headerlink" href="#xml" title="永久链接至标题">¶</a></h3>
+<p>文本直接从传感器的应用，并且其中所述词汇标签已被转换为基于 XML
+的格式。输出结果可以设置为两种形式。
+这种变化是为了提供更可操纵文本到终端用户所作出的。
+从这种格式，可以使用的许多 XML 处理工具之一。
+它也很容易，以获得所需的输出，以应用其他出传感器。</p>
+<p>文字直接导致转换器存放在文件中&nbsp;<code class="docutils literal"><span class="pre">exemple_csc.raw</span></code>,
+和XML-isée版本&nbsp;<code class="docutils literal"><span class="pre">exemple_csc.txt</span></code>。</p>
+<div class="line-block">
+<div class="line">具体地说，词汇标签在以下格式&nbsp;:</div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>`` {forme.lemme,code1+code2:flex1:flex2}``</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line">相应的XML输出格式如下&nbsp;:</div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&lt;csc&gt;</span></code></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>&nbsp;</td>
+<td><code class="docutils literal"><span class="pre">&lt;form&gt;forme&lt;/form&gt;</span></code></td>
+</tr>
+<tr class="row-odd"><td>&nbsp;</td>
+<td><code class="docutils literal"><span class="pre">&lt;lem&gt;lemme&lt;/lem&gt;</span></code></td>
+</tr>
+<tr class="row-even"><td>&nbsp;</td>
+<td><code class="docutils literal"><span class="pre">&lt;code&gt;code1&lt;/code&gt;</span></code></td>
+</tr>
+<tr class="row-odd"><td>&nbsp;</td>
+<td><code class="docutils literal"><span class="pre">&lt;code&gt;code2&lt;/code&gt;</span></code></td>
+</tr>
+<tr class="row-even"><td>&nbsp;</td>
+<td><code class="docutils literal"><span class="pre">&lt;inflect&gt;flex1&lt;/inflect&gt;</span></code></td>
+</tr>
+<tr class="row-odd"><td>&nbsp;</td>
+<td><code class="docutils literal"><span class="pre">&lt;inflect&gt;flex2&lt;/inflect&gt;</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&lt;/csc&gt;</span></code></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>接下来是 DTD 的形式:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&lt;?xml</span> <span class="pre">version=1.0</span> <span class="pre">encoding=ISO-8859-1?&gt;</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&lt;!ELEMENT</span> <span class="pre">text</span> <span class="pre">(#PCDATA|csc)*&gt;</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&lt;!ELEMENT</span> <span class="pre">csc</span> <span class="pre">(form,lem?,code*,inflect*)</span> <span class="pre">&gt;</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&lt;!ELEMENT</span> <span class="pre">form</span> <span class="pre">(#PCDATA|csc)*&gt;</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&lt;!ELEMENT</span> <span class="pre">lem</span> <span class="pre">(#PCDATA)&gt;</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&lt;!ELEMENT</span> <span class="pre">code</span> <span class="pre">(#PCDATA)&gt;</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&lt;!ELEMENT</span> <span class="pre">inflect</span> <span class="pre">(#PCDATA)&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id20" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[1]</a></td><td>“ Feder-Région 中心和实体的命名和可命名” 由 Denis Maurel, LI, Tours,
+France 完成,最终被 Nathalie Friburger 和 David Nott 实现</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-zh.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">级联传感器</a><ul>
+<li><a class="reference internal" href="#cassys">应用&nbsp;CasSys 级联传感器</a><ul>
+<li><a class="reference internal" href="#id5">创建传感器的列表</a></li>
+<li><a class="reference internal" href="#id6">编辑传感器列表</a></li>
+<li><a class="reference internal" href="#id7">引用级联</a></li>
+<li><a class="reference internal" href="#id8">共享级联传感器列表文件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id9">&nbsp;CasSys 详细说明</a><ul>
+<li><a class="reference internal" href="#id10">使用的图表的类型</a></li>
+<li><a class="reference internal" href="#id11">使用迭代器</a></li>
+<li><a class="reference internal" href="#id12">级联规则</a></li>
+<li><a class="reference internal" href="#id13">&nbsp;CasSys 的标记图谱</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id14">通用图</a><ul>
+<li><a class="reference internal" href="#id15">通用图定义</a></li>
+<li><a class="reference internal" href="#id16">构造通用图</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id17">级联结果</a><ul>
+<li><a class="reference internal" href="#id18">显示级联结果</a></li>
+<li><a class="reference internal" href="#id19">级联的各种文件结果</a></li>
+<li><a class="reference internal" href="#xml">词法标签的文本 XML 格式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-zh.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/12-cassys_ZH_utf8.txt"
+            rel="nofollow">显示源代码</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>快速搜索</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/12-cassys_ZH_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

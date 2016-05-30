@@ -1,0 +1,999 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh_CN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>词典 &mdash; Unitex-zh 1.0.1 文档</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-zh 1.0.1 文档" href="Unitex-zh.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>词典<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="dela">
+<h2>DELA词典<a class="headerlink" href="#dela" title="永久链接至标题">¶</a></h2>
+<p>Unitex 所使用的电子词典使用&nbsp;DELA形式（&nbsp;LADL
+电子词典）。这种形式能描述用户输入的某种语言的简单或复合的词目，给出它的语法，词义及词形变化。电子词典共有两种类型。第一种更加常用的带有变位形式的字典，叫做&nbsp;DELAF（&nbsp;DELA
+的变位形式）或&nbsp;DELACF，它是针对复合词的字典。第二类型的字典叫做
+&nbsp;DELAS（&nbsp;DELA 简单形式）或&nbsp;DELAC。&nbsp;Unitex
+的项目并不区分简单形式和复合形式的字典。我们使用&nbsp;DELAF 和&nbsp;DELAS
+两种词典，来解释不同种类的词目（简单的、复合的或混合的）。</p>
+<div class="section" id="delaf">
+<h3>DELAF 的形式<a class="headerlink" href="#delaf" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id2">
+<h4>输入的语法<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h4>
+<p>一个&nbsp;DELAF 的输入就是一行以回车结束的文本，它符合以下的规则：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mercantiles</span><span class="p">,</span><span class="n">mercantile</span><span class="o">.</span><span class="n">A</span><span class="o">+</span><span class="n">z1</span><span class="p">:</span><span class="n">mp</span><span class="p">:</span><span class="n">fp</span><span class="o">/</span><span class="n">ceci</span> <span class="n">est</span> <span class="n">un</span> <span class="n">exemple</span>
+</pre></div>
+</div>
+<p>组成这一行的元素如下：</p>
+<ul>
+<li><p class="first"><a href="#id3"><span class="problematic" id="id4">``</span></a>mercantiles `` 是这条词目的变化形式。 这个变化形式是必须的：</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">mercantile</span></code> 是这条词目的标准形式。
+对于名词和形容词，它一般是阳性单数形式；对于动词，标准形式指该动词的原型。这条信息可以被省略，就像以下这个例子：</p>
+<p><code class="docutils literal"><span class="pre">boîte</span> <span class="pre">à</span> <span class="pre">merveilles,.N+z1:fs</span></code></p>
+<p>该词目的标准形式正是它的变化形式。标准形式和变化形式之间用逗号隔开；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">A+z1</span></code> 是该词目的语法和词义信息。 在我们的例子中&nbsp;<code class="docutils literal"><span class="pre">A</span></code>
+表示形容词，<code class="docutils literal"><span class="pre">z1</span></code> 代表当前词 (见表 &nbsp;[tab-semantic-codes]).</p>
+<p>每一条词目都至少有一条语法和词义信息，用句号和标准形式隔开。如果有许多条信息，互相之间用加号隔开。
+<code class="docutils literal"><span class="pre">+</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">:mp:fp</span></code> 是词形变化信息。
+它描述了该词目的种类，数量，时态和语态，变化形式等。这些信息不是必须的，一条词目可包含一条或多条变化信息，互相之间用冒号隔开。在我们的例子中，&nbsp;<code class="docutils literal"><span class="pre">m</span></code>
+表示阳性， &nbsp;<code class="docutils literal"><span class="pre">p</span></code> 表示复数&nbsp;<code class="docutils literal"><span class="pre">f</span></code> 表示阴性 (见表
+&nbsp;[tab-inflectional-codes]). 字符&nbsp;<code class="docutils literal"><span class="pre">:</span></code> 可理解为“或”。
+如&nbsp;<code class="docutils literal"><span class="pre">:mp:fp</span></code> 代表“阳性复数”或“阴性复数”。
+C因为每一个字母代表一条信息，没有必要重复使用相同的字母。如：用&nbsp;<code class="docutils literal"><span class="pre">:PP</span></code>
+表示过去分词完全等于用&nbsp;<code class="docutils literal"><span class="pre">:P</span></code> 单独表示;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">/是一条注释。注释不是必须的，它可以用</span> <span class="pre">\</span> <span class="pre">\verb</span></code>/+来表示。当人们削减字典时注释将被删除。</p>
+</li>
+</ul>
+<p>重要提示：逗号和句号可以在字典中被使用。为了完成这一点，需要同时使用以下符号：
+<code class="docutils literal"><span class="pre">\</span></code> :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">3</span>\<span class="p">,</span><span class="mi">1415</span><span class="p">,</span><span class="n">PI</span><span class="o">.</span><span class="n">NOMBRE</span>
+<span class="n">Organisation</span> <span class="n">des</span> <span class="n">Nations</span> <span class="n">Unies</span><span class="p">,</span><span class="n">O</span>\<span class="o">.</span><span class="n">N</span>\<span class="o">.</span><span class="n">U</span>\<span class="o">..</span><span class="n">SIGLE</span>
+</pre></div>
+</div>
+<p>注意：每个字符包含在一个字典条目中。例如，如果输入的空间中，这些将被认为的信息的一个组成部分。在下面一行：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">gît</span><span class="p">,</span><span class="n">gésir</span><span class="o">.</span><span class="n">V</span><span class="o">+</span><span class="n">z1</span><span class="p">:</span><span class="n">P3s</span> <span class="o">/</span><span class="n">voir</span> <span class="n">ci</span><span class="o">-</span><span class="n">gît</span>
+</pre></div>
+</div>
+<p>字符前的空格&nbsp;<code class="docutils literal"><span class="pre">/</span></code>被看做包含&nbsp;<code class="docutils literal"><span class="pre">P</span></code>, <code class="docutils literal"><span class="pre">3</span></code>, <code class="docutils literal"><span class="pre">s</span></code>
+和一个空格的四位可变字符。</p>
+<p>可以在词典&nbsp;DELAF 或&nbsp;DELAS 中输入 ,用&nbsp;<span class="math">\(/\)</span> 来表示行。例如：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>/ L’entrée nominale pour ’par’ est un terme de golf
+par,.N+z3:ms
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h4>有空格或破折号的词<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h4>
+<p>某些复合词如&nbsp;<em>grand-mère</em>可以用空格或破折号来写。为了避免重复的条目，可以使用&nbsp;<code class="docutils literal"><span class="pre">=</span></code>
+. 在当字典被压缩时，程序&nbsp;<code class="docutils literal"><span class="pre">Compress</span></code> 检查每一行。
+如果在规范的形式包含了非转义字符&nbsp;<code class="docutils literal"><span class="pre">=</span></code> 。
+如果是这种情况，该程序由两个条目替换本：一种其中&nbsp;=
+字符由一个空取代，和一个在那里由破折号取代。因此，下面的条目：</p>
+<p><code class="docutils literal"><span class="pre">grand=mères,grand=mère.N:fp</span></code></p>
+<p>被以下两行替代</p>
+<p><code class="docutils literal"><span class="pre">grand</span> <span class="pre">mères,grand</span> <span class="pre">mère.N:fp</span></code></p>
+<p><code class="docutils literal"><span class="pre">grand-mères,grand-mère.N:fp</span></code></p>
+<p>注：如果您想保留包含&nbsp;<code class="docutils literal"><span class="pre">=</span></code> 字符的条目，使用&nbsp;<code class="docutils literal"><span class="pre">\</span></code> ，如下面的例子：</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal"><span class="pre">E\=mc2,.FORMULE</span></code></div>
+<div class="line">当字典被压缩，本次置换完成。在压缩字典中，转义字符&nbsp;<code class="docutils literal"><span class="pre">=</span></code>
+被简单的&nbsp;<code class="docutils literal"><span class="pre">=</span></code>替换。 因此，如果以下行被压缩：</div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">E</span><span class="o">=</span><span class="n">mc2</span><span class="p">,</span><span class="o">.</span><span class="n">FORMULE</span>
+<span class="n">grand</span><span class="o">=</span><span class="n">mère</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="p">:</span><span class="n">fs</span>
+</pre></div>
+</div>
+<p>而我们运用字典的文字：</p>
+<p><code class="docutils literal"><span class="pre">Ma</span> <span class="pre">grand-mère</span> <span class="pre">m’a</span> <span class="pre">expliqué</span> <span class="pre">la</span> <span class="pre">formule</span> <span class="pre">E=mc2.</span></code></p>
+<p>以下行会在文本的合成词词典获得：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">E</span><span class="o">=</span><span class="n">mc2</span><span class="p">,</span><span class="o">.</span><span class="n">FORMULE</span>
+<span class="n">grand</span><span class="o">-</span><span class="n">mère</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="p">:</span><span class="n">fs</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h4>保理项<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h4>
+<p>具有相同的变位和规范化形式多个条目可以被组合成一个，只要它具有相同的语法和语义码。这允许除其他为相同的动词组相同动词变化：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">glace</span><span class="p">,</span><span class="n">glacer</span><span class="o">.</span><span class="n">V</span><span class="o">+</span><span class="n">z1</span><span class="p">:</span><span class="n">P1s</span><span class="p">:</span><span class="n">P3s</span><span class="p">:</span><span class="n">S1s</span><span class="p">:</span><span class="n">S3s</span><span class="p">:</span><span class="n">Y2s</span>
+</pre></div>
+</div>
+<p>如果语法和语义信息不同，创建单独的条目：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">glace</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">z1</span><span class="p">:</span><span class="n">fs</span>
+<span class="n">glace</span><span class="p">,</span><span class="n">glacer</span><span class="o">.</span><span class="n">V</span><span class="o">+</span><span class="n">z1</span><span class="p">:</span><span class="n">P1s</span><span class="p">:</span><span class="n">P3s</span><span class="p">:</span><span class="n">S1s</span><span class="p">:</span><span class="n">S3s</span><span class="p">:</span><span class="n">Y2s</span>
+</pre></div>
+</div>
+<p>它指定一个加热器或面纱，女性对男性的厨房工具。我们可以区分在这种情况下，输入：<em>poêle</em>
+它指定一个转换器或面具，女性对男性的厨房工具。我们可以区分在这种情况下，输入：</p>
+<p><code class="docutils literal"><span class="pre">poêle,.N+z1:fs/</span> <span class="pre">poêle</span> <span class="pre">à</span> <span class="pre">frire</span></code></p>
+<p><code class="docutils literal"><span class="pre">poêle,.N+z1:ms/</span> <span class="pre">voile,</span> <span class="pre">linceul;</span> <span class="pre">appareil</span> <span class="pre">de</span> <span class="pre">chauffage</span></code></p>
+<p>注意：在实践中，这种区分没有其他结果，增加词典条目的数量。构成&nbsp;Unitex
+准确给出相同的结果，如果我们合并这些项的各种方案：</p>
+<p><code class="docutils literal"><span class="pre">poêle,.N+z1:fs:ms</span></code></p>
+<p>区别是字典自由裁量权。</p>
+</div>
+</div>
+<div class="section" id="delas-format">
+<h3>DELAS format<a class="headerlink" href="#delas-format" title="永久链接至标题">¶</a></h3>
+<p>DELAS的格式非常类似于&nbsp;DELAF
+的。不同的是，只提到了规范的形式随后语法码和/或语义。规范形式是用逗号分隔不同的代码。下面是一个例子：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cheval</span><span class="p">,</span><span class="n">N4</span><span class="o">+</span><span class="n">Anl</span>
+</pre></div>
+</div>
+<p>第一语法或语义代码将被变位程序所用变位的入口的语法的名称来解释。上面的例子中的入口指示字&nbsp;<em>cheval</em>
+应符合变位语法&nbsp;<code class="docutils literal"><span class="pre">N4</span></code>.
+能够变位码添加到条目，但在变位操作的性质限制了这个可能性是有用的。有关详细信息，请参阅下文本章节
+&nbsp;[section-automatic-inflection].</p>
+</div>
+<div class="section" id="id7">
+<h3>内容框<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>提供Unitex的词典包含的简单复合词的描述。这些描述显示每个条目，潜在的变位代码和各种语义信息的语法范畴。下列表格提供在设置有汇利达的字典中使用的不同代码的概述。这些代码对几乎所有的语言相同的含义，虽然其中一些特定于某些语言（&nbsp;<em>i.e.</em>
+marque du neutre, etc. ）。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="37%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Code</strong></th>
+<th class="head"><strong>Signification</strong></th>
+<th class="head"><strong>Exemples</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">A</span></code></td>
+<td>adjectif</td>
+<td>fabuleux, broken-down</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ADV</span></code></td>
+<td>adverbe</td>
+<td>réellement, à la longue</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">CONJC</span></code></td>
+<td>conjonction de coordination</td>
+<td>mais</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">CONJS</span></code></td>
+<td>conjonction de subordination</td>
+<td>puisque, à moins que</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">DET</span></code></td>
+<td>déterminant</td>
+<td>ses, trente-six</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">INTJ</span></code></td>
+<td>interjection</td>
+<td>adieu, mille millions de mille sabords</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">N</span></code></td>
+<td>nom</td>
+<td>prairie, vie sociale</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">PREP</span></code></td>
+<td>préposition</td>
+<td>sans, à la lumière de</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">PRO</span></code></td>
+<td>pronom</td>
+<td>tu, elle-même</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">V</span></code></td>
+<td>verbe</td>
+<td>continuer, copier-coller</td>
+</tr>
+</tbody>
+</table>
+<p>Table: Codes grammaticaux usuels[tab-grammatical-codes]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="54%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Code</strong></th>
+<th class="head"><strong>Signification</strong></th>
+<th class="head"><strong>Exemple</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">z1</span></code></td>
+<td>langage courant</td>
+<td>blague</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">z2</span></code></td>
+<td>langage spécialisé</td>
+<td>sépulcre</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">z3</span></code></td>
+<td>langage très spécialisé</td>
+<td>houer</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">Abst</span></code></td>
+<td>abstrait</td>
+<td>bon goût</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Anl</span></code></td>
+<td>animal</td>
+<td>cheval de race</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">AnlColl</span></code></td>
+<td>animal collectif</td>
+<td>troupeau</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Conc</span></code></td>
+<td>concret</td>
+<td>abbaye</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ConcColl</span></code></td>
+<td>concret collectif</td>
+<td>décombres</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Hum</span></code></td>
+<td>humain</td>
+<td>diplomate</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">HumColl</span></code></td>
+<td>humain collectif</td>
+<td>vieille garde</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">t</span></code></td>
+<td>verbe transitif</td>
+<td>foudroyer</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">i</span></code></td>
+<td>verbe intransitif</td>
+<td>fraterniser</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">en</span></code></td>
+<td>particule pré-verbale (PPV) obligatoire</td>
+<td>en imposer</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">se</span></code></td>
+<td>verbe pronominal</td>
+<td>se marier</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ne</span></code></td>
+<td>verbe à négation obligatoire</td>
+<td>ne pas cesser de</td>
+</tr>
+</tbody>
+</table>
+<p>Table: Quelques codes sémantiques[tab-semantic-codes]</p>
+<p>注：计时表的说明
+&nbsp;[tab-inflectional-codes]匹配了法文。然而，大多数这些定义的几种语言（不定式，现在分词等）中找到。</p>
+<p>因为大多数语言的共同基础，字典包含特定编码具体到每一种语言。因此，变位的代码变化很大从一种语言到另一种，这里未描述。对于在字典中使用的所有代码的完整说明，我们建议您直接联系字典的作者。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="45%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Code</strong></th>
+<th class="head"><strong>Signification</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">m</span></code></td>
+<td>masculin</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">f</span></code></td>
+<td>féminin</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">n</span></code></td>
+<td>neutre</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">s</span></code></td>
+<td>singulier</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">p</span></code></td>
+<td>pluriel</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">1</span></code>, <code class="docutils literal"><span class="pre">2</span></code>, <code class="docutils literal"><span class="pre">3</span></code></td>
+<td>1st, 2nd, 3rd personne</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">P</span></code></td>
+<td>présent de l’indicatif</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">I</span></code></td>
+<td>imparfait de l’indicatif</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">S</span></code></td>
+<td>présent du subjonctif</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">T</span></code></td>
+<td>imparfait du subjonctif</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">Y</span></code></td>
+<td>présent de l’impératif</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">C</span></code></td>
+<td>présent du conditionnel</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">J</span></code></td>
+<td>passé simple</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">W</span></code></td>
+<td>infinitif</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">G</span></code></td>
+<td>participe présent</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">K</span></code></td>
+<td>participe passé</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">F</span></code></td>
+<td>futur</td>
+</tr>
+</tbody>
+</table>
+<p>Table: Codes flexionnels usuels[tab-inflectional-codes]</p>
+<p>显示的代码是绝对不限制。每个用户都可以将自己的代码，并创建自己的字典。例如，人们可以引入英语字典标志表示虚假的法文：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bless</span><span class="p">,</span><span class="o">.</span><span class="n">V</span><span class="o">+</span><span class="n">faux</span><span class="o">-</span><span class="n">ami</span><span class="o">/</span><span class="n">bénir</span>
+<span class="n">cask</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">faux</span><span class="o">-</span><span class="n">ami</span><span class="o">/</span><span class="n">tonneau</span>
+<span class="n">journey</span><span class="p">,</span><span class="o">.</span><span class="n">N</span><span class="o">+</span><span class="n">faux</span><span class="o">-</span><span class="n">ami</span><span class="o">/</span><span class="n">voyage</span>
+</pre></div>
+</div>
+<p>另外，也可以使用字典存储特定信息。因此，人们可以使用描述的缩写和规范形式，得到完整的形式的条目的词尾变化的形式：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>ADN,Acide DésoxyriboNucléique.SIGLE
+LADL,Laboratoire d’Automatique Documentaire et Linguistique.SIGLE
+SAV,Service Après-Vente.SIGLE
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id8">
+<h2>在字典中查找一个单词<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<p>[section-dictionary-lookup] 您可以在多个词典用两种方式搜索一个词：</p>
+<div class="figure" id="id80">
+<a class="reference internal image-reference" href="_images/fig3-1.png"><img alt="“DELA”菜单" src="_images/fig3-1.png" style="width: 13.00000cm;" /></a>
+<p class="caption"><span class="caption-text">“DELA”菜单</span></p>
+</div>
+<p>如果你打开了一本字典，该窗口包含一个字段，允许你执行搜索。如果单词出现在字典中，“查找”按钮，突出显示第一个匹配的条目。如果有多个项目匹配，您可以通过点击这两个按钮状的箭头浏览。</p>
+<div class="figure" id="id81">
+<a class="reference internal image-reference" href="_images/fig3-2.png"><img alt="在字典中查找一个单词" src="_images/fig3-2.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">在字典中查找一个单词</span></p>
+</div>
+<p>您也可以通过点击“查找”，从“&nbsp;DELA
+”菜单在多个词典搜索一个单词。然后，你可以选择词典在其中搜索你输入的字。</p>
+<div class="figure" id="id82">
+<a class="reference internal image-reference" href="_images/fig3-3.png"><img alt="在多个字典中查找一个单词" src="_images/fig3-3.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">在多个字典中查找一个单词</span></p>
+</div>
+</div>
+<div class="section" id="id9">
+<h2>检查字典格式<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h2>
+<p>当字典很大，就成了乏味的手工检查。 Unitex 包含程序&nbsp;<code class="docutils literal"><span class="pre">CheckDic</span></code>
+它会自动检查&nbsp;DELAFDELAS 字典。</p>
+<p>这个程序检查项的语法。对于每个格式错误条目，程序将显示行号，该行的内容和错误的性质。分析的结果保存在一个文件名为
+&nbsp;<code class="docutils literal"><span class="pre">CHECK_DIC.TXT</span></code>这验证完后显示。除了任何错误消息，该文件包含在变位和规范的形式，语法和语义代码列表，并使用变位代码列表中使用的所有字符的列表。字符列表确保在字典中的字符与在该语言的字母表文件保持一致。每个字符后面的十六进制值。代码清单可以用来验证有字典中的代码没有错别字。</p>
+<p>程序&nbsp;<code class="docutils literal"><span class="pre">CheckDic</span></code>
+是无压缩字典的作品，也就是为文本文件。该公约是通常适用于给予延期&nbsp;<code class="docutils literal"><span class="pre">.dic</span></code>
+. 要检查字典的格式，必须首先通过点击在“&nbsp;DELA ”菜单打开“打开...”。</p>
+<div class="figure" id="id83">
+<a class="reference internal image-reference" href="_images/fig3-4.png"><img alt="词典例子&nbsp;[fig-dictionary-example]" src="_images/fig3-4.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">词典例子&nbsp;[fig-dictionary-example]</span></p>
+</div>
+<p>加载字典图&nbsp;[fig-dictionary-example].
+要启动自动验证，点击“检查格式...”，从“&nbsp;DELA
+”菜单。图的窗出现的图的窗口。图中词典的审计结果显示&nbsp;&nbsp;[fig-dictionary-checking]。
+此窗口允许您选择要检查词典的类型。图中为词典的审计结果&nbsp;&nbsp;[fig-dictionary-example],
+显示在图&nbsp;[fig-dictionary-checking-results].</p>
+<p>第一个错误是由于这样的事实，该方案还没有找到点。第二，事实证明，他没有找到点标词尾变化的形式的结束。第三个错误表明该程序没有发现任何语法或语义的代码。</p>
+<div class="figure" id="id84">
+<a class="reference internal image-reference" href="_images/fig3-5.png"><img alt="字典的自动验证&nbsp;[fig-dictionary-checking]" src="_images/fig3-5.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">字典的自动验证&nbsp;[fig-dictionary-checking]</span></p>
+</div>
+<div class="figure" id="id85">
+<a class="reference internal image-reference" href="_images/fig3-6.png"><img alt="字典的自动验证&nbsp;[fig-dictionary-checking-results]" src="_images/fig3-6.png" style="height: 19.40000cm;" /></a>
+<p class="caption"><span class="caption-text">字典的自动验证&nbsp;[fig-dictionary-checking-results]</span></p>
+</div>
+</div>
+<div class="section" id="id10">
+<h2>排序<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h2>
+<p>无论条目顺序的汇利达操纵词典。但是，对于演示目的，它往往是最好的字典排序。排序操作按照若干标准，首先是文本的语言进行排序而异。因此，以不同的顺序按字母顺序排列的执行泰国字典的排序，所以&nbsp;Unitex
+为泰语制定了排序方法 (见&nbsp;[chap-external-programs])。</p>
+<p>对于欧洲语言，排序通常是在字典顺序进行，但有一些变化。事实上，像法国的一些语言考虑某些字符等同。例如，字符之间的差异&nbsp;<code class="docutils literal"><span class="pre">e</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">é</span></code> 当比较词的时候会被忽略&nbsp;<code class="docutils literal"><span class="pre">manger</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">mangés</span></code>,
+因为上下文&nbsp;<code class="docutils literal"><span class="pre">r</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">s</span></code>
+用于决定顺序。区别是当上下文是相同的，这是这种情况，如果我们比较&nbsp;<code class="docutils literal"><span class="pre">pêche</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">pèche</span></code>。</p>
+<p>为了处理这一现象，分拣程序&nbsp;<code class="docutils literal"><span class="pre">SortTxt</span></code> 使用该定义字符的等价的文件。
+这个文件名为&nbsp;<code class="docutils literal"><span class="pre">Alphabet_sort.txt</span></code> 和
+是在当前用户语言的目录。下面是在默认情况下为法国使用的文件的第一行：</p>
+<p><code class="docutils literal"><span class="pre">AÀÂÄaàâä</span></code></p>
+<p><code class="docutils literal"><span class="pre">Bb</span></code></p>
+<p><code class="docutils literal"><span class="pre">CÇcç</span></code></p>
+<p><code class="docutils literal"><span class="pre">Dd</span></code></p>
+<p><code class="docutils literal"><span class="pre">EÉÈÊËeéèêë</span></code></p>
+<p>当上下文允许在同一行中的字符被认为是相当的。当你需要比较两个相似的字符根据其左起出现合适就行的顺序进行比较。你可以从上面摘录不大小写区分，我们不知道的变音符号。</p>
+<p>要排序的字典，打开它，在“&nbsp;DELA
+”菜单中点击“排序辞典”。默认情况下，程序会尝试使用文件&nbsp;<code class="docutils literal"><span class="pre">Alphabet_sort.txt</span></code>
+。如果这个文件不存在，排序是按照&nbsp;Unicode
+编码字符的索引完成。通过修改这个文件，你可以定义自己的排序偏好。</p>
+<p>注：应用字典上的一个文本文件后&nbsp;<code class="docutils literal"><span class="pre">dlf</span></code> ， <code class="docutils literal"><span class="pre">dlc</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">err</span></code>
+有了这个程序会自动排序。</p>
+</div>
+<div class="section" id="id11">
+<h2>全自动变位<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id12">
+<h3>简单词的变位<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>就像&nbsp;[section-DELAS-format]中定义的一样，DELAS
+通常由一个规范的形式和语法或语义编码序列：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">aviatrix</span><span class="p">,</span><span class="n">N4</span><span class="o">+</span><span class="n">Hum</span>
+<span class="n">matrix</span><span class="p">,</span><span class="n">N4</span><span class="o">+</span><span class="n">Math</span>
+<span class="n">radix</span><span class="p">,</span><span class="n">N4</span>
+</pre></div>
+</div>
+<p>第一次会议码被解释为用于变位规范形式的语法的名称。有两种可能的形式：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">N4</span></code>:语法名=&nbsp;<code class="docutils literal"><span class="pre">N4.fst2</span></code>， 语法码=&nbsp;<code class="docutils literal"><span class="pre">N</span></code> (最长前缀只能是字母)</li>
+<li><code class="docutils literal"><span class="pre">N(NC_XXX)</span></code>： 语法名=&nbsp;<code class="docutils literal"><span class="pre">NC_XXX.fst2</span></code>， 语法码=&nbsp;<code class="docutils literal"><span class="pre">N</span></code></li>
+</ul>
+<p>这些变位文法
+如有必要，会自动编译。在上面的例子中，所有的条目将与命名语法被变位
+<code class="docutils literal"><span class="pre">N4</span></code>.</p>
+<p>，在“&nbsp;DELA ”菜单中点击“影响”。显示 &nbsp;[fig-inflection-configuration]
+指定变位程序，其中，变位文法的目录。默认情况下，子目录&nbsp;<code class="docutils literal"><span class="pre">Inflection</span></code>
+当前语言的目录被使用。您也可以指定哪些类型的词词典应该包含。如果遇到非法输入，将显示一条错误消息。</p>
+<div class="figure" id="id86">
+<a class="reference internal image-reference" href="_images/fig3-7.png"><img alt="自动变位配置&nbsp;[fig-inflection-configuration]" src="_images/fig3-7.png" style="width: 8.00000cm;" /></a>
+<p class="caption"><span class="caption-text">自动变位配置&nbsp;[fig-inflection-configuration]</span></p>
+</div>
+<div class="figure" id="id87">
+<a class="reference internal image-reference" href="_images/fig3-8.png"><img alt="变位语法 ``N4``\ [fig-example-inflectional-grammar]" src="_images/fig3-8.png" style="width: 4.50000cm;" /></a>
+<p class="caption"><span class="caption-text">变位语法 <code class="docutils literal"><span class="pre">N4</span></code>[fig-example-inflectional-grammar]</span></p>
+</div>
+<p>La figure&nbsp;[fig-example-inflectional-grammar]
+示出了变位的语法的一个例子。描述后缀加上或减去来从规范形式词尾变化的形式的路径和输出（在框中粗体字）给予变位代码添加到字典条目。</p>
+<p>在我们的例子，两个路径是可能的。第一个不修改规范形式，并增加了变位代码&nbsp;<code class="docutils literal"><span class="pre">:s</span></code>
+。第二个被削减&nbsp;<code class="docutils literal"><span class="pre">L</span></code>, 然后加入&nbsp;<code class="docutils literal"><span class="pre">ces</span></code> 和变位码&nbsp;<code class="docutils literal"><span class="pre">:mp</span></code>.</p>
+<p>在这里，您可以使用操作器：</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">L</span></code> (left) 删除了一项输出;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">R</span></code>
+(right)从恢复信息。在法语中，第一组的许多动词第三人称单数除去不定式和从端部在改变信结合第四个最终的信息。</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">C</span></code> (copy) 重复条目的信形，换挡一切。</p>
+<p>例如，假设你想自动生成形容词&nbsp;<code class="docutils literal"><span class="pre">able</span></code>如&nbsp;<code class="docutils literal"><span class="pre">regrettable</span></code>
+或&nbsp;<code class="docutils literal"><span class="pre">réquisitionnable</span></code>,
+还有最后的辅音字母名增加了一倍。避免编写一个偏转曲线图对于每个可能的最终辅音，可以使用C操作者重复任何种类的最终辅音;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">D</span></code>
+(delete)除去从入口的一封信，换挡一切，这是他的权利。例如罗马语变位&nbsp;<code class="docutils literal"><span class="pre">european</span></code>
+到&nbsp;<code class="docutils literal"><span class="pre">europeni</span></code> ， 我们用&nbsp;<code class="docutils literal"><span class="pre">LDRi</span></code> 。 <code class="docutils literal"><span class="pre">L</span></code> 来确定字符&nbsp;<code class="docutils literal"><span class="pre">a</span></code>,
+<code class="docutils literal"><span class="pre">D</span></code> 删除&nbsp;<code class="docutils literal"><span class="pre">a</span></code>,在左边定义&nbsp;<code class="docutils literal"><span class="pre">n</span></code>, 随后&nbsp;<code class="docutils literal"><span class="pre">Ri</span></code> 将代替&nbsp;<code class="docutils literal"><span class="pre">n</span></code>
+并加入&nbsp;<code class="docutils literal"><span class="pre">i</span></code> 。</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">U</span></code> 去掉了声调。 例如&nbsp;<code class="docutils literal"><span class="pre">LLUx</span></code> 应用于&nbsp;<code class="docutils literal"><span class="pre">mangés</span></code>
+产生了变位&nbsp;<code class="docutils literal"><span class="pre">mangex</span></code>,然后&nbsp;<code class="docutils literal"><span class="pre">U</span></code> 将&nbsp;<code class="docutils literal"><span class="pre">é</span></code> 替换为&nbsp;<code class="docutils literal"><span class="pre">e</span></code> 。</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">P</span></code> 将首字母大写，例如&nbsp;<code class="docutils literal"><span class="pre">Px</span></code> 将&nbsp;<code class="docutils literal"><span class="pre">foo</span></code> 转换为&nbsp;<code class="docutils literal"><span class="pre">Foox</span></code> 。</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">W</span></code> 首字母小写。</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">&lt;R=?&gt;</span></code> 将首字母替换为&nbsp;<code class="docutils literal"><span class="pre">?</span></code> 。</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">&lt;I=?&gt;</span></code> 加入字母&nbsp;<code class="docutils literal"><span class="pre">?</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">&lt;X=n&gt;</span></code> 去掉&nbsp;<span class="math">\(n\)</span> 。</p>
+</li>
+</ul>
+<p>为使用操作器，考虑 <em>reprendre</em>&nbsp;:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="36%" />
+<col width="30%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Verbe</th>
+<th class="head">Opérateur</th>
+<th class="head">Variable</th>
+<th class="head">Résultat</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>reprendre</td>
+<td>&lt;re&gt;</td>
+<td>&nbsp;</td>
+<td>reprend</td>
+</tr>
+<tr class="row-odd"><td>reprendre</td>
+<td>&lt;$&gt;</td>
+<td>$ = e</td>
+<td>reprendr</td>
+</tr>
+<tr class="row-even"><td>reprendre</td>
+<td>&lt;£&gt;</td>
+<td>£= reprendre</td>
+<td><span class="math">\(\varepsilon\)</span></td>
+</tr>
+<tr class="row-odd"><td>reprendre</td>
+<td>&lt;re$re&gt;</td>
+<td>$ = nd</td>
+<td>rep</td>
+</tr>
+<tr class="row-even"><td>reprendre</td>
+<td>&lt;re£re&gt;</td>
+<td>£ = prend</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>reprendre</td>
+<td>&lt;$re&gt;</td>
+<td>$ = d</td>
+<td>repren</td>
+</tr>
+<tr class="row-even"><td>reprendre</td>
+<td>&lt;re$&gt;</td>
+<td>$ = <span class="math">\(\varepsilon\)</span></td>
+<td>reprendre</td>
+</tr>
+<tr class="row-odd"><td>reprendre</td>
+<td>&lt;£re&gt;</td>
+<td>£ = reprend</td>
+<td><span class="math">\(\varepsilon\)</span></td>
+</tr>
+<tr class="row-even"><td>reprendre</td>
+<td>&lt;re£&gt;</td>
+<td>£ = prendre</td>
+<td>re</td>
+</tr>
+</tbody>
+</table>
+<p>程序&nbsp;MultiFlex 允许使用十个变量，它们的名字是&nbsp;$0 ，&nbsp;$1...，&nbsp;$9
+十个&nbsp;£类型的变量名为&nbsp;£0, &nbsp;£1..., £9 。
+此外，多个不同类型的变量可被同一个操作器使用 因此操作器
+&lt;£3re$7re&gt;应用于<em>reprendre</em>给出£3 = rep 和&nbsp;$7 =&nbsp;<code class="docutils literal"><span class="pre">nd</span></code>.</p>
+<p>动词&nbsp;<code class="docutils literal"><span class="pre">accélérer</span></code>，&nbsp;<code class="docutils literal"><span class="pre">sécher</span></code> ，第二人称现在时可以由操作产生：
+&lt;é$er&gt;è$es&nbsp;:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="8%" />
+<col width="19%" />
+<col width="7%" />
+<col width="8%" />
+<col width="4%" />
+<col width="7%" />
+<col width="19%" />
+<col width="14%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">accélérer</span></code></td>
+<td>&lt;é$er&gt;</td>
+<td><span class="math">\(\rightarrow\)</span></td>
+<td>accél</td>
+<td>$ = r</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>è$es</td>
+<td><span class="math">\(\rightarrow\)</span></td>
+<td><code class="docutils literal"><span class="pre">accélères</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">sécher</span></code></td>
+<td>&lt;é$er&gt;</td>
+<td><span class="math">\(\rightarrow\)</span></td>
+<td>s</td>
+<td>$ = ch</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>è$es</td>
+<td><span class="math">\(\rightarrow\)</span></td>
+<td><code class="docutils literal"><span class="pre">sèches</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>在这里，获得英语变位形容词&nbsp;<code class="docutils literal"><span class="pre">tranquil</span></code>:</p>
+<p><a class="reference internal" href="_images/fig3-flexion_aussprechen2.png"><img alt="image" src="_images/fig3-flexion_aussprechen2.png" style="width: 5.00000cm;" /></a></p>
+<p>在一些语言中，某些变位变化具有被添加到根的前缀。这是形成过去分词时的情况。联合使用操作器
+<code class="docutils literal"><span class="pre">£</span></code> 和 <code class="docutils literal"><span class="pre">$</span></code> 允许变位德语动词 <code class="docutils literal"><span class="pre">sprechen</span></code> (parler)
+如图现在和过去分词&nbsp;[fig-inflection-sprechen].</p>
+<div class="figure" id="id88">
+<a class="reference internal image-reference" href="_images/fig3-Advanced_operators_with_Variables-V_sprechen.png"><img alt="变位图中的词语，如 *sprechen* [fig-inflection-sprechen]" src="_images/fig3-Advanced_operators_with_Variables-V_sprechen.png" style="width: 5.00000cm;" /></a>
+<p class="caption"><span class="caption-text">变位图中的词语，如 <em>sprechen</em> [fig-inflection-sprechen]</span></p>
+</div>
+<p>这里的变位德语动词 <code class="docutils literal"><span class="pre">sprechen</span></code>:</p>
+<p><a class="reference internal" href="_images/fig3-flexion_aussprechen2.png"><img alt="image" src="_images/fig3-flexion_aussprechen2.png" style="width: 5.00000cm;" /></a></p>
+<p>如果一个人想用动词短语可以使用两种类型的变量&nbsp;$.
+图&nbsp;[fig-inflection-aussprechen] 表明相称变量图&nbsp;<code class="docutils literal"><span class="pre">$1</span></code> et <code class="docutils literal"><span class="pre">$2</span></code> 。</p>
+<div class="figure" id="id89">
+<a class="reference internal image-reference" href="_images/fig3-Advanced_operators_with_Variables-V_aussprechen.png"><img alt="变位图中的词语，如 *aussprechen* [fig-inflection-aussprechen]" src="_images/fig3-Advanced_operators_with_Variables-V_aussprechen.png" style="width: 10.50000cm;" /></a>
+<p class="caption"><span class="caption-text">变位图中的词语，如 <em>aussprechen</em> [fig-inflection-aussprechen]</span></p>
+</div>
+<p>这里为获得德国动词&nbsp;<code class="docutils literal"><span class="pre">aussprechen</span></code>:</p>
+<p><a class="reference internal" href="_images/fig3-flexion_aussprechen2.png"><img alt="image" src="_images/fig3-flexion_aussprechen2.png" style="width: 5.00000cm;" /></a></p>
+<p><strong>Codes sémantiques</strong>
+在某些语言中，也有实际对应语义特征，如被动式的标记变位变化特征。这些代码可能不显示为变位码，但是作为语义码。以产生语义码，在一个盒的输出的开头插入一个加号。此框应只包含一个加之前，语义代码，如图&nbsp;[fig-inflection-sem].</p>
+<div class="figure" id="id90">
+<a class="reference internal image-reference" href="_images/fig3-9sem.png"><img alt="与语义代码语法变位&nbsp;[fig-inflection-sem]" src="_images/fig3-9sem.png" style="width: 6.00000cm;" /></a>
+<p class="caption"><span class="caption-text">与语义代码语法变位&nbsp;[fig-inflection-sem]</span></p>
+</div>
+</div>
+<div class="section" id="id13">
+<h3>复合词变位<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<p>Voir chapitre [chap-multiflex].</p>
+</div>
+<div class="section" id="id14">
+<h3>语法变位<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h3>
+<p>像阿拉伯语和希伯来语闪含语系不以同样的方式为其他类型的语言下降。它们的形态遵循不同的逻辑。
+在这些语言中，单词在变位&nbsp;<em>squelette consonantique</em>.
+变位工艺结合这个骨架与元音。</p>
+<p>首先，让我们看看是否有代码，在进入&nbsp;DELAS 区域：</p>
+<p><code class="docutils literal"><span class="pre">ktb,$V31-123</span></code></p>
+<div class="figure" id="id91">
+<a class="reference internal image-reference" href="_images/fig3-15.png"><img alt="变位语法发挥犹太语模式&nbsp;[semitic-grammar]" src="_images/fig3-15.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">变位语法发挥犹太语模式&nbsp;[semitic-grammar]</span></p>
+</div>
+<p>遵循以下规则：</p>
+<ol class="arabic simple">
+<li>展示一个例子 (<code class="docutils literal"><span class="pre">1</span></code> 第一个&nbsp;<code class="docutils literal"><span class="pre">2</span></code>
+第二个，等)。在我们的例子中，&nbsp;<code class="docutils literal"><span class="pre">1</span></code>，&nbsp;<code class="docutils literal"><span class="pre">2</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">3</span></code>
+分别代表&nbsp;<code class="docutils literal"><span class="pre">k</span></code> ，&nbsp;<code class="docutils literal"><span class="pre">t</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">b</span></code> 。
+如果你想第九届后指定一个字母，则它必须保护其与椽子号： <code class="docutils literal"><span class="pre">&lt;10&gt;</span></code> 。</li>
+</ol>
+<div class="line-block">
+<div class="line">DELAF 由这个语法产生：</div>
+<div class="line"><code class="docutils literal"><span class="pre">yakotubu,ktb.V:aI3ms</span></code></div>
+</div>
+<div class="line-block">
+<div class="line">如果一个代码引理领域的辅音和两个条目具有相同的辅音和元音的不同之处，您必须编写变位语法元音&nbsp;:</div>
+<div class="line"><code class="docutils literal"><span class="pre">Hsb,$V3au</span> <span class="pre">//</span> <span class="pre">compter,</span> <span class="pre">Hasaba,</span> <span class="pre">yaHosubu</span></code></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Hsb,$V3ii</span> <span class="pre">//</span> <span class="pre">penser,</span> <span class="pre">Hasiba,</span> <span class="pre">yaHosibu</span></code></p>
+<p>复制所有引理字段，操作者可以使用&nbsp;&lt;LEMMA&gt;
+(图&nbsp;[LEMMA-operator])。以这种方式，与任何引理字段路径不依赖于字母的数目。
+这个操作符是阳性阿拉伯形式由辅音骨架插入元音，而阴性的添加后缀获得的名词和形容词有用。在这个例子中，在引理场编码既辅音和元音。</p>
+<div class="figure" id="id92">
+<a class="reference internal image-reference" href="_images/fig3-LEMMA-operator.png"><img alt="变位语法犹太语模式与操作&nbsp;&lt;LEMMA&gt; [LEMMA-operator]" src="_images/fig3-LEMMA-operator.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">变位语法犹太语模式与操作&nbsp;&lt;LEMMA&gt; [LEMMA-operator]</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="id15">
+<h2>压缩<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h2>
+<p>Unitex应用于文本片字典。压缩减少该词典的大小和加速协商。这是用程序来完成&nbsp;<code class="docutils literal"><span class="pre">Compress</span></code>.
+它作为输入字典作为文本文件 (例如&nbsp;<code class="docutils literal"><span class="pre">mon_dico.dic</span></code>) 产生两个文件：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">mon_dico.bin</span></code> 包含字典的变位形式的最小自动机;</li>
+<li><code class="docutils literal"><span class="pre">mon_dico.inf</span></code>
+包含代码允许重建从包含在变位形式原始词典&nbsp;<code class="docutils literal"><span class="pre">mon_dico.bin</span></code> 。</li>
+</ul>
+<p>最低自动含量&nbsp;<code class="docutils literal"><span class="pre">mon_dico.bin</span></code>
+是的，所有的常用的前缀和后缀的因素变位形式的表示。例如，最小自动机字
+<code class="docutils literal"><span class="pre">me</span></code>, <code class="docutils literal"><span class="pre">te</span></code>, <code class="docutils literal"><span class="pre">se</span></code>, <code class="docutils literal"><span class="pre">ma</span></code>, <code class="docutils literal"><span class="pre">ta</span></code> et <code class="docutils literal"><span class="pre">sa</span></code>
+可以通过图1的曲线图表示&nbsp;[fig-example-minimal-automaton].</p>
+<div class="figure" id="id93">
+<a class="reference internal image-reference" href="_images/fig3-10.png"><img alt="最小自动机的一个例子的表示&nbsp;[fig-example-minimal-automaton]" src="_images/fig3-10.png" style="width: 5.00000cm;" /></a>
+<p class="caption"><span class="caption-text">最小自动机的一个例子的表示&nbsp;[fig-example-minimal-automaton]</span></p>
+</div>
+<p>要压缩字典，打开它，然后单击“压缩到FST”中的“DELA”菜单。压缩是独立于语言和字典的内容。由程序产生的消息显示在不自动关闭一个窗口。你可以看到文件的大小&nbsp;<code class="docutils literal"><span class="pre">.bin</span></code>
+， 得到的，读取的行的数量和变位码产品数量。人物
+&nbsp;[fig-compression-result] 显示压缩的简单字的字典的结果。</p>
+<div class="figure" id="id94">
+<a class="reference internal image-reference" href="_images/fig3-11.png"><img alt="压缩的结果&nbsp;[fig-compression-result]" src="_images/fig3-11.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">压缩的结果&nbsp;[fig-compression-result]</span></p>
+</div>
+<p>作为一个指导原则，普遍观察到的压缩比为约百分之九十五
+简单的词和复合词百分之五十的字典。</p>
+<p>注：对于闪语，一个特殊的压缩算法来减少文件大小&nbsp;<code class="docutils literal"><span class="pre">.bin</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">.inf</span></code>
+。该语言被认为是闪的事实可以在全局偏好进行配置。</p>
+</div>
+<div class="section" id="id16">
+<h2>词典中的应用<a class="headerlink" href="#id16" title="永久链接至标题">¶</a></h2>
+<p>Unitex能够处理任何压缩字典 (<code class="docutils literal"><span class="pre">.bin</span></code>)
+(<code class="docutils literal"><span class="pre">.fst2</span></code>)。这些词典可以在预处理过程中，无论是明确地通过点击“应用词汇资源...”，从“文字”菜单中应用。现在，我们将详细为词典的应用程序的规则。图的情况下，词典将在节中讨论
+&nbsp;[section-dictionary-graphs].</p>
+<div class="section" id="id17">
+<h3>优先级<a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h3>
+<p>优先级规则是：如果文本的单词在字典中被发现，
+施加具有优先的字典时这个字将不被考虑在内。</p>
+<p>应用字典时，这消除歧义。 例如，字&nbsp;<em>par</em>
+在高尔夫球场的标称解释。如果不考虑这个工作，只需创建一个只包含词典入口过滤器&nbsp;<code class="docutils literal"><span class="pre">par,.PREP</span></code>
+并给它最高的优先级保存。以这种方式，即使在字典包含简单的字的另一个输入，它将被忽略由于优先次序的播放。</p>
+<p>有三个级别的优先级。字典是没有扩展名结尾&nbsp;<code class="docutils literal"><span class="pre">-</span></code>
+具有最高优先级;其名称结尾 <code class="docutils literal"><span class="pre">+</span></code>
+有最低优先级;其他字典施加具有中等优先级。具有相同优先级的多个词典的顺序并不重要。在命令行上，语句：</p>
+<p><code class="docutils literal"><span class="pre">Dico</span> <span class="pre">ex.snt</span> <span class="pre">alph.txt</span> <span class="pre">ctr+.bin</span> <span class="pre">cities-.bin</span> <span class="pre">rivers.bin</span> <span class="pre">regions-.bin</span></code></p>
+<p>所以解释字典顺序如下 (&nbsp;<code class="docutils literal"><span class="pre">ex.snt</span></code> 是应用字典的文字， <code class="docutils literal"><span class="pre">alph.txt</span></code>
+是所使用的字母的文件：</p>
+<ol class="arabic simple">
+<li><code class="docutils literal"><span class="pre">cities-.bin</span></code></li>
+<li><code class="docutils literal"><span class="pre">regions-.bin</span></code></li>
+<li><code class="docutils literal"><span class="pre">rivers.bin</span></code></li>
+<li><code class="docutils literal"><span class="pre">ctr+.bin</span></code></li>
+</ol>
+</div>
+<div class="section" id="id18">
+<h3>字典规则<a class="headerlink" href="#id18" title="永久链接至标题">¶</a></h3>
+<p>除了优先规则，词典中的应用做尊重上的空间。尊重的大写规则是：</p>
+<ul class="simple">
+<li>如果在字典中一个大写字母，那么就必须在文字资本化;</li>
+<li>如果在词典中的小写的，有可能是小写的或在文本中大写。</li>
+</ul>
+<p>同时，输入&nbsp;<code class="docutils literal"><span class="pre">pierre,.N:fs</span></code> 识别词&nbsp;<code class="docutils literal"><span class="pre">pierre</span></code> ， <code class="docutils literal"><span class="pre">Pierre</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">PIERRE</span></code> ， 因此</p>
+<p><code class="docutils literal"><span class="pre">Pierre,.N+Prénom</span></code> 承认&nbsp;<code class="docutils literal"><span class="pre">Pierre</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">PIERRE</span></code>
+。大写和小写字母被作为参数传递给程序字母表文件中定义&nbsp;<code class="docutils literal"><span class="pre">Dico</span></code> .</p>
+<p>间距是一个很简单的规则：一个文本序列由字典条目的认可，就必须有完全一样的空间。
+例如，如果该字典包含&nbsp;<code class="docutils literal"><span class="pre">aujourd'hui,.ADV</span></code> , 序列&nbsp;<code class="docutils literal"><span class="pre">Aujourd'</span> <span class="pre">hui</span></code>
+因为撇号以下的空间将不能被识别。</p>
+</div>
+<div class="section" id="id19">
+<h3>图-字典<a class="headerlink" href="#id19" title="永久链接至标题">¶</a></h3>
+<p>程序 <code class="docutils literal"><span class="pre">Dico</span></code> 还能够将图形的字典。这些都是遵循图表， 默认情况下， <a class="footnote-reference" href="#id79" id="id20">[1]</a>,
+以下规则 : 如果应用程序 <code class="docutils literal"><span class="pre">Locate</span></code> 的&nbsp;MERGE 模式,
+他们必须出示相应的行序列&nbsp;DELAF 。 当施加到文本，它们附着词汇标签&nbsp;DELAF
+这些序列。</p>
+<div class="figure" id="id95">
+<a class="reference internal image-reference" href="_images/fig3-12.png"><img alt="化学元素的图形词典&nbsp;[elements]" src="_images/fig3-12.png" style="height: 24.00000cm;" /></a>
+<p class="caption"><span class="caption-text">化学元素的图形词典&nbsp;[elements]</span></p>
+</div>
+<p>图表[elements]
+示出了识别化学符号的曲线图。我们可以在这个图中看到的第一个优势压缩字典：使用引号来强制区分大小写。因此，该曲线图将认识到许多&nbsp;<code class="docutils literal"><span class="pre">Fe</span></code>
+除了&nbsp;<code class="docutils literal"><span class="pre">FE</span></code> ， 而这是不可能的，以指定在一个常规&nbsp;DELAF 这种禁止。</p>
+<p>图的词典的第二个优点是，他们可以利用从预先施加的词典的结果。因此，我们可以使用一般的字典，然后将其标记为专有名称未知单词大写与图
+<code class="docutils literal"><span class="pre">NPr+</span></code> &nbsp;[graph-NPr]. <code class="docutils literal"><span class="pre">+</span></code>
+图中的名称，给它一个低优先级，以便它一般字典之后施加。为了工作，该图是基于仍然通过一般的字典后未知的话。钩对应于定义上下文
+(见 [section-contexts]).</p>
+<div class="figure" id="id96">
+<a class="reference internal image-reference" href="_images/fig3-13.png"><img alt="字典图形标识作为专名未登录词大写&nbsp;[graph-NPr]" src="_images/fig3-13.png" style="width: 10.50000cm;" /></a>
+<p class="caption"><span class="caption-text">字典图形标识作为专名未登录词大写&nbsp;[graph-NPr]</span></p>
+</div>
+<p>作为图-字典由发动机程序装入&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code> ，
+他们可以使用任何程序&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code> 授权。尤其是，它有可能使用的形态滤波器
+(见&nbsp;[section-filters]) 和大写模式 (见&nbsp;[section-morphological-mode])。
+因此，图的曲线图中 [graph-CR]
+使用过滤器数罗马数字。注意，它也使用上下文来避免，例如，随后当由撇号即&nbsp;<code class="docutils literal"><span class="pre">C</span></code>
+被取为罗马数字。</p>
+<div class="figure" id="id97">
+<a class="reference internal image-reference" href="_images/fig3-14.png"><img alt="图词典承认罗马数字&nbsp;[graph-CR]" src="_images/fig3-14.png" style="height: 24.00000cm;" /></a>
+<p class="caption"><span class="caption-text">图词典承认罗马数字&nbsp;[graph-CR]</span></p>
+</div>
+<p>默认情况下，图表，词典在&nbsp;MERGE模式应用。它可以应用它们在&nbsp;REPLACE模式，增加了它们的后缀名&nbsp;<code class="docutils literal"><span class="pre">-r</span></code>
+。 这结合了优先&nbsp;<code class="docutils literal"><span class="pre">+</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">-</span></code> :</p>
+<p><code class="docutils literal"><span class="pre">bagpipe-r.fst2</span>&nbsp; <span class="pre">McAdam-r-.fst2</span>&nbsp; <span class="pre">phtirius-r+.fst2</span></code></p>
+<div class="section" id="id21">
+<h4>作为形态模式产生的字典词条出口<a class="headerlink" href="#id21" title="永久链接至标题">¶</a></h4>
+<p>用字典生成的图形条目由程序咨询&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code>
+当遇见那些需要咨询的字典词汇。</p>
+<p>但是，此功能受到限制时，词法面膜形态方法
+(见&nbsp;[section-morphological-mode]).
+你不能声明形态字典模式像往常一样的字典形图 (见&nbsp;[dic-mode-morpho]),
+因为不是一个文件&nbsp;<code class="docutils literal"><span class="pre">.bin</span></code>
+。在形态模式中，需要咨询字典词汇，面具不会触发字典。作为补偿，有几种解决方案。</p>
+<ul class="simple">
+<li>可以考虑从在形态模式图的一部分调用图的字典。</li>
+<li>Unitex内部生产的公认形式的字典由图形词典中的文本。如果字典图的名称中包含&nbsp;<code class="docutils literal"><span class="pre">b</span></code>（见命名约定如下图），这本词典是自动生成隐含形态字典模式中，因此，它被咨询的程序时，<code class="docutils literal"><span class="pre">Locate</span></code>找到符合词法的形态模式。但这种方法只适用于由图的字典词典的初始应用程序识别表格
+(见&nbsp;[section-applying-dictionaries]),而不能应用于那些出现在文本作为标记的部件。</li>
+</ul>
+<p>如果我们添加&nbsp;<code class="docutils literal"><span class="pre">z</span></code> 替代&nbsp;<code class="docutils literal"><span class="pre">b</span></code> ，
+文本内部生产字典立即压缩，当其他图形，字典是应用之后，可以协商。</p>
+</div>
+<div class="section" id="id22">
+<h4>命名约定<a class="headerlink" href="#id22" title="永久链接至标题">¶</a></h4>
+<div class="line-block">
+<div class="line">一个图的字典的命名过程如下:</div>
+<div class="line"><code class="docutils literal"><span class="pre">nom(-XYZ)([-+]).fst2</span></code></div>
+<div class="line">或</div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">X</span></code> 取一个值&nbsp;<code class="docutils literal"><span class="pre">[rRmM]</span></code>: <code class="docutils literal"><span class="pre">r</span></code> REPLACE 模式; <code class="docutils literal"><span class="pre">M</span></code> &nbsp;MERGE
+模式(默认模式);</li>
+<li><code class="docutils literal"><span class="pre">Y</span></code> 取一个值&nbsp;<code class="docutils literal"><span class="pre">[bBzZ]</span></code>: 选项支配形态字典模式建设（见上文）;</li>
+<li><code class="docutils literal"><span class="pre">Z</span></code> 取一个值&nbsp;<code class="docutils literal"><span class="pre">[aAlLsS]</span></code>: <code class="docutils literal"><span class="pre">a</span></code>
+意味着该图是在“所有匹配”施加；&nbsp;<code class="docutils literal"><span class="pre">l</span></code>模式“&nbsp;Longest matches ”
+(默认模式); <code class="docutils literal"><span class="pre">s</span></code> 表示 “&nbsp;Shortest matches ”。</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id23">
+<h3>形态图词典<a class="headerlink" href="#id23" title="永久链接至标题">¶</a></h3>
+<p>在图形词典中，每个路径必须，默认情况下，产生对包含在字典文本词汇条目。在一个形态字典的图，每个路径必须提供分隔的一个或多个标签的序列由括号和符合&nbsp;DELAF
+的语法 (见&nbsp;[section-DELAF-entry-syntax]).
+你的图表的输出将被用作输入来构造文本自动机。我们称之为“形态图形字典”，因为他们的主要目的是提供新的形态在文本自动分析，通过形态学方法
+(见 [section-morphological-mode]).此功能对于凝集语言如韩语很有用。
+要使用图形作为图形的形态字典，我们以斜杠声明它 (/)
+作为其释放的第一个字符，如图&nbsp;[morphoA].</p>
+<div class="figure" id="id98">
+<a class="reference internal image-reference" href="_images/fig3-14a.png"><img alt="图的形态字典的例子&nbsp;[morphoA]" src="_images/fig3-14a.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">图的形态字典的例子&nbsp;[morphoA]</span></p>
+</div>
+<p>规则很简单：任何输出字典图形开始以斜杠 ( /) 加入文件&nbsp;<code class="docutils literal"><span class="pre">tags.ind</span></code>,
+，在索引中定位。 该文件所使用的程序&nbsp;<code class="docutils literal"><span class="pre">Txt2Fst2</span></code> 为了添加文本。
+语法图示 [morphoA] 要解释添加到文本自动机。图的语法文字识别
+由前缀&nbsp;<code class="docutils literal"><span class="pre">un</span></code> 加上形容词构成。
+如果应用为图的字典获得在文本自动机的新路径，如图&nbsp;[morphoB] 。
+注意，当在同样，它们之间的链路由虚线显示两个标签匹配分析。</p>
+<div class="figure" id="id99">
+<a class="reference internal image-reference" href="_images/fig3-14b.png"><img alt="由图的形态字典方式加入&nbsp;[morphoB]" src="_images/fig3-14b.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">由图的形态字典方式加入&nbsp;[morphoB]</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="id24">
+<h2>参考书目<a class="headerlink" href="#id24" title="永久链接至标题">¶</a></h2>
+<p>该表&nbsp;[ref-dicos]提供了简单和复合词电子词典提供一些参考。有关详细信息，请参阅&nbsp;Unitex
+网站上的参考页： <a class="reference external" href="http://www-igm.univ-mlv.fr/~unitex">http://www-igm.univ-mlv.fr/~unitex</a></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="47%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Langue</strong></th>
+<th class="head"><strong>Mots simples</strong></th>
+<th class="head"><strong>Mots composés</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>English</td>
+<td><a href="#id25"><span class="problematic" id="id26">:raw-latex:`\cite{klarsfeld}`</span></a>, <a href="#id27"><span class="problematic" id="id28">:raw-latex:`\cite{monceaux-1995}`</span></a></td>
+<td><a href="#id29"><span class="problematic" id="id30">:raw-latex:`\cite{delac-anglais}`</span></a>, <a href="#id31"><span class="problematic" id="id32">:raw-latex:`\cite{these-Savary}`</span></a></td>
+</tr>
+<tr class="row-odd"><td>French</td>
+<td><a href="#id33"><span class="problematic" id="id34">:raw-latex:`\cite{formes-ambigues}`</span></a>, <a href="#id35"><span class="problematic" id="id36">:raw-latex:`\cite{dicos-francais}`</span></a>, <a href="#id37"><span class="problematic" id="id38">:raw-latex:`\cite{jacques-1995}`</span></a></td>
+<td><a href="#id39"><span class="problematic" id="id40">:raw-latex:`\cite{dicos-francais}`</span></a>, <a href="#id41"><span class="problematic" id="id42">:raw-latex:`\cite{Gross96}`</span></a>, <a href="#id43"><span class="problematic" id="id44">:raw-latex:`\cite{max-1993}`</span></a>, <a href="#id45"><span class="problematic" id="id46">:raw-latex:`\cite{syntaxe-de-ladverbe}`</span></a></td>
+</tr>
+<tr class="row-even"><td>Modern Greek</td>
+<td><a href="#id47"><span class="problematic" id="id48">:raw-latex:`\cite{modern-greek}`</span></a>, <a href="#id49"><span class="problematic" id="id50">:raw-latex:`\cite{matthieu-anastasia}`</span></a>, <a href="#id51"><span class="problematic" id="id52">:raw-latex:`\cite{these-tita}`</span></a></td>
+<td><a href="#id53"><span class="problematic" id="id54">:raw-latex:`\cite{tita-2002}`</span></a>, <a href="#id55"><span class="problematic" id="id56">:raw-latex:`\cite{anastasia-2002}`</span></a></td>
+</tr>
+<tr class="row-odd"><td>Italian</td>
+<td><a href="#id57"><span class="problematic" id="id58">:raw-latex:`\cite{delaf-italien}`</span></a>, <a href="#id59"><span class="problematic" id="id60">:raw-latex:`\cite{delaf-italien-book}`</span></a></td>
+<td><a href="#id61"><span class="problematic" id="id62">:raw-latex:`\cite{composes-italien}`</span></a></td>
+</tr>
+<tr class="row-even"><td>Spanish</td>
+<td><a href="#id63"><span class="problematic" id="id64">:raw-latex:`\cite{blanco-2000}`</span></a></td>
+<td><a href="#id65"><span class="problematic" id="id66">:raw-latex:`\cite{blanco-1997}`</span></a></td>
+</tr>
+<tr class="row-odd"><td>Portuguese</td>
+<td><a href="#id67"><span class="problematic" id="id68">:raw-latex:`\cite{eleuterio1995}`</span></a>, <a href="#id69"><span class="problematic" id="id70">:raw-latex:`\cite{ranchhod1996b}`</span></a>, <a href="#id71"><span class="problematic" id="id72">:raw-latex:`\cite{ranchhodd1998}`</span></a>, <a href="#id73"><span class="problematic" id="id74">:raw-latex:`\cite{muniz2005}`</span></a></td>
+<td><a href="#id75"><span class="problematic" id="id76">:raw-latex:`\cite{ranchhod1991}`</span></a>, <a href="#id77"><span class="problematic" id="id78">:raw-latex:`\cite{ranchhodd1998}`</span></a></td>
+</tr>
+</tbody>
+</table>
+<p>Table: 对电子词典的一些引用&nbsp;[ref-dicos]</p>
+<table class="docutils footnote" frame="void" id="id79" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id20">[1]</a></td><td>形态图，字典是个例外 (见&nbsp;[section-morphological-dictionary-graphs]) .</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-zh.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">词典</a><ul>
+<li><a class="reference internal" href="#dela">DELA词典</a><ul>
+<li><a class="reference internal" href="#delaf">DELAF 的形式</a><ul>
+<li><a class="reference internal" href="#id2">输入的语法</a></li>
+<li><a class="reference internal" href="#id5">有空格或破折号的词</a></li>
+<li><a class="reference internal" href="#id6">保理项</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#delas-format">DELAS format</a></li>
+<li><a class="reference internal" href="#id7">内容框</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id8">在字典中查找一个单词</a></li>
+<li><a class="reference internal" href="#id9">检查字典格式</a></li>
+<li><a class="reference internal" href="#id10">排序</a></li>
+<li><a class="reference internal" href="#id11">全自动变位</a><ul>
+<li><a class="reference internal" href="#id12">简单词的变位</a></li>
+<li><a class="reference internal" href="#id13">复合词变位</a></li>
+<li><a class="reference internal" href="#id14">语法变位</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id15">压缩</a></li>
+<li><a class="reference internal" href="#id16">词典中的应用</a><ul>
+<li><a class="reference internal" href="#id17">优先级</a></li>
+<li><a class="reference internal" href="#id18">字典规则</a></li>
+<li><a class="reference internal" href="#id19">图-字典</a><ul>
+<li><a class="reference internal" href="#id21">作为形态模式产生的字典词条出口</a></li>
+<li><a class="reference internal" href="#id22">命名约定</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id23">形态图词典</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id24">参考书目</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-zh.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/03-dictionaries_ZH_utf8.txt"
+            rel="nofollow">显示源代码</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>快速搜索</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/03-dictionaries_ZH_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

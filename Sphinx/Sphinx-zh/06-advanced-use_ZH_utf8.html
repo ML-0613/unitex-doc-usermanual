@@ -1,0 +1,981 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh_CN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>图表的高级应用 &mdash; Unitex-zh 1.0.1 文档</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-zh 1.0.1 文档" href="Unitex-zh.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>图表的高级应用<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2>图表类型<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>Unitex
+能够处理多种类型的图表，它们被用于：自动修改词典，文本预处理，文本自动机正常化，词典图表，搜索例子，消除歧义和自动图形生成。这些不同类型的图表被&nbsp;Unitex
+用不同的方式解释。某些操作，如转导，允许某些类型和禁止其他的。
+此外，特殊符号是不依赖于图的类型的。本节介绍每种类型的图形及其特殊性。</p>
+<div class="section" id="id3">
+<h3>变位图表<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<p>一个在变位传感器通过分配变位码来描述每个变体的形态学变化。转换器路径描述了必须应用到规范化形式和相应输出内容，包含将被创建的变位信息。</p>
+<div class="figure" id="id49">
+<a class="reference internal image-reference" href="_images/fig6-1.png"><img alt="变位语法的例子" src="_images/fig6-1.png" style="width: 4.50000cm;" /></a>
+<p class="caption"><span class="caption-text">变位语法的例子</span></p>
+</div>
+<p>该路径可能包含运算符和字母。可能的运算符将用字符&nbsp; <code class="docutils literal"><span class="pre">L</span></code>, <code class="docutils literal"><span class="pre">R</span></code>, <code class="docutils literal"><span class="pre">C</span></code>,
+<code class="docutils literal"><span class="pre">D</span></code>, <code class="docutils literal"><span class="pre">U</span></code>, <code class="docutils literal"><span class="pre">P</span></code> 和 <code class="docutils literal"><span class="pre">W</span></code>。
+其他所有不是运算符的字母表示字符。唯一允许的特殊符号是空词 <code class="docutils literal"><span class="pre">&lt;E&gt;</span></code>。
+我们不能在变位转换器中参考字典中的信息，但可以引用子图。</p>
+<p>转换器的输出是连接在一起的，以产生字符串。之后字符串被添加到产生的字典条目。含有变量的输出在转换器中没有意义。</p>
+<p>字母的大小写将被保留：小写字母依旧小写，大写字母同理。此外，两个格子的连接完全等价于其内容的串联，都使输出的串联在一起。
+(见例&nbsp;&nbsp;[fig-equivalent-inflection-paths])。</p>
+<div class="figure" id="id50">
+<a class="reference internal image-reference" href="_images/fig6-2.png"><img alt="一个变位语法中两条等价的路径&nbsp;[fig-equivalent-inflection-paths]" src="_images/fig6-2.png" style="width: 5.50000cm;" /></a>
+<p class="caption"><span class="caption-text">一个变位语法中两条等价的路径&nbsp;[fig-equivalent-inflection-paths]</span></p>
+</div>
+<p>变位图表在被变位项目应用前应经过编译。</p>
+<p>更多细节，见 [section-automatic-inflection].</p>
+</div>
+<div class="section" id="id4">
+<h3>预处理图表<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>预处理图表被应用于被切割为词组之前的文本。这些图表被用于输入或替换文本中的片段。这种图表的两种一般用途是规范化文本，去掉歧义；以及切割句子。</p>
+<p>Unitex 中对这些句法图表的阐述很接近，以下是它们的区别：</p>
+<ul class="simple">
+<li>用特殊符号 <code class="docutils literal"><span class="pre">&lt;^&gt;</span></code> 来表示回车;</li>
+<li>如果一个个字符的运作，我们用符号 <code class="docutils literal"><span class="pre">&lt;L&gt;</span></code>
+表示在字母文件中定义过的一个字母;</li>
+<li>不能在词典中用附注;</li>
+<li>不能在词典中用形态过滤;</li>
+<li>不能在词典中用过滤模式;</li>
+<li>不能在词典中用上下文.</li>
+</ul>
+<p>例&nbsp;[fig-example-sentence-splitting] (page )
+和&nbsp;[fig-normalization-grammar] (page ) 展示了预处理图表。</p>
+</div>
+<div class="section" id="id5">
+<h3>自动文本规范化图表<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>自动文本规范化图表能够规范化含有歧义的形式。事实上，它能描述同个形式的多个标签。这些标签随后被添加到文本中，用于明确歧义。例如&nbsp;&nbsp;[fig-tfst-normalization-grammar]
+展示了规范化图表用于法语的一个摘要。</p>
+<div class="figure" id="id51">
+<a class="reference internal image-reference" href="_images/fig6-3.png"><img alt="规范化图表用于法语的摘要&nbsp;[fig-tfst-normalization-grammar]" src="_images/fig6-3.png" style="width: 13.50000cm;" /></a>
+<p class="caption"><span class="caption-text">规范化图表用于法语的摘要&nbsp;[fig-tfst-normalization-grammar]</span></p>
+</div>
+<p>路径描述需要标准化的形式。大写和小写字母遵循以下原则：在图中的大写字母在文本中自动大写;小写字母可以识别为大写和小写字母。</p>
+<p>输出为标签被插入到自动文本的序列。这些标签可以是字典项或简单的字符串。标签遵循&nbsp;DELAF
+输入格式且被符号 <code class="docutils literal"><span class="pre">{</span></code> et <code class="docutils literal"><span class="pre">}</span></code>分割. 变量的输出在该图表中无意义。</p>
+<p>可以调用子图表但不能在词典中添加规范化注释。在该类型图表中唯一的特殊符号是空词
+&nbsp;<code class="docutils literal"><span class="pre">&lt;E&gt;</span></code>. 规范化图表在被应用前应经过编译。</p>
+</div>
+<div class="section" id="id6">
+<h3>句法图表<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>句法图表，也被称为本地语法，它可以描述能在文本中被搜索的句法模式。在所有的图表类型中，它有最大的表达能力，因为它允许参考字典。</p>
+<p>小写/大写变体根据上述原理授权。
+它可以通过用引号包围短语来强制区分大小写。使用引号也可强调间距。
+事实上，在&nbsp;Unitex
+的默认情况下，可以在两个格子之间加入空格。要强制空格的存在，它必须加引号。要忽略一个空格，使用特殊符号<code class="docutils literal"><span class="pre">#</span></code>。</p>
+<p>句法图表可调用子图表。(见例 &nbsp;[section-subgraphs])。
+它也管理输出，包括输出的变量。
+生成的序列被解释为字符串，它将被插入到索引或文本如果您想改变这一个(见例
+&nbsp;[section-modifying-text]).</p>
+<p>句法图表可使用上下文(见例&nbsp;&nbsp;[section-contexts]).</p>
+<p>句法图表可使用形态过滤器 (见例&nbsp; &nbsp;[section-filters]).</p>
+<p>句法图表可使用模式过滤器(见例&nbsp;&nbsp; [section-morphological-mode]).</p>
+<p>在句法图表中可使用的特殊符号和在关系表达式中相同
+(见例&nbsp;&nbsp;[section-special-symbols]).</p>
+<p>您不必在使用之前编译语法图。如果一个图未编译，系统将自动编译它。</p>
+</div>
+<div class="section" id="elag">
+<h3>语法 &nbsp;ELAG<a class="headerlink" href="#elag" title="永久链接至标题">¶</a></h3>
+<p>本节介绍去掉歧义的句法。</p>
+</div>
+<div class="section" id="id7">
+<h3>参数图表<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>参数图表是能够产生一系列图表的图表总汇。无论哪个类型的图表都能构造为参数图表。参数图表的构造和应用将在本章中介绍&nbsp;&nbsp;[chap-lexicon-grammar].</p>
+</div>
+</div>
+<div class="section" id="id8">
+<h2>语法的编译<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id9">
+<h3>语法的编译<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>汇编是用于将 &nbsp;<code class="docutils literal"><span class="pre">.grf</span></code>
+格式转换为到容易由Unitex程序来处理的格式的过程。要构建一个图，您必须打开它，并从&nbsp;“FSGraph”
+菜单中单击“编译FST2”子菜单中的“工具”。 Unitex 运行程序&nbsp; <code class="docutils literal"><span class="pre">Grf2Fst2</span></code>
+，您可以稍后在窗口中执行 (见例&nbsp;&nbsp;[fig-compilation-frame]).</p>
+<div class="figure" id="id52">
+<a class="reference internal image-reference" href="_images/fig6-4.png"><img alt="编译窗口&nbsp;[fig-compilation-frame]" src="_images/fig6-4.png" style="width: 14.70000cm;" /></a>
+<p class="caption"><span class="caption-text">编译窗口&nbsp;[fig-compilation-frame]</span></p>
+</div>
+<p>如果图表调用了子图表，子图表将被自动编译。结果是文件&nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code> fichier
+它集中了所有包含语法的图表。随后该语法可以被不同的&nbsp;Unitex 程序应用。</p>
+</div>
+<div class="section" id="id10">
+<h3>完成转化器<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<p>[flatten-section]
+FST2格式保留了子图表的语法，转换器和完成状态间的分化。<code class="docutils literal"><span class="pre">Flatten</span></code>
+程序会将一个FST2语法转换成完成状态，以及以其他方式建立一个近似值。这个特性提供了最简单的对象处理，并能自动被应用于所有的经典算法。</p>
+<p>编译和变换语法，从&nbsp;“FSGraph” 菜单中选择“编译&nbsp;FST2
+”，从子菜单中选择“工具”。下图窗口允许您配置近似的操作。&nbsp;[fig-flatten-configuration]</p>
+<div class="figure" id="id53">
+<a class="reference internal image-reference" href="_images/fig6-5.png"><img alt="配置语法的接近[fig-flatten-configuration]" src="_images/fig6-5.png" style="width: 10.40000cm;" /></a>
+<p class="caption"><span class="caption-text">配置语法的接近[fig-flatten-configuration]</span></p>
+</div>
+<p>部分“扁平化深度”用于指定子图的嵌套级别。
+此值表示调用子图不会被子图本身被更换的最大深度。</p>
+<p>“预期的语法模式”决定超出规定限值后程序的行为。如果您选择了“完成状态转换器”，则调用子图将超出最大深度后将被忽略。(被
+&nbsp;<code class="docutils literal"><span class="pre">&lt;E&gt;</span></code>
+替换)此选项可确保获得一个完成状态转换器，不等同于初始语法。另外，选项&nbsp;“FST2”
+则计划超出深度限制子图的调用。这确保了结果的与原来的语法严格等价，但不一定会产生一个完成的状态。这个选项可以用于优化某些语法。</p>
+<p>消息表明进程结束后处理的结果，如果结果是一个完成状态或一个&nbsp;FST2
+语法，且如果它等效于原始语法，在转化器中的情况。
+(见例&nbsp;&nbsp;[fig-flatten-result]).</p>
+<div class="figure" id="id54">
+<a class="reference internal image-reference" href="_images/fig6-6.png"><img alt="Résultat de l’approximation d’une grammaire[fig-flatten-result]" src="_images/fig6-6.png" style="width: 14.70000cm;" /></a>
+<p class="caption"><span class="caption-text">Résultat de l’approximation d’une grammaire[fig-flatten-result]</span></p>
+</div>
+</div>
+<div class="section" id="id11">
+<h3>语法约束<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h3>
+<p>除了变位文法，语法不能有空路径。这意味着，一个语法主图表不能够识别空字，但是这并不妨碍该语法来识别子图。</p>
+<p>不能将输出关联到子图的调用。这类输出将被&nbsp;Unitex
+忽略。您需要用一个空框在左侧调用子图来输出。
+(见例&nbsp;&nbsp;[fig-subgraph-output]).</p>
+<p>文法不得包含无限循环。 这些循环可能是由于使用空字或递归调用子图。</p>
+<p>空字引起的循环可以有两个原因，所述第一如下&nbsp;&nbsp;[fig-epsilon-output-loop]。
+这种类型的循环是因为由空字不能自动由&nbsp;Unitex
+除去。&nbsp;[fig-epsilon-output-loop]
+因此，图中的空字不会被删除，并会导致无限循环。</p>
+<p>第二类循环涉及到能识别空字的子图的调用。如下图：&nbsp;[fig-epsilon-subgraph-loop]:
+若子图 &nbsp;<code class="docutils literal"><span class="pre">Adj</span></code> 能识别空字，则是一个无限循环。</p>
+<div class="figure" id="id55">
+<a class="reference internal image-reference" href="_images/fig6-9.png"><img alt="无限循环，由于一个子图调用 [fig-epsilon-subgraph-loop]" src="_images/fig6-9.png" style="width: 7.90000cm;" /></a>
+<p class="caption"><span class="caption-text">无限循环，由于一个子图调用 [fig-epsilon-subgraph-loop]</span></p>
+</div>
+<div class="figure" id="id56">
+<a class="reference internal image-reference" href="_images/fig6-10.png"><img alt="无限循环，由于两个图表相互调用 [fig-recursive-calls-loop]" src="_images/fig6-10.png" style="width: 15.50000cm;" /></a>
+<p class="caption"><span class="caption-text">无限循环，由于两个图表相互调用 [fig-recursive-calls-loop]</span></p>
+</div>
+<p>无限循环的第三种可能性关于向子图递归调用。考虑 <code class="docutils literal"><span class="pre">Det</span></code> 和 <code class="docutils literal"><span class="pre">DetCompose</span></code>
+在下图中&nbsp;&nbsp;[fig-recursive-calls-loop]。 这些图表可以相互调用&nbsp;<em>sans rien
+lire dans le texte</em>。 事实上，这些图表既不包括初始状态也不调用其他图表
+实际上，如果在图表 &nbsp;<code class="docutils literal"><span class="pre">Det</span></code> 和对 &nbsp;<code class="docutils literal"><span class="pre">DetCompose</span></code> 的调用间有不同,
+意味着&nbsp;Unitex 探索图表 &nbsp;<code class="docutils literal"><span class="pre">Det</span></code> 应该在递归调用之前阅读文本标签
+&nbsp;<code class="docutils literal"><span class="pre">DetCompose</span></code> 在这种情况下，程序可能不能无限期地发生迭代。</p>
+</div>
+<div class="section" id="id12">
+<h3>重复数的间隔<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>要区别序列中的模式出现一次多次，或者永不出现，我们可以在一个格子里一个整数范围中相关联。遵循次数的限制，图案必须在单个格子进行说明。
+如果我们将区间 [m,M] 与一个包含 &lt;A&gt; (figure&nbsp;[intervals])的盒子相关联,
+至少有:math:` M`连续形容词，且不超过&nbsp;:math:` M` 更多。</p>
+<div class="figure" id="id57">
+<a class="reference internal image-reference" href="_images/fig6-10a.png"><img alt="识别若干个连续的指令[intervals]" src="_images/fig6-10a.png" style="width: 13.50000cm;" /></a>
+<p class="caption"><span class="caption-text">识别若干个连续的指令[intervals]</span></p>
+</div>
+<p>在格子的输出间隔插入 <code class="docutils literal"><span class="pre">$[m,M]$</span></code> , 在符号 “/”之后, 有以下规则 :</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">[m,M]</span></code> = 至少&nbsp;<span class="math">\(m\)</span> 连续词，不超过 <span class="math">\(M\)</span></li>
+<li><code class="docutils literal"><span class="pre">[,M]</span></code> = 从&nbsp;0 到&nbsp;<span class="math">\(M\)</span></li>
+<li><code class="docutils literal"><span class="pre">[m,]</span></code> = 至少&nbsp;<span class="math">\(m\)</span></li>
+</ul>
+<p>格子不应通过循环被连接到自身。
+通常输出兼容。例如，在图中插入格子&nbsp;&nbsp;[intervals] la sortie
+<code class="docutils literal"><span class="pre">&lt;ADJ</span> <span class="pre">位置='antéposé'&gt;</span></code> ,在以下行文本中可知&nbsp;:
+<code class="docutils literal"><span class="pre">&lt;A&gt;/$[1,4]$/&lt;ADJ</span> <span class="pre">position='antéposé'&gt;</span></code>.</p>
+</div>
+<div class="section" id="id13">
+<h3>错误检测<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h3>
+<p>为了防止程序阻塞或崩溃，&nbsp;Unitex
+编译图表自动执行错误检测。该编译器会检查主要内容，不承认空词并搜索所有形式的无限循环。如果发现错误，将出现在编辑窗口中显示错误消息。例&nbsp;&nbsp;[fig-error-message]
+是编译&nbsp;<code class="docutils literal"><span class="pre">Det</span></code> 得到的信息&nbsp;&nbsp;[fig-recursive-calls-loop].</p>
+<p>如果搜索图案为&nbsp;<code class="docutils literal"><span class="pre">.grf</span></code> 搜索操作被自动中断。</p>
+</div>
+</div>
+<div class="section" id="id14">
+<h2>上下文<a class="headerlink" href="#id14" title="永久链接至标题">¶</a></h2>
+<p>[section-contexts]</p>
+<p>这些&nbsp;Unitex
+图表是代数。它们也被称为上下文无关文法，因为当一个人希望识别序列
+&nbsp;<span class="math">\(A\)</span> 时，不考虑&nbsp; <span class="math">\(A\)</span>
+的上下文。例如，它不可能在正常的曲线，找到&nbsp;<code class="docutils literal"><span class="pre">president</span></code>,
+除非之后有&nbsp;<code class="docutils literal"><span class="pre">of</span> <span class="pre">the</span> <span class="pre">republic</span></code>。</p>
+<p>然而可以将上下文保存在语法图中。在这种情况下，图不再是代数语法，而是上下文语法，他们不具有相同的理论。</p>
+<div class="section" id="id15">
+<h3>上下文的区域<a class="headerlink" href="#id15" title="永久链接至标题">¶</a></h3>
+<p>上下文的由图表的大小及 &nbsp;<code class="docutils literal"><span class="pre">$[</span></code> 和 <code class="docutils literal"><span class="pre">$]</span></code>
+划定。绿色方括号在图表中表示上下文的开始和结束。上下文的开头和结尾必须出现在同一张图上。</p>
+<div class="figure" id="id58">
+<a class="reference internal image-reference" href="_images/fig6-12.png"><img alt="上下文区域的使用&nbsp;[fig-context1]" src="_images/fig6-12.png" style="width: 7.40000cm;" /></a>
+<p class="caption"><span class="caption-text">上下文区域的使用&nbsp;[fig-context1]</span></p>
+</div>
+<p>例&nbsp;&nbsp;[fig-context1] 显示了上下文的一个简单的例子。此图可以识别所有号码
+欧元，英镑或美元，没有出现的符号，则在索引中。</p>
+<p>上下文被解释如下。假设应用语法文字注释时和&nbsp;<span class="math">\(pos\)</span>
+在文字当前位置。语法 &nbsp;<code class="docutils literal"><span class="pre">Locate</span></code> 随后会搜索上下文中的表达。
+如果失败了，将不会运行。如果成功的话，也就是说，如果他能达到的上下文的结时，程序将返回到
+<span class="math">\(pos\)</span> 并将从上下文的末端继续语法的探索。</p>
+<p>上下文区域 (见&nbsp;[Transducers]) 的权重将被忽略。</p>
+<p>你也可以定义消极上下文，使用
+<code class="docutils literal"><span class="pre">$![</span></code>作为上下文的开始。图&nbsp;&nbsp;[fig-context2] 示出了识别之后有&nbsp; <code class="docutils literal"><span class="pre">th</span></code>.
+的曲线图。与正上下文找到不同的是，当&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code>试图识别的上下文中描述的表达，如到达上下文的端部被认为是失败的，因为这意味着我们承认非法序列。反之，如果不能达到上下文的结束时，&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code>程序将返回到定位位置。</p>
+<div class="figure" id="id59">
+<a class="reference internal image-reference" href="_images/fig6-13.png"><img alt="消极上下文的应用[fig-context2]" src="_images/fig6-13.png" style="width: 7.30000cm;" /></a>
+<p class="caption"><span class="caption-text">消极上下文的应用[fig-context2]</span></p>
+</div>
+<p>上下文可以在任何地方在图中被放置，包括开头。图&nbsp;&nbsp;[fig-context3]
+示出了一个图，其识别在某物的上下文是不是一个过去分词一个形容词。换句话说，该图承认所有不属于歧义与过去分词的形容词。</p>
+<div class="figure" id="id60">
+<a class="reference internal image-reference" href="_images/fig6-14.png"><img alt="用过去分词搜索无歧义形容词&nbsp;[fig-context3]" src="_images/fig6-14.png" style="width: 7.50000cm;" /></a>
+<p class="caption"><span class="caption-text">用过去分词搜索无歧义形容词&nbsp;[fig-context3]</span></p>
+</div>
+<p>在图表中，例如在图&nbsp;&nbsp;[fig-context3],
+中，消极上下文不一定检查相同数量的框标记。例如，在图&nbsp;&nbsp;[too-also]
+之前，如果它出现在一个表达式，如 &nbsp;<code class="docutils literal"><span class="pre">too</span></code>，消极上下文检查
+<code class="docutils literal"><span class="pre">too</span> <span class="pre">early</span></code> 或 &nbsp;<code class="docutils literal"><span class="pre">too</span> <span class="pre">many</span></code>.</p>
+<p>我们可以制定与消极权利背景复杂的查询。因此，图 &nbsp;&nbsp;[fig-context4]
+显示了可识别的两个简单的名字不是歧义或复合词的所有序列图。事实上，
+<code class="docutils literal"><span class="pre">&lt;CDIC&gt;&lt;&lt;^([^</span> <span class="pre">]+</span> <span class="pre">[^</span> <span class="pre">]+)$&gt;&gt;</span></code> 识别包含正好一个空格的复合词
+&nbsp;<code class="docutils literal"><span class="pre">&lt;N&gt;&lt;&lt;^([^</span> <span class="pre">]+)$&gt;&gt;</span></code> ，而图案 <em>Black cats should like the town hall</em>,
+图表识别了 <em>Black cats</em>, 但未识别 <em>town hall</em>。</p>
+<div class="figure" id="id61">
+<a class="reference internal image-reference" href="_images/fig6-15.png"><img alt="上下文的先进应用&nbsp;[fig-context4]" src="_images/fig6-15.png" style="width: 8.90000cm;" /></a>
+<p class="caption"><span class="caption-text">上下文的先进应用&nbsp;[fig-context4]</span></p>
+</div>
+<p>您可以连接上下文。例如，&nbsp;[fig-context5]
+图表识别了后面没有一个点的数字的数量，除非这个点后是一个数字。因此，在文本
+<em>5.0+7.=12</em>, 图表能识别&nbsp; <em>5</em>, <em>0</em> 和&nbsp; <em>12</em>.</p>
+<div class="figure" id="id62">
+<a class="reference internal image-reference" href="_images/fig6-16.png"><img alt="连接上下文&nbsp;[fig-context5]" src="_images/fig6-16.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">连接上下文&nbsp;[fig-context5]</span></p>
+</div>
+<p>在一个格子内的输出将被忽略。然而，可以使用已经在上下文中定义的变量，如图
+&nbsp;[fig-context6])。若我们对文本 <em>the cat is white</em>应用MERGE模式, 将输出
+:</p>
+<p><code class="docutils literal"><span class="pre">the</span> <span class="pre">is</span> <span class="pre">white</span></code></p>
+<div class="figure" id="id63">
+<a class="reference internal image-reference" href="_images/fig6-17.png"><img alt="上下文中定义的变量[fig-context6]" src="_images/fig6-17.png" style="width: 12.20000cm;" /></a>
+<p class="caption"><span class="caption-text">上下文中定义的变量[fig-context6]</span></p>
+</div>
+</div>
+<div class="section" id="id16">
+<h3>上文<a class="headerlink" href="#id16" title="永久链接至标题">¶</a></h3>
+<p>另外也可以查找表达 &nbsp;<span class="math">\(X\)</span> 若它只能在 &nbsp;<span class="math">\(Y\)</span> 后被找到。
+很显然，已经可以用语法来做到这一点，如图 &nbsp;&nbsp;[fig-left-context1].
+然而，在这种类型的语法中，上文包括在识别序列中，如图&nbsp;&nbsp;[fig-left-context2].</p>
+<div class="figure" id="id64">
+<a class="reference internal image-reference" href="_images/fig6-17a.png"><img alt="通过数字开头的名称识别&nbsp;[fig-left-context1]" src="_images/fig6-17a.png" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">通过数字开头的名称识别&nbsp;[fig-left-context1]</span></p>
+</div>
+<div class="figure" id="id65">
+<a class="reference internal image-reference" href="_images/fig6-17b.png"><img alt="图标号的应用的结果 [fig-left-context1][fig-left-context2]" src="_images/fig6-17b.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">图标号的应用的结果 [fig-left-context1][fig-left-context2]</span></p>
+</div>
+<p>为了避免这种情况，你可以使用 <code class="docutils literal"><span class="pre">$*</span></code>
+在上文的结束表示我们想要识别的词。该符号在图中用绿色的星表示，如图&nbsp;&nbsp;[fig-left-context3].
+这样的情况下的效果是使用部分语法来计算识别序列，这部分不显示结果(见图&nbsp;&nbsp;[fig-left-context4]).</p>
+<div class="figure" id="id66">
+<a class="reference internal image-reference" href="_images/fig6-17c.png"><img alt="在上文识别名词[fig-left-context3]" src="_images/fig6-17c.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">在上文识别名词[fig-left-context3]</span></p>
+</div>
+<div class="figure" id="id67">
+<a class="reference internal image-reference" href="_images/fig6-17d.png"><img alt="图表语法的应用结果 [fig-left-context3][fig-left-context4]" src="_images/fig6-17d.png" style="width: 14.00000cm;" /></a>
+<p class="caption"><span class="caption-text">图表语法的应用结果 [fig-left-context3][fig-left-context4]</span></p>
+</div>
+<p>由上文产生的所有输出将被忽略，如图 [fig-left-context6],
+图表语法的应用结果被给出 [fig-left-context5].</p>
+<div class="figure" id="id68">
+<a class="reference internal image-reference" href="_images/fig6-17e.png"><img alt="上文产生的所有输出将被忽略[fig-left-context5]" src="_images/fig6-17e.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">上文产生的所有输出将被忽略[fig-left-context5]</span></p>
+</div>
+<div class="figure" id="id69">
+<a class="reference internal image-reference" href="_images/fig6-17f.png"><img alt="图表语法的应用结果 [fig-left-context5][fig-left-context6]" src="_images/fig6-17f.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">图表语法的应用结果 [fig-left-context5][fig-left-context6]</span></p>
+</div>
+<p>然而，它可存储与变量（见第 [section-variables])
+的信息，并使用于上文之外，如图&nbsp;[fig-left-context7]
+和结果&nbsp;[fig-left-context8].</p>
+<div class="figure" id="id70">
+<a class="reference internal image-reference" href="_images/fig6-17g.png"><img alt="上文变量的应用[fig-left-context7]" src="_images/fig6-17g.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">上文变量的应用[fig-left-context7]</span></p>
+</div>
+<div class="figure" id="id71">
+<a class="reference internal image-reference" href="_images/fig6-17h.png"><img alt="图表语法的应用结果 [fig-left-context7][fig-left-context8]" src="_images/fig6-17h.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">图表语法的应用结果 [fig-left-context7][fig-left-context8]</span></p>
+</div>
+<p>我们可以调用包含在上文的语法，但需要警惕。当上文被从所识别的序列中排除时，由调用者识别的所有序列的图形也被排除在外，因为这将最终被识别的序列必须是连续的。对应于该排除的序列的输出也被忽略。</p>
+<p>因此，在上下文中，可以划分用于识别该文本分的模式和序列的结果。例如，图
+&nbsp;[fig-left-context9] 正在查找
+<code class="docutils literal"><span class="pre">the</span> <span class="pre">animal's</span></code>，但只提取名词，因此我们可以看到图
+[fig-left-context10].</p>
+<div class="figure" id="id72">
+<a class="reference internal image-reference" href="_images/fig6-17i.png"><img alt="上下文语法[fig-left-context9]" src="_images/fig6-17i.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">上下文语法[fig-left-context9]</span></p>
+</div>
+<div class="figure" id="id73">
+<a class="reference internal image-reference" href="_images/fig6-17j.png"><img alt="图表语法的应用结果 [fig-left-context9][fig-left-context10]" src="_images/fig6-17j.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">图表语法的应用结果 [fig-left-context9][fig-left-context10]</span></p>
+</div>
+<p>权重 (见&nbsp;&nbsp;[Transducers]) 一般在上文中无作用。</p>
+</div>
+</div>
+<div class="section" id="id17">
+<h2>形态学方法<a class="headerlink" href="#id17" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id18">
+<h3>为什么 ?<a class="headerlink" href="#id18" title="永久链接至标题">¶</a></h3>
+<p>Unitex的版本&nbsp;“tokenisée” 无法接受“标记”内的查询与形态过滤器 (见
+[section-filters])，如图 [fig-morpho1].</p>
+<div class="figure" id="id74">
+<a class="reference internal image-reference" href="_images/fig6-17k.png"><img alt="形态元素的识别&nbsp;[fig-morpho1]" src="_images/fig6-17k.png" style="width: 8.00000cm;" /></a>
+<p class="caption"><span class="caption-text">形态元素的识别&nbsp;[fig-morpho1]</span></p>
+</div>
+<p>但是，形态过滤器不允许任何查询，原因是它们不能引用包含在字典信息。因而，不能执行以这种指令
+“<em>含有后缀</em> <code class="docutils literal"><span class="pre">un</span></code> <code class="docutils literal"><span class="pre">able</span></code>”。</p>
+<p>为了克服这个困难，我们在程序中引入一个形态模式 <code class="docutils literal"><span class="pre">Locate</span></code>.
+它用符号划定你的部分语法 <code class="docutils literal"><span class="pre">$&lt;</span></code> et <code class="docutils literal"><span class="pre">$&gt;</span></code>.
+在这个模式中，数据是由字母识别的字母，如图 [fig-morpho2].</p>
+<div class="figure" id="id75">
+<a class="reference internal image-reference" href="_images/fig6-17l.png"><img alt="语法形态区的例子[fig-morpho2]" src="_images/fig6-17l.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">语法形态区的例子[fig-morpho2]</span></p>
+</div>
+</div>
+<div class="section" id="id19">
+<h3>规则<a class="headerlink" href="#id19" title="永久链接至标题">¶</a></h3>
+<p>在这个模式中，图形的内容不被正常解释。</p>
+<ol class="arabic simple">
+<li>还有就是格子之间没有空格。因此，如果我们识别空格，就必须用 &nbsp;<code class="docutils literal"><span class="pre">&quot;</span> <span class="pre">&quot;</span></code>
+(引号间的空格).</li>
+<li>我们始终可以使用子图，但形态学区域的开始于结束必须在相同的图。</li>
+<li>与法可以咨询字典 — 如&nbsp;<code class="docutils literal"><span class="pre">&lt;DIC&gt;</span></code> , &nbsp;<code class="docutils literal"><span class="pre">&lt;be&gt;</span></code> 或 <code class="docutils literal"><span class="pre">&lt;N:ms&gt;</span></code>,
+只要信息包含在一个字典中，那么它作为条目 (见&nbsp;&nbsp;[dic-mode-morpho])。</li>
+<li>人们可以咨询一个词条 (见&nbsp;&nbsp;[section-dictionary-graphs]),
+只要辞典图形的名称中包含选项 &nbsp;<code class="docutils literal"><span class="pre">b</span></code>.
+但是，此选项仅适用于由图的词典的最初应用时已识别
+(见&nbsp;&nbsp;[section-applying-dictionaries]),
+而不是出现在文本作为标记的部件的形式。</li>
+<li>我们可以使用形态过滤器 (见&nbsp;&nbsp;[section-filters]).
+但是，单独使用形态滤波器或&nbsp;<code class="docutils literal"><span class="pre">&lt;TOKEN&gt;</span></code>
+将仅适用于当前字符。因此，该过滤器作为 &nbsp;<code class="docutils literal"><span class="pre">&lt;&lt;[1-9][0-9]&gt;&gt;</span></code>
+被设计为不会识别多个字符。事实上，在形态学方法中形态过滤器仅用于表达否定
+&nbsp;<code class="docutils literal"><span class="pre">&lt;&lt;[^aeiouy]&gt;&gt;</span></code> (即不是元音的任何字符).</li>
+<li>上文权力的部分定义&nbsp;&nbsp;[section-contexts] 是被禁止的。</li>
+<li>我们可以使用输出。</li>
+<li><code class="docutils literal"><span class="pre">&lt;LETTER&gt;</span></code> 能识别在字母表中定义的所有字符</li>
+<li><code class="docutils literal"><span class="pre">&lt;LOWER&gt;</span></code> 能识别在字母表中定义的小写字符。</li>
+<li><code class="docutils literal"><span class="pre">&lt;UPPER&gt;</span></code> 能识别在字母表中定义的大写字符。</li>
+<li><code class="docutils literal"><span class="pre">&lt;DIC&gt;</span></code> 能识别在形态学词典中中定义的所有字符&nbsp;, 除了一些符号如
+&nbsp;<code class="docutils literal"><span class="pre">#</span></code>, <code class="docutils literal"><span class="pre">&lt;FIRST&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;NB&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;SDIC&gt;</span></code> 和 &nbsp;<code class="docutils literal"><span class="pre">&lt;CDIC&gt;</span></code> 是禁止的。</li>
+<li>如果我们没有在指令的最后到达终点区，识别失败。 例如，一个文本包含
+&nbsp;<code class="docutils literal"><span class="pre">enabled</span></code>, 我们不能只识别&nbsp; <code class="docutils literal"><span class="pre">enable</span></code>.</li>
+</ol>
+<p>一些原先的符号 &nbsp;<code class="docutils literal"><span class="pre">&lt;LETTER&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;LOWER&gt;</span></code> 和 &nbsp;<code class="docutils literal"><span class="pre">&lt;UPPER&gt;</span></code> 仍能使用
+&nbsp;<code class="docutils literal"><span class="pre">&lt;MOT&gt;</span></code>, <code class="docutils literal"><span class="pre">&lt;MIN&gt;</span></code> 和 <code class="docutils literal"><span class="pre">&lt;MAJ&gt;</span></code>。
+他们仍然运作，以保持与现有的图形系统的向后兼容性，但他们现在已经过时，也就是说，我们建议避免使用他们来设计最新版本的工作图表 <a class="footnote-reference" href="#id47" id="id20">[1]</a>，不会不必要地增加在使用词条数。</p>
+</div>
+<div class="section" id="id21">
+<h3>形态模式词典<a class="headerlink" href="#id21" title="永久链接至标题">¶</a></h3>
+<p>[dic-mode-morpho] 在形态模式中，我们可以查询词典。 例如 &nbsp;[fig-morpho3]
+查找由&nbsp; <code class="docutils literal"><span class="pre">un</span></code> 和形容词构成的内容。</p>
+<div class="figure" id="id76">
+<a class="reference internal image-reference" href="_images/fig6-17m.png"><img alt="识别由&nbsp; *un* 和形容词构成的内容 *able*\ [fig-morpho3]" src="_images/fig6-17m.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">识别由&nbsp; <em>un</em> 和形容词构成的内容 <em>able</em>[fig-morpho3]</span></p>
+</div>
+<div class="figure" id="id77">
+<a class="reference internal image-reference" href="_images/fig6-17n.png"><img alt="形态模式词典声明[fig-morpho4]" src="_images/fig6-17n.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">形态模式词典声明[fig-morpho4]</span></p>
+</div>
+<p>为了能够用该语法识别 <code class="docutils literal"><span class="pre">unaware</span></code> 系统必须知道&nbsp;<code class="docutils literal"><span class="pre">aware</span></code> 是一个形容词。
+词法面具&nbsp;<code class="docutils literal"><span class="pre">&lt;A&gt;</span></code> 需要咨询字典。但是，<code class="docutils literal"><span class="pre">aware</span></code>
+不存在于文本，所以你不能依靠词典.这就是为什么我们必须定义词典列表来咨询的形态模式(见&nbsp;&nbsp;[section-applying-dictionaries])。要做到这一点，进入“信息&gt;首选项&gt;模式形态词典”(例&nbsp;&nbsp;[fig-morpho4])。我们可以定义为许多字典，我们希望形态的方式，但他们必须在&nbsp;format&nbsp;<code class="docutils literal"><span class="pre">.bin</span></code>。这一事实可应用语法。要指定一个图形的字典应该在形态模式下，使用选项&nbsp;<code class="docutils literal"><span class="pre">b</span></code>
+或 &nbsp;<code class="docutils literal"><span class="pre">z</span></code> (见&nbsp;&nbsp;[section-dictionary-graphs]，形态字典输出方式)。</p>
+</div>
+<div class="section" id="id22">
+<h3>词典变量<a class="headerlink" href="#id22" title="永久链接至标题">¶</a></h3>
+<p>[dictionary-variables]</p>
+<p>您可以指定从字典形态模式变量的信息。
+这些变量被称为变量字典或形态的变量。
+该类型的变量的初始化必须含有是指包含在形态学模式字典信息的格子相关联，在&nbsp;<code class="docutils literal"><span class="pre">&lt;DIC&gt;</span></code>
+的特例中. 我们将 <code class="docutils literal"><span class="pre">$xxx$</span></code> 输出，如果 &nbsp;<code class="docutils literal"><span class="pre">xxx</span></code> 是一个变量名
+(见&nbsp;&nbsp;[section-using-variables])。会将一个变量重命名为 &nbsp;<code class="docutils literal"><span class="pre">xxx</span></code>
+通过图案识别的字典条目。
+在经过该框以下路径，可以得到的词尾变化的形式，规范形式和编码由与输入供给&nbsp;<code class="docutils literal"><span class="pre">$xxx.INFLECTED$</span></code>,
+&nbsp;<code class="docutils literal"><span class="pre">$xxx.LEMMA$</span></code> 和 &nbsp;<code class="docutils literal"><span class="pre">$xxx.CODE$</span></code>, 如 [fig-morpho5].
+我们也可以使用以下方式：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">$xxx.CODE.GRAM$</span></code>:只提供第一个语法码，语法范畴</li>
+<li><code class="docutils literal"><span class="pre">$xxx.CODE.SEM$</span></code>: 给出所以码，用 &nbsp;<code class="docutils literal"><span class="pre">+</span></code> 分隔</li>
+<li><code class="docutils literal"><span class="pre">$xxx.CODE.FLEX$</span></code>:给出所有可变码，用&nbsp; <code class="docutils literal"><span class="pre">:</span></code>分隔</li>
+<li><code class="docutils literal"><span class="pre">$xxx.CODE.ATTR=yyy$</span></code> 返回包含在语义代码的属性值对的值也就是
+&nbsp;<code class="docutils literal"><span class="pre">zzz</span></code> 和 &nbsp;<code class="docutils literal"><span class="pre">yyy</span></code> 是否含有以下形式的语义代码 &nbsp;<code class="docutils literal"><span class="pre">yyy=zzz</span></code>。</li>
+</ul>
+<p>变量的字典可以形态学模式以外使用，例如 [fig-morpho7].
+如可以对这些变量测试 [section-variables].</p>
+<div class="figure" id="id78">
+<a class="reference internal image-reference" href="_images/fig6-17o.png"><img alt="变量的字典的用途[fig-morpho5]" src="_images/fig6-17o.png" style="width: 16.00000cm;" /></a>
+<p class="caption"><span class="caption-text">变量的字典的用途[fig-morpho5]</span></p>
+</div>
+<div class="figure" id="id79">
+<a class="reference internal image-reference" href="_images/fig6-17p.png"><img alt="在&nbsp;MERGE 模式下的结果语法图[fig-morpho5] [fig-morpho6]" src="_images/fig6-17p.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">在&nbsp;MERGE 模式下的结果语法图[fig-morpho5] [fig-morpho6]</span></p>
+</div>
+<div class="figure" id="id80">
+<a class="reference internal image-reference" href="_images/fig6-17q.png"><img alt="使用普通模式变量字典[fig-morpho7]" src="_images/fig6-17q.png" style="width: 15.50000cm;" /></a>
+<p class="caption"><span class="caption-text">使用普通模式变量字典[fig-morpho7]</span></p>
+</div>
+<p><strong>Variables de dictionnaire dans LocateTfst</strong></p>
+<p>对于使用&nbsp; <code class="docutils literal"><span class="pre">LocateTfst</span></code> 的语法 (见&nbsp;&nbsp;[section-locate-tfst]),
+它有一个附加的可能性。除了形态学模式，可以存储在包含在文本自动机的字典可变词汇的标签。只要结合形式的输出框
+&nbsp;<code class="docutils literal"><span class="pre">$:abc$</span></code> 中 &nbsp;<code class="docutils literal"><span class="pre">abc</span></code> 是一个变量名。</p>
+<p>然后，您可以照常字典变量使用，如上文所述：
+人们可以得到词尾变化的形式，规范形式，并在入口给出的代码，语法范畴，它的语义编码，变位码和值
+&nbsp;<code class="docutils literal"><span class="pre">zzz</span></code> 和对应的 &nbsp;<code class="docutils literal"><span class="pre">yyy</span></code> 他们是否符合 &nbsp;<code class="docutils literal"><span class="pre">yyy=zzz</span></code>。</p>
+</div>
+</div>
+<div class="section" id="id23">
+<h2>探索语法路径<a class="headerlink" href="#id23" title="永久链接至标题">¶</a></h2>
+<p>有可能产生由语法识别的路径，例如来检查它正确地生成预期的形式。要做到这一点，打开主图的语法和确保图形窗口是活动窗口（活动窗口有一个蓝色的标题栏，同时非活动窗口有灰色的标题栏）。然后进入菜单&nbsp;“FSGraph”
+，然后在子菜单“工具”，然后点击“浏览路径图”。窗口如下图
+&nbsp;&nbsp;[fig-explore-graph-paths] 。</p>
+<div class="figure" id="id81">
+<a class="reference internal image-reference" href="_images/fig6-18.png"><img alt="探索语法路径[fig-explore-graph-paths]" src="_images/fig6-18.png" style="width: 10.40000cm;" /></a>
+<p class="caption"><span class="caption-text">探索语法路径[fig-explore-graph-paths]</span></p>
+</div>
+<p>以上包含了主要的图形语法探索路径的名字。
+以下是语法和扫描模式的输出管理选项：</p>
+<ul class="simple">
+<li>“忽略输出”：输出被忽略;</li>
+<li>“独立的输入和输出”：独立显示的输入和输出的条目 (`` a b c / A B C``);</li>
+<li>“合并输入和输出”：对应后立即显示每个输出 (<code class="docutils literal"><span class="pre">a/A</span> <span class="pre">b/B</span> <span class="pre">c/C</span></code>).</li>
+<li>“唯一路径”：调用子图递归探索;</li>
+<li>“不递归探索子图”：调用将正在探索递归显示在子图。</li>
+</ul>
+<p>如果“序列的最大数目”被选中，则指定的数量将所产生的路径的最大数目。如果未选择该选项，所有的路径将被产生。</p>
+<p>这就是用于曲线图中得到的 &nbsp;[fig-glace] 使用默认设置（忽略输出，限制=&nbsp;100
+条路径）：</p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">glace</span> <span class="pre">à</span> <span class="pre">la</span> <span class="pre">pistache</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">glace</span> <span class="pre">à</span> <span class="pre">la</span> <span class="pre">fraise</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">glace</span> <span class="pre">à</span> <span class="pre">la</span> <span class="pre">vanille</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">glace</span> <span class="pre">vanille</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">glace</span> <span class="pre">fraise</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">glace</span> <span class="pre">pistache</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">pistache</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">fraise</span></code></p>
+<p><code class="docutils literal"><span class="pre">&lt;NB&gt;</span> <span class="pre">&lt;boule&gt;</span> <span class="pre">de</span> <span class="pre">vanille</span></code></p>
+<p><code class="docutils literal"><span class="pre">glace</span> <span class="pre">à</span> <span class="pre">la</span> <span class="pre">pistache</span></code></p>
+<p><code class="docutils literal"><span class="pre">glace</span> <span class="pre">à</span> <span class="pre">la</span> <span class="pre">fraise</span></code></p>
+<p><code class="docutils literal"><span class="pre">glace</span> <span class="pre">à</span> <span class="pre">la</span> <span class="pre">vanille</span></code></p>
+<p><code class="docutils literal"><span class="pre">glace</span> <span class="pre">vanille</span></code></p>
+<p><code class="docutils literal"><span class="pre">glace</span> <span class="pre">fraise</span></code></p>
+<p><code class="docutils literal"><span class="pre">glace</span> <span class="pre">pistache</span></code></p>
+<div class="figure" id="id82">
+<a class="reference internal image-reference" href="_images/fig6-19.png"><img alt="图表举例 [fig-glace]" src="_images/fig6-19.png" style="width: 10.90000cm;" /></a>
+<p class="caption"><span class="caption-text">图表举例 [fig-glace]</span></p>
+</div>
+</div>
+<div class="section" id="id24">
+<h2>图集合<a class="headerlink" href="#id24" title="永久链接至标题">¶</a></h2>
+<p>有时候我们希望应用在同一目录中的多个语法。对于这一点，有可能从一个文件树自动构建语法。例如，假设你有以下三种：</p>
+<ul class="simple">
+<li><em>Dicos</em>:<ul>
+<li><em>Banque</em>:<ul>
+<li><code class="docutils literal"><span class="pre">carte.grf</span></code></li>
+</ul>
+</li>
+<li><em>Nourriture</em>:<ul>
+<li><code class="docutils literal"><span class="pre">eau.grf</span></code></li>
+<li><code class="docutils literal"><span class="pre">pain.grf</span></code></li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">truc.grf</span></code></li>
+</ul>
+</li>
+</ul>
+<p>如果想要把所有这些语法融入其中，你可以用“构建集图”子菜单中的&nbsp;“FSGraph&gt;工具”
+做到这一点。它通过图1的窗口配置操作 &nbsp;[fig-build-graph-collection].</p>
+<div class="figure" id="id83">
+<a class="reference internal image-reference" href="_images/fig6-20.png"><img alt="构建图形的集合[fig-build-graph-collection]" src="_images/fig6-20.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">构建图形的集合[fig-build-graph-collection]</span></p>
+</div>
+<p>在“源目录”字段中，选择你想探索（在我们的例子中，根目录
+<em>Dicos</em>)。在“结果&nbsp;GRF 语法”字段中，输入所产生的语法的名称。</p>
+<p>注意：不要将输出的语法放入探索树，因为在这种情况下，该计划将同时读取和写入该文件，这将导致崩溃。</p>
+<p>当您单击“确定”按钮，程序会复制在输出语法目录中的图表，并创建对应于不同的子目录子图，如图&nbsp;[fig-graph-collection]。</p>
+<p>可以看出，一个框包含此处相应于子目录子图呼叫（例&nbsp; <em>Banque</em> 和
+<em>Nourriture</em>)和其他框使用目录中的图表 (见图 <code class="docutils literal"><span class="pre">truc.grf</span></code>).</p>
+<div class="figure" id="id84">
+<a class="reference internal image-reference" href="_images/fig6-21.png"><img alt="主图收集图表[fig-graph-collection]" src="_images/fig6-21.png" style="width: 11.00000cm;" /></a>
+<p class="caption"><span class="caption-text">主图收集图表[fig-graph-collection]</span></p>
+</div>
+</div>
+<div class="section" id="id25">
+<h2>传感器的规则<a class="headerlink" href="#id25" title="永久链接至标题">¶</a></h2>
+<p>本节介绍了在治疗前操作和搜索模式，应用传感器的规则。图表变位和歧义形式不包含下文。</p>
+<div class="section" id="id26">
+<h3>将识别的图案插入前边<a class="headerlink" href="#id26" title="永久链接至标题">¶</a></h3>
+<p>当传感器被应用在替换模式，输出替换文本阅读序列。
+在管理模式下，输出被插入到所识别的序列的左边。考虑图一的转换器&nbsp;[fig-transducer-example]
+.</p>
+<div class="figure" id="id85">
+<a class="reference internal image-reference" href="_images/fig6-22.png"><img alt="转换器例[fig-transducer-example]" src="_images/fig6-22.png" style="width: 7.20000cm;" /></a>
+<p class="caption"><span class="caption-text">转换器例[fig-transducer-example]</span></p>
+</div>
+<p>如果我们将此传感器应用于&nbsp;Sir Walter Scott 的小说&nbsp;<em>Ivanhoe</em> 在&nbsp;MERGE
+模式下，我们得到下图&nbsp;&nbsp;[fig-transducer-example-concordance]</p>
+</div>
+<div class="section" id="id27">
+<h3>应用推进<a class="headerlink" href="#id27" title="永久链接至标题">¶</a></h3>
+<p>在预处理，文本修改为，当它消失了。为了避免无限循环的危险，它不需要由转换器产生的序列，可以通过将其重新分析。因为这个原因，当一个序列在文中被引入，所述转换器的应用在该序列后继续进行。
+这条规则只适用于预处理的转换器，因为语法图的应用过程中，输出不改变文本阅读，而是一个单独的索引文件的文本。</p>
+</div>
+<div class="section" id="id28">
+<h3>左优先<a class="headerlink" href="#id28" title="永久链接至标题">¶</a></h3>
+<p>在本地语法中，重叠出现的都是索引。我们在这里看到的真正的重叠发生为
+&nbsp;<code class="docutils literal"><span class="pre">abc</span></code> et <code class="docutils literal"><span class="pre">bcd</span></code>, 而不是 &nbsp;<code class="docutils literal"><span class="pre">abc</span></code> et <code class="docutils literal"><span class="pre">bc</span></code>。
+所有这些实例中示出(见&nbsp;&nbsp;[fig-overlappping-occurrences])。</p>
+<div class="figure" id="id86">
+<a class="reference internal image-reference" href="_images/fig6-24.png"><img alt="出现在相应的重叠[fig-overlappping-occurrences]" src="_images/fig6-24.png" style="width: 13.00000cm;" /></a>
+<p class="caption"><span class="caption-text">出现在相应的重叠[fig-overlappping-occurrences]</span></p>
+</div>
+<p>但是，如果您编辑的文本，而不是构建一个和谐的，有必要这些事件将被考虑中进行选择。为此，Unitex
+应用以下优先规则：最左边的序列优先。</p>
+<div class="line-block">
+<div class="line">运用这一规则，三个事件之前的情况中，发生</div>
+<div class="line">textcolorblue<code class="docutils literal"><span class="pre">[in</span> <span class="pre">ancient]</span></code>和
+。因此左边保持在第一，因为它是最左边，而 被删除。下一个 不再被包括
+可能出现在结果中：</div>
+</div>
+<p><code class="docutils literal"><span class="pre">...Don,</span> <span class="pre">there</span> <span class="pre">extended</span> <span class="pre">large</span> <span class="pre">forest...</span></code></p>
+<p>左优先规则只适用于当文本被修改，无论是在前处理，或之后
+(见&nbsp;[section-modifying-text]).</p>
+</div>
+<div class="section" id="id29">
+<h3>优先级更高的区段<a class="headerlink" href="#id29" title="永久链接至标题">¶</a></h3>
+<p>在一个句法图的应用是可能的选择优先级是否应给予的序列更短或更长，或者如果所有的序列应当保留。在预加工中，优先级总是被赋予较长的序列。</p>
+</div>
+<div class="section" id="id30">
+<h3>变量输出<a class="headerlink" href="#id30" title="永久链接至标题">¶</a></h3>
+<p>正如我们在&nbsp;&nbsp;[section-using-variables]所看到的，它可以使用输入变量来存储，是由一个语法分析的文本。这些变量可以在预处理和在语法图形图表中使用。</p>
+<p>你必须给名称使用的变量。这些名称可以包含&nbsp;<code class="docutils literal"><span class="pre">A</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">Z</span></code>，重音大写或小写，数字和字符之间的符号&nbsp;<code class="docutils literal"><span class="pre">_</span></code> (下划线)。</p>
+<p>要设置开始和该区域的最终存储在一个输入变量，或使用按钮，在图表上方的图标栏的红色括号(见&nbsp;&nbsp;[toolbar-commands]),
+，或者你创建两个格子，含有可变目标的名称个字符&nbsp;<code class="docutils literal"><span class="pre">$</span></code> 和 &nbsp;<code class="docutils literal"><span class="pre">(</span></code>
+是开始区域，其他的由&nbsp; <code class="docutils literal"><span class="pre">$</span></code> 和 <code class="docutils literal"><span class="pre">)</span></code> 为结束。
+要在输出时使用一个变量，在之前和之后用 &nbsp;<code class="docutils literal"><span class="pre">$</span></code> (voir
+figure&nbsp;&nbsp;[fig-variable-definition]).</p>
+<p>变量是全局性的。这意味着你可以在一个图表定义一个变量并在另一个调用它，如图所示&nbsp;&nbsp;[fig-variable-definition].
+如果我们对&nbsp;<em>Ivanhoe</em>应用&nbsp;MERGE 模式的&nbsp;<code class="docutils literal"><span class="pre">TitleName</span></code>
+，我们会得到下图&nbsp;&nbsp;[fig6-14].</p>
+<div class="figure" id="id87">
+<a class="reference internal image-reference" href="_images/fig6-25.png"><img alt="在一个子图设定的输入变量[fig-variable-definition]" src="_images/fig6-25.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">在一个子图设定的输入变量[fig-variable-definition]</span></p>
+</div>
+<div class="figure" id="id88">
+<a class="reference internal image-reference" href="_images/fig6-26.png"><img alt="通过图形的应用程序获取协议 ``TitleName``\ [fig6-14]" src="_images/fig6-26.png" style="width: 13.50000cm;" /></a>
+<p class="caption"><span class="caption-text">通过图形的应用程序获取协议 <code class="docutils literal"><span class="pre">TitleName</span></code>[fig6-14]</span></p>
+</div>
+<p>变量输出可用于移动字的组。事实上，转换器&nbsp;REPLACE
+模式的应用不会写在输出文本。交换两个词组，就可以将它们存储在变量和以任何顺序执行这些变量产生输出。因此，图的转换器&nbsp;&nbsp;[fig-swapping-words]的&nbsp;REPLACE
+模式应用于&nbsp;<em>Ivanhoe</em> 将给出以下结果&nbsp;&nbsp;[fig-no-space-problem].</p>
+<div class="figure" id="id89">
+<a class="reference internal image-reference" href="_images/fig6-27.png"><img alt="字的反转具有两个输入变量[fig-swapping-words]" src="_images/fig6-27.png" style="width: 11.30000cm;" /></a>
+<p class="caption"><span class="caption-text">字的反转具有两个输入变量[fig-swapping-words]</span></p>
+</div>
+<div class="figure" id="id90">
+<a class="reference internal image-reference" href="_images/fig6-28.png"><img alt="图的换能器的应用结果&nbsp;&nbsp;[fig-swapping-words][fig-no-space-problem]" src="_images/fig6-28.png" style="width: 13.40000cm;" /></a>
+<p class="caption"><span class="caption-text">图的换能器的应用结果&nbsp;&nbsp;[fig-swapping-words][fig-no-space-problem]</span></p>
+</div>
+<p>如果一个变量的开头或结尾是未定义的（可变的前端和末端），它会被忽略输出。见
+&nbsp;[section-advanced-search-options]该错误的变量处理。</p>
+<p>对可用的变量的数目没有限制。</p>
+<p>输入变量可以被嵌套，甚至在图重复所示&nbsp;&nbsp;[fig-overlapping-variables].</p>
+<div class="figure" id="id91">
+<a class="reference internal image-reference" href="_images/fig6-29.png"><img alt="重复输入变量&nbsp;[fig-overlapping-variables]" src="_images/fig6-29.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">重复输入变量&nbsp;[fig-overlapping-variables]</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="id31">
+<h2>输出变量<a class="headerlink" href="#id31" title="永久链接至标题">¶</a></h2>
+<p>输入变量的声明与图标栏&nbsp; <code class="docutils literal"><span class="pre">$xxx(</span></code> 和 &nbsp;<code class="docutils literal"><span class="pre">$xxx)</span></code>是红色支架，
+记录输入文本的部分。它也可以存储由语法产生的输出的部分。这涉及输出变量。这些变量声明的是在图形上方图标栏中的蓝色括号图标
+(见&nbsp;&nbsp;[toolbar-commands]), <code class="docutils literal"><span class="pre">$|xxx(</span></code> 和 <code class="docutils literal"><span class="pre">$|xxx)</span></code>.
+它们出现在蓝色(见图&nbsp;&nbsp;[fig-output-variables]). 这个语法被应用于&nbsp;MERGE
+模式，处理 <em>Ivanhoe</em> 产生如下结果&nbsp;&nbsp;[fig-output-variables-concord].</p>
+<div class="figure" id="id92">
+<a class="reference internal image-reference" href="_images/fig6-17r.png"><img alt="输出变量[fig-output-variables]" src="_images/fig6-17r.png" style="width: 8.00000cm;" /></a>
+<p class="caption"><span class="caption-text">输出变量[fig-output-variables]</span></p>
+</div>
+<div class="figure" id="id93">
+<a class="reference internal image-reference" href="_images/fig6-17s.png"><img alt="与图一的语法获得对应&nbsp;&nbsp;[fig-output-variables][fig-output-variables-concord]" src="_images/fig6-17s.png" style="width: 15.00000cm;" /></a>
+<p class="caption"><span class="caption-text">与图一的语法获得对应&nbsp;&nbsp;[fig-output-variables][fig-output-variables-concord]</span></p>
+</div>
+<p>当输出变量被初始化，换能器的输出序列中相应于当前发生输出都没有发出，它们仅存储在由该操作产生的输出变量。
+例如，输出 &nbsp;<code class="docutils literal"><span class="pre">ADJ</span></code> 和 &nbsp;<code class="docutils literal"><span class="pre">NOUN</span></code> ，见图&nbsp;&nbsp;[fig-output-variables]
+没有被插入到输入文本的左侧&nbsp;&nbsp;[fig-output-variables-concord].
+此外，输出在存储之前被处理&nbsp;: 如果格子的输出包含串，如
+&nbsp;<code class="docutils literal"><span class="pre">$A.LEMMA$</span></code>，输出变量实际上并不包含这个字符串，但与变量 &nbsp;<code class="docutils literal"><span class="pre">A</span></code>
+相关。</p>
+<p>输出变量仅由语法输出产生。因此，即使在合并模式，输出变量将绝不会存储在输入文本
+(图&nbsp;&nbsp;[fig-output-variables] 和&nbsp; [fig-output-variables-concord]).</p>
+<p>当一个框定义已经定义的变量， 新值将覆盖旧的。
+因此，如果该变量是在一个循环设置，只是在循环之后的变量的值取决于通过循环中的最后时间。</p>
+</div>
+<div class="section" id="id32">
+<h2>对变量的操作<a class="headerlink" href="#id32" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id33">
+<h3>变量测试<a class="headerlink" href="#id33" title="永久链接至标题">¶</a></h3>
+<p>可以测试的变量是否被设置或不中断当前识别，如果条件没有得到验证。这是通过在一个格子的输出插入序列&nbsp;<code class="docutils literal"><span class="pre">$xxx.SET$</span></code>
+。因此，如果变量名为 &nbsp;<code class="docutils literal"><span class="pre">xxx</span></code>
+被定义，该序列将被忽略，并继续识别，否则，识别将停止，程序返回。这适用于输入变量，输出变量和字典的变量。同样，我们可以验证一个变量没有使用
+&nbsp;<code class="docutils literal"><span class="pre">$xxx.UNSET$</span></code>。见图 &nbsp;[fig-testing-a-variable] 使用了该种测试方式。
+图&nbsp;[fig-testing-a-variable-results] 给出了&nbsp;MERGE 模式的结果。</p>
+<div class="figure" id="id94">
+<a class="reference internal image-reference" href="_images/fig6-29b.png"><img alt="变量测试[fig-testing-a-variable]" src="_images/fig6-29b.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">变量测试[fig-testing-a-variable]</span></p>
+</div>
+<div class="figure" id="id95">
+<a class="reference internal image-reference" href="_images/fig6-29c.png"><img alt="变量测试结果[fig-testing-a-variable-results]" src="_images/fig6-29c.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">变量测试结果[fig-testing-a-variable-results]</span></p>
+</div>
+</div>
+<div class="section" id="id34">
+<h3>变量比较<a class="headerlink" href="#id34" title="永久链接至标题">¶</a></h3>
+<p>另外，也可以以恒定或另一个变量来比较的任何类型的变量（输入，输出，或字典）的。这是通过下面的语法在一个盒子的输出中插入的序列进行&nbsp;:</p>
+<p><code class="docutils literal"><span class="pre">$abc.EQUAL=xyz$</span></code></p>
+<p>如果变量<code class="docutils literal"><span class="pre">abc</span></code>
+和<code class="docutils literal"><span class="pre">xyz</span></code>的值不同，可阻断语法。注意，对于变量的字典，因为它存在于字典中的词尾变化的形式(注意变体&nbsp;!)
+。如果想比较&nbsp;<code class="docutils literal"><span class="pre">abc</span></code> 和常量&nbsp; <code class="docutils literal"><span class="pre">JKL</span></code> 使用以下方式：</p>
+<p><code class="docutils literal"><span class="pre">$abc.EQUAL=#JKL$</span></code></p>
+<p>如果内容是用不同的还可以测试<code class="docutils literal"><span class="pre">UNEQUAL</span></code>.</p>
+<p>如果你想比较忽略的变量变异的情况下，可以使用以下测试：</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal"><span class="pre">$abc.EQUALcC=xyz$</span></code></div>
+<div class="line">ou</div>
+<div class="line"><code class="docutils literal"><span class="pre">$abc.UNEQUALcC=xyz$</span></code></div>
+</div>
+</div>
+<div class="section" id="id35">
+<h3>语义搜索代码在字典中的变量<a class="headerlink" href="#id35" title="永久链接至标题">¶</a></h3>
+<p>我们可以在字典中搜索变量 (见&nbsp;&nbsp;[dictionary-variables]) 一个
+“语义代码”&nbsp;[section-DELAF-entry-syntax].
+对于这一点，插入在与下面的语法格子的输出序列：</p>
+<p><code class="docutils literal"><span class="pre">$abc.EQ=Conc$</span></code></p>
+<p>如果 &nbsp;<code class="docutils literal"><span class="pre">Conc</span></code> 不是字典中的“语义代码”&nbsp; <code class="docutils literal"><span class="pre">abc</span></code>，
+我们可以中断搜索。一个可以在一个可变的一个时间搜索单个码。要检查的几个代码，我们把几个格子串联。</p>
+<p>此功能用于大型语法形态图，字典，以解离成单独的格子检查代码的语法和“语义代码”，接下来，如&nbsp;<a href="#id36"><span class="problematic" id="id37">:raw-latex:`\cite{paumier_nam_2014}`</span></a>,
+page&nbsp;486。
+我们通过搜索对应的变量的字典，词汇模板测试语法的代码，然后做了语义编码一样。
+这离解可能加快实施图表若&nbsp;:</p>
+<ul class="simple">
+<li>所有图形都直接或间接来自同一主图调用，</li>
+<li>主图被编译并转化为完成转换器 (见&nbsp;[flatten-section]),</li>
+<li>包含词汇面具电脑格子是常见的大多数路径和那些寻找语义编码字典中的变量 <a class="footnote-reference" href="#id48" id="id38">[2]</a>.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id39">
+<h2>文本应用<a class="headerlink" href="#id39" title="永久链接至标题">¶</a></h2>
+<p>本节仅包含语法图。</p>
+<div class="section" id="id40">
+<h3>搜索配置<a class="headerlink" href="#id40" title="永久链接至标题">¶</a></h3>
+<p>要应用语法图，首先打开它，然后按&nbsp;“Locate Pattern...” 在菜单&nbsp;“Text”中
+或按 &nbsp;&lt;Ctrl+L&gt;。 然后，您可以通过图的窗口中配置搜索 &nbsp;[fig-regexp-frame].</p>
+<div class="figure" id="id96">
+<a class="reference internal image-reference" href="_images/fig6-30.png"><img alt="表达式搜索窗口[fig-regexp-frame]" src="_images/fig6-30.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">表达式搜索窗口[fig-regexp-frame]</span></p>
+</div>
+<p>选择“图表”作为标题的一部分“的形式定位模式”，并点击“设置”按钮，选择您的图形。您可以选格式&nbsp;<code class="docutils literal"><span class="pre">.grf</span></code>
+或 &nbsp;<code class="docutils literal"><span class="pre">.fst2</span></code>。 如果您的图表为 &nbsp;<code class="docutils literal"><span class="pre">.grf</span></code> 格式， &nbsp;Unitex
+开始搜索前自动编译。如果你点击“调试模式”，该协议将显示在一个窗口，在这里您可以在控制器和可识别的序列，这条路径的状态名单。见此窗口&nbsp;&nbsp;[section-debug-mode].</p>
+<p>部分“索引”，选择识别方式：</p>
+<ul class="simple">
+<li>“最短匹配”为主的短序列;</li>
+<li>“最长匹配”：到更长的序列优先。这是默认模式；</li>
+<li>“全匹配”：让所有的识别的序列。</li>
+</ul>
+<p>部分“搜索限制”，可以限制或不看一个数字出现。默认情况下，搜索被限制于前两百个发生。</p>
+<p>部分“语法输出”所涉及的输出操作模式。“有输入文本合并”模式，通过插入输出产生的序列。模式“替换识别序列”可以替换所生产序列识别的序列。第三模式忽略输出。最后一个模式是默认的。</p>
+<p>在“搜索算法”，可以指定是否要使用该程序定位或&nbsp;LocateTfst
+文本自动文本搜索。默认情况下，搜索与国联作为一直到目前为止所做的定位程序来完成。如果您想使用&nbsp;LocateTfst，请参阅&nbsp;&nbsp;[section-locate-tfst].</p>
+<p>一旦你设置了参数，点击“搜索”进行搜索。</p>
+</div>
+<div class="section" id="id41">
+<h3>高级搜索选项<a class="headerlink" href="#id41" title="永久链接至标题">¶</a></h3>
+<p>[section-advanced-search-options]
+如果选择“高级选项”选项卡，可以看到图的框架 [fig6-advanced-options1].</p>
+<div class="figure" id="id97">
+<a class="reference internal image-reference" href="_images/fig6-advanced-options1.png"><img alt="高级搜索选项[fig6-advanced-options1]" src="_images/fig6-advanced-options1.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">高级搜索选项[fig6-advanced-options1]</span></p>
+</div>
+<p>“歧义输出”选项如图所示
+[fig6-advanced-options2]，当一个键被后跟一个字可以是一个名词或形容词时，可产生对于相同的输入序列中的两个单独的输出（转换器器被所述不明确）。</p>
+<div class="figure" id="id98">
+<a class="reference internal image-reference" href="_images/fig6-advanced-options2.png"><img alt="有歧义输出的图表[fig6-advanced-options2]" src="_images/fig6-advanced-options2.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">有歧义输出的图表[fig6-advanced-options2]</span></p>
+</div>
+<p>如果我们将图表及选项&#8221;允许歧义输出”应用于以下文本 <em>Ivanhoe</em>， (默认),
+将得到以下结果&nbsp;[fig6-advanced-options3].
+正如你所看到的，是为序列生成的两个输出&nbsp;<em>the noble</em>.</p>
+<div class="figure" id="id99">
+<a class="reference internal image-reference" href="_images/fig6-advanced-options3.png"><img alt="歧义输出 &nbsp;*the noble*\ [fig6-advanced-options3]" src="_images/fig6-advanced-options3.png" style="width: 8.80000cm;" /></a>
+<p class="caption"><span class="caption-text">歧义输出 &nbsp;<em>the noble</em>[fig6-advanced-options3]</span></p>
+</div>
+<p>“禁止歧义输出”选项下，我们得到该图的协议&nbsp;[fig6-advanced-options4],
+仅有一个任意选择的输出&nbsp;<em>the noble</em>.</p>
+<div class="figure" id="id100">
+<a class="reference internal image-reference" href="_images/fig6-advanced-options4.png"><img alt="唯一输出&nbsp;\ *the noble*\ [fig6-advanced-options4]" src="_images/fig6-advanced-options4.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">唯一输出&nbsp;<em>the noble</em>[fig6-advanced-options4]</span></p>
+</div>
+<p>“代码错误策略”选项定义的行为 &nbsp;<code class="docutils literal"><span class="pre">Locate</span></code>/&nbsp;<code class="docutils literal"><span class="pre">LocateTfst</span></code>
+当他们遇到一个包含未定义的变量输出。请注意，此设置没有任何影响，如果输出被忽略。例如，考虑图二的曲线图
+[fig6-advanced-options5].</p>
+<div class="figure" id="id101">
+<a class="reference internal image-reference" href="_images/fig6-advanced-options5.png"><img alt="一个变量 *A* 被定义 [fig6-advanced-options5]" src="_images/fig6-advanced-options5.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">一个变量 <em>A</em> 被定义 [fig6-advanced-options5]</span></p>
+</div>
+<p>选项“忽略错误变量”下， <em>A</em> 被忽略，如同空内容，见下图
+[fig6-advanced-options6].</p>
+<div class="figure" id="id102">
+<a class="reference internal image-reference" href="_images/fig6-advanced-options6.png"><img alt="变量&nbsp;\ *A* 被定义 [fig6-advanced-options6]" src="_images/fig6-advanced-options6.png" style="width: 12.00000cm;" /></a>
+<p class="caption"><span class="caption-text">变量&nbsp;<em>A</em> 被定义 [fig6-advanced-options6]</span></p>
+</div>
+<p>在“错误退出”选项下， <code class="docutils literal"><span class="pre">Locate</span></code>/<code class="docutils literal"><span class="pre">LocateTfst</span></code> 发出错误消息，如图
+[fig6-advanced-options7].</p>
+<div class="figure" id="id103">
+<a class="reference internal image-reference" href="_images/fig6-advanced-options7.png"><img alt="输出不正确的变量[fig6-advanced-options7]" src="_images/fig6-advanced-options7.png" style="width: 9.00000cm;" /></a>
+<p class="caption"><span class="caption-text">输出不正确的变量[fig6-advanced-options7]</span></p>
+</div>
+<p>随着“返回错误变量”选项， <code class="docutils literal"><span class="pre">Locate</span></code>/ &nbsp;<code class="docutils literal"><span class="pre">LocateTfst</span></code>
+停止探索语法。因此，变量充当削减路径，开关的功能。例如以下语法的应用
+[fig6-advanced-options5]只输出形容词，见如下例子
+[fig6-advanced-options8].</p>
+<div class="figure" id="id104">
+<a class="reference internal image-reference" href="_images/fig6-advanced-options8.png"><img alt="反向不正确的变量[fig6-advanced-options8]" src="_images/fig6-advanced-options8.png" style="width: 13.00000cm;" /></a>
+<p class="caption"><span class="caption-text">反向不正确的变量[fig6-advanced-options8]</span></p>
+</div>
+</div>
+<div class="section" id="id42">
+<h3>整合<a class="headerlink" href="#id42" title="永久链接至标题">¶</a></h3>
+<p>搜索结果是一个包含发现所有出现的位置索引文件。图的窗口&nbsp;&nbsp;[fig-configuration-display-occurrences]
+展示了整合结构，修改及比较了之前的文本。</p>
+<p>要查看比赛，你必须点击“整合”按钮。您可以设置上下文的大小。还可以选择的分类模式将被应用到所述协议中的条例，“排序”菜单。有关协议的参数的更多详细信息，请参见&nbsp;&nbsp;[section-display-occurrences].</p>
+<div class="figure" id="id105">
+<a class="reference internal image-reference" href="_images/fig6-31.png"><img alt="控制显示 [fig-configuration-display-occurrences]" src="_images/fig6-31.png" style="width: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">控制显示 [fig-configuration-display-occurrences]</span></p>
+</div>
+<p>该协议是以&nbsp;HTML 文件的形式产生 您可以设置&nbsp;Unitex 到对应被读取使用&nbsp;Web
+浏览器(见&nbsp;&nbsp;[section-display-occurrences])。</p>
+<p>如果你在&nbsp;Unitex
+的窗口中查看词，您可以点击这里访问在文本识别的序列。如果文本窗口不是图标化，文本不是太长要显示，你会看到选择的序列
+(见图&nbsp;&nbsp;[fig-back-to-text]).</p>
+<div class="figure" id="id106">
+<a class="reference internal image-reference" href="_images/fig6-32.png"><img alt="在文本中选择一个事件[fig-back-to-text]" src="_images/fig6-32.png" style="width: 13.50000cm;" /></a>
+<p class="caption"><span class="caption-text">在文本中选择一个事件[fig-back-to-text]</span></p>
+</div>
+<p>此外，如果文本自动机建，而不是图标化相应的窗口，点击的出现选择包含该实例句子的自动机。</p>
+</div>
+<div class="section" id="id43">
+<h3>文本更改<a class="headerlink" href="#id43" title="永久链接至标题">¶</a></h3>
+<p>您可以选择，而不是编辑构建和谐的文本。只需选择图的窗口下的“修改文本”的文件名
+&nbsp;&nbsp;[fig-configuration-display-occurrences]。这个文件的扩展名必须为&nbsp;<code class="docutils literal"><span class="pre">.txt</span></code>.</p>
+<p>如果你想改变当前的文本，选择文件 &nbsp;verb+.txt+。
+如果您选择不同的文件名，当前的文本将不会受到影响。点击&nbsp;“GO”
+按钮，开始编辑文本。此操作期间施加的优先权规则，见&nbsp;&nbsp;[section-applying-transducers-rules].</p>
+<p>一旦这样做，所得到的文件是在其中输出被考虑到的文本的副本。操作标准和切成令牌被自动应用到文本文件。现有文本词典都没有改变。所以，如果你选择改变当前的文本，更改将立即生效。然后你可以在新的文本进行研究。</p>
+<p>注意：如果您选择使用您的图形忽略了出口，所有出现的情况会从文本中删除。</p>
+</div>
+<div class="section" id="id44">
+<h3>提取事件<a class="headerlink" href="#id44" title="永久链接至标题">¶</a></h3>
+<p>您可以提取其中包含的任何事件文本的所有句子。
+要做到这一点，选择一个输出文件名与在“提取单位”“设置文件”按钮
+(例&nbsp;[fig-configuration-display-occurrences])。
+然后点击“提取匹配单位”按钮或“提取不匹配的单位”，这取决于您是否想要提取的句子中包含与否。</p>
+</div>
+<div class="section" id="id45">
+<h3>词的比较<a class="headerlink" href="#id45" title="永久链接至标题">¶</a></h3>
+<p>在“协议差异”比较与之前的协议的差异，如果一致。为此，该计划建成
+&nbsp;<code class="docutils literal"><span class="pre">ConcorDiff</span></code>
+文本中的优先级，然后比较它们。其结果是一个HTML页面来交替显示两条索引，留下一个空行，两个事件中仅有一个一个发生(例&nbsp;&nbsp;[fig-concordiff]).</p>
+<div class="figure" id="id107">
+<a class="reference internal image-reference" href="_images/fig6-33.png"><img alt="对应的比较实例&nbsp;[fig-concordiff]" src="_images/fig6-33.png" style="height: 10.00000cm;" /></a>
+<p class="caption"><span class="caption-text">对应的比较实例&nbsp;[fig-concordiff]</span></p>
+</div>
+<p>早先协议的线被隐藏，突出那些目前的协议。
+在每一行中，只有识别的序列被着色。人们可以点击打开该位置的文本。</p>
+<p>蓝色表示的序列。红色指示已识别序列，但具有不同的扩展，也就是说，在两个序列重叠部分的承认。绿色表示出现在竞争中出现的序列。</p>
+<p>如果没有事先约定，该按钮被禁用。</p>
+</div>
+<div class="section" id="id46">
+<h3>调试模式<a class="headerlink" href="#id46" title="永久链接至标题">¶</a></h3>
+<p>当在窗口中使用&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code>
+菜单&nbsp;&nbsp;[fig-regexp-frame]如果调试模式被激活，“定位形式”,竞争是在一个特殊的窗口中
+(见图&nbsp;&nbsp;[fig-debug-mode])，被分隔为三个部分：</p>
+<div class="figure" id="id108">
+<a class="reference internal image-reference" href="_images/fig6-34.png"><img alt="在调试模式下注册窗口[fig-debug-mode]" src="_images/fig6-34.png" style="height: 9.50000cm;" /></a>
+<p class="caption"><span class="caption-text">在调试模式下注册窗口[fig-debug-mode]</span></p>
+</div>
+<p>在右上方是整合窗口。它是相同的，其中所述识别的序列显示为蓝色的正常窗口。</p>
+<p>右下是所使用的图形&nbsp;<code class="docutils literal"><span class="pre">Locate</span></code>.</p>
+<p>在左边，有分成三列的表：“变量”，“输出”和“匹配”。每个标记出现在“匹配”一栏，“变量”列指示框已被识别的内容，如果它有出口，会被列在“输出”。</p>
+<p>对于每一个被识别的序列，点击时，表格将被更新。如果你点击一个表行，系统将给图表中的相应框添加颜色。我们可以看到在自动识别它的文本识别的每个实例。在红色上的格的顶部的数字表示的量该格已经被识别的文本序列的数目。</p>
+<p>当应用在调试模式下图的菜单 &nbsp;<code class="docutils literal"><span class="pre">Text&gt;Locate</span> <span class="pre">Pattern</span></code>, 系统在&nbsp;<code class="docutils literal"><span class="pre">fst2</span></code>
+文件&nbsp;FST2 在一个特殊的正式调试模式，这是不符合&nbsp;CASSYs
+兼容。参见&nbsp;&nbsp;[graphs-for-cassys] 。</p>
+<table class="docutils footnote" frame="void" id="id47" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id20">[1]</a></td><td>从版本&nbsp; 3.1 bêta 起</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id48" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id38">[2]</a></td><td>以这种方式，面具使该前几个研究语义代码仅执行一次的词汇字典形态模式。
+它检查该语法的代码和由相同的词汇掩模的语义代码是否，这些面具成为整个语法更普遍和它们引起更多的协商字典。</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-zh.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">图表的高级应用</a><ul>
+<li><a class="reference internal" href="#id2">图表类型</a><ul>
+<li><a class="reference internal" href="#id3">变位图表</a></li>
+<li><a class="reference internal" href="#id4">预处理图表</a></li>
+<li><a class="reference internal" href="#id5">自动文本规范化图表</a></li>
+<li><a class="reference internal" href="#id6">句法图表</a></li>
+<li><a class="reference internal" href="#elag">语法 &nbsp;ELAG</a></li>
+<li><a class="reference internal" href="#id7">参数图表</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id8">语法的编译</a><ul>
+<li><a class="reference internal" href="#id9">语法的编译</a></li>
+<li><a class="reference internal" href="#id10">完成转化器</a></li>
+<li><a class="reference internal" href="#id11">语法约束</a></li>
+<li><a class="reference internal" href="#id12">重复数的间隔</a></li>
+<li><a class="reference internal" href="#id13">错误检测</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id14">上下文</a><ul>
+<li><a class="reference internal" href="#id15">上下文的区域</a></li>
+<li><a class="reference internal" href="#id16">上文</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id17">形态学方法</a><ul>
+<li><a class="reference internal" href="#id18">为什么 ?</a></li>
+<li><a class="reference internal" href="#id19">规则</a></li>
+<li><a class="reference internal" href="#id21">形态模式词典</a></li>
+<li><a class="reference internal" href="#id22">词典变量</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id23">探索语法路径</a></li>
+<li><a class="reference internal" href="#id24">图集合</a></li>
+<li><a class="reference internal" href="#id25">传感器的规则</a><ul>
+<li><a class="reference internal" href="#id26">将识别的图案插入前边</a></li>
+<li><a class="reference internal" href="#id27">应用推进</a></li>
+<li><a class="reference internal" href="#id28">左优先</a></li>
+<li><a class="reference internal" href="#id29">优先级更高的区段</a></li>
+<li><a class="reference internal" href="#id30">变量输出</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id31">输出变量</a></li>
+<li><a class="reference internal" href="#id32">对变量的操作</a><ul>
+<li><a class="reference internal" href="#id33">变量测试</a></li>
+<li><a class="reference internal" href="#id34">变量比较</a></li>
+<li><a class="reference internal" href="#id35">语义搜索代码在字典中的变量</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id39">文本应用</a><ul>
+<li><a class="reference internal" href="#id40">搜索配置</a></li>
+<li><a class="reference internal" href="#id41">高级搜索选项</a></li>
+<li><a class="reference internal" href="#id42">整合</a></li>
+<li><a class="reference internal" href="#id43">文本更改</a></li>
+<li><a class="reference internal" href="#id44">提取事件</a></li>
+<li><a class="reference internal" href="#id45">词的比较</a></li>
+<li><a class="reference internal" href="#id46">调试模式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-zh.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/06-advanced-use_ZH_utf8.txt"
+            rel="nofollow">显示源代码</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>快速搜索</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/06-advanced-use_ZH_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

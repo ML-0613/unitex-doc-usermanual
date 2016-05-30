@@ -1,0 +1,1462 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh_CN">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>文件格式 &mdash; Unitex-zh 1.0.1 文档</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Unitex-zh 1.0.1 文档" href="Unitex-zh.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>文件格式<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>该章节展示了由&nbsp;Unitex&nbsp;读取或生成文件的不同格式。DELAS&nbsp;和&nbsp;DEKLAF&nbsp;字典的格式都在&nbsp;&nbsp;[section-DELAF-format]&nbsp;和
+&nbsp;&nbsp;[section-DELAS-format]&nbsp;中表示。</p>
+<p>注意：在这一章节中， ¶
+符号表示换行。除非另有说明，所有的在该章节中的文本文件都是由&nbsp;Unicode
+Little-Endian&nbsp;进行编码的。</p>
+<div class="section" id="unicode">
+<h2>Unicode 代码<a class="headerlink" href="#unicode" title="永久链接至标题">¶</a></h2>
+<p>默认由&nbsp;Unitex&nbsp;操作的文本文件由&nbsp;Unicode Little-Endian&nbsp;编码。
+Unitex&nbsp;也接受&nbsp;Unicode
+Big-Endian&nbsp;格式或&nbsp;UTF-8&nbsp;格式文件。这个编码可以表示&nbsp;65536&nbsp;个字符，每两个字节构成一个字符。Little-Endian&nbsp;代码中，字节是以由低到高的顺序排列。而&nbsp;Big-Endian&nbsp;的顺序则是相反。一个由
+&nbsp;Little-Endian, Big-Endian&nbsp;或&nbsp;UTF-8&nbsp;变码的文件由十六进制特殊字符 、
+<code class="docutils literal"><span class="pre">FF</span></code><code class="docutils literal"><span class="pre">FE</span></code>(Little-Endian)、<code class="docutils literal"><span class="pre">FE</span></code><code class="docutils literal"><span class="pre">FF</span></code> (Big-Endian)
+或&nbsp;<code class="docutils literal"><span class="pre">EF</span></code><code class="docutils literal"><span class="pre">BB</span></code><code class="docutils literal"><span class="pre">BF</span></code> (UTF-8) 开始（Unicode Byte Order Mark -
+BOM）。因为&nbsp;UTF-8&nbsp;没有字节顺序，在&nbsp;BOM
+UTF-8&nbsp;添加是可选的；对于&nbsp;UTF-16&nbsp;来说是必须的。跨行符号应由&nbsp;<code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">00</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">0A</span></code><code class="docutils literal"><span class="pre">00</span></code> (Little-Endian)，<code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0D</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0A</span></code>(Big-Endian) 或&nbsp;<code class="docutils literal"><span class="pre">0D</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">0A</span></code>(UTF-8)&nbsp;两个字符构成。</p>
+<p>参考以下文本：</p>
+<p><code class="docutils literal"><span class="pre">Unitex¶</span></code></p>
+<p><code class="docutils literal"><span class="pre">\beta-version¶</span></code></p>
+<p>这里是由&nbsp;Unicode Little-Endian&nbsp;编码文本：</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="18%" />
+<col width="18%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">BOM header</th>
+<th class="head">U</th>
+<th class="head">n</th>
+<th class="head">i</th>
+<th class="head">t</th>
+<th class="head">e</th>
+<th class="head">x</th>
+<th class="head">¶</th>
+<th class="head"><span class="math">\(\beta\)</span></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">FF</span></code><code class="docutils literal"><span class="pre">FE</span></code></td>
+<td><code class="docutils literal"><span class="pre">55</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">6E</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">69</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">74</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">65</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">78</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0A</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">B2</span></code><code class="docutils literal"><span class="pre">03</span></code></td>
+</tr>
+<tr class="row-odd"><td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>v</td>
+<td>e</td>
+<td>r</td>
+<td>s</td>
+<td>i</td>
+<td>o</td>
+<td>n</td>
+<td>¶</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">2D</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">76</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">65</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">72</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">73</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">69</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">6F</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">6E</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+<td><code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0A</span></code><code class="docutils literal"><span class="pre">00</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Table: 十六进制表示由&nbsp;Unicode Little-Endian&nbsp;编码的文本</p>
+<p>这里是由&nbsp;Unicode Big-Endian&nbsp;表示的：</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="18%" />
+<col width="18%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">BOM header</th>
+<th class="head">U</th>
+<th class="head">n</th>
+<th class="head">i</th>
+<th class="head">t</th>
+<th class="head">e</th>
+<th class="head">x</th>
+<th class="head">¶</th>
+<th class="head"><span class="math">\(\beta\)</span></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">FE</span></code><code class="docutils literal"><span class="pre">FF</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">55</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">6E</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">69</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">74</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">65</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">78</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0A</span></code></td>
+<td><code class="docutils literal"><span class="pre">03</span></code><code class="docutils literal"><span class="pre">B2</span></code></td>
+</tr>
+<tr class="row-odd"><td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>v</td>
+<td>e</td>
+<td>r</td>
+<td>s</td>
+<td>i</td>
+<td>o</td>
+<td>n</td>
+<td>¶</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">2D</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">76</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">65</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">72</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">73</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">69</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">6F</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">6E</span></code></td>
+<td><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0A</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Table: 十六进制表示由&nbsp;Unicode Big-Endian&nbsp;编码的文本</p>
+<p>这里是由&nbsp;UTF-8&nbsp;表示的：</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="15%" />
+<col width="15%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">BOM header</th>
+<th class="head">U</th>
+<th class="head">n</th>
+<th class="head">i</th>
+<th class="head">t</th>
+<th class="head">e</th>
+<th class="head">x</th>
+<th class="head">¶</th>
+<th class="head"><span class="math">\(\beta\)</span></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">EF</span></code><code class="docutils literal"><span class="pre">BB</span></code><code class="docutils literal"><span class="pre">BF</span></code></td>
+<td><code class="docutils literal"><span class="pre">55</span></code></td>
+<td><code class="docutils literal"><span class="pre">6E</span></code></td>
+<td><code class="docutils literal"><span class="pre">69</span></code></td>
+<td><code class="docutils literal"><span class="pre">74</span></code></td>
+<td><code class="docutils literal"><span class="pre">65</span></code></td>
+<td><code class="docutils literal"><span class="pre">78</span></code></td>
+<td><code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">0A</span></code></td>
+<td><code class="docutils literal"><span class="pre">CE</span></code><code class="docutils literal"><span class="pre">B2</span></code></td>
+</tr>
+<tr class="row-odd"><td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>v</td>
+<td>e</td>
+<td>r</td>
+<td>s</td>
+<td>i</td>
+<td>o</td>
+<td>n</td>
+<td>¶</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">2D</span></code></td>
+<td><code class="docutils literal"><span class="pre">76</span></code></td>
+<td><code class="docutils literal"><span class="pre">65</span></code></td>
+<td><code class="docutils literal"><span class="pre">72</span></code></td>
+<td><code class="docutils literal"><span class="pre">73</span></code></td>
+<td><code class="docutils literal"><span class="pre">69</span></code></td>
+<td><code class="docutils literal"><span class="pre">6F</span></code></td>
+<td><code class="docutils literal"><span class="pre">6E</span></code></td>
+<td><code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">0A</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Table: 十六进制表示由&nbsp;UTF-8&nbsp;编码的文本</p>
+<p>Unicode
+Little-Endian&nbsp;编码中，高位字节和低位字节是倒过来的，这说明开始的字符是由&nbsp;<code class="docutils literal"><span class="pre">FF</span></code><code class="docutils literal"><span class="pre">FE</span></code>
+编码，而不是&nbsp;<code class="docutils literal"><span class="pre">FE</span></code><code class="docutils literal"><span class="pre">FF</span></code>，同上，<code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0D</span></code> 和
+&nbsp;<code class="docutils literal"><span class="pre">00</span></code><code class="docutils literal"><span class="pre">0A</span></code> 分别变成<code class="docutils literal"><span class="pre">0D</span></code><code class="docutils literal"><span class="pre">00</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">0A</span></code><code class="docutils literal"><span class="pre">00</span></code>。</p>
+</div>
+<div class="section" id="id2">
+<h2>字母文件<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>有两种字母文件输出格式：一个是定义一种语言的字符，还有一种是显示了字符的排序。第一个被称为&nbsp;<em>alphabet</em>，第二个被称为&nbsp;<em>alphabet
+de tri</em>。</p>
+<div class="section" id="id3">
+<h3>字母<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<p>字母文件是记录一种语言中所有字符与小写和大写字母之间的对应关系的文本文件。该文件被称为&nbsp;<code class="docutils literal"><span class="pre">Alphabet.txt</span></code>
+，可以在相关语言根目录中被找到。Unitex&nbsp;能够运行必须要它的存在。</p>
+<p>举例：英文字母文件可以在&nbsp;<a href="#id4"><span class="problematic" id="id5">``</span></a>.../English/<a href="#id6"><span class="problematic" id="id7">``</span></a>&nbsp;目录里找到。</p>
+<p>字母文件的每一行都应该有三种以下形式之一，然后另起一行：</p>
+<ul class="simple">
+<li><a class="reference internal" href="_images/thai_letter.png"><img alt="image" src="_images/thai_letter.png" style="height: 0.30000cm;" /></a> :
+在&nbsp;<span class="math">\(X\)</span>&nbsp;和&nbsp;<span class="math">\(Y\)</span>&nbsp;两个字符后的升号表示所有在&nbsp;<span class="math">\(X\)</span>&nbsp;和&nbsp;<span class="math">\(Y\)</span>&nbsp;字符中包含的所有字符都是字母。
+所有字符都同时被认为是大写或小写。这种模式被用来定义亚洲语言的字，比如韩语，中文，日语，不区分大小写或返回的字符数太繁琐，枚举出来太多</li>
+<li><code class="docutils literal"><span class="pre">Aa</span></code> :
+<span class="math">\(X\)</span>&nbsp;和&nbsp;<span class="math">\(Y\)</span>&nbsp;两个字符表示&nbsp;<span class="math">\(X\)</span>&nbsp;和&nbsp;<span class="math">\(Y\)</span>&nbsp;是两个字母并且&nbsp;<span class="math">\(X\)</span>&nbsp;等效于大小字母&nbsp;<span class="math">\(Y\)</span>。</li>
+<li><a class="reference internal" href="_images/thai_letter.png"><img alt="image" src="_images/thai_letter.png" style="height: 0.30000cm;" /></a>: 单独的字符&nbsp;<span class="math">\(X\)</span>&nbsp;表示&nbsp;<span class="math">\(X\)</span>&nbsp;同时作为大小写字母。
+这种模式适用于及时处理亚洲语言。</li>
+</ul>
+<p>对于某些类似于法语的语言，会有一个小写字母对应大写字母的情况。比如&nbsp;<code class="docutils literal"><span class="pre">é</span></code>，大写字母可以是&nbsp;<code class="docutils literal"><span class="pre">E</span></code>
+或&nbsp;<code class="docutils literal"><span class="pre">É</span></code>。为了表示它，只要使用多线操作。反过来也是一样：一个大写字母可以对应多个小写字母。因此&nbsp;<code class="docutils literal"><span class="pre">E</span></code>
+可以是&nbsp;<code class="docutils literal"><span class="pre">e</span></code>, <code class="docutils literal"><span class="pre">é</span></code>, <code class="docutils literal"><span class="pre">è</span></code>,
+<a href="#id8"><span class="problematic" id="id9">``</span></a>ë``&nbsp;或&nbsp;<a href="#id10"><span class="problematic" id="id11">``</span></a>ê``&nbsp;的大写字母。这里是法语字母文件处理定义不同的字母</p>
+<p><code class="docutils literal"><span class="pre">e</span></code>:</p>
+<p><code class="docutils literal"><span class="pre">Ee</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Eé</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Éé</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Eè</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Èè</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Eë</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Ëë</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Eê</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Êê</span></code></p>
+</div>
+<div class="section" id="id12">
+<h3>顺序字母表<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h3>
+<p>顺序字母表是一个文本文件，它在&nbsp;<a href="#id13"><span class="problematic" id="id14">``</span></a>SortTxt``&nbsp;程序的帮助下定义了一种语言的字母排序
+&nbsp;文件中的每一行定义一组字母。如果&nbsp;<span class="math">\(A\)</span>&nbsp;组的字母在&nbsp;<span class="math">\(B\)</span>&nbsp;之前就定义好，<span class="math">\(A\)</span>&nbsp;中的任何字母都比&nbsp;<span class="math">\(B\)</span>中的任何字母高级。</p>
+<p>同一组的字母非必要的情况下不需要区分。比如，如果我们定义一组字母&nbsp;<code class="docutils literal"><span class="pre">eéèëê</span></code>，<code class="docutils literal"><span class="pre">ébahi</span></code>
+&nbsp;就会被看作比&nbsp;<code class="docutils literal"><span class="pre">estuaire``&nbsp;更小，而它本身比&nbsp;``été</span></code>更小。<code class="docutils literal"><span class="pre">e</span></code>和
+<code class="docutils literal"><span class="pre">é</span></code>
+后的字母可以用于分类这些单词，我们没有比较&nbsp;<code class="docutils literal"><span class="pre">e``&nbsp;和&nbsp;``é</span></code>，因为它们在同一个组。
+另一方面，如果我们比较&nbsp;<code class="docutils literal"><span class="pre">chantés``&nbsp;和&nbsp;``chantes</span></code>，<code class="docutils literal"><span class="pre">chantes</span></code>
+&nbsp;更小。实际上，应该比较&nbsp;<a href="#id15"><span class="problematic" id="id16">``</span></a>e``&nbsp;和&nbsp;<a href="#id17"><span class="problematic" id="id18">``</span></a>é``&nbsp;来区分这两个单词。
+<a href="#id19"><span class="problematic" id="id20">``</span></a>e``&nbsp;出现在字母组&nbsp;<a href="#id21"><span class="problematic" id="id22">``</span></a>eéèëê``&nbsp;的第一个，它在&nbsp;<a href="#id23"><span class="problematic" id="id24">``</span></a>é``&nbsp;前面。因此&nbsp;<a href="#id25"><span class="problematic" id="id26">``</span></a>chantes``&nbsp;被看作比
+&nbsp;<a href="#id27"><span class="problematic" id="id28">``</span></a>chantés``&nbsp;更小的单词。</p>
+<p>顺序字母表文件可以定义等效字符。因此我们能忽视发音的不同。比如如果我们要给字母&nbsp;<code class="docutils literal"><span class="pre">b</span></code>,
+<code class="docutils literal"><span class="pre">c</span></code>, 和&nbsp;<a href="#id29"><span class="problematic" id="id30">``</span></a>d``&nbsp;排序，不区分大小写和变音符号，我们可以写出如下几行：</p>
+<p><code class="docutils literal"><span class="pre">Bb</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">CcÇç</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Dd</span></code>¶</p>
+<p>这个文件是可选的，当在给&nbsp;Unicode&nbsp;编码字符排序的&nbsp;<a href="#id31"><span class="problematic" id="id32">``</span></a>SortTxt``&nbsp;程序中没有顺序字母表时。</p>
+</div>
+</div>
+<div class="section" id="id33">
+<h2>图形<a class="headerlink" href="#id33" title="永久链接至标题">¶</a></h2>
+<p>本节介绍图的两种格式：图形格式&nbsp; <code class="docutils literal"><span class="pre">.grf``&nbsp;和编译格式</span> <span class="pre">&nbsp;</span></code>.fst2``。</p>
+<div class="section" id="grf">
+<h3>格式 .grf<a class="headerlink" href="#grf" title="永久链接至标题">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">.grf``&nbsp;文件是含有除了信息表示的框和图表的转换内容的提示信息的文本文件。</span></code>.grf``&nbsp;文件由下面的内容开始：</p>
+<p><code class="docutils literal"><span class="pre">#Unigraph</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">SIZE</span> <span class="pre">1313</span> <span class="pre">950</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">FONT</span> <span class="pre">Times</span> <span class="pre">New</span> <span class="pre">Roman:</span>&nbsp; <span class="pre">12</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">OFONT</span> <span class="pre">Times</span> <span class="pre">New</span> <span class="pre">Roman:B</span> <span class="pre">12</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">BCOLOR</span> <span class="pre">16777215</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">FCOLOR</span> <span class="pre">0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">ACOLOR</span> <span class="pre">12632256</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">SCOLOR</span> <span class="pre">16711680</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">CCOLOR</span> <span class="pre">255</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DBOXES</span> <span class="pre">y</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DFRAME</span> <span class="pre">y</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DDATE</span> <span class="pre">y</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DFILE</span> <span class="pre">y</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DDIR</span> <span class="pre">y</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DRIG</span> <span class="pre">n</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DRST</span> <span class="pre">n</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">FITS</span> <span class="pre">100</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PORIENT</span> <span class="pre">L</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">#</span></code>¶</p>
+<p>第一行&nbsp;<a href="#id34"><span class="problematic" id="id35">``</span></a>#Unigraph``&nbsp; 是评论行。下面的几行定义图形演示设置的值：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">SIZE</span> <span class="pre">x</span> <span class="pre">y</span></code> : 定义以像素为单位的图的宽度 &nbsp;<code class="docutils literal"><span class="pre">x</span></code> 和高度&nbsp;<code class="docutils literal"><span class="pre">y</span></code> d；</li>
+<li><code class="docutils literal"><span class="pre">FONT</span> <span class="pre">name:xyz</span></code> : 设置用于显示框的内容的字体。 <code class="docutils literal"><span class="pre">name</span></code>
+是字体的名字。<code class="docutils literal"><span class="pre">x</span></code> 定义字体是否加粗. 如果&nbsp;<code class="docutils literal"><span class="pre">x</span></code> 是&nbsp;<code class="docutils literal"><span class="pre">B</span></code>,
+表示字体加粗. 对于正常的字体来说, <code class="docutils literal"><span class="pre">x</span></code> 是一个空格. 同样, <code class="docutils literal"><span class="pre">y</span></code> 是
+&nbsp;<code class="docutils literal"><span class="pre">I</span></code> 如果字体是斜的，否则就是一个空格。 <code class="docutils literal"><span class="pre">z</span></code> 表示字体的大小;</li>
+<li><code class="docutils literal"><span class="pre">OFONT</span> <span class="pre">name:xyz</span></code> : 设置用于显示转导的字体。 参数&nbsp;<code class="docutils literal"><span class="pre">name</span></code>, <code class="docutils literal"><span class="pre">x</span></code>,
+<code class="docutils literal"><span class="pre">y</span></code>, 和&nbsp;<code class="docutils literal"><span class="pre">z</span></code> 同样定义&nbsp; <code class="docutils literal"><span class="pre">FONT</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">BCOLOR</span> <span class="pre">x</span></code> : 设置图形的背景的色彩。 <code class="docutils literal"><span class="pre">x</span></code> 表示&nbsp;RGB 格式颜色;</li>
+<li><code class="docutils literal"><span class="pre">FCOLOR</span> <span class="pre">x</span></code> : 定义图形绘制颜色。 <a href="#id36"><span class="problematic" id="id37">``</span></a>x``&nbsp;表示&nbsp;RGB 格式的颜色;</li>
+<li><code class="docutils literal"><span class="pre">ACOLOR</span> <span class="pre">x</span></code> : 定义用于对应子图的框的颜色。<a href="#id38"><span class="problematic" id="id39">``</span></a>x``&nbsp;表示表示&nbsp;RGB
+格式的颜色。</li>
+<li><code class="docutils literal"><span class="pre">SCOLOR</span> <span class="pre">x</span></code> : 定义用来写的评论框的内容的颜色 （i.e.
+未链接到任何其他的框)。<a href="#id40"><span class="problematic" id="id41">``</span></a>x``&nbsp;表示&nbsp;RGB&nbsp;格式的颜色。</li>
+<li><code class="docutils literal"><span class="pre">CCOLOR</span> <span class="pre">x</span></code> : 设置用于绘制选择框的颜色。 <code class="docutils literal"><span class="pre">x</span></code>
+表示表示&nbsp;RGB格式的颜色;</li>
+<li><code class="docutils literal"><span class="pre">DBOXES</span> <span class="pre">x</span></code> : 这一行语句被&nbsp;Unitex&nbsp;忽视。它是为了保存图索引的兼容性；</li>
+<li><code class="docutils literal"><span class="pre">DFRAME</span> <span class="pre">x</span></code> : 根据&nbsp;<code class="docutils literal"><span class="pre">x</span></code>
+的值为&nbsp;<a href="#id42"><span class="problematic" id="id43">``</span></a>y``&nbsp;或&nbsp;<a href="#id44"><span class="problematic" id="id45">``</span></a>n``&nbsp;来决定为图的框架作图或不作图；</li>
+<li><code class="docutils literal"><span class="pre">DDATE</span> <span class="pre">x</span></code> : 根据&nbsp;<code class="docutils literal"><span class="pre">x</span></code> 的值为&nbsp;<code class="docutils literal"><span class="pre">y</span></code> 或&nbsp;<code class="docutils literal"><span class="pre">n</span></code>
+来决定是不是在图的底部显示时间；</li>
+<li><code class="docutils literal"><span class="pre">DFILE</span> <span class="pre">x</span></code> :
+根据&nbsp;<a href="#id46"><span class="problematic" id="id47">``</span></a>x``&nbsp;的值为&nbsp;<a href="#id48"><span class="problematic" id="id49">``</span></a>y``&nbsp;或&nbsp;<a href="#id50"><span class="problematic" id="id51">``</span></a>n``&nbsp;来决定图的底部是否显示文件的名字；</li>
+<li><code class="docutils literal"><span class="pre">DDIR</span> <span class="pre">x</span></code> : 根据<a href="#id52"><span class="problematic" id="id53">``</span></a>x``&nbsp;的值为
+<a href="#id54"><span class="problematic" id="id55">``</span></a>y``&nbsp;或&nbsp;<a href="#id56"><span class="problematic" id="id57">``</span></a>n``&nbsp;来决定是否在图的底部显示打开文件的完整路径；
+这个操作只在&nbsp;<a href="#id58"><span class="problematic" id="id59">``</span></a>DFILE``&nbsp;参数的值为&nbsp;<a href="#id60"><span class="problematic" id="id61">``</span></a>y``&nbsp;的时候考虑；</li>
+<li><code class="docutils literal"><span class="pre">DRIG</span> <span class="pre">x</span></code> : 根据&nbsp;<code class="docutils literal"><span class="pre">x``&nbsp;的值为&nbsp;``y</span></code>，或
+&nbsp;<a href="#id62"><span class="problematic" id="id63">``</span></a>n``&nbsp;来决定图是从左向右还是从右向左；</li>
+<li><code class="docutils literal"><span class="pre">DRST</span> <span class="pre">x</span></code> : 这一行语句被&nbsp;Unitex&nbsp;忽视。它是为了保存图索引的兼容性；</li>
+<li><code class="docutils literal"><span class="pre">FITS</span> <span class="pre">x</span></code> : 这一行语句被&nbsp;Unitex&nbsp;忽视。它是为了保存图索引的兼容性；</li>
+<li><code class="docutils literal"><span class="pre">PORIENT</span> <span class="pre">x</span></code> :
+这一行语句被&nbsp;Unitex&nbsp;忽视。它是为了保存图索引的兼容性；</li>
+<li><code class="docutils literal"><span class="pre">#</span></code> : 这一行语句被&nbsp;Unitex&nbsp;忽视。它从信息的开始指向结尾。</li>
+</ul>
+<p>下面的几行语句表示内容和图的位置。之后的几行对应于图形识别图：</p>
+<p><code class="docutils literal"><span class="pre">3</span></code>¶</p>
+<p><a href="#id64"><span class="problematic" id="id65">``</span></a>&#8220;&lt;E&gt;&#8221; 84 248 1 2 <a href="#id66"><span class="problematic" id="id67">``</span></a>¶</p>
+<p><a href="#id68"><span class="problematic" id="id69">``</span></a>&#8220;&#8221; 272 248 0 <a href="#id70"><span class="problematic" id="id71">``</span></a>¶</p>
+<p><a href="#id72"><span class="problematic" id="id73">``</span></a>s&#8221;1+2+3+4+5+6+7+8+9+0&#8221; 172 248 1 1 <a href="#id74"><span class="problematic" id="id75">``</span></a>¶</p>
+<p>第一行语句表示图的编号，随后另起一行。这个数字不能小于二，因为一个图形总是
+被认为至少拥有一个初始状态和最终状态</p>
+<p>下面的语句表示图形框。这些框从&nbsp;<span class="math">\(0\)</span>&nbsp;开始编号，<span class="math">\(0\)</span>&nbsp;是初始状态，<span class="math">\(1\)</span>&nbsp;是最终状态。最终状态的内容总是空的。</p>
+<p>每一个图的框都被有如下格式的语句定义</p>
+<p><em>contenu X Y N transitions ¶</em></p>
+<p><em>内容</em>是用引号括起来的字符串，它代表了框的内容。这个字符串可任意由在倒入图形索引&nbsp;<code class="docutils literal"><span class="pre">s``&nbsp;的情况下形成；该字符被&nbsp;Unitex&nbsp;忽视。字符串的内容是在图形编辑器的文本控制其中的文本。[table10-2]&nbsp;给出未在文件&nbsp;</span></code>.grf``：编码为这样的两个特殊序列的编码</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="78%" />
+<col width="22%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><a href="#id76"><span class="problematic" id="id77">``</span></a>.grf``&nbsp;文件中序列和图片编辑器中的序列</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;</span></code></td>
+<td><code class="docutils literal"><span class="pre">\&quot;</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">\&quot;</span></code></td>
+<td><code class="docutils literal"><span class="pre">\\\&quot;</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Table: 特殊的编码序列[table10-2]</p>
+<p>注意：<code class="docutils literal"><span class="pre">&lt;``&nbsp;与</span></code>&gt;``&nbsp;中的或&nbsp;<code class="docutils literal"><span class="pre">{</span></code>和<code class="docutils literal"><span class="pre">}</span></code> &nbsp;的字符不是注释。因此
+&nbsp;<code class="docutils literal"><span class="pre">+``&nbsp;符号在&nbsp;</span></code>&#8220;le &lt;A+Conc&gt;&#8221;``
+&nbsp;字符串中不是分隔符的意思，因为&nbsp;<a href="#id78"><span class="problematic" id="id79">``</span></a>&lt;A+Conc&gt;``&nbsp;优先解释。</p>
+<p><em>X</em> 和&nbsp;<em>Y</em>&nbsp;表示像素框的坐标. 图 [fig-box-coordinates]
+显示这些坐标是如何被&nbsp;Unitex&nbsp;解释。</p>
+<div class="figure" id="id307">
+<a class="reference internal image-reference" href="_images/repere.pdf"><img alt="框的调配说明[fig-box-coordinates]" src="_images/repere.pdf" style="width: 7.00000cm;" /></a>
+<p class="caption"><span class="caption-text">框的调配说明[fig-box-coordinates]</span></p>
+</div>
+<p><em>N</em> 表示从框中转换的次数。该数字在最终状态下总为&nbsp;<span class="math">\(0\)</span>。</p>
+<p>这些转换由它们所指向的框的号码定义。</p>
+<p>每一行定义箱必须用一个空格，接着一个换行符结束。</p>
+</div>
+<div class="section" id="fst2">
+<h3>格式 .fst2<a class="headerlink" href="#fst2" title="永久链接至标题">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">.fst2``&nbsp;文件是一个文本文件描述图的集合。这里是&nbsp;</span></code>.fst2``
+file&nbsp;文件的例子：</p>
+<p><code class="docutils literal"><span class="pre">0000000002</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-1</span> <span class="pre">NP</span></code>¶</p>
+<p><a href="#id80"><span class="problematic" id="id81">``</span></a>: 1 1 <a href="#id82"><span class="problematic" id="id83">``</span></a>¶</p>
+<p><a href="#id84"><span class="problematic" id="id85">``</span></a>: 2 2 -2 2 <a href="#id86"><span class="problematic" id="id87">``</span></a>¶</p>
+<p><a href="#id88"><span class="problematic" id="id89">``</span></a>: 3 3 <a href="#id90"><span class="problematic" id="id91">``</span></a>¶</p>
+<p><a href="#id92"><span class="problematic" id="id93">``</span></a>t <a href="#id94"><span class="problematic" id="id95">``</span></a>¶</p>
+<p><a href="#id96"><span class="problematic" id="id97">``</span></a>f <a href="#id98"><span class="problematic" id="id99">``</span></a>¶</p>
+<p><code class="docutils literal"><span class="pre">-2</span> <span class="pre">Adj</span></code>¶</p>
+<p><a href="#id100"><span class="problematic" id="id101">``</span></a>: 6 1 5 1 4 1 <a href="#id102"><span class="problematic" id="id103">``</span></a>¶</p>
+<p><a href="#id104"><span class="problematic" id="id105">``</span></a>t <a href="#id106"><span class="problematic" id="id107">``</span></a>¶</p>
+<p><a href="#id108"><span class="problematic" id="id109">``</span></a>f <a href="#id110"><span class="problematic" id="id111">``</span></a>¶</p>
+<p><code class="docutils literal"><span class="pre">%&lt;E&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">%the/DET</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">%&lt;A&gt;/ADJ</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">%&lt;N&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">%nice</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;pretty</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">%small</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">f</span></code>¶</p>
+<p>第一行表示文件里已经编码的图片号码。每个图的开头由指向号码和图的名称的语句定义。（<code class="docutils literal"><span class="pre">-1</span> <span class="pre">NP</span></code>
+和 <code class="docutils literal"><span class="pre">-2</span> <span class="pre">Adj</span></code> 在以下文件)。</p>
+<p>之后的语句描述图的状态。如果状态为结束，语句由&nbsp;<code class="docutils literal"><span class="pre">t``&nbsp;开始，否则由&nbsp;</span></code>:<code class="docutils literal"><span class="pre">&nbsp;开始</span>
+<span class="pre">&nbsp;</span></code>:<a href="#id112"><span class="problematic" id="id113">``</span></a>。对于每一种状态，转换列表可能是一系列可能为空的整数对：</p>
+<ul class="simple">
+<li>第一个整数表示标签号码或与转换相对应的子图的号码。
+标签从&nbsp;0&nbsp;开始编号。子图由负整数表示，图的编号都为负数；</li>
+<li>第二个整数表示转换到达时的状态。在每一个图中，状态都从&nbsp;0&nbsp;开始标记，按照惯例，0&nbsp;状态时初始状态。</li>
+</ul>
+<p>每个状态定义行必须以空格结尾。
+每一幅图的结尾都要被包含一个空格和换行后的&nbsp;<a href="#id114"><span class="problematic" id="id115">``</span></a>f``&nbsp;符号的语句标记。</p>
+<p>标签在最后一个图之后被定义。如果语句由&nbsp;<code class="docutils literal"><span class="pre">&#64;``&nbsp;开始，表示标签的内容应在没有变化的条件下查找。这个信息之外标签是一个单词的时候被使用。如果语句由&nbsp;</span></code>%``
+开始，变化的情况已经被授权。如果一个标签支持转换，输入和输出序列被
+&nbsp;<code class="docutils literal"><span class="pre">/``&nbsp;（比如</span> <span class="pre">:</span> <span class="pre">``the/DET</span></code>)&nbsp;分开。按惯例来说，第一个标签总是空的
+(<code class="docutils literal"><span class="pre">&lt;E&gt;</span></code>)，即使标签未在任何转换中使用。</p>
+<p>文件的末尾由换行后包含f的字符的语句指出。</p>
+</div>
+</div>
+<div class="section" id="textes">
+<h2>Textes<a class="headerlink" href="#textes" title="永久链接至标题">¶</a></h2>
+<p>这个章节表示用来表示文本的不同文件。</p>
+<div class="section" id="txt">
+<h3>文件 .txt<a class="headerlink" href="#txt" title="永久链接至标题">¶</a></h3>
+<p>[section-texts] <code class="docutils literal"><span class="pre">.txt``&nbsp;文件应该是由&nbsp;Unicode</span>
+<span class="pre">Little-Endian&nbsp;编码的文本文件。这些文件不应包含闭合或开启的大括号，除非它们被用来写一个句子分离器</span>
+<span class="pre">(``{S}</span></code>)
+或一个有效的词汇标签(<code class="docutils literal"><span class="pre">{aujourd'hui,.ADV}</span></code>)，回车必须由两个特殊字符十六进制值编码&nbsp;<code class="docutils literal"><span class="pre">000D</span></code>
+和&nbsp;<code class="docutils literal"><span class="pre">000A</span></code>。</p>
+</div>
+<div class="section" id="snt">
+<h3>文件.snt<a class="headerlink" href="#snt" title="永久链接至标题">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">.snt``&nbsp;是&nbsp;Unitex&nbsp;处理过的&nbsp;</span></code>.txt``&nbsp;文件。这些文件不包含标签。在连续的语句中不包含多个空格或回车。<code class="docutils literal"><span class="pre">.snt``&nbsp;文件中只有用来分开句子&nbsp;``{S}</span></code>
+的大括号和词汇标 (<code class="docutils literal"><span class="pre">{aujourd'hui,.ADV}</span></code>)签的大括号才会被授权。</p>
+</div>
+<div class="section" id="cod">
+<h3>文本文件.cod<a class="headerlink" href="#cod" title="永久链接至标题">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">text.cod``&nbsp;文件是一个二进制文件包含一系列整数来表示文档。每一个整数&nbsp;``i</span></code>
+在&nbsp;<code class="docutils literal"><span class="pre">tokens.txt``&nbsp;文件中返回标记索引&nbsp;``i</span></code> 。这些整数占用四个字节。</p>
+<p>注意：这些&nbsp;tokens从&nbsp;0&nbsp;开始标记。</p>
+</div>
+<div class="section" id="tokens-txt">
+<h3>tokens文件.txt<a class="headerlink" href="#tokens-txt" title="永久链接至标题">¶</a></h3>
+<p>[fichier-tokens-txt] <code class="docutils literal"><span class="pre">tokens.txt</span></code>
+文件是一个文本文件包含所有词汇文本单元列表的文件。文件的第一行语句表示包含在文件中的单元的数目。每一个单元通过换行隔开。当文档中的一个系列随着变化的情况找到时，每一个变体子都被一个独立的单元编码。</p>
+<p>注意：<code class="docutils literal"><span class="pre">.snt</span></code>
+文件中可能出现的回车是和空格一样被编码的。因此从来没有回车的编码单元。</p>
+<blockquote>
+<div>tok_by_alph.txt 和 tok_by_freq.txt 文件</div></blockquote>
+<hr class="docutils" />
+<p>这两个文件是按字母顺序或字幕出现频率包含排序词汇单元列表的文本文件。</p>
+<p><a href="#id116"><span class="problematic" id="id117">``</span></a>tok_by_alph.txt``&nbsp;文件中，每一行语句包含一个单元，接着是制表符和这个单元在文本中出现的次数
+&nbsp;<a href="#id118"><span class="problematic" id="id119">``</span></a>tok_by_freq.txt``&nbsp;文件中的语句是因相同的原理形成的，但是制表符和单元前面会显示出现次数。</p>
+<blockquote>
+<div>enter.pos 文件</div></blockquote>
+<hr class="docutils" />
+<p>这个文件包含 <a href="#id120"><span class="problematic" id="id121">``</span></a>.snt``&nbsp;文件，
+文件中的换行符位置列表的二进制文件。每个位置都是&nbsp;text.cod
+文件中用空格代替回车键的指数。这些位置是由四位二进制表示的整数。</p>
+</div>
+</div>
+<div class="section" id="id122">
+<h2>文本自动机<a class="headerlink" href="#id122" title="永久链接至标题">¶</a></h2>
+<blockquote>
+<div>text.tfst 文件</div></blockquote>
+<hr class="docutils" />
+<p><a href="#id123"><span class="problematic" id="id124">``</span></a>text.tfst``&nbsp;文件表示文本自动机。这是与十位指示中包含的控制器句子的数目的行开始的文本文件。接着对于每一个句子，它具有以下标题：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">$XXX</span></code>¶: <code class="docutils literal"><span class="pre">XXX</span></code> = numéro de la phrase;</li>
+<li><code class="docutils literal"><span class="pre">foo</span> <span class="pre">foo</span> <span class="pre">foo...</span></code>¶: 句子文本;</li>
+<li><code class="docutils literal"><span class="pre">a/b</span> <span class="pre">c/d</span> <span class="pre">e/f</span> <span class="pre">g/h...</span></code>¶: 对于每个句子的&nbsp;tokens, 有一个
+<code class="docutils literal"><span class="pre">x/y``&nbsp;部分:</span> <span class="pre">``x</span></code> 是该文件中的标记索引&nbsp;<code class="docutils literal"><span class="pre">tokens.txt</span></code>, <code class="docutils literal"><span class="pre">y</span></code>
+是它的字符长度;</li>
+<li><code class="docutils literal"><span class="pre">X_Y</span></code>¶: <code class="docutils literal"><span class="pre">X</span></code> 是从文本开始的第一个句子&nbsp;tokens
+的偏移量；<a href="#id125"><span class="problematic" id="id126">``</span></a>Y``&nbsp;是相同的但是偏移量表示的是字符数。</li>
+</ul>
+<p>然后，所有自动机的状态都被逐行编码。如果状态是最终状态，语句由&nbsp;<code class="docutils literal"><span class="pre">t</span></code>.&nbsp;开始。否则，由&nbsp;<code class="docutils literal"><span class="pre">:``&nbsp;开始。所有的转变都由&nbsp;``x</span> <span class="pre">y</span></code>,
+<code class="docutils literal"><span class="pre">x``&nbsp;部分的形式来描述作为数字标签，``y``&nbsp;是目的状态数。注意与&nbsp;</span></code>.fst2``&nbsp;格式不同，语句要由空格来结束。状态列表的最后一行语句包含&nbsp;<code class="docutils literal"><span class="pre">f</span></code>。</p>
+<p>最后，所有的标签进行编码。按照惯例，第一个标签总是是最小值： <code class="docutils literal"><span class="pre">&#64;&lt;E&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p>其他标签应该要么是词汇单元或大括号里&nbsp;DELAF&nbsp;格式的入口。它的编码如下：</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;</span></code><em>content</em>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;</span></code><em>a</em><code class="docutils literal"><span class="pre">.</span></code><em>b</em><code class="docutils literal"><span class="pre">.</span></code><em>c</em><code class="docutils literal"><span class="pre">-</span></code> <em>x</em><code class="docutils literal"><span class="pre">.</span></code><em>y</em><code class="docutils literal"><span class="pre">.</span></code><em>z</em>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><em>内容</em> 是标签内容.信息&nbsp;<em>a.b.c-x.y.z</em> &nbsp;描述由标签所覆盖的文本区:</p>
+<ul class="simple">
+<li><em>a</em>: tokens&nbsp; 的开头从句子的起始位置偏移；</li>
+<li><em>b</em>: 字符的开头从第一个&nbsp;token&nbsp;标签的起始位偏移；</li>
+<li><em>c</em>:
+从标签的第一个字符的逻辑字母开始偏移。这个信息适用于韩语，因为一个标记代表&nbsp;Jamo&nbsp;符号出现在朝鲜语内的字符序列。因此字符偏移量不够准确；</li>
+<li><em>x</em>: tokens&nbsp;的结尾从句子的起始位置偏移；</li>
+<li><em>y</em>: 字符的结尾从&nbsp;token&nbsp;标签的末尾偏移;</li>
+<li><em>z</em>:
+因为标签的最后一个字符的字母逻辑结束。在韩语的句子自动机中，空表面的形成能对应空的文本。在这种情况下，<em>z</em>&nbsp;得值为&nbsp;<span class="math">\(-1\)</span>。</li>
+</ul>
+<p>标签的定义由包含&nbsp;<a href="#id127"><span class="problematic" id="id128">``</span></a>f``&nbsp;的语句结束。</p>
+<p>举例 : 这是与文本&nbsp;<em>He is drinking orange juice.</em>&nbsp;对应的文件</p>
+<p><code class="docutils literal"><span class="pre">0000000001</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">$1</span></code>¶</p>
+<p><a href="#id129"><span class="problematic" id="id130">``</span></a>He is drinking orange juice. <a href="#id131"><span class="problematic" id="id132">``</span></a>¶</p>
+<p><code class="docutils literal"><span class="pre">0/2</span> <span class="pre">1/1</span> <span class="pre">2/2</span> <span class="pre">1/1</span> <span class="pre">3/8</span> <span class="pre">1/1</span> <span class="pre">4/6</span> <span class="pre">1/1</span> <span class="pre">5/5</span> <span class="pre">6/1</span> <span class="pre">1/1</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">0_0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">:</span> <span class="pre">2</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">1</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">:</span> <span class="pre">4</span> <span class="pre">2</span> <span class="pre">3</span> <span class="pre">2</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">:</span> <span class="pre">7</span> <span class="pre">3</span> <span class="pre">6</span> <span class="pre">3</span> <span class="pre">5</span> <span class="pre">3</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">:</span> <span class="pre">10</span> <span class="pre">5</span> <span class="pre">9</span> <span class="pre">4</span> <span class="pre">8</span> <span class="pre">4</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">:</span> <span class="pre">12</span> <span class="pre">5</span> <span class="pre">11</span> <span class="pre">5</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">:</span> <span class="pre">13</span> <span class="pre">6</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">t</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">f</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;&lt;E&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{He,he.N:s:p}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;0.0.0-0.1.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{He,he.PRO+Nomin:3ms}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;0.0.0-0.1.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{is,be.V:P3s}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;2.0.0-2.1.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{is,i.N:p}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;2.0.0-2.1.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{drinking,drinking.A}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;4.0.0-4.7.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{drinking,drinking.N:s}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;4.0.0-4.7.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{drinking,drink.V:G}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;4.0.0-4.7.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{orange,orange.A}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;6.0.0-6.5.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{orange,orange.N:s}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;6.0.0-6.5.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{orange</span> <span class="pre">juice,orange</span> <span class="pre">juice.N+XN+z1:s}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;6.0.0-8.4.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{juice,juice.N+Conc:s}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;8.0.0-8.4.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;{juice,juice.V:W:P1s:P2s:P1p:P2p:P3p}</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;8.0.0-8.4.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;STD</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&#64;9.0.0-9.0.0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">f</span></code>¶</p>
+<blockquote>
+<div>text.tind文件</div></blockquote>
+<hr class="docutils" />
+<p><a href="#id133"><span class="problematic" id="id134">``</span></a>text.tind``&nbsp;文件用来当你想加载一个给定的句子时，跳转到&nbsp;<a href="#id135"><span class="problematic" id="id136">``</span></a>text.tfst``&nbsp;文件的正确偏移量。这是一个二进制文件包含&nbsp;<span class="math">\(4
+\times N\)</span>
+字节，<span class="math">\(N\)</span>&nbsp;是句子的数量。它给每个句子起始偏移量小于&nbsp;little-endian&nbsp;的四个字节。</p>
+<blockquote>
+<div>cursentence.grf&nbsp;文件</div></blockquote>
+<hr class="docutils" />
+<p><code class="docutils literal"><span class="pre">cursentence.grf``&nbsp;文件是当显示一个句子自动机时,由&nbsp;Unitex&nbsp;管理。</span>
+<span class="pre">``Fst2Grf``&nbsp;程序建立一个&nbsp;</span></code>.grf``&nbsp;文件,表示是从&nbsp;<a href="#id137"><span class="problematic" id="id138">``</span></a>text.fst2``&nbsp;文件开始的句子自动机。</p>
+<p>注意：框的出口用来标记偏移量，在&nbsp;<a href="#id139"><span class="problematic" id="id140">``</span></a>.tfst``&nbsp;中定义。偏移量由空格分开。这里是多行表示&nbsp;<em>Ivanhoe</em>&nbsp;的第一句话的语句。</p>
+<p><a href="#id141"><span class="problematic" id="id142">``</span></a>&#8220;Ivanhoe/0 0 0 0 6 0&#8221; 100 200 2 3 4 <a href="#id143"><span class="problematic" id="id144">``</span></a>¶</p>
+<p><a href="#id145"><span class="problematic" id="id146">``</span></a>&#8220;{by,by.PART}/2 0 0 2 1 0&#8221; 220 150 2 5 6 <a href="#id147"><span class="problematic" id="id148">``</span></a>¶</p>
+<p><a href="#id149"><span class="problematic" id="id150">``</span></a>&#8220;{by,by.PREP}/2 0 0 2 1 0&#8221; 220 50 2 5 6 <a href="#id151"><span class="problematic" id="id152">``</span></a>¶</p>
+<p><code class="docutils literal"><span class="pre">&quot;{Sir,sir.N+Hum:s}/4</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">4</span> <span class="pre">2</span> <span class="pre">0&quot;</span> <span class="pre">310</span> <span class="pre">200</span> <span class="pre">1</span> <span class="pre">7</span></code>¶</p>
+<div class="section" id="id153">
+<h3>句子文件.grf<a class="headerlink" href="#id153" title="永久链接至标题">¶</a></h3>
+<p>当用户修改了句子自动机，这个自动机就会保存为&nbsp;<code class="docutils literal"><span class="pre">sentenceN.grf</span></code>，
+<a href="#id154"><span class="problematic" id="id155">``</span></a>N``&nbsp;表示句子号码。</p>
+<p>一个这样的图形在图形框里包含偏移量（见&nbsp; &nbsp;[section-cursentence_grf]）</p>
+<blockquote>
+<div>cursentence.txt文件</div></blockquote>
+<hr class="docutils" />
+<p>当提取句子自动机时，句子文本保存在名为&nbsp;<a href="#id156"><span class="problematic" id="id157">``</span></a>cursentence.txt``&nbsp;的文件中。这个文件被&nbsp;Unitex&nbsp;使用来在自动机上显示句子文本。这个文件包含句子文本，其次是一个换行符。</p>
+</div>
+<div class="section" id="the-cursentence-tok">
+<h3>The cursentence.tok 文件<a class="headerlink" href="#the-cursentence-tok" title="永久链接至标题">¶</a></h3>
+<p>当提取句子自动机时，组成句子的tokens号码保存在&nbsp;<code class="docutils literal"><span class="pre">cursentence.tok``&nbsp;文件中。这个文件每个&nbsp;tokens&nbsp;包含一行语句，每个语句包含两个整形&nbsp;``x</span> <span class="pre">y</span></code>；<a href="#id158"><span class="problematic" id="id159">``</span></a>x``&nbsp;是&nbsp;tokens
+的号码，<a href="#id160"><span class="problematic" id="id161">``</span></a>y``&nbsp;是字符长度。</p>
+<p>这里是&nbsp;<em>Ivanhoe</em>&nbsp;的第一句内容。 <code class="docutils literal"><span class="pre">0</span> <span class="pre">7</span></code>¶``         <a href="#id162"><span class="problematic" id="id163">``</span></a><em>Ivanhoe</em></p>
+<p><code class="docutils literal"><span class="pre">1</span> <span class="pre">1</span></code>¶``         <code class="docutils literal"><span class="pre">\</span> <span class="pre">``‘&nbsp;</span></code></p>
+<p><code class="docutils literal"><span class="pre">2</span> <span class="pre">2</span></code>¶``         <a href="#id164"><span class="problematic" id="id165">``</span></a><em>by</em></p>
+<p><code class="docutils literal"><span class="pre">1</span> <span class="pre">1</span></code>¶``         <code class="docutils literal"><span class="pre">\</span> <span class="pre">``‘&nbsp;</span></code></p>
+<p><code class="docutils literal"><span class="pre">3</span> <span class="pre">3</span></code>¶``         <a href="#id166"><span class="problematic" id="id167">``</span></a><em>Sir</em></p>
+<p><code class="docutils literal"><span class="pre">1</span> <span class="pre">1</span></code>¶``         <code class="docutils literal"><span class="pre">\</span> <span class="pre">``‘&nbsp;</span></code></p>
+<p><code class="docutils literal"><span class="pre">4</span> <span class="pre">6</span></code>¶``         <a href="#id168"><span class="problematic" id="id169">``</span></a><em>Walter</em></p>
+<p><code class="docutils literal"><span class="pre">1</span> <span class="pre">1</span></code>¶``         <code class="docutils literal"><span class="pre">\</span> <span class="pre">``‘&nbsp;</span></code></p>
+<p><code class="docutils literal"><span class="pre">5</span> <span class="pre">5</span></code>¶``         <a href="#id170"><span class="problematic" id="id171">``</span></a><em>Scott</em></p>
+<p><code class="docutils literal"><span class="pre">1</span> <span class="pre">1</span></code>¶``         <code class="docutils literal"><span class="pre">\</span> <span class="pre">``‘&nbsp;</span></code></p>
+</div>
+<div class="section" id="tfst-tags-by-freq-txt-tfst-tags-by-alph-txt">
+<h3>文件 tfst_tags_by_freq.txt 和 tfst_tags_by_alph.txt<a class="headerlink" href="#tfst-tags-by-freq-txt-tfst-tags-by-alph-txt" title="永久链接至标题">¶</a></h3>
+<p>这些文件包含所有出现在由频率和字母排序的文本自动机中的&nbsp;tokens。</p>
+</div>
+</div>
+<div class="section" id="id172">
+<h2>语句索引<a class="headerlink" href="#id172" title="永久链接至标题">¶</a></h2>
+<blockquote>
+<div>concord.ind文件</div></blockquote>
+<hr class="docutils" />
+<p><a href="#id173"><span class="problematic" id="id174">``</span></a>concord.ind``&nbsp;文件是在应用一个语法的时候由&nbsp;<a href="#id175"><span class="problematic" id="id176">``</span></a>Locate``&nbsp;或&nbsp;<a href="#id177"><span class="problematic" id="id178">``</span></a>LocateTfst``&nbsp;找到的指数索引。这是一个文本文件包含每一个事件的初始位置和结束位置，如果考虑到可能的语法转换已经被匹配时，用字符串任选。这里是文件的例子：</p>
+<p><code class="docutils literal"><span class="pre">#M</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">59.0.0</span> <span class="pre">63.3.0</span> <span class="pre">the[ADJ=</span> <span class="pre">greater]</span> <span class="pre">part</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">67.0.0</span> <span class="pre">71.4.0</span> <span class="pre">the</span> <span class="pre">beautiful</span> <span class="pre">hills</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">87.0.0</span> <span class="pre">91.3.0</span> <span class="pre">the</span> <span class="pre">pleasant</span> <span class="pre">town</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">123.0.0</span> <span class="pre">127.4.0</span> <span class="pre">the</span> <span class="pre">noble</span> <span class="pre">seats</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">157.0.0</span> <span class="pre">161.5.0</span> <span class="pre">the</span> <span class="pre">fabulous</span> <span class="pre">Dragon</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">189.0.0</span> <span class="pre">193.3.0</span> <span class="pre">the</span> <span class="pre">Civil</span> <span class="pre">Wars</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">455.0.0</span> <span class="pre">459.11.0</span> <span class="pre">the</span> <span class="pre">feeble</span> <span class="pre">interference</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">463.0.0</span> <span class="pre">467.6.0</span> <span class="pre">the</span> <span class="pre">English</span> <span class="pre">Council</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">566.0.0</span> <span class="pre">570.10.0</span> <span class="pre">the</span> <span class="pre">national</span> <span class="pre">convulsions</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">590.0.0</span> <span class="pre">594.5.0</span> <span class="pre">the</span> <span class="pre">inferior</span> <span class="pre">gentry</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">626.0.0</span> <span class="pre">630.11.0</span> <span class="pre">the</span> <span class="pre">English</span> <span class="pre">constitution</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">696.0.0</span> <span class="pre">700.4.0</span> <span class="pre">the</span> <span class="pre">petty</span> <span class="pre">kings</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">813.0.0</span> <span class="pre">817.5.0</span> <span class="pre">the</span> <span class="pre">certain</span> <span class="pre">hazard</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">896.0.0</span> <span class="pre">900.5.0</span> <span class="pre">the</span> <span class="pre">great</span> <span class="pre">Barons</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">938.0.0</span> <span class="pre">942.3.0</span> <span class="pre">the</span> <span class="pre">very</span> <span class="pre">edge</span></code>¶</p>
+<p>第一行表示模式转导一致性计算。 可能的三个值是:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">#I</span></code> : 这些转换被忽视;</li>
+<li><code class="docutils literal"><span class="pre">#M</span></code> : 转换被列入可识别的序列 ( MERGE&nbsp;模式);</li>
+<li><code class="docutils literal"><span class="pre">#R</span></code> : 转换已经取代了可识别的序列 ( REPLACE 模式)。</li>
+</ul>
+<p>每个事件由一个语句描述。这些语句从事件开始或结束的位置开始。这些位置对应于标签文件&nbsp;<code class="docutils literal"><span class="pre">.tfst``&nbsp;中定义的偏移量(见</span>
+<span class="pre">[section-tfst-format])。</span> <span class="pre">如果文件中包含标题语句</span>
+<span class="pre">``#I</span></code>，每个事件的的结束位置后面紧跟着一个换行符。否则，它后跟一个空格和一个字符串。在&nbsp;REPLACE&nbsp;模式中，这个字符串对应公认的序列产生的转换。在&nbsp;MERGE&nbsp;模式中，它代表其中插入转换的识别序列。在&nbsp;MERGE&nbsp;模式或&nbsp;REPLACE&nbsp;模式中，相应的显示字符串。如果转换被忽视了，事件的内容是由文本文件处理的。</p>
+<blockquote>
+<div>concord.txt 文件</div></blockquote>
+<hr class="docutils" />
+<p><a href="#id179"><span class="problematic" id="id180">``</span></a>concord.txt``&nbsp;文件是表示索引的文本文件。每个事件由包括由制表符分隔的三个字符串行编码，并表示左背景，事件（可能通过转换修改），和右背景。</p>
+<div class="section" id="concord-html">
+<h3>concord.html 文件<a class="headerlink" href="#concord-html" title="永久链接至标题">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">concord.html</span></code> 文件是
+&nbsp;<a href="#id181"><span class="problematic" id="id182">``</span></a>HTML``&nbsp;文件表示一种对应关系。这个文件由&nbsp;UTF-8&nbsp;编码&nbsp;。</p>
+<p>页面的标题是事件的号码。这些对应的语句是被看作是超链接的事件语句编码的，与每个链接相关的参考都是形式&nbsp;：</p>
+<p><code class="docutils literal"><span class="pre">&lt;a</span> <span class="pre">href=&quot;X</span> <span class="pre">Y</span> <span class="pre">Z&quot;&gt;</span></code></p>
+<p><code class="docutils literal"><span class="pre">X</span></code> 和&nbsp;<code class="docutils literal"><span class="pre">Y</span></code>
+表示&nbsp;<a href="#id183"><span class="problematic" id="id184">``</span></a>name_of_text.snt``&nbsp;文件里用字符表示的事件开头和结尾的位置。<a href="#id185"><span class="problematic" id="id186">``</span></a>Z``&nbsp;表示出现在这个事件里的数字。</p>
+<p>所有空间被类似于(<code class="docutils literal"><span class="pre">&amp;nbsp;</span></code> in
+HTML)编码，这可以保持对事件的，即使其中之一，位于文件开始时，已经完成了与空格的左侧上下文。</p>
+<p>注意：在用&nbsp;glossanet&nbsp;参数建立的索引中，HTML&nbsp;文件获得相同的结构，除了相关链接。在这些冲突中，事件是返回到&nbsp;GlossaNet&nbsp;应用的服务器上的实际链接。对于&nbsp;GlossaNet&nbsp;上的大部分信息，在&nbsp;Unitex&nbsp;的网站上检查链接(<a class="reference external" href="http://www-igm.univ-mlv.fr/">http://www-igm.univ-mlv.fr/</a>&nbsp;unitex)。</p>
+<p>这里是文件的例子:</p>
+<p><code class="docutils literal"><span class="pre">&lt;html</span> <span class="pre">lang=en&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;head&gt;</span></code>¶</p>
+<p><a href="#id187"><span class="problematic" id="id188">``</span></a><a href="#id189"><span class="problematic" id="id190">``</span></a>¶</p>
+<p>``   &lt;meta http-equiv=&#8221;Content-Type&#8221; content=&#8221;text/html;``</p>
+<p>``         charset=UTF-8&#8221;&gt;``¶</p>
+<p>``   &lt;title&gt;6 matches&lt;/title&gt;``¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;/head&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;body&gt;</span></code>¶</p>
+<p><a href="#id191"><span class="problematic" id="id192">``</span></a>&lt;table border=&#8221;0&#8221; cellpadding=&#8221;0&#8221; width=&#8221;100%&#8221; ``</p>
+<p>``       style=&#8221;font-family: &#8216;Arial Unicode MS&#8217;; font-size: 12&#8221;&gt;``¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;font</span> <span class="pre">face=&quot;Courier</span> <span class="pre">new&quot;</span> <span class="pre">size=3&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">on,</span> <span class="pre">there</span> <span class="pre">&lt;a</span> <span class="pre">href=&quot;116</span> <span class="pre">124</span> <span class="pre">2&quot;&gt;extended&lt;/a&gt;&amp;nbsp;i&amp;nbsp;&lt;br&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&amp;nbsp;extended</span> <span class="pre">&lt;a</span> <span class="pre">href=&quot;125</span> <span class="pre">127</span> <span class="pre">2&quot;&gt;in&lt;/a&gt;&amp;nbsp;ancient&amp;nbsp;&lt;br&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&amp;nbsp;Scott</span> <span class="pre">{S}&lt;a</span> <span class="pre">href=&quot;32</span> <span class="pre">34</span> <span class="pre">2&quot;&gt;IN&lt;/a&gt;&amp;nbsp;THAT</span> <span class="pre">PL&amp;nbsp;&lt;br&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">STRICT</span> <span class="pre">of</span> <span class="pre">&lt;a</span> <span class="pre">href=&quot;61</span> <span class="pre">66</span> <span class="pre">2&quot;&gt;merry&lt;/a&gt;&amp;nbsp;Engl&amp;nbsp;&lt;br&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">S}IN</span> <span class="pre">THAT</span> <span class="pre">&lt;a</span> <span class="pre">href=&quot;40</span> <span class="pre">48</span> <span class="pre">2&quot;&gt;PLEASANT&lt;/a&gt;&amp;nbsp;D&amp;nbsp;&lt;br&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&amp;nbsp;which</span> <span class="pre">is</span> <span class="pre">&lt;a</span> <span class="pre">href=&quot;84</span> <span class="pre">91</span> <span class="pre">2&quot;&gt;watered&lt;/a&gt;&amp;nbsp;by&amp;nbsp;&lt;br&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;/font&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;/td&gt;&lt;/table&gt;&lt;/body&gt;</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;/html&gt;</span></code>¶</p>
+<p>图 &nbsp;&nbsp;[fig-example-concordance-2]对应下面文件的页面。</p>
+<div class="figure" id="id308">
+<a class="reference internal image-reference" href="_images/fig10-2.png"><img alt="一致性的例子 [fig-example-concordance-2]" src="_images/fig10-2.png" style="width: 5.00000cm;" /></a>
+<p class="caption"><span class="caption-text">一致性的例子 [fig-example-concordance-2]</span></p>
+</div>
+</div>
+<div class="section" id="diff-html">
+<h3>diff.html 文件<a class="headerlink" href="#diff-html" title="永久链接至标题">¶</a></h3>
+<p><a href="#id193"><span class="problematic" id="id194">``</span></a>diff.html``&nbsp;文件是
+<a href="#id195"><span class="problematic" id="id196">``</span></a>HTML``&nbsp;页面,表示两个词汇索引的不同。这个文件由&nbsp;UTF-8&nbsp;编码。&nbsp;这里是一个文件例子(换行已被引入布局)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">html</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">head</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">meta</span> <span class="n">http</span><span class="o">-</span><span class="n">equiv</span><span class="o">=</span><span class="s2">&quot;Content-Type&quot;</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;text/html;</span>
+<span class="n">charset</span><span class="o">=</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span><span class="s2">&quot;&gt;</span>
+<span class="o">&lt;</span><span class="n">style</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text/css&quot;</span><span class="o">&gt;</span>
+<span class="n">a</span><span class="o">.</span><span class="n">blue</span> <span class="p">{</span><span class="n">color</span><span class="p">:</span><span class="n">blue</span><span class="p">;</span> <span class="n">text</span><span class="o">-</span><span class="n">decoration</span><span class="p">:</span><span class="n">underline</span><span class="p">;}</span>
+<span class="n">a</span><span class="o">.</span><span class="n">red</span> <span class="p">{</span><span class="n">color</span><span class="p">:</span><span class="n">red</span><span class="p">;</span> <span class="n">text</span><span class="o">-</span><span class="n">decoration</span><span class="p">:</span><span class="n">underline</span><span class="p">;}</span>
+<span class="n">a</span><span class="o">.</span><span class="n">green</span> <span class="p">{</span><span class="n">color</span><span class="p">:</span><span class="n">green</span><span class="p">;</span> <span class="n">text</span><span class="o">-</span><span class="n">decoration</span><span class="p">:</span><span class="n">underline</span><span class="p">;}</span>
+<span class="o">&lt;/</span><span class="n">style</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">head</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">h4</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">font</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="o">&gt;</span><span class="n">Blue</span><span class="p">:</span><span class="o">&lt;/</span><span class="n">font</span><span class="o">&gt;</span> <span class="n">identical</span> <span class="n">sequences</span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">font</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="o">&gt;</span><span class="n">Red</span><span class="p">:</span><span class="o">&lt;/</span><span class="n">font</span><span class="o">&gt;</span> <span class="n">similar</span> <span class="n">but</span> <span class="n">different</span> <span class="n">sequences</span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">font</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="o">&gt;</span><span class="n">Green</span><span class="p">:</span><span class="o">&lt;/</span><span class="n">font</span><span class="o">&gt;</span> <span class="n">sequences</span> <span class="n">that</span> <span class="n">occur</span> <span class="ow">in</span> <span class="n">only</span>
+<span class="n">one</span> <span class="n">of</span> <span class="n">the</span> <span class="n">two</span> <span class="n">concordances</span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">table</span> <span class="n">border</span><span class="o">=</span><span class="s2">&quot;1&quot;</span> <span class="n">cellpadding</span><span class="o">=</span><span class="s2">&quot;0&quot;</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;font-family: Courier new;</span>
+<span class="n">font</span><span class="o">-</span><span class="n">size</span><span class="p">:</span> <span class="mi">12</span><span class="s2">&quot;&gt;</span>
+<span class="o">&lt;</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">td</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;450&quot;</span><span class="o">&gt;&lt;</span><span class="n">font</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="o">&gt;</span><span class="n">ed</span> <span class="ow">in</span> <span class="n">ancient</span> <span class="n">times</span>
+<span class="o">&lt;</span><span class="n">u</span><span class="o">&gt;</span><span class="n">a</span> <span class="n">large</span> <span class="n">forest</span><span class="o">&lt;/</span><span class="n">u</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">covering</span> <span class="n">the</span> <span class="n">greater</span> <span class="n">par</span><span class="o">&lt;/</span><span class="n">font</span><span class="o">&gt;&lt;/</span><span class="n">td</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">td</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;450&quot;</span><span class="o">&gt;&lt;</span><span class="n">font</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="o">&gt;</span><span class="n">ed</span> <span class="ow">in</span> <span class="n">ancient</span> <span class="n">times</span>
+<span class="o">&lt;</span><span class="n">u</span><span class="o">&gt;</span><span class="n">a</span> <span class="n">largeforest</span><span class="o">&lt;/</span><span class="n">u</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">covering</span> <span class="n">the</span> <span class="n">greater</span> <span class="n">par</span><span class="o">&lt;/</span><span class="n">font</span><span class="o">&gt;&lt;/</span><span class="n">td</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">tr</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">td</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;450&quot;</span><span class="o">&gt;&lt;</span><span class="n">font</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="o">&gt;</span><span class="n">ge</span> <span class="n">forest</span><span class="p">,</span> <span class="n">covering</span>
+<span class="o">&lt;</span><span class="n">u</span><span class="o">&gt;</span><span class="n">the</span> <span class="n">greater</span> <span class="n">part</span><span class="o">&lt;/</span><span class="n">u</span><span class="o">&gt;&amp;</span><span class="n">nbsp</span><span class="p">;</span><span class="n">of</span> <span class="n">the</span> <span class="n">beautiful</span> <span class="n">hills</span> <span class="o">&lt;/</span><span class="n">font</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">td</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">td</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;450&quot;</span><span class="o">&gt;&lt;</span><span class="n">font</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="o">&gt;&lt;/</span><span class="n">font</span><span class="o">&gt;&lt;/</span><span class="n">td</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">tr</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">table</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">html</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id197">
+<h2>文本字典<a class="headerlink" href="#id197" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Dico</span></code> 程序产生多个代表字典的文件。</p>
+<div class="section" id="dlf-dlc">
+<h3>dlf 和&nbsp;dlc<a class="headerlink" href="#dlf-dlc" title="永久链接至标题">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">dlf</span></code> 和&nbsp;<a href="#id198"><span class="problematic" id="id199">``</span></a>dlc``&nbsp;是单词字典包含&nbsp;DELAF&nbsp;格式 (见
+[section-DELAF-format])。</p>
+</div>
+<div class="section" id="err">
+<h3>err<a class="headerlink" href="#err" title="永久链接至标题">¶</a></h3>
+<p>该文件逐行包含生词。</p>
+</div>
+<div class="section" id="tags-err">
+<h3>tags_err<a class="headerlink" href="#tags-err" title="永久链接至标题">¶</a></h3>
+<p>这个文件逐行包含生词。与&nbsp;<a href="#id200"><span class="problematic" id="id201">``</span></a>err``&nbsp;文件的区别是，其中&nbsp;<a href="#id202"><span class="problematic" id="id203">``</span></a>tags.ind``&nbsp;文件中已知的词不出现。</p>
+</div>
+<div class="section" id="tags-ind">
+<h3>tags.ind<a class="headerlink" href="#tags-ind" title="永久链接至标题">¶</a></h3>
+<p>[section-tags-ind]
+和&nbsp;<code class="docutils literal"><span class="pre">concord.ind``&nbsp;有着相同格式的文件获得&nbsp;MERGE&nbsp;或&nbsp;REPLACE&nbsp;模式但是它的开头是&nbsp;``#T</span></code>。需要注意的是不以斜杠开始输出。</p>
+</div>
+</div>
+<div class="section" id="id204">
+<h2>词典<a class="headerlink" href="#id204" title="永久链接至标题">¶</a></h2>
+<p>通过
+&nbsp;<code class="docutils literal"><span class="pre">Compress``&nbsp;程序压缩的&nbsp;DELAF&nbsp;词典产生两个文件：</span></code>.bin``&nbsp;文件表示词典文件形式的最小自动机，<a href="#id205"><span class="problematic" id="id206">``</span></a>.inf``&nbsp;文件包含压缩格式，从这个格式开始重新建立词典语句。本节介绍了这两种类型的文件格式。如
+<a href="#id207"><span class="problematic" id="id208">``</span></a>CHECK_DIC.TXT``&nbsp;文件的格式包含字典的验证结果。</p>
+<blockquote>
+<div>.bin文件</div></blockquote>
+<hr class="docutils" />
+<p><a href="#id209"><span class="problematic" id="id210">``</span></a>.bin``&nbsp;文件是表示自动机的二进制文件。文件的头四个字节代表整数表示文件字节大小。自动机的状态由如下代码表示。</p>
+<ul>
+<li><p class="first">头两个字节表示状态是否是结束状态，和转换次数。如果状态为结束，最高位为&nbsp;0，否则为&nbsp;1&nbsp;.其他十五位是转换次数的代码。</p>
+<p>比如：有着十七个转换的非结束状态由&nbsp;8011&nbsp;十六进制序列表示。</p>
+</li>
+<li><p class="first">如果状态为结束，后三个字节编码压缩文件
+<a href="#id211"><span class="problematic" id="id212">``</span></a>.inf``&nbsp;中的索引用来重建这个文件格式的词典语句。</p>
+<p>例子：如果状态返回到索引&nbsp;25133&nbsp;的压缩形式，
+对应的十六进制就是&nbsp;<code class="docutils literal"><span class="pre">00622D</span></code>。</p>
+</li>
+<li><p class="first">每个转换输出后由五个字节编码。前两个字节表示该标记字符转换，之后的三个字节表示&nbsp;<a href="#id213"><span class="problematic" id="id214">``</span></a>.bin``&nbsp;文件到达状态的位置。这些状态的转换依次编码。</p>
+<p>例子：被指向第&nbsp;<span class="math">\(50106\)</span>&nbsp;个目标&nbsp;A&nbsp;所标记的转换，字节将由十六进制序列来表示。</p>
+</li>
+</ul>
+<p>按照惯例，第一个状态就是初始状态。</p>
+<div class="section" id="inf">
+<h3>.inf文件<a class="headerlink" href="#inf" title="永久链接至标题">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">.inf</span></code>文件是描述与&nbsp;<code class="docutils literal"><span class="pre">.bin``&nbsp;文件相关联的压缩格式的文档文件。这里是&nbsp;</span></code>.inf``&nbsp;文件的例子：</p>
+<p><code class="docutils literal"><span class="pre">0000000006</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">_10\0\0\7.N</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.PREP</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">_3.PREP</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">.PREP,_3.PREP</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">1-1.N+Hum:mp</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">3er</span> <span class="pre">1.N+AN+Hum:fs</span></code>¶</p>
+<p>文件的第一行表示所包含的压缩文件的号码。
+每一行都能包含一个或多个压缩格式。如果有多个格式，要用逗号将它们隔开。每一个压缩格式由一个能从变位格式找到的正常的格式的序列组成，接着是与词形变化码，相关联语法，语义的序列。</p>
+<p>正常格式的压缩模式根据词尾变化形式的功能不同而不同。如果这两个形式完全一样，压缩的形式就会概括成为语法信息，语义信息和词形变化信息，如下列情况：</p>
+<p><code class="docutils literal"><span class="pre">.N+Hum:ms</span></code></p>
+<p>如果这些形式不同，压缩程序切入两种单位形式。这些单位可以是一个空间或一个连字符，或不包含空格或破折号字符序列。这种分割模式可以有效地考虑复合词的词形变化形式。</p>
+<p>如果词尾变化形式和标准形式不包含相同的数字单元，该程序代码规范的形式由字符数从词尾变化的形式相减，因此，上述文件的第一行是字典行：</p>
+<p><code class="docutils literal"><span class="pre">James</span> <span class="pre">Bond,007.N</span></code></p>
+<p><code class="docutils literal"><span class="pre">James</span> <span class="pre">Bond``&nbsp;序列包含三个单元而&nbsp;``007``&nbsp;只有一个，正常形式由&nbsp;``_10\0\0\7``&nbsp;编码。``_``&nbsp;符号表示两种形式不具有相同数量的单元。后面的数字</span>
+<span class="pre">(这里是</span>
+<span class="pre">&nbsp;10)表示要减去的字符数。跟在后面的&nbsp;</span></code>007``&nbsp;序列表示我们应该加上&nbsp;<code class="docutils literal"><span class="pre">\0\0\7``&nbsp;序列。数字在字符&nbsp;</span></code>``&nbsp;前面为了不与要减去的字符数相混淆。</p>
+<p>当两个形状具有相同数量的单元，这些单元是成对压缩。如果这两个单元构成的空间或连字符的，该单元的压缩形式是单元本身，如以下情况：</p>
+<p><code class="docutils literal"><span class="pre">0-1.N:p</span></code></p>
+<p>是&nbsp;<a href="#id215"><span class="problematic" id="id216">``</span></a>battle-axes,battle-axe.N:p``&nbsp;的出口</p>
+<p>当词典包含复合词时，这可以保存&nbsp;<a href="#id217"><span class="problematic" id="id218">``</span></a>.inf``&nbsp;文件中特定的变量。</p>
+<p>当单元中的至少一个不是空格或连字符时，压缩形式组成的字符数的减去跟随字符添加的序列。
+因此词典里的序列：</p>
+<p><code class="docutils literal"><span class="pre">première</span> <span class="pre">partie,premier</span> <span class="pre">parti.N+AN+Hum:fs</span></code></p>
+<p>被该语句编码 :</p>
+<p><code class="docutils literal"><span class="pre">3er</span> <span class="pre">1.N+AN+Hum:fs</span></code></p>
+<p><code class="docutils literal"><span class="pre">3er</span></code>码表示我们应该在&nbsp;<code class="docutils literal"><span class="pre">première``&nbsp;的序列中减去三个字符并加上&nbsp;``er</span></code>
+字符来获得&nbsp;<code class="docutils literal"><span class="pre">premier</span></code>。<a href="#id219"><span class="problematic" id="id220">``</span></a>1``&nbsp;表示我们应该在&nbsp;<a href="#id221"><span class="problematic" id="id222">``</span></a>partie``&nbsp;中只删除一个字符来获得&nbsp;<a href="#id223"><span class="problematic" id="id224">``</span></a>parti``&nbsp;序列。<a href="#id225"><span class="problematic" id="id226">``</span></a>0``&nbsp;数字用来表示我们不想删除任何字符。</p>
+</div>
+<div class="section" id="id227">
+<h3>词典的文件信息<a class="headerlink" href="#id227" title="永久链接至标题">¶</a></h3>
+<p>在&nbsp;“Apply lexical
+resources”&nbsp;框架里，右击鼠标可以获得词典信息。这些词典信息因为名为&nbsp;<a href="#id228"><span class="problematic" id="id229">``</span></a>biniou.txt``&nbsp;的纯文本而与&nbsp;<a href="#id230"><span class="problematic" id="id231">``</span></a>biniou.bin``&nbsp;或&nbsp;<a href="#id232"><span class="problematic" id="id233">``</span></a>biniou.fst2``&nbsp;相关，它们在同一个目录里。</p>
+<blockquote>
+<div>CHECK_DIC.TXT文件</div></blockquote>
+<hr class="docutils" />
+<p>该文件由&nbsp;<a href="#id234"><span class="problematic" id="id235">``</span></a>CheckDic``&nbsp;词典的确认程序产生。
+这是一个文本文件，它提供所分析的字典的信息，被分成四个部分。</p>
+<p>第一部分给出的列表中，可能是空的，所有在字典中找到的语法错误：没有词尾变化的形式或规范的形式，缺少语法代码，空行等。由受影响的语句的数量，描述错误的性质的消息，该行的内容中描述的每个错误。这里是一个信息的例子：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">第</span> \ <span class="mi">12451</span>\ <span class="n">行</span><span class="p">:</span> <span class="n">语句意外结束</span>
+<span class="n">garden</span><span class="p">,</span><span class="n">N</span><span class="p">:</span><span class="n">s</span>
+</pre></div>
+</div>
+<p>第二和第三部分分别给出语法、语义、词形变化的代码清单。为了避免编码错误，该程序报告包含空格代码、标签或非&nbsp;ASCII&nbsp;字符。而且如果一个希腊语词典包含&nbsp;<code class="docutils literal"><span class="pre">ADV``&nbsp;代码，``A``&nbsp;符号和</span>
+<span class="pre">``A``&nbsp;希腊语代替了拉丁语&nbsp;``A</span></code>，该程序警告如下：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ADV</span>\ <span class="n">警告</span><span class="p">:</span> <span class="n">一个可疑字符</span>\  <span class="p">(</span><span class="mi">1</span> <span class="n">non</span> <span class="n">ASCII</span> <span class="n">char</span><span class="p">):</span> <span class="p">(</span><span class="mi">0391</span> <span class="n">D</span> <span class="n">V</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>非&nbsp;ASCII&nbsp;字符以他们的十六进制数表示。在上面的例子中 &nbsp;<code class="docutils literal"><span class="pre">0391</span></code>
+代码表示希腊字符 &nbsp;<code class="docutils literal"><span class="pre">A</span></code> 。<a href="#id236"><span class="problematic" id="id237">``</span></a>SPACE``&nbsp;序列表示空格。</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Km</span> <span class="n">s</span> <span class="n">warning</span><span class="p">:</span> <span class="mi">1</span> <span class="n">suspect</span> <span class="n">char</span> <span class="p">(</span><span class="mi">1</span> <span class="n">space</span><span class="p">):</span> <span class="p">(</span><span class="n">K</span> <span class="n">m</span> <span class="n">SPACE</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>当检查一下词典时：</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>1,2 et 3!,.INTJ
+abracadabra,INTJ
+supercalifragilisticexpialidocious,.INTJ
+damned,. INTJ
+Paul,.N+Hum+Hum
+eat,.V:W:P1s:Ps:P1p:P2p:P3p
+</pre></div>
+</div>
+<p>我们可以得到&nbsp; <code class="docutils literal"><span class="pre">CHECK_DIC.TXT</span></code> &nbsp;文件，如下 :</p>
+<p><code class="docutils literal"><span class="pre">Line</span> <span class="pre">1:</span> <span class="pre">unprotected</span> <span class="pre">comma</span> <span class="pre">in</span> <span class="pre">lemma</span></code>¶</p>
+<p><a href="#id238"><span class="problematic" id="id239">``</span></a>1,2 et 3!,.INTJ <a href="#id240"><span class="problematic" id="id241">``</span></a>¶</p>
+<p><code class="docutils literal"><span class="pre">Line</span> <span class="pre">2:</span> <span class="pre">unexpected</span> <span class="pre">end</span> <span class="pre">of</span> <span class="pre">line</span></code>¶</p>
+<p><a href="#id242"><span class="problematic" id="id243">``</span></a>abracadabra,INTJ <a href="#id244"><span class="problematic" id="id245">``</span></a>¶</p>
+<p><code class="docutils literal"><span class="pre">Line</span> <span class="pre">5:</span> <span class="pre">duplicate</span> <span class="pre">semantic</span> <span class="pre">code</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Paul,.N+Hum+Hum</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Line</span> <span class="pre">6:</span> <span class="pre">an</span> <span class="pre">inflectional</span> <span class="pre">code</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">subset</span> <span class="pre">of</span> <span class="pre">another</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">eat,.V:W:P1s:Ps:P1p:P2p:P3p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-----------------------------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-------------</span>&nbsp; <span class="pre">Stats</span>&nbsp; <span class="pre">-------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-----------------------------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">File:</span> <span class="pre">D:\My</span> <span class="pre">Unitex\English\Dela\axe.dic</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">Type:</span> <span class="pre">DELAF</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">6</span> <span class="pre">lines</span> <span class="pre">read</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">2</span> <span class="pre">simple</span> <span class="pre">entries</span> <span class="pre">for</span> <span class="pre">2</span> <span class="pre">distinct</span> <span class="pre">lemmas</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">0</span> <span class="pre">compound</span> <span class="pre">entry</span> <span class="pre">for</span> <span class="pre">0</span> <span class="pre">distinct</span> <span class="pre">lemma</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-----------------------------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">----</span>&nbsp; <span class="pre">All</span> <span class="pre">chars</span> <span class="pre">used</span> <span class="pre">in</span> <span class="pre">forms</span>&nbsp; <span class="pre">----</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-----------------------------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">a</span> <span class="pre">(0061)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">c</span> <span class="pre">(0063)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">d</span> <span class="pre">(0064)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">e</span> <span class="pre">(0065)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">f</span> <span class="pre">(0066)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">g</span> <span class="pre">(0067)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">i</span> <span class="pre">(0069)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">l</span> <span class="pre">(006C)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">m</span> <span class="pre">(006D)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">n</span> <span class="pre">(006E)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">o</span> <span class="pre">(006F)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">p</span> <span class="pre">(0070)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">r</span> <span class="pre">(0072)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">s</span> <span class="pre">(0073)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">t</span> <span class="pre">(0074)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">u</span> <span class="pre">(0075)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">x</span> <span class="pre">(0078)</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-------------------------------------------------------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">----</span>&nbsp;&nbsp;&nbsp; <span class="pre">2</span> <span class="pre">grammatical/semantic</span> <span class="pre">codes</span> <span class="pre">used</span> <span class="pre">in</span> <span class="pre">dictionary</span>&nbsp; <span class="pre">----</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-------------------------------------------------------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">INTJ</span></code>¶</p>
+<p>`` INTJ warning: 1 suspect char (1 space): (SPACE I N T J)``¶</p>
+<p><code class="docutils literal"><span class="pre">-----------------------------------------------------</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">----</span>&nbsp;&nbsp;&nbsp; <span class="pre">0</span> <span class="pre">inflectional</span> <span class="pre">code</span> <span class="pre">used</span> <span class="pre">in</span> <span class="pre">dictionary</span>&nbsp; <span class="pre">-----</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">-----------------------------------------------------</span></code>¶</p>
+<p><a href="#id246"><span class="problematic" id="id247">``</span></a>eat``&nbsp;的词形变化码没有被报告，因为在此行中发生错误。</p>
+<blockquote>
+<div>ELAG&nbsp;文件</div></blockquote>
+<hr class="docutils" />
+<blockquote>
+<div>tagset.de&nbsp;文件</div></blockquote>
+<hr class="docutils" />
+<p>见 [section-elag-tagset], 页面 .</p>
+<blockquote>
+<div>.lst&nbsp;文件</div></blockquote>
+<hr class="docutils" />
+<p>lst&nbsp;文件不能用&nbsp;UNICODE&nbsp;编码。</p>
+<p><code class="docutils literal"><span class="pre">.lst``&nbsp;文件包含一个文件名列表&nbsp;</span></code>.grf``。如果文件名不确定，就与&nbsp;<a href="#id248"><span class="problematic" id="id249">``</span></a>elag.lst``&nbsp;文件的位置相对。这里是&nbsp;<a href="#id250"><span class="problematic" id="id251">``</span></a>elag.lst``&nbsp;文件的法文版：</p>
+<p><code class="docutils literal"><span class="pre">PPVs/PpvIL.grf</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PPVs/PpvLE.grf</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PPVs/PpvLUI.grf</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PPVs/PpvPR.grf</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PPVs/PpvSeq.grf</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PPVs/SE.grf</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PPVs/postpos.grf</span></code>¶</p>
+</div>
+<div class="section" id="elg">
+<h3>.elg 文档<a class="headerlink" href="#elg" title="永久链接至标题">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">.elg</span></code> 文件包含编译的&nbsp;ELAG&nbsp;规则。这些文件都是 <a href="#id252"><span class="problematic" id="id253">``</span></a>.fst2``&nbsp;格式。</p>
+<blockquote>
+<div>.rul 文件</div></blockquote>
+<hr class="docutils" />
+<p>&nbsp;文件不是用&nbsp;Unicode&nbsp;编码的。</p>
+<p>&nbsp;ELAG&nbsp;规则的集合。
+<code class="docutils literal"><span class="pre">.rul``&nbsp;文件和&nbsp;</span></code>.elg``&nbsp;文件由同样多的部分组成。每一个部分由和
+<code class="docutils literal"><span class="pre">.elg``&nbsp;文件对应的&nbsp;ELAG&nbsp;语法列表组成。</span></code>.elg``&nbsp;文件名为英文。由表格开始的语句都为批注而且被&nbsp;<a href="#id254"><span class="problematic" id="id255">``</span></a>Elag``&nbsp;程序忽略。&nbsp;这里是&nbsp;<a href="#id256"><span class="problematic" id="id257">``</span></a>elag.rul``&nbsp;文件默认为法语：</p>
+<p>``    PPVs/PpvIL.elg``¶</p>
+<p>``    PPVs/PpvLE.elg``¶</p>
+<p>``    PPVs/PpvLUI.elg``¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;elag.rul-0.elg&gt;</span></code>¶</p>
+<p>``    PPVs/PpvPR.elg``¶</p>
+<p>``    PPVs/PpvSeq.elg``¶</p>
+<p>``    PPVs/SE.elg``¶</p>
+<p>``    PPVs/postpos.elg``¶</p>
+<p><code class="docutils literal"><span class="pre">&lt;elag.rul-1.elg&gt;</span></code>¶</p>
+</div>
+</div>
+<div class="section" id="id258">
+<h2>标签文件<a class="headerlink" href="#id258" title="永久链接至标题">¶</a></h2>
+<p>本节介绍了&nbsp;TrainingTagger&nbsp;标注器和程序使用的产品和文件。</p>
+<blockquote>
+<div>corpus.txt文件</div></blockquote>
+<hr class="docutils" />
+<p>[section-corpus-file]
+该文件所使用的&nbsp;TrainingTagger&nbsp;程序来计算&nbsp;Tagger&nbsp;程序的统计信息。它包含在其中的每个字在一个单独的语句示出的短语。
+每一行语句表示一个单词是由另一个单词或复合词构造的，后面试斜杠和单词的标签。
+这个标签是由语法代码组成，每次后接&nbsp;<code class="docutils literal"><span class="pre">'+'``&nbsp;和语法和语义代码。词形变化码是在&nbsp;</span></code>&#8216;:&#8217;<code class="docutils literal"><span class="pre">&nbsp;之后。如果单词是复合词，里面包含的单词就会用&nbsp;</span></code>&#8216;_&#8217;<a href="#id259"><span class="problematic" id="id260">``</span></a>&nbsp;隔开。这里是一个例子：</p>
+<p><code class="docutils literal"><span class="pre">The/DET+Ddef:s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">GATT/N:s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">had/V:I3s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">formerly/ADV</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">a/DET+Dind:s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">political/A</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">assessment/N:s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">of/PREP</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">the/DET+Ddef:s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">behavior/N:s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">of/PREP</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">foreign_countries/N:p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">./PONCT</span></code>¶</p>
+<p>¶</p>
+<p><code class="docutils literal"><span class="pre">She/PRO+Nomin:3fs</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">closed/V:I3s</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">easily/ADV</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">her/DET+Poss3fs:p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">eyes/N:p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">when/CONJ</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">some/DET+Dadj:p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">infractions/N:p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">might/V:I3p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">appear/V:W</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">justified/V:K</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">against/PREP</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">higher/A</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">interests/N:p</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">./PONCT</span></code>¶</p>
+<p>¶</p>
+<p>注意：这些句子应该用空行分割。</p>
+<p><code class="docutils literal"><span class="pre">.txt</span></code>格式同样可以被运用（见&nbsp;&nbsp;[section-texts]）。文本的每一个字必须用一个有效的词汇标签来表示(<code class="docutils literal"><span class="pre">{aujourd'hui,.ADV}</span></code>)，并且每句话应由&nbsp;<a href="#id261"><span class="problematic" id="id262">``</span></a>{S}``&nbsp;分隔。这里是
+<a href="#id263"><span class="problematic" id="id264">``</span></a>.txt``&nbsp;格式：</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal"><span class="pre">{The,.DET+Ddef:s}</span></code> <code class="docutils literal"><span class="pre">{GATT,.N:s}</span></code> <code class="docutils literal"><span class="pre">{had,.V:I3s}</span></code>
+<code class="docutils literal"><span class="pre">{formerly,.ADV}</span></code></div>
+<div class="line"><code class="docutils literal"><span class="pre">{a,.DET+Dind:s}</span></code> <code class="docutils literal"><span class="pre">{political,.A}</span></code> <code class="docutils literal"><span class="pre">{assessment,.N:s}</span></code>
+<code class="docutils literal"><span class="pre">{of,.PREP}</span></code></div>
+<div class="line"><code class="docutils literal"><span class="pre">{the,.DET+Ddef:s}</span></code> <code class="docutils literal"><span class="pre">{behavior,.N:s}</span></code> <code class="docutils literal"><span class="pre">{of,.PREP}</span></code>
+<code class="docutils literal"><span class="pre">{foreign</span> <span class="pre">countries,.N:p}</span></code></div>
+<div class="line"><code class="docutils literal"><span class="pre">{.,.PONCT}</span></code> <code class="docutils literal"><span class="pre">{S}</span></code> <code class="docutils literal"><span class="pre">{She,.PRO+Nomin:3fs}</span></code> <code class="docutils literal"><span class="pre">{closed,.V:I3s}</span></code>
+<code class="docutils literal"><span class="pre">{easily,.ADV}</span></code></div>
+<div class="line"><code class="docutils literal"><span class="pre">{her,.DET+Poss3fs:p}</span></code> <code class="docutils literal"><span class="pre">{eyes,.N:p}</span></code> <code class="docutils literal"><span class="pre">{when,.CONJ}</span></code>
+<code class="docutils literal"><span class="pre">{some,.DET+Dadj:p}</span></code></div>
+<div class="line"><code class="docutils literal"><span class="pre">{infraction,.N:p}</span></code> <code class="docutils literal"><span class="pre">{might,.V:I3p}</span></code> <code class="docutils literal"><span class="pre">{appear,.V:W}</span></code>
+<code class="docutils literal"><span class="pre">{justified,.V:K}</span></code></div>
+<div class="line"><code class="docutils literal"><span class="pre">{against,.PREP}</span></code> <code class="docutils literal"><span class="pre">{higher,.A}</span></code> <code class="docutils literal"><span class="pre">{interests,.N:p}</span></code>
+<code class="docutils literal"><span class="pre">{.,.PONCT}</span></code> <code class="docutils literal"><span class="pre">{S}</span></code></div>
+</div>
+<div class="section" id="id265">
+<h3>标签数据文件<a class="headerlink" href="#id265" title="永久链接至标题">¶</a></h3>
+<p>[section-training-dict]
+TrainingTagger&nbsp;程序管理两个由&nbsp;Tagger&nbsp;使用用来计算二阶
+&nbsp;Markov&nbsp;模型数据文件
+(默认)。这些文件包含单字母，双字母组合三个字母组来处理&nbsp;corpus.txt&nbsp;标签。元组是由任一的两或三个标签序列组成的（为了计算转移概率）或是在&nbsp;0&nbsp;或&nbsp;1
+的标签之前的一个语句（计算发射的概率）。在一个元组的单位，必须由制表分开。这些元组由序列定界符监视“。”然后由一个整数，表示该元组在语料库中出现的次数。</p>
+<p>文件名以&nbsp;“cat” 或&nbsp;“morph”
+为后缀。首先，元组由代码标记语法，句法和语义。其次，由元组组成的代码标记语法，句法和语义每次后接&nbsp;<a href="#id266"><span class="problematic" id="id267">``</span></a>&#8216;:&#8217;<a href="#id268"><span class="problematic" id="id269">``</span></a>&nbsp;和词形变化码。
+这里是有着“cat”类型的标签的数据文件例子：</p>
+<p><code class="docutils literal"><span class="pre">the,.9630</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">those,.236</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">eyes,.32</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DET+Ddef</span>&nbsp;&nbsp; <span class="pre">the,.9630</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DET+Ddem</span>&nbsp;&nbsp; <span class="pre">those,.140</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PRO+Pdem</span>&nbsp;&nbsp; <span class="pre">those,.96</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">N</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">eyes,.32</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DET</span>&nbsp;&nbsp;&nbsp; <span class="pre">N,.62541</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PREP</span>&nbsp; <span class="pre">DET</span>&nbsp; <span class="pre">N,.25837</span></code>¶</p>
+<p>¶</p>
+<p>这里是有着&nbsp;“morph”&nbsp;类型的标签的数据文件例子：</p>
+<p><code class="docutils literal"><span class="pre">the,.9630</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">those,.236</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">eyes,.32</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DET+Ddef:s</span>&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">the,.4437</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DET+Ddef:p</span>&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">the,.5193</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DET+Ddem:p</span>&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">those,.140</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PRO+Pdem:p</span>&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">those,.96</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">N:p</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">eyes,.32</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DET:s</span>&nbsp; <span class="pre">N:s,.18489</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PREP</span>&nbsp;&nbsp;&nbsp; <span class="pre">DET:s</span>&nbsp; <span class="pre">N:s,.6977</span></code>¶</p>
+<p>¶</p>
+<p>如果文件包含&nbsp;“cat”&nbsp;或&nbsp;“morph”&nbsp;标签，就需要具体的语句加入到数据文件进行确认。
+这一行包含&nbsp;<code class="docutils literal"><span class="pre">CODE</span> <span class="pre">FEATURES</span></code>，后面是代表&nbsp;“cat”&nbsp;的&nbsp;0，或代表&nbsp;“morph”&nbsp;的&nbsp;1</p>
+<p>注意：在最后一步， TrainingTagger&nbsp;压缩两个数据文件到&nbsp;<a href="#id270"><span class="problematic" id="id271">``</span></a>.bin``&nbsp;格式。</p>
+</div>
+</div>
+<div class="section" id="id272">
+<h2>配置文件<a class="headerlink" href="#id272" title="永久链接至标题">¶</a></h2>
+<blockquote>
+<div>Config文件</div></blockquote>
+<hr class="docutils" />
+<p>当用户为特定的语言修改配置时，这些保存在可以在当前语言目录中找到、名为&nbsp;<a href="#id273"><span class="problematic" id="id274">``</span></a>Config``&nbsp;的文档文件中。这个文件的语法如下（该行的顺序可能会有所不同）：</p>
+<p><code class="docutils literal"><span class="pre">#Unitex</span> <span class="pre">configuration</span> <span class="pre">file</span> <span class="pre">of</span> <span class="pre">'paumier'</span> <span class="pre">for</span> <span class="pre">'English'</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">#Fri</span> <span class="pre">Oct</span> <span class="pre">10</span> <span class="pre">15:18:06</span> <span class="pre">CEST</span> <span class="pre">2008</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">TEXT\</span> <span class="pre">FONT\</span> <span class="pre">NAME=Courier</span> <span class="pre">New</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">TEXT\</span> <span class="pre">FONT\</span> <span class="pre">STYLE=0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">TEXT\</span> <span class="pre">FONT\</span> <span class="pre">SIZE=10</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">CONCORDANCE\</span> <span class="pre">FONT\</span> <span class="pre">NAME=Courier</span> <span class="pre">new</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">CONCORDANCE\</span> <span class="pre">FONT\</span> <span class="pre">HTML\</span> <span class="pre">SIZE=12</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">INPUT\</span> <span class="pre">FONT\</span> <span class="pre">NAME=Times</span> <span class="pre">New</span> <span class="pre">Roman</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">INPUT\</span> <span class="pre">FONT\</span> <span class="pre">STYLE=0</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">INPUT\</span> <span class="pre">FONT\</span> <span class="pre">SIZE=10</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">OUTPUT\</span> <span class="pre">FONT\</span> <span class="pre">NAME=Arial</span> <span class="pre">Unicode</span> <span class="pre">MS</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">OUTPUT\</span> <span class="pre">FONT\</span> <span class="pre">STYLE=1</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">OUTPUT\</span> <span class="pre">FONT\</span> <span class="pre">SIZE=12</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">DATE=true</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">FILE\</span> <span class="pre">NAME=true</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PATH\</span> <span class="pre">NAME=false</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">FRAME=true</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">RIGHT\</span> <span class="pre">TO\</span> <span class="pre">LEFT=false</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">BACKGROUND\</span> <span class="pre">COLOR=-1</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">FOREGROUND\</span> <span class="pre">COLOR=-16777216</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">AUXILIARY\</span> <span class="pre">NODES\</span> <span class="pre">COLOR=-3289651</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">COMMENT\</span> <span class="pre">NODES\</span> <span class="pre">COLOR=-65536</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">SELECTED\</span> <span class="pre">NODES\</span> <span class="pre">COLOR=-16776961</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PACKAGE\</span> <span class="pre">NODES\</span> <span class="pre">COLOR=-2302976</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">CONTEXT\</span> <span class="pre">NODES\</span> <span class="pre">COLOR=-16711936</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">CHAR\</span> <span class="pre">BY\</span> <span class="pre">CHAR=false</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">ANTIALIASING=false</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">HTML\</span> <span class="pre">VIEWER=</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">MAX\</span> <span class="pre">TEXT\</span> <span class="pre">FILE\</span> <span class="pre">SIZE=2097152</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">ICON\</span> <span class="pre">BAR\</span> <span class="pre">POSITION=West</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">PACKAGE\</span> <span class="pre">PATH=D\:\\repository</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">MORPHOLOGICAL\</span> <span class="pre">DICTIONARY=D\:\\MyUnitex\\English\\Dela\\zz.bin</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">MORPHOLOGICAL\</span> <span class="pre">NODES\</span> <span class="pre">COLOR=-3911728</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">MORPHOLOGICAL\</span> <span class="pre">USE\</span> <span class="pre">OF\</span> <span class="pre">SPACE=false</span></code>¶</p>
+<p>前两行是注释行。接下来的三行显示用于显示文本的名称，样式和字体大小，词典，词汇单元，文本自动机的句子等。</p>
+<p><code class="docutils literal"><span class="pre">CONCORDANCE</span> <span class="pre">FONT</span> <span class="pre">NAME``&nbsp;和&nbsp;``CONCORDANCE</span> <span class="pre">FONT</span> <span class="pre">HTML</span> <span class="pre">SIZE</span></code>
+定义名称并用于显示&nbsp;HTML&nbsp;匹配的字体大小。字体大小必须在&nbsp;1&nbsp;和&nbsp;7&nbsp;之间。</p>
+<p>参数<code class="docutils literal"><span class="pre">INPUT</span> <span class="pre">FONT</span> <span class="pre">...``&nbsp;和&nbsp;``OUTPUT</span> <span class="pre">FONT</span> <span class="pre">...</span></code>
+&nbsp;定义用于显示路径和传导图字体的名称，样式和尺寸。</p>
+<p>以下十个参数对应于标头图表提议的参数。 [tab-parameters] 表描述对应关系。</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><code class="docutils literal"><span class="pre">Config``&nbsp;文件配置和&nbsp;</span></code>.grf``&nbsp;文件配置</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">DATE</span></code></td>
+<td><code class="docutils literal"><span class="pre">DDATE</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">FILE</span> <span class="pre">NAME</span></code></td>
+<td><code class="docutils literal"><span class="pre">DFILE</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">PATH</span> <span class="pre">NAME</span></code></td>
+<td><code class="docutils literal"><span class="pre">DDIR</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">FRAME</span></code></td>
+<td><code class="docutils literal"><span class="pre">DFRAME</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">RIGHT</span> <span class="pre">TO</span> <span class="pre">LEFT</span></code></td>
+<td><code class="docutils literal"><span class="pre">DRIG</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">BACKGROUND</span> <span class="pre">COLOR</span></code></td>
+<td><code class="docutils literal"><span class="pre">BCOLOR</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">FOREGROUND</span> <span class="pre">COLOR</span></code></td>
+<td><code class="docutils literal"><span class="pre">FCOLOR</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">AUXILIARY</span> <span class="pre">NODES</span> <span class="pre">COLOR</span></code></td>
+<td><code class="docutils literal"><span class="pre">ACOLOR</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">COMMENT</span> <span class="pre">NODES</span> <span class="pre">COLOR</span></code></td>
+<td><code class="docutils literal"><span class="pre">SCOLOR</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">SELECTED</span> <span class="pre">NODES</span> <span class="pre">COLOR</span></code></td>
+<td><code class="docutils literal"><span class="pre">CCOLOR</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>Table: 参数说明[tab-parameters]</p>
+<p><a href="#id275"><span class="problematic" id="id276">``</span></a>PACKAGE NODES``&nbsp;配置表示目录里子图的调用颜色。</p>
+<p><code class="docutils literal"><span class="pre">CONTEXT</span> <span class="pre">NODES</span></code> &nbsp;配置表示对应于上下文的开始或结束的框的颜色。</p>
+<p><a href="#id277"><span class="problematic" id="id278">``</span></a>CONTEXT NODES``&nbsp;配置表示当前语言是否应被视为字符。</p>
+<p><code class="docutils literal"><span class="pre">ANTIALIASING</span></code>
+&nbsp;配置指定图形和句子自动机是否要在默认情况下使用平滑处理的效果显示。</p>
+<p><a href="#id279"><span class="problematic" id="id280">``</span></a>HTML VIEWER``&nbsp;配置表示要用来查看匹配的浏览器的名称。如果没有指定浏览器的名称，词汇索引将在&nbsp;Unitex&nbsp;窗口显示。</p>
+<p><a href="#id281"><span class="problematic" id="id282">``</span></a>MAX TEXT FILE SIZE``&nbsp;配置不再被使用。</p>
+<p><a href="#id283"><span class="problematic" id="id284">``</span></a>ICON BAR POSITION``&nbsp;配置定义在图形窗口中的图标条的位置。</p>
+<p><a href="#id285"><span class="problematic" id="id286">``</span></a>PACKAGE PATH``&nbsp;配置定义用于该语言的目录。</p>
+<p><a href="#id287"><span class="problematic" id="id288">``</span></a>MORPHOLOGICAL DICTIONARY``&nbsp;配置列出了字典形态模式，用分号隔开。</p>
+<p><code class="docutils literal"><span class="pre">MORPHOLOGICAL</span> <span class="pre">NODES</span> <span class="pre">COLOR``&nbsp;配置形态模式&nbsp;``$&lt;</span></code> 和 <a href="#id289"><span class="problematic" id="id290">``</span></a>$&gt;``&nbsp;标签的颜色。</p>
+<p><a href="#id291"><span class="problematic" id="id292">``</span></a>MORPHOLOGICAL USE OF SPACE``&nbsp;配置表示&nbsp;<a href="#id293"><span class="problematic" id="id294">``</span></a>Locate``&nbsp;程序是否能通过识别领域开始。（默认不是）。</p>
+<blockquote>
+<div>system_dic.def 文件</div></blockquote>
+<hr class="docutils" />
+<p><code class="docutils literal"><span class="pre">system_dic.def``&nbsp;文件是描述系统字典列表，默认将应用于文本文件。该文件位于当前的语言的目录。每一个语句对应&nbsp;</span></code>.bin``&nbsp;文件的名字。该系统的词典必须在Unitex系统目录，&nbsp;在子目录内。
+这里是文件的范例&nbsp;：</p>
+<p><code class="docutils literal"><span class="pre">delacf.bin</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">delaf.bin</span></code>¶</p>
+<blockquote>
+<div>user_dic.def 文件</div></blockquote>
+<hr class="docutils" />
+<p><code class="docutils literal"><span class="pre">user_dic.def``&nbsp;文件是描述用户默认情况下应用于词典列表的文本文件。该文件是在当前的语言的目录，并具有相同的格式文件。用户词典必须在个人工作目录的子目录&nbsp;``(langue</span> <span class="pre">courante)/Dela</span></code>
+里。</p>
+<div class="section" id="cfg-unitex-cfg">
+<h3>文件 (用户姓名).cfg 和 .unitex.cfg<a class="headerlink" href="#cfg-unitex-cfg" title="永久链接至标题">¶</a></h3>
+<p>在&nbsp;Linux&nbsp;和&nbsp;Mac OS，Unitex&nbsp;认为工作人员的工作目录被命名为
+&nbsp;<code class="docutils literal"><span class="pre">unitex``&nbsp;并且位于用户根目录中</span> <span class="pre">(``HOME</span></code>)。
+如果要更改此默认位置,<code class="docutils literal"><span class="pre">.unitex.cfg``&nbsp;文件在根目录中创建，它包含到工作目录&nbsp;Unitexd&nbsp;的路径。这个文件是&nbsp;UTF8&nbsp;文件。如果&nbsp;</span></code>.unitex.cfg``
+Linux&nbsp;并不包含对现有目录的有效路径，则会被忽视。 <a class="footnote-reference" href="#id306" id="id295">[1]</a></p>
+<p>在&nbsp;Windows,它并不是总是可以默认与用户相连的目录。为了解决这个问题，Unitex&nbsp;为每个用户创建
+<code class="docutils literal"><span class="pre">.cfg``&nbsp;文件，包含包含工作目录的路径。该文件在&nbsp;Unitex&nbsp;系统目录的字目录&nbsp;``Users``&nbsp;下保存为&nbsp;``(用户名).cfg</span></code>，&nbsp;如果用户没有权限写入该目录，<a href="#id296"><span class="problematic" id="id297">``</span></a>.unitex.cfg``&nbsp;文件被并保存在用户配置备份文件目录中&nbsp;，</p>
+<ul class="simple">
+<li>在 <code class="docutils literal"><span class="pre">文件和设置\(user</span> <span class="pre">login)</span></code> 在&nbsp;Windows XP&nbsp;上</li>
+<li>在&nbsp;<code class="docutils literal"><span class="pre">Users\(user</span> <span class="pre">login)</span></code> 在&nbsp;Windows Vista&nbsp;或更高版本。</li>
+</ul>
+<p>注意&nbsp;：本文件并不以&nbsp;Unicode&nbsp;的方式保存工作人员的工作。 后面没有语句。</p>
+<blockquote>
+<div>CasSys 文件</div></blockquote>
+</div>
+<hr class="docutils" />
+<div class="section" id="cassys-csc">
+<h3>配置文件&nbsp;CasSys csc<a class="headerlink" href="#cassys-csc" title="永久链接至标题">¶</a></h3>
+<p>为了存储&nbsp;CasSys&nbsp;级联转换器列表，我们使用一个文本文件（CSV），其中每一语句包含转换器监测输出模式路径（合并/替换）应用到换能器。
+csc&nbsp;文件的语句格式是： Name_and_path_of_transducer 合并
+级联&nbsp;CSC&nbsp;文件的例子：</p>
+<p>“C:<span class="math">\(\backslash\)</span>apps<span class="math">\(\backslash\)</span>my_unitex<span class="math">\(\backslash\)</span>French<span class="math">\(\backslash\)</span>Graphs<span class="math">\(\backslash\)</span>grf1.fst2”
+Merge</p>
+<p>“C:<span class="math">\(\backslash\)</span>apps<span class="math">\(\backslash\)</span>my_unitex<span class="math">\(\backslash\)</span>French<span class="math">\(\backslash\)</span>Graphs<span class="math">\(\backslash\)</span>grf2.fst2”
+Replace</p>
+</div>
+</div>
+<div class="section" id="id298">
+<h2>其他文件<a class="headerlink" href="#id298" title="永久链接至标题">¶</a></h2>
+<p>对于每个文本，Unitex&nbsp;创建在&nbsp;GUI&nbsp;包含要显示的信息的多个文件。本节介绍了这些文件。</p>
+<div class="section" id="fichier-dlf-n-dlc-n-err-n-tags-err-n">
+<h3>Fichier dlf.n, dlc.n, err.n 和 tags_err.n<a class="headerlink" href="#fichier-dlf-n-dlc-n-err-n-tags-err-n" title="永久链接至标题">¶</a></h3>
+<p>这三个文件是文本目录中的文本文件。它们分别包含&nbsp;<code class="docutils literal"><span class="pre">dlf</span></code>, <code class="docutils literal"><span class="pre">dlc</span></code>,
+<code class="docutils literal"><span class="pre">err</span></code> 和&nbsp;<a href="#id299"><span class="problematic" id="id300">``</span></a>tags_err``&nbsp;文件的语句数量。这些数字后面跟着一个换行符。</p>
+<blockquote>
+<div>stat_dic.n 文件</div></blockquote>
+<hr class="docutils" />
+<p>该文件是在文本目录中的文本文件。它包含三个语句，包括&nbsp;<code class="docutils literal"><span class="pre">dlf</span></code>, <code class="docutils literal"><span class="pre">dlc</span></code>
+和&nbsp; <code class="docutils literal"><span class="pre">err</span></code> 文件的语句数。</p>
+<blockquote>
+<div>stats.n&nbsp;文件</div></blockquote>
+<hr class="docutils" />
+<p>该文本文件是在文本目录并包含以下语句：</p>
+<p><code class="docutils literal"><span class="pre">3949</span> <span class="pre">sentence</span> <span class="pre">delimiters,</span> <span class="pre">169394</span> <span class="pre">(9428</span> <span class="pre">diff)</span> <span class="pre">tokens,</span> <span class="pre">73788</span> <span class="pre">(9399)</span></code></p>
+<p><code class="docutils literal"><span class="pre">simple</span> <span class="pre">forms,</span> <span class="pre">438</span> <span class="pre">(10)</span> <span class="pre">digits</span></code>¶</p>
+<p>所指的数字解释以下方法：</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">sentence</span> <span class="pre">delimiters</span></code>:句子分隔符的数量 (<code class="docutils literal"><span class="pre">{S}</span></code>);</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">tokens</span></code>:</p>
+<p>tokens文本的总数。 之前的数字&nbsp;<code class="docutils literal"><span class="pre">diff</span></code> 表示不同单元的数量;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">simple</span> <span class="pre">forms</span></code>:
+由字母组成的词汇单元文本总数。括号中的数字表示其中由字母不同词汇单元的数目；</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">digits</span></code>: 文本中的总数。括号中的数字表示显示的数字（最多十个）。</p>
+</li>
+</ul>
+</div>
+<div class="section" id="concord-n">
+<h3>concord.n 文件<a class="headerlink" href="#concord-n" title="永久链接至标题">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">concord.n</span></code>
+文件是文本文件，在文本目录。它包含这个文本模式进行的最新的研究资料，情况如下：</p>
+<p><code class="docutils literal"><span class="pre">6</span> <span class="pre">matches</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">6</span> <span class="pre">recognized</span> <span class="pre">units</span></code>¶</p>
+<p><code class="docutils literal"><span class="pre">(0.004%</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">text</span> <span class="pre">is</span> <span class="pre">covered)</span></code>¶</p>
+<p>第一行给出了发现出现的次数，由这些出现覆盖单元的第二个数字。第三行表示的的覆盖单元的数目和文字单元的总数之间的比率。</p>
+<blockquote>
+<div>concord_tfst.n 文件</div></blockquote>
+<hr class="docutils" />
+<p><code class="docutils literal"><span class="pre">concord_tfst.n</span></code>
+文件是在文本目录中的文本文件。它包含对文本自动机的最新研究信息，如下所示：</p>
+<p><code class="docutils literal"><span class="pre">23</span> <span class="pre">matches(45</span> <span class="pre">outputs)</span></code>¶</p>
+</div>
+<div class="section" id="id301">
+<h3>文件规范化规则<a class="headerlink" href="#id301" title="永久链接至标题">¶</a></h3>
+<p>[section-normalization-file] 该文件由&nbsp;<code class="docutils literal"><span class="pre">Normalization</span></code>
+程序和&nbsp;<code class="docutils literal"><span class="pre">XMLizer</span></code>
+程序使用。它代表了规范化规则。每一行代表一个规则。根据以下格式(<span class="math">\(\longmapsto\)</span>
+代表制表符)</p>
+<p><code class="docutils literal"><span class="pre">input</span> <span class="pre">sequence</span></code> <span class="math">\(\longmapsto\)</span> <code class="docutils literal"><span class="pre">output</span> <span class="pre">sequence</span></code></p>
+<p>如果您想使用的选项卡或换行，你必须用一个反斜杠，像这样：</p>
+<p><code class="docutils literal"><span class="pre">123\</span></code></p>
+<p><span class="math">\(\longmapsto\)</span> <code class="docutils literal"><span class="pre">ONE_TWO_THREE_NEW_LINE</span></code></p>
+</div>
+<div class="section" id="id302">
+<h3>被禁止的单词文件<a class="headerlink" href="#id302" title="永久链接至标题">¶</a></h3>
+<p>[section-forbidden-words] <code class="docutils literal"><span class="pre">PolyLex</span></code>
+程序用于产生荷兰和挪威语需要的禁词。</p>
+<p><code class="docutils literal"><span class="pre">PolyLex</span></code> 程序获得荷兰语和挪威语的禁词。这个纯文本文件应该被称为
+&nbsp;<code class="docutils literal"><span class="pre">ForbiddenWords.txt</span></code> 。 它可以在对应于当前语言的&nbsp;<code class="docutils literal"><span class="pre">Dela</span></code>
+目录里找到。每一行应该包含一个禁止的单词。</p>
+</div>
+<div class="section" id="id303">
+<h3>日志文件<a class="headerlink" href="#id303" title="永久链接至标题">¶</a></h3>
+<p>[section-log-file] <code class="docutils literal"><span class="pre">UnitexToolLogger</span></code>
+程序，如果&nbsp;<code class="docutils literal"><span class="pre">unitex_logging_parameters.txt</span></code> 文件
+被发现有一个路径（要保存日志文件）创建一个文件。运行选择&nbsp;Unitex
+工具&nbsp;.ulp 日志。</p>
+<p>它创建&nbsp;<code class="docutils literal"><span class="pre">unitex_logging_parameters_count.txt</span></code>
+文件，仅包含最后创建的日志文件的数目。
+日志文件（扩展名为.ulp）是一种未压缩的压缩文件，解压后用兼容并解压缩所有的标准工具。我们可以重新创建&nbsp;InfoZip
+的&nbsp;ZIP（-X 选项&nbsp;-0）。它包含文件：</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">test_info/command_line.txt</span></code>:
+用于运行工具的命令行参数的列表。有每行的参数。第一行包含返回值，第二行的参数的数量;</li>
+<li><code class="docutils literal"><span class="pre">test_info/command_line_synth.txt</span></code>:
+单个语句和命令语句的摘要用来执行；</li>
+<li><code class="docutils literal"><span class="pre">test_info/list_file_in.txt</span></code>: 由工具创建的文件的列表。
+第一列是文件大小，第二个是&nbsp;CRC32，第三个是该文件名;</li>
+<li><code class="docutils literal"><span class="pre">test_info/list_file_out.txt</span></code>: 由工具创建的文件的列表。
+第一列是文件大小，第二个是&nbsp;CRC32，第三个是该文件名;</li>
+<li><code class="docutils literal"><span class="pre">test_info/std_out.txt</span></code>: 控制台的标准输出内容;</li>
+<li><code class="docutils literal"><span class="pre">test_info/std_err.txt</span></code>: 在控制台上的输出内容的错误;</li>
+<li><code class="docutils literal"><span class="pre">src/xxx</span></code>: 由工具（再次操作日志所需）读取文件的副本;</li>
+<li><code class="docutils literal"><span class="pre">dest/xxx</span></code>:由工具创建的文件的副本</li>
+</ul>
+<p>如果第二行&nbsp; Unitex日志parameters.txt
+包含&nbsp;0，这些文件不会被保存;如果此行包含&nbsp;1，他们登记;</p>
+</div>
+<div class="section" id="arabic-typo-rules-txt">
+<h3>阿拉伯语排版规则: arabic_typo_rules.txt<a class="headerlink" href="#arabic-typo-rules-txt" title="永久链接至标题">¶</a></h3>
+<p>在阿拉伯语中，字典查找可以与描述了某些排版变化的是否允许或不允许的文件进行配置。此文件包含这样的线路：</p>
+<p><code class="docutils literal"><span class="pre">fatha</span> <span class="pre">omission=YES</span></code></p>
+<p><code class="docutils literal"><span class="pre">fatha</span> <span class="pre">omission</span></code>
+是规则的名称。有关所有可用规则的完整说明，请参阅在源程序中的文件
+<code class="docutils literal"><span class="pre">Arabic.h</span></code> dans les sources du programme.</p>
+</div>
+<div class="section" id="id304">
+<h3>不同印刷文件<a class="headerlink" href="#id304" title="永久链接至标题">¶</a></h3>
+<p>， DumpOffsets([section-DumpOffsets]), Normalize([section-Normalize]),
+Fst2Txt([section-Fst2Txt]), Tokenize([section-Tokenize]),
+Concord([section-Concord]) 和&nbsp;GrfTest,
+并被&nbsp;Tokenize([section-Tokenize])读取。 这些文本文件由含有四个整数， A B
+C D 的每一行对应于所述文本的修改，如下列语句所示：</p>
+<p>区间[A，B[文字******任何处理由范围[C 替换之前; D [处理后，A，B，C
+和&nbsp;D 在文本文件中的字符位置之中。</p>
+<p>例如，如果规格化程序被施加到文本&nbsp;“Hello World”
+（字之间包含两个空格），会出现这样的语句：</p>
+<p><code class="docutils literal"><span class="pre">5</span> <span class="pre">7</span> <span class="pre">5</span> <span class="pre">6</span></code></p>
+<p>这意味着两个字符（两个空格）的序列是由一个字符的序列代替。</p>
+<p>其原理是，以产生一个新的文件偏移对每个程序应用到修改的文本，以作为输入由前面的程序产生的偏移文件。因此，看着最后一个偏移量产品的文件，我们知道，每行&nbsp;ABCD，区间[C;
+D [.snt 文件中对应于区间[A，B [在首发.txt 文件</p>
+</div>
+<div class="section" id="id305">
+<h3>抵消了公共区域的文件<a class="headerlink" href="#id305" title="永久链接至标题">¶</a></h3>
+<p>偏移文件被&nbsp;DumpOffsets 读取，编写。</p>
+<p>这些文本文件由含有四个整数 &nbsp;A B C D
+的每一行对应于所述文本的修改，如以下语句表示： 区间[A，B[对应区间[C原文;
+D [处理后，A，B，C和&nbsp;D 在文本文件中的字符位置之中。在每一行，B-A-C = D。</p>
+<p>例如，如果规格化程序被施加到文本&nbsp;“Hello World”
+（字之间有两个空格），会出现这样的语句： <code class="docutils literal"><span class="pre">0</span> <span class="pre">5</span> <span class="pre">0</span> <span class="pre">5</span></code> <code class="docutils literal"><span class="pre">7</span> <span class="pre">12</span> <span class="pre">6</span> <span class="pre">11</span></code></p>
+<p>这意味着&nbsp;0 字符（包括）到&nbsp;5
+（不含税）两个文件包含完全相同的文字，这&nbsp;7（含）到&nbsp;12（不包括）第一个文本包含相同的文本&nbsp;6（含）至&nbsp;11（不含）。</p>
+</div>
+<div class="section" id="uima">
+<h3>偏移文件&nbsp;UIMA<a class="headerlink" href="#uima" title="永久链接至标题">¶</a></h3>
+<p>UIMA 偏移文件由&nbsp;Tokenize&nbsp;编写并&nbsp; Concord 读取 (利用工具 &nbsp;<code class="docutils literal"><span class="pre">--uima=</span></code>,
+<code class="docutils literal"><span class="pre">--xml-with-header=</span></code> 或&nbsp; <code class="docutils literal"><span class="pre">--xml=</span></code>)
+这些文件建立每个连续标记和原始文件中的位置之间的对应关系。
+这些文本文件是包含三个整数&nbsp;A B C 与文本之间&lt;et&gt;语句。</p>
+<p>每一行对应表述如下&nbsp;tokens： tokens 数&nbsp;A
+是对应于原始文件中的&nbsp;C（不含税）的位置&nbsp;B（包含）的文本，和在&lt;et&gt;中提到的的&nbsp;tokens。
+tokens 数&nbsp;A 的数量对应&nbsp;tokens.txt 出现的语句数量（加一个&nbsp;tokens.txt
+标题行（后参考标记-TXT 文件））</p>
+<table class="docutils footnote" frame="void" id="id306" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id295">[1]</a></td><td>可以在&nbsp;Linux，Window&nbsp;上运行&nbsp;Unitex，共享文件&nbsp;：通向&nbsp;Unitex&nbsp;个人工作目录的Windows路径在
+&nbsp; 中指出，而在&nbsp;Linux&nbsp;中运行时，Unitex&nbsp;会忽视。</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="Unitex-zh.html">內容目录</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">文件格式</a><ul>
+<li><a class="reference internal" href="#unicode">Unicode 代码</a></li>
+<li><a class="reference internal" href="#id2">字母文件</a><ul>
+<li><a class="reference internal" href="#id3">字母</a></li>
+<li><a class="reference internal" href="#id12">顺序字母表</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id33">图形</a><ul>
+<li><a class="reference internal" href="#grf">格式 .grf</a></li>
+<li><a class="reference internal" href="#fst2">格式 .fst2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#textes">Textes</a><ul>
+<li><a class="reference internal" href="#txt">文件 .txt</a></li>
+<li><a class="reference internal" href="#snt">文件.snt</a></li>
+<li><a class="reference internal" href="#cod">文本文件.cod</a></li>
+<li><a class="reference internal" href="#tokens-txt">tokens文件.txt</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id122">文本自动机</a><ul>
+<li><a class="reference internal" href="#id153">句子文件.grf</a></li>
+<li><a class="reference internal" href="#the-cursentence-tok">The cursentence.tok 文件</a></li>
+<li><a class="reference internal" href="#tfst-tags-by-freq-txt-tfst-tags-by-alph-txt">文件 tfst_tags_by_freq.txt 和 tfst_tags_by_alph.txt</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id172">语句索引</a><ul>
+<li><a class="reference internal" href="#concord-html">concord.html 文件</a></li>
+<li><a class="reference internal" href="#diff-html">diff.html 文件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id197">文本字典</a><ul>
+<li><a class="reference internal" href="#dlf-dlc">dlf 和&nbsp;dlc</a></li>
+<li><a class="reference internal" href="#err">err</a></li>
+<li><a class="reference internal" href="#tags-err">tags_err</a></li>
+<li><a class="reference internal" href="#tags-ind">tags.ind</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id204">词典</a><ul>
+<li><a class="reference internal" href="#inf">.inf文件</a></li>
+<li><a class="reference internal" href="#id227">词典的文件信息</a></li>
+<li><a class="reference internal" href="#elg">.elg 文档</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id258">标签文件</a><ul>
+<li><a class="reference internal" href="#id265">标签数据文件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id272">配置文件</a><ul>
+<li><a class="reference internal" href="#cfg-unitex-cfg">文件 (用户姓名).cfg 和 .unitex.cfg</a></li>
+<li><a class="reference internal" href="#cassys-csc">配置文件&nbsp;CasSys csc</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id298">其他文件</a><ul>
+<li><a class="reference internal" href="#fichier-dlf-n-dlc-n-err-n-tags-err-n">Fichier dlf.n, dlc.n, err.n 和 tags_err.n</a></li>
+<li><a class="reference internal" href="#concord-n">concord.n 文件</a></li>
+<li><a class="reference internal" href="#id301">文件规范化规则</a></li>
+<li><a class="reference internal" href="#id302">被禁止的单词文件</a></li>
+<li><a class="reference internal" href="#id303">日志文件</a></li>
+<li><a class="reference internal" href="#arabic-typo-rules-txt">阿拉伯语排版规则: arabic_typo_rules.txt</a></li>
+<li><a class="reference internal" href="#id304">不同印刷文件</a></li>
+<li><a class="reference internal" href="#id305">抵消了公共区域的文件</a></li>
+<li><a class="reference internal" href="#uima">偏移文件&nbsp;UIMA</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="Unitex-zh.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>本页</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/14-formats_ZH_utf8.txt"
+            rel="nofollow">显示源代码</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>快速搜索</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="转向" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, NCCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/14-formats_ZH_utf8.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
